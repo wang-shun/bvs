@@ -146,7 +146,8 @@ public class MultiCheckField extends EditorField {
 		buttons.forEach(b -> b.setSelection(false));
 		this.value.forEach(v -> {
 			int idx = choice.indexOf(v);
-			buttons.get(idx).setSelection(idx != -1);
+			if (idx != -1)
+				buttons.get(idx).setSelection(idx != -1);
 		});
 	}
 
