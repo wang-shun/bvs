@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Built-By: holger
+Bundle-Name: Multipart Provider
+Created-By: Apache Maven 3.3.3
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: EclipseSource
+Build-Jdk: 1.7.0_79
+Bundle-Version: 2.2.0.201602281253
+Bundle-ManifestVersion: 2
+Bundle-Activator: com.eclipsesource.jaxrs.provider.multipart.Activator
+Bundle-SymbolicName: com.eclipsesource.jaxrs.provider.multipart
+Import-Package: javax.ws.rs.core;version="[2.0.0,3.0.0)",org.glassfish
+ .jersey.media.multipart;version="[2.3.0,3.0.0)",org.osgi.framework;ve
+ rsion="1.3.0"
+Archiver-Version: Plexus Archiver
+

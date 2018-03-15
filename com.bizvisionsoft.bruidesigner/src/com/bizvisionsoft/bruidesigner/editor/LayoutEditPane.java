@@ -1,0 +1,259 @@
+package com.bizvisionsoft.bruidesigner.editor;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
+
+import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.AssemblyLayouted;
+import com.bizvisionsoft.bruicommons.model.Layout;
+import com.bizvisionsoft.bruicommons.model.ModelObject;
+import com.bizvisionsoft.bruidesigner.Activator;
+import com.bizvisionsoft.bruidesigner.dialog.AssemblySelectionDialog;
+import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
+
+public class LayoutEditPane extends Composite {
+
+	class LayoutContentProvider implements ITreeContentProvider {
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Object[] getElements(Object inputElement) {
+			return ((List<Layout>) inputElement).toArray();
+		}
+
+		@Override
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof Layout) {
+				List<AssemblyLayouted> children = ((Layout) parentElement).getAssemblys();
+				if (children != null)
+					return children.toArray(new AssemblyLayouted[0]);
+			}
+			return new Object[0];
+		}
+
+		@Override
+		public Object getParent(Object element) {
+			return null;
+		}
+
+		@Override
+		public boolean hasChildren(Object element) {
+			return getChildren(element).length > 0;
+		}
+
+	}
+
+	private List<Layout> layouts;
+	private ModelEditor editor;
+	private PropertyChangeListener listener;
+	private TreeViewer viewer;
+	private Composite rightPane;
+	private ModelObject current;
+
+	public LayoutEditPane(Composite parent, List<Layout> layouts, ModelEditor editor) {
+		super(parent, SWT.HORIZONTAL);
+		this.layouts = layouts;
+		this.editor = editor;
+		GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
+		setLayoutData(layoutData);
+
+		setLayout(new GridLayout(2, false));
+		GridData gd = new GridData(SWT.FILL,SWT.FILL,false,true);
+		gd.widthHint = 400;
+		createLeftPane().setLayoutData(gd);
+		gd = new GridData(SWT.FILL,SWT.FILL,true,true);
+		createRightPane().setLayoutData(gd);
+		
+		listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				viewer.update(e.getSource(), null);
+			}
+		};
+
+		addDisposeListener(
+				e -> Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener)));
+	}
+
+	private Composite createLeftPane() {
+		Composite left = new Composite(this, SWT.NONE);
+		left.setLayout(new GridLayout());
+
+		Composite toolbar = new Composite(left, SWT.NONE);
+		toolbar.setLayout(new GridLayout(3, false));
+
+		Button addlayout = new Button(toolbar, SWT.PUSH);
+		addlayout.setText("添加布局");
+		addlayout.addListener(SWT.Selection, e -> {
+			layouts.add(ModelToolkit.createLayout());
+			viewer.refresh();
+		});
+
+		Button addAssembly = new Button(toolbar, SWT.PUSH);
+		addAssembly.setText("添加子组件");
+		addAssembly.addListener(SWT.Selection, e -> {
+			Object element = viewer.getStructuredSelection().getFirstElement();
+			if (element instanceof Layout) {
+				AssemblySelectionDialog dialog = new AssemblySelectionDialog(getShell(), true);
+				if (AssemblySelectionDialog.OK == dialog.open()) {
+					Object[] result = dialog.getResult();
+					if (result != null && result.length > 0) {
+						ModelToolkit.createAssemblyLayouted((Layout) element, ((Assembly) result[0]).getId());
+						viewer.refresh(element);
+						viewer.expandAll();
+					}
+				}
+			}
+		});
+
+		Button remove = new Button(toolbar, SWT.PUSH);
+		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
+		remove.addListener(SWT.Selection, e -> {
+			Object element = viewer.getStructuredSelection().getFirstElement();
+			if (element instanceof Layout) {
+				layouts.remove(current);
+				viewer.refresh();
+			} else if (element instanceof AssemblyLayouted) {
+				Layout layout = (Layout) ((TreeItem) viewer.testFindItem(element)).getParentItem().getData();
+				ModelToolkit.removeAssembly(layout, (AssemblyLayouted) element);
+				viewer.refresh(layout);
+			}
+		});
+
+		viewer = new TreeViewer(left, SWT.FULL_SELECTION | SWT.BORDER);
+		viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
+		viewer.setContentProvider(new LayoutContentProvider());
+		viewer.setLabelProvider(ModelToolkit.createLabelProvider());
+		viewer.setInput(layouts);
+		viewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
+		viewer.addPostSelectionChangedListener(e -> {
+			Object element = e.getStructuredSelection().getFirstElement();
+			if (element instanceof Layout) {
+				openLayout((Layout) element, rightPane);
+			} else if (element instanceof AssemblyLayouted) {
+				openAssemblyLayouted((AssemblyLayouted) element, rightPane);
+			}
+		});
+		return left;
+	}
+
+	private void openAssemblyLayouted(AssemblyLayouted element, Composite parent) {
+		Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener));
+		current = element;
+		Arrays.asList(parent.getChildren()).stream().filter(c -> !c.isDisposed()).forEach(ctl -> ctl.dispose());
+
+		if (element != null) {
+
+			editor.createComboField(parent, new String[] { "填充", "靠左", "居中", "靠右" },
+					new Object[] { SWT.FILL, SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "横向对齐方式:", element,
+					"horizontalAlignment", SWT.READ_ONLY | SWT.BORDER);
+
+			editor.createComboField(parent, new String[] { "填充", "靠上", "居中", "靠下" },
+					new Object[] { SWT.FILL, SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "纵向对齐方式:", element, "verticalAlignment",
+					SWT.READ_ONLY | SWT.BORDER);
+
+			editor.createIntegerField(parent, "横向跨越单位:", element, "horizontalSpan", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "纵向跨越单位:", element, "verticalSpan", SWT.BORDER,0,9999);
+
+			editor.createCheckboxField(parent, "横向填充", element, "grabExcessHorizontalSpace", SWT.CHECK);
+
+			editor.createCheckboxField(parent, "纵向填充", element, "grabExcessVerticalSpace", SWT.CHECK);
+
+			editor.createIntegerField(parent, "建议宽度（像素）-1表示不设:", element, "widthHint", SWT.BORDER,-1,9999);
+			
+			editor.createIntegerField(parent, "建议高度（像素）-1表示不设:", element, "heightHint", SWT.BORDER,-1,9999);
+			
+			editor.createAssemblyField(parent, "组件:", element, "id", true);
+		}
+		parent.layout();
+	}
+
+	private Composite createRightPane() {
+		rightPane = new Composite(this, SWT.NONE);
+		GridLayout layout = new GridLayout(3, false);
+		layout.marginTop = 16;
+		layout.marginBottom = 16;
+		layout.marginLeft = 16;
+		layout.marginRight = 16;
+		layout.horizontalSpacing = 16;
+		layout.verticalSpacing = 16;
+		rightPane.setLayout(layout);
+		return rightPane;
+	}
+
+	private void openLayout(Layout element, Composite parent) {
+		Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener));
+		current = element;
+
+		Arrays.asList(parent.getChildren()).stream().filter(c -> !c.isDisposed()).forEach(ctl -> ctl.dispose());
+
+		if (element != null) {
+
+			editor.createTextField(parent, "唯一标识符:", element, "id", SWT.READ_ONLY);
+
+			editor.createTextField(parent, "布局名称:", element, "name", SWT.BORDER);
+
+			editor.createTextField(parent, "描述:", element, "description", SWT.BORDER);
+
+			editor.createIntegerField(parent, "兼容设备的最小宽度（像素）:", element, "minimalDeviceWidth", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "兼容设备的最大宽度（像素）:", element, "maximalDeviceWidth", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "列数:", element, "columnCount", SWT.BORDER,0,9999);
+			
+			editor.createCheckboxField(parent, "横向展开", element, "extendHorizontalSpace", SWT.CHECK);
+
+			editor.createCheckboxField(parent, "纵向展开", element, "extendVerticalSpace", SWT.CHECK);
+
+			editor.createCheckboxField(parent, "各列是否等宽", element, "makeColumnsEqualWidth", SWT.CHECK);
+
+			editor.createIntegerField(parent, "横向间距（像素）:", element, "horizontalSpacing", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "纵向间距（像素）:", element, "verticalSpacing", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "上下边距（像素）:", element, "marginHeight", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "顶边距（像素）:", element, "marginTop", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "底边距（像素）:", element, "marginBottom", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "左右边距（像素）:", element, "marginWidth", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "左边距（像素）:", element, "marginLeft", SWT.BORDER,0,9999);
+
+			editor.createIntegerField(parent, "右边距（像素）:", element, "marginRight", SWT.BORDER,0,9999);
+
+			editor.createTextField(parent, "容器CSS类名：", element, "css", SWT.BORDER);
+			
+			editor.createTextField(parent, "容器RWT CSS名称：", element, "rwtCss", SWT.BORDER);
+
+			element.addPropertyChangeListener("name", listener);
+		}
+
+		parent.layout();
+		
+	}
+
+}

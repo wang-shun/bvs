@@ -1,0 +1,313 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.rap.nebula.widgets.richtext
+Archiver-Version: Plexus Archiver
+Built-By: genie.rap
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[3.4.0,4.0.0)"
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/rap/or
+ g.eclipse.rap.git;path="bundles/org.eclipse.rap.nebula.widgets.richte
+ xt";commitId=c84c96fc1c7def522bc1b018cb04b4d10b282cc6
+Bundle-Vendor: %Bundle-Vendor
+Import-Package: javax.servlet;version="2.5.0",javax.servlet.http;versi
+ on="2.5.0"
+Export-Package: org.eclipse.nebula.widgets.richtext;version="3.4.0",or
+ g.eclipse.nebula.widgets.richtext.toolbar;version="3.4.0"
+Bundle-Name: %Bundle-Name
+Bundle-Version: 3.4.0.20171017-0945
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_131
+
+Name: resources/lang/ka.js
+SHA-256-Digest: doB/0JGVzVmaZhLE22PZKRtPX3n7rd2TUzRR6DubS5E=
+
+Name: resources/lang/sq.js
+SHA-256-Digest: KIFaVkN15Kph/mMukgNkmz3x2se25DMqYv1IS960W0I=
+
+Name: resources/lang/no.js
+SHA-256-Digest: Wb1fz98pWfFhcco6nNHy9AszD37c2AbxapUd6ZIwXY8=
+
+Name: resources/config.js
+SHA-256-Digest: UMCBXpBSPuuWK28eDf6v5hlaLrb0n0F99cjfsHTSefQ=
+
+Name: resources/skins/moono/images/hidpi/lock.png
+SHA-256-Digest: Pqmi9ShNCrjn9HXSGXLtC9BzVypwoUs5RtdEwR7dm7U=
+
+Name: resources/lang/ru.js
+SHA-256-Digest: PqfOlqIuGS52u9YvASABr4TZabwO+bDtdB6NR8CdUqk=
+
+Name: resources/lang/eo.js
+SHA-256-Digest: 68e6o5yqst7gPVh2y/Tc4R2Wq1WmTp6JLB4A6pohonM=
+
+Name: resources/lang/es.js
+SHA-256-Digest: WnUrkFcsJgUfn5Lmzsiy0rEQn5Js6Py+uumFM1y3MgM=
+
+Name: resources/skins/moono/icons.png
+SHA-256-Digest: gcYWclL5M5rK8Xzz2NaTSqxvCL+fInQUs8nXg31DRx4=
+
+Name: resources/lang/cs.js
+SHA-256-Digest: ZoDGjXzYYJv0wfNoew/hCY4Mx7VeEEgKLpGLaW5gDFw=
+
+Name: resources/lang/ms.js
+SHA-256-Digest: y4q0JOgLOes77xE1zIS18ARgJ55b8vnQC8eh0WYt6s8=
+
+Name: resources/lang/ca.js
+SHA-256-Digest: B4yszYZkODL25Pmdf7qLgODjFY0VNg4XfMPJn+5SgW4=
+
+Name: resources/lang/fr.js
+SHA-256-Digest: xHl8AjczoqGXfN0yJ/AjGBu4BW8Fl747Iquxl/TBxNE=
+
+Name: resources/lang/nl.js
+SHA-256-Digest: 6Kz/mngJS5GVo1299pyDyW5vGlf0LvBN4lD0e+ElwuQ=
+
+Name: plugin.properties
+SHA-256-Digest: K8jdNk5YrN2xNC1vSbfrAwO10Sv50B5oxGdFlkZ+QTM=
+
+Name: resources/lang/hu.js
+SHA-256-Digest: ODC7W5O1wDNRqbdV1p0KY9yY7IXTvIgVRa/HPcIlx5c=
+
+Name: resources/lang/fr-ca.js
+SHA-256-Digest: JKuEspj25F1yibiGUHtymoUFFaRpIWttMQ40iCvRSNc=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.nebula.widgets.ri
+ chtext/pom.properties
+SHA-256-Digest: i60slJxRTzNq04/tz/LN5mavzL16To7G2JHZFjYHnT0=
+
+Name: resources/lang/hi.js
+SHA-256-Digest: OtAY/b593+sdxduDHHdqEUrG0sPVHeNUKEpWrGGHfN8=
+
+Name: resources/lang/en-au.js
+SHA-256-Digest: aADqoEaU0EENdVOSQUICuku1WWM1RJlnvFCDaC0qrS8=
+
+Name: resources/lang/he.js
+SHA-256-Digest: FKlnLHqEZd/v/8oEOmvUQT7JhoJoyC2o2wFC57x8yGo=
+
+Name: resources/lang/it.js
+SHA-256-Digest: Uk17KNEJbiffi6+zUu/s9gyFczbcUNYXFyjEgPhP8ho=
+
+Name: resources/lang/ku.js
+SHA-256-Digest: BosM+lLHke3HOhDfAYqf/7OdanGo7NhRvJ+xI+/oNn8=
+
+Name: resources/lang/sr.js
+SHA-256-Digest: AGH4flMMpFwoWA1YFWxhxnF5DH15rBU4Bp8acZKbd+8=
+
+Name: resources/lang/en.js
+SHA-256-Digest: w4ikFQTbsH8cLiYj/RZvDonQTE5icA6lII6HQCY9n5c=
+
+Name: resources/skins/moono/images/lock-open.png
+SHA-256-Digest: v8RK+0HB85+aKnehqrDbjkVW0uYN1ouX4kk32ohRhTE=
+
+Name: resources/RichTextEditor.js
+SHA-256-Digest: iszM1j1EicsKqdgQEeeNOytA43knPX61ps7vVXiGN3g=
+
+Name: org/eclipse/nebula/widgets/richtext/RichTextEditor$1.class
+SHA-256-Digest: f7JlI59kVm2sU5+3+jTwA5I/oCqKFuPq6bZrVHhdmVg=
+
+Name: resources/lang/mk.js
+SHA-256-Digest: YMD/topWKjCi/dEEnUjfveR4XJfaLt8qSFZN7eAOsz4=
+
+Name: resources/lang/km.js
+SHA-256-Digest: eDXnff8kMIQNBHwAd1rd/Oo2z7Nskyci1jIU7pOcdw8=
+
+Name: resources/lang/tr.js
+SHA-256-Digest: 6+ybPoASEKeh8rhGmWTwsQpfmDm41K9B/zENndD8AyU=
+
+Name: resources/lang/mn.js
+SHA-256-Digest: Obo0pH45NHsg+bk9vnXNByQYKNMDw/EzB5/xqpvwXe4=
+
+Name: resources/lang/zh-cn.js
+SHA-256-Digest: wHvaX5G+vJf/w7xtGx2gLycgQaDffriZkWFYOvXI/DA=
+
+Name: resources/lang/pl.js
+SHA-256-Digest: Row1mznt+zChZ0VnCcowzPloMCMseoFgneitAwkKCj4=
+
+Name: resources/lang/ja.js
+SHA-256-Digest: +Opld0nt1iWF2QjxMBqJWUC5NEHVLzwwCCRR9hO+oZ0=
+
+Name: resources/lang/si.js
+SHA-256-Digest: 3FzKCQwglhOh+7mHoPgFpgXyJaiE4XfyF9jenE+W/PE=
+
+Name: resources/lang/lv.js
+SHA-256-Digest: aUE70nAnCyLBjsSRZUzO1+d5VKS3lyxupJtP8DTLxDA=
+
+Name: resources/skins/moono/images/refresh.png
+SHA-256-Digest: 0Z/xWfOnfZYGjMn+k9OCKr+YoM56RPH7LUuqSWHr6oM=
+
+Name: resources/lang/fo.js
+SHA-256-Digest: AZpZdx0EOPAZkAxx98mIDlqiiKnaWUmYmzxEyEKukq4=
+
+Name: org/eclipse/nebula/widgets/richtext/RichTextEditorConfiguration.
+ class
+SHA-256-Digest: WcqyC0vGTMYuK2JemNluNwRWKVYJUYTFr447mLVa81g=
+
+Name: resources/lang/fa.js
+SHA-256-Digest: 7v5n07MLBWAKJWWylswalnJfRNumHkUhZdB4l7qPlqc=
+
+Name: resources/skins/moono/images/close.png
+SHA-256-Digest: /HATrZyjVubRbGhmPsWHm867IRoxRBkn8emqC2mLVl0=
+
+Name: resources/lang/is.js
+SHA-256-Digest: K6mXCGV3vFve2Pi4nHpbFMAxHP1ktHxh2tIOSqLFwI0=
+
+Name: resources/lang/gl.js
+SHA-256-Digest: BlFjhJK+sd+xBfRT+E1ayjXfJbEzjvTeH+0fsyEizDA=
+
+Name: resources/styles.js
+SHA-256-Digest: HKGxNTLIMH9ubxkhi1MqEUEtMELKP4Lwrx8EQaYlezk=
+
+Name: resources/skins/moono/images/lock.png
+SHA-256-Digest: 6XFv2S10Ukp594MQlXRrosLR7DsQ1DWto6FNXRt8X+c=
+
+Name: resources/lang/bn.js
+SHA-256-Digest: YpH0svoHx2K4Msfyu5j5MlZVQR/eiUHJ8Znv7lmEZMA=
+
+Name: resources/lang/pt.js
+SHA-256-Digest: UK5w37Kl5vOJGrkGIBzl1+uGfr8cgX60WH+ccY8cA+I=
+
+Name: resources/lang/sk.js
+SHA-256-Digest: jqcKG4+2JXXrIpndIklS9YMSlwI1Ex84ogB5Sl0BQhc=
+
+Name: org/eclipse/nebula/widgets/richtext/RichTextEditor.class
+SHA-256-Digest: KKTy2paOvwpqoQn2ge6/Y9s96q0V2XgzR4oh0MT6t7g=
+
+Name: resources/lang/ar.js
+SHA-256-Digest: dlUPVux1ndLMV0yJErlsikd6HlvPgFXtoujqbqgrDvc=
+
+Name: resources/skins/moono/images/arrow.png
+SHA-256-Digest: sid7uyb/+ELr9ofU4NsAEcl84q1RUOIOvWPNFaLJVQs=
+
+Name: resources/skins/moono/icons_hidpi.png
+SHA-256-Digest: zetpT1KPHc4O8IC3Rz3+koPYtiX3MR23uupOuec2ggc=
+
+Name: resources/lang/cy.js
+SHA-256-Digest: tluKItR6SXzmHdDJvnxNJvBGdaqYB6MDI6e5gX+PgKY=
+
+Name: resources/skins/moono/images/hidpi/refresh.png
+SHA-256-Digest: xPiIByeygS1oOnFN7E3CFg474UkE0RnKRkpmJcvTaho=
+
+Name: resources/lang/zh.js
+SHA-256-Digest: mz9fB4ljPzPge8VqMRwkHRI0KvKhgOkPJnpzizjJ5UA=
+
+Name: resources/RichTextEditorHandler.js
+SHA-256-Digest: d3+8n2+gRRSoYBc4vQmuC/c3qjHWPjXT399SiWcNh1Q=
+
+Name: resources/lang/ug.js
+SHA-256-Digest: FDmxmmT2iiMTRoT5shpxQv6Fv3UJOvoi+oeE442yyTM=
+
+Name: resources/lang/de.js
+SHA-256-Digest: v+jwKSS90IT/d4OhrPnBJ5nPgpuyXlJED9VWrYxRCbY=
+
+Name: resources/lang/id.js
+SHA-256-Digest: Sk4bw7q/BGbVuoq33EW1seECWTjvohd6gnddM991TXA=
+
+Name: resources/lang/uk.js
+SHA-256-Digest: aEzrVhoGypyUU5ZOBB+7KReoisNVzexIFxGsOJiuRjk=
+
+Name: resources/skins/moono/editor_ie.css
+SHA-256-Digest: cDVkBAIyipfJtwmvOH0OBT6Vnp6a4s2DXZ2FAz/lOF8=
+
+Name: resources/lang/sv.js
+SHA-256-Digest: hgdcM7AiWsJcRvA5VVLVRkgjmMuFh8wU1PR8lNeE68g=
+
+Name: org/eclipse/nebula/widgets/richtext/toolbar/ToolbarConfiguration
+ .class
+SHA-256-Digest: VDngKIHCtZKsLDBBq4L7vby0uHVcoaedpC5MOQBFHWg=
+
+Name: resources/lang/sr-latn.js
+SHA-256-Digest: eljawP2+YtC7f7Jn6PuZAsfj66MksQjqlDqB0V2rgeM=
+
+Name: resources/lang/en-gb.js
+SHA-256-Digest: qqbB6k6p/l2I413FB81Oi3yTY0i5uIWbEE06ij3mb+I=
+
+Name: resources/lang/nb.js
+SHA-256-Digest: nCTRNJWoBPmn/xD/nbF83N94oPD8GirEn15pDJ6eQAg=
+
+Name: resources/contents.css
+SHA-256-Digest: vjdlmYF3pDZdpMOrvDM2Pn9zvimB1oXMO6UxhNeA22o=
+
+Name: resources/lang/af.js
+SHA-256-Digest: LDnW0Oa6qMU4IZXGSrSlN5o+oB01wSFKtYJuwZwQr4g=
+
+Name: resources/skins/moono/editor.css
+SHA-256-Digest: Xlfw+3ZWXR8o33V0gyys4giS/mrUn2b7oWtMUYOjQWs=
+
+Name: resources/lang/th.js
+SHA-256-Digest: TrVMgTMtzlnCpOhgI4xKoXS2w3VNwQuei/pbo/9RhZg=
+
+Name: about.html
+SHA-256-Digest: 1fuYr0bu6NsJZCAmSom5QtnvnV0Cg8DwLn77Dd1Ql24=
+
+Name: resources/lang/el.js
+SHA-256-Digest: Rs+rQvDpgSqjdzlvxd0rYxvGyUq5fdepWfxULz9SC6E=
+
+Name: resources/lang/sl.js
+SHA-256-Digest: dtURjYPLKrpxwtM5U88XK0VfZYWZ9sszyuLNwcKJuyo=
+
+Name: resources/lang/vi.js
+SHA-256-Digest: LaR8fm5wikV7246R15o/dWnz5aJuylY2Yn+GdbRkvK4=
+
+Name: resources/lang/da.js
+SHA-256-Digest: ++/3h2Wm4g5pRJuIddF4yAV6tquGngTsb4RqHcdI2vY=
+
+Name: resources/lang/ko.js
+SHA-256-Digest: swpcyeRyvhRpm1+l/AbYxSyJKsdOjVcEgmZgNabf8PY=
+
+Name: resources/lang/gu.js
+SHA-256-Digest: vCzqrpYdvoPWL4ywWvUmeqQ66iCbMmIQv50E2EvU/Xs=
+
+Name: resources/lang/et.js
+SHA-256-Digest: CDUKaOyJsZqNYDgMx7zdLmmClUQhQ+vbwuBhGtKHeqI=
+
+Name: resources/ckeditor.js
+SHA-256-Digest: yTywFtgrc6c08bru0F0hMQDo/UTB30BVP+szisiYa60=
+
+Name: resources/lang/eu.js
+SHA-256-Digest: DNH9simFHJqnUaw6vf00+OwbLErFwYHzukJRuSE0NMU=
+
+Name: resources/lang/en-ca.js
+SHA-256-Digest: ab/WS10Fb0ryyT/7o5qtz9tLRkSma+1oJgdjSoY+tCQ=
+
+Name: resources/skins/moono/images/hidpi/lock-open.png
+SHA-256-Digest: hEOJSsNrQq/WkmicZQGLjLUgxIdT6w7ylkiqrdLgb94=
+
+Name: resources/lang/tt.js
+SHA-256-Digest: hfqUYcWmpejkmxBblOvE+l51cXdVvjs/AfLRjRfFDWU=
+
+Name: resources/lang/bg.js
+SHA-256-Digest: f0FWRd5fVhcyIj8r29eN+HcwgyvoxQr8mv3T0Bn+MAw=
+
+Name: resources/lang/fi.js
+SHA-256-Digest: r4LMU3iepyeV+lhnG6MFNcP1T97rybH6j2iILc9HrKQ=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.nebula.widgets.ri
+ chtext/pom.xml
+SHA-256-Digest: 8Txo18SiTYmLQpZbBty29pe6PUfbGWSWPn5SnWsSl8Q=
+
+Name: resources/lang/ro.js
+SHA-256-Digest: AZf6cYnjNZZeL7ueph9pNSrjE65RSF2PqRbjblmonts=
+
+Name: resources/lang/lt.js
+SHA-256-Digest: sicfwarUorOrOXOs75oH69/9/rCBt092gsdZP7CsVXE=
+
+Name: resources/lang/bs.js
+SHA-256-Digest: mBNyE6VPE1Q1wFv4+fR/SjG8VBLuwyWKi9Km+Kwu58A=
+
+Name: resources/skins/moono/images/hidpi/close.png
+SHA-256-Digest: DmACEqsspI96PdbZPiGHp7YKr71bOo6MwrIsCi4qtpQ=
+
+Name: resources/skins/moono/dialog_ie.css
+SHA-256-Digest: AAaZjnw8GhxOKoE3wC9oa0l4D80nRjB75nM5hfQbYPc=
+
+Name: resources/lang/pt-br.js
+SHA-256-Digest: afsHtZyPeO3ZJGhmDbn02fvmN10v7fTcjjAPY7Kgy0Q=
+
+Name: resources/skins/moono/dialog.css
+SHA-256-Digest: 178o5yZx5tK8lLJeMQWLpdlujws3WeW4IvKgcPIHX88=
+
+Name: resources/skins/moono/editor_gecko.css
+SHA-256-Digest: 1obNdhkYSlAGI6W2Fd9hxQcCvROCwfhn9WRn9Ipy0ps=
+
+Name: resources/lang/hr.js
+SHA-256-Digest: 7JLWcXanuwyHm4OF9vE43OMhg0euo4fvFFBIzzkt/jA=
+

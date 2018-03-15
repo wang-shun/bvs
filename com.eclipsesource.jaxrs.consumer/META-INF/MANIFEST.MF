@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Export-Package: com.eclipsesource.jaxrs.consumer;version="5.3.1"
+Built-By: holger
+Bundle-Name: JAX-RS Consumer
+Created-By: Apache Maven 3.3.3
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: EclipseSource
+Build-Jdk: 1.7.0_79
+Bundle-Version: 5.3.1.201602281253
+Bundle-ManifestVersion: 2
+Bundle-Activator: com.eclipsesource.jaxrs.consumer.internal.Activator
+Import-Package: javax.net.ssl,
+ javax.ws.rs;version="[2.0.0,2.1.0)",
+ javax.ws.rs.client;version="[2.0.0,2.1.0)",
+ javax.ws.rs.core;version="[2.0.0,2.1.0)",
+ javax.ws.rs.ext;version="[2.0.0,2.1.0)",
+ org.glassfish.hk2.utilities.reflection;version="2.4.0",
+ org.glassfish.jersey.client;version="[2.3.0,3.0.0)",
+ org.glassfish.jersey.media.multipart;version="[2.3.0,3.0.0)",
+ org.glassfish.jersey.message.internal;version="[2.3.0,3.0.0)",
+ org.osgi.framework;version="[1.3.0,2.0.0)"
+Bundle-SymbolicName: com.eclipsesource.jaxrs.consumer
+Archiver-Version: Plexus Archiver
+

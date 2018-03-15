@@ -1,0 +1,182 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.rap.nebula.widgets.grid
+Archiver-Version: Plexus Archiver
+Built-By: genie.rap
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[3.4.0,4.0.0)"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/rap/or
+ g.eclipse.rap.git;path="bundles/org.eclipse.rap.nebula.widgets.grid";
+ commitId=c84c96fc1c7def522bc1b018cb04b4d10b282cc6
+Bundle-Vendor: %Bundle-Vendor
+Import-Package: javax.servlet;version="[2.3.0,4.0.0)",javax.servlet.ht
+ tp;version="[2.3.0,4.0.0)"
+Export-Package: org.eclipse.nebula.widgets.grid,org.eclipse.nebula.wid
+ gets.grid.internal;x-friends:="org.eclipse.rap.nebula.widgets.grid.te
+ st",org.eclipse.nebula.widgets.grid.internal.gridcolumngroupkit;x-fri
+ ends:="org.eclipse.rap.nebula.widgets.grid.test",org.eclipse.nebula.w
+ idgets.grid.internal.gridcolumnkit;x-friends:="org.eclipse.rap.nebula
+ .widgets.grid.test",org.eclipse.nebula.widgets.grid.internal.griditem
+ kit;x-friends:="org.eclipse.rap.nebula.widgets.grid.test",org.eclipse
+ .nebula.widgets.grid.internal.gridkit;x-friends:="org.eclipse.rap.neb
+ ula.widgets.grid.test"
+Bundle-Name: %Bundle-Name
+Bundle-Version: 3.4.0.20171020-1239
+Bundle-Localization: plugin
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_131
+
+Name: org/eclipse/nebula/widgets/grid/internal/griditemkit/GridItemLCA
+ $1.class
+SHA-256-Digest: vdw/lZB2ukdf14H0cPbw88RqpLpb5CY4ghDDZISSWiY=
+
+Name: org/eclipse/nebula/widgets/grid/internal/IGridAdapter.class
+SHA-256-Digest: ULvnUoaN4HNZWfc8hKleAibLiaNJO0BXYFXCJb5sDWw=
+
+Name: org/eclipse/nebula/widgets/grid/internal/NullScrollBarProxy.clas
+ s
+SHA-256-Digest: VilahCy39bu6UIVe1dTxSnVbUqGUswohhqaVH5JnbAE=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$2.class
+SHA-256-Digest: uYBsmjceT4ErJ14rMCpzC+je+G/wM8nhx1PHzCI80J0=
+
+Name: org/eclipse/nebula/widgets/grid/GridItem$GridItemAdapter.class
+SHA-256-Digest: mex6+UJoIRQ1Ttbl+IJ5C/KWAjMXLinuIO7MLgMkBH4=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridkit/GridThemeAdapte
+ r.class
+SHA-256-Digest: NK7HQzdPjaB5Dpdd5Rwa/PbyxH1bdoB4/+/FtetpkNM=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.nebula.widgets.gr
+ id/pom.xml
+SHA-256-Digest: jr1l7tU8SoDIjvVgX0WdJWSbHXZA192HunB5zvA0i2A=
+
+Name: org/eclipse/nebula/widgets/grid/internal/IGridItemAdapter.class
+SHA-256-Digest: b+6tKN2Sp75I0WWbIN9LrbOGTAomHjVjzBizH7LzJRc=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$RowRange.class
+SHA-256-Digest: D9cCqmTTQKL0DuLcqvIJHO2rdaQ3X9M0qtN2E7iO5lc=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumnkit/GridColum
+ nLCA.class
+SHA-256-Digest: 3T382l3cmcEl9ZcandzjTllq+RT0TxSoQG4ULUIOj4M=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridkit/GridOperationHa
+ ndler.class
+SHA-256-Digest: YYrGwfUJeAxq/RybRQzjhj2He9OrABQpjMHZsS34RV8=
+
+Name: org/eclipse/nebula/widgets/grid/internal/GridItemData.class
+SHA-256-Digest: 84RTraY1JzIv4Qah4jXkZS5HJ5V9wFVtsHP55JZB18k=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$2.class
+SHA-256-Digest: RHiJgC3QoPw2Dk+k+Mmbm3mgw4/Nu/92AkaQADdp8iI=
+
+Name: org/eclipse/nebula/widgets/grid/GridColumnGroup.class
+SHA-256-Digest: cGiPIxRIDTXEi7B3KBJ2IpDGlK9ozeyolGdvzhdv/5A=
+
+Name: org/eclipse/nebula/widgets/grid/internal/griditemkit/GridItemOpe
+ rationHandler.class
+SHA-256-Digest: Zou4/pCJwig62Ncp0T9Azo7sKjvMpWT27fHT8UuXNDk=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$CellToolTipProvider.class
+SHA-256-Digest: s63Aq++c7hOB03tDHlV5GZtGzEinhRhMkrKF89/2ucc=
+
+Name: org/eclipse/nebula/widgets/grid/GridColumn.class
+SHA-256-Digest: 2kJz24ROoKU3JqNR8gNO6YJBNidtpawPUumhuTjdYsQ=
+
+Name: org/eclipse/nebula/widgets/grid/internal/ScrollBarProxyAdapter.c
+ lass
+SHA-256-Digest: foOaho0beJJLEbrGpOeSdB+Lqxxwl3WfmcC6c/xunF4=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$5.class
+SHA-256-Digest: BYC+ilpthLQQVAKL8UnMCBcOnCQS3Gjg2wvyZdT1KPI=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$GridAdapter.class
+SHA-256-Digest: ZNxXYXZg0reX9knQhYcnwqM5eyDaVYcm3YPPYnJxTjk=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$3.class
+SHA-256-Digest: NZtY8PSdVn5UO+MIKCrV1FAKqyUKtu9dRVfpv6kcyjs=
+
+Name: plugin.properties
+SHA-256-Digest: BRhqYqpvYeDR6ZhTK3VXbB/HhNT8XCxCDXrlYPlffGw=
+
+Name: org/eclipse/nebula/widgets/grid/GridItem.class
+SHA-256-Digest: XTLi06WWFfjUY+hipcvCsgbPmudaNoy0Aqg3pqZz05Y=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridkit/GridLCA.class
+SHA-256-Digest: VbRL83i3SCOg4XWiRPQ9yi1r+4BrlCiT5SCfJhrRsQQ=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumngroupkit/Grid
+ ColumnGroupLCA.class
+SHA-256-Digest: j1vZC5entvYeWKsPKr6nZAzmofS97f6aXZTEb4sUmHg=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridkit/GridLCA$ItemMet
+ rics.class
+SHA-256-Digest: bQpHk2UJld605CDppg5ysbKVH+Sm9Yag7No23pRzPLA=
+
+Name: about.html
+SHA-256-Digest: 1fuYr0bu6NsJZCAmSom5QtnvnV0Cg8DwLn77Dd1Ql24=
+
+Name: org/eclipse/nebula/widgets/grid/internal/IScrollBarProxy.class
+SHA-256-Digest: SUMVOpwPiW0NUeDMDk8qTYiypjMv3guydlOepXPrjtA=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumngroupkit/Grid
+ ColumnGroupOperationHandler$1.class
+SHA-256-Digest: CAZI8Ud55qNbxA4mSA9Ee17IyE8EvCI+BCyxxPire3g=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor.class
+SHA-256-Digest: 56ixpwdJWzMF2Wq5gySYZxcyT8pArA6klzUua87t2Ws=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$1.class
+SHA-256-Digest: 6x3IQ2qqha8e5cDYeELxk4bLx/oT2Ril+FDbGhUgtjI=
+
+Name: org/eclipse/nebula/widgets/grid/internal/griditemkit/GridItemOpe
+ rationHandler$1.class
+SHA-256-Digest: fd2Q3w8+AHqOIRqplapgKMYT6f1l4X593e5ho4OF3RQ=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumngroupkit/Grid
+ ColumnGroupOperationHandler.class
+SHA-256-Digest: zA1rEn72VIfy9qp+TwSXmahGCpfKtyrG5FbA4xW7Dfs=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumnkit/GridColum
+ nOperationHandler$1.class
+SHA-256-Digest: SqPoQH3LqWEvo18YJ3VfxP0KUa/BU3knb878pt8teVY=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.nebula.widgets.gr
+ id/pom.properties
+SHA-256-Digest: 7IsJgc7Y3iDjdCuixheEH5pNlj4eAg6ZxU6WYQbrjis=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$6.class
+SHA-256-Digest: F8mKoEyEHVkYJo1X89jtPKfcItJvn/P19PhkYsMd+do=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$LayoutCache.class
+SHA-256-Digest: oUGiYB8EjveAFVOhuPuBStv1X8euJzXH/3wCwQuS/Fo=
+
+Name: org/eclipse/nebula/widgets/grid/Grid$1.class
+SHA-256-Digest: qB/C230exLuccTdyuQz+NR0KuGAGF6FyP43kXMhJ9I0=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumnkit/GridColum
+ nOperationHandler$2.class
+SHA-256-Digest: 6n2A1BJZ6wDMGy6v0bHl2gynPKxxusUCEhj6U/kRJn0=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$1$1.class
+SHA-256-Digest: 2nNV0loVJ80DYYONi8S2+wQyaSds3HtOnh6PbFbT+WQ=
+
+Name: org/eclipse/nebula/widgets/grid/internal/gridcolumnkit/GridColum
+ nOperationHandler.class
+SHA-256-Digest: sy5RDbFhld2qellURtVfpd97+yRA6uZ5/5M2eA2kSN0=
+
+Name: org/eclipse/nebula/widgets/grid/internal/GridItemData$CellData.c
+ lass
+SHA-256-Digest: YPJn+Iw9+6Cdj6eDmdlEZtYq/64QsLP6d+y5JFi6yPQ=
+
+Name: org/eclipse/nebula/widgets/grid/Grid.class
+SHA-256-Digest: XQ+rmXgsooLDQ3vengct6A8+D/U2StJp2svWubEpKAs=
+
+Name: org/eclipse/nebula/widgets/grid/internal/griditemkit/GridItemLCA
+ .class
+SHA-256-Digest: o6v+OmvUhFE+7fYQBFjELFUiSwfE6BiJFO/6fDJwstU=
+
+Name: org/eclipse/nebula/widgets/grid/GridEditor$4.class
+SHA-256-Digest: pqB0jfafuPz4Up8zS/dnXKcpGlFHcCauaZzw0wzrFi4=
+

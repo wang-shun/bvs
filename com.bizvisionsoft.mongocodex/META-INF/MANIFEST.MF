@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Gongo
+Bundle-SymbolicName: com.bizvisionsoft.mongocodex
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: BIZVISION
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.osgi,
+ org.mongodb.mongo-java-driver;bundle-version="3.6.0"
+Bundle-Activator: com.bizvisionsoft.mongocodex.Activator
+Import-Package: org.osgi.framework;version="[1.5.0,2.0.0)"
+Export-Package: com.bizvisionsoft.mongocodex,
+ com.bizvisionsoft.mongocodex.annotations,
+ com.bizvisionsoft.mongocodex.codec

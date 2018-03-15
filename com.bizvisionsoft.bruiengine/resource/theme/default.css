@@ -1,0 +1,1396 @@
+/*******************************************************************************
+ * Copyright (c) 2012, 2017 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+
+/* Default theme for all widgets */
+
+* {
+  color: #4a4a4a;
+  background-color: #fff;
+  background-image: none;
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+*:disabled {
+  color: #CFCFCF;
+}
+
+Widget-Badge {
+  background-color: #dd0000;
+  border: none;
+  border-radius: 10px;
+  font: 10px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #ffffff;
+}
+
+Widget-ToolTip {
+  padding: 10px;
+  background-color: rgb(32, 31, 27);
+  background-image: none;
+  border: none;
+  border-radius: 1px;
+  font: 12px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #e0e0e0;
+  opacity: 0.9;
+  animation: fadeIn 150ms ease-in, fadeOut 150ms ease-in;
+  box-shadow: none;
+  text-align: center;
+}
+
+Widget-ToolTip-Pointer {
+  background-image: none;
+}
+
+Widget-ToolTip-Pointer:up {
+  background-image : url(resource/widget/rap/arrows/tooltip-up.png);
+}
+
+Widget-ToolTip-Pointer:down {
+  background-image : url(resource/widget/rap/arrows/tooltip-down.png);
+}
+
+Widget-ToolTip-Pointer:left {
+  background-image : url(resource/widget/rap/arrows/tooltip-left.png);
+}
+
+Widget-ToolTip-Pointer:right {
+  background-image : url(resource/widget/rap/arrows/tooltip-right.png);
+}
+
+Display {
+  rwt-shadow-color: #a7a6aa;
+  rwt-highlight-color: #ffffff;
+  rwt-darkshadow-color: #85878c;
+  rwt-lightshadow-color: #dcdfe4;
+  rwt-thinborder-color: #aca899;
+  rwt-selectionmarker-color: #fec83c;
+  rwt-infobackground-color: #ffffff;
+
+  rwt-error-image: url(resource/widget/rap/dialog/error.png);
+  rwt-information-image: url(resource/widget/rap/dialog/information.png);
+  rwt-question-image: url(resource/widget/rap/dialog/question.png);
+  rwt-warning-image: url(resource/widget/rap/dialog/warning.png);
+  rwt-working-image: url(resource/widget/rap/dialog/information.png);
+
+  rwt-fontlist: 14px 'Microsoft YaHei' ,'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
+
+  background-image: none;
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+SystemMessage-DisplayOverlay {
+  background-color: rgba( 128, 128, 128, 0.6);
+  background-image: url(resource/widget/rap/display/oval.svg);
+}
+
+ErrorBox-Titlebar {
+  font: bold 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: white;
+  background-color: #406796;
+}
+
+ErrorBox {
+  border: 1px solid #3B5998;
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #4a4a4a;
+  background-color: white;
+}
+
+/* Default theme for all controls */
+
+* {
+  border: none;
+  padding: 0px;
+}
+
+*[BORDER] {
+  border: 1px solid #a4a4a4;
+}
+
+/* Default theme for all composites */
+
+Composite {
+  padding: 0;
+  opacity: 1;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  box-shadow: none;
+  animation: none;
+}
+
+Composite.titlebar {
+  padding: 0;
+  opacity: 1;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  box-shadow: none;
+  animation: none;
+}
+
+Composite.left {
+  padding: 0;
+  opacity: 1;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-top: 12px solid transparent;
+  border-left: 16px solid rgb(69, 90, 100);
+  border-bottom: 12px solid transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+Composite.content {
+  padding: 0;
+  opacity: 1;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  box-shadow: 1px 1px 3px 0px #9e9e9e;
+  animation: none;
+}
+
+Composite[BORDER] {
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+}
+
+/* Button default theme */
+
+Button {
+  font: 14px 'Microsoft YaHei' ,Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 24px;
+  spacing: 2px;
+  cursor: default;
+  animation: none;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  opacity: 1;
+  text-shadow: none;
+  box-shadow: none;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+Button[PUSH],
+Button[TOGGLE],
+Button[PUSH][BORDER],
+Button[TOGGLE][BORDER],
+Button[PUSH][FLAT],
+Button[TOGGLE][FLAT],
+Button[ARROW],
+Button[ARROW][BORDER],
+Button[ARROW][FLAT],
+Button[ARROW]:default,
+Button[PUSH]:default,
+Button[TOGGLE]:default {
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+  padding: 8px 24px;
+  background-color: #ffffff;
+  background-image: none;
+  animation: none;
+  cursor: pointer;
+  text-shadow: none;
+}
+
+Button[ARROW]:disabled,
+Button[PUSH]:disabled,
+Button[TOGGLE]:disabled,
+Button[TOGGLE]:selected:disabled {
+  cursor: default;
+  color: #d2d2d2;
+  background-image: none;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[ARROW]:hover,
+Button[PUSH]:hover,
+Button[TOGGLE]:hover {
+  background-image: none;
+  border: 1px solid #03a9f4;
+}
+
+Button[ARROW]:pressed,
+Button[PUSH]:pressed,
+Button[TOGGLE]:pressed {
+  color: #999999;
+}
+
+Button[TOGGLE]:selected {
+  background-color: #999999;
+  background-image: none;
+  color: #ffffff;
+}
+
+Button[TOGGLE]:selected:hover {
+  background-image: none;
+}
+
+Button[CHECK],
+Button[RADIO] {
+  padding: 8px 24px 8px 0;
+  spacing: 8px;
+}
+
+Button[CHECK].switch {
+  padding: 4px 0px 4px 0;
+  spacing: 8px;
+}
+
+Button[CHECK][BORDER],
+Button[RADIO][BORDER] {
+  cursor: default;
+  background-image: none;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+Button-CheckIcon {
+  background-image: url(resource/widget/rap/button/check-unselected.png);
+}
+
+Button-CheckIcon:hover {
+  background-image: url(resource/widget/rap/button/check-unselected-hover.png);
+}
+
+Button-CheckIcon:selected {
+  background-image: url(resource/widget/rap/button/check-selected.png);
+}
+
+Button-CheckIcon:selected:hover {
+  background-image: url(resource/widget/rap/button/check-selected-hover.png);
+}
+
+Button-CheckIcon:selected:grayed {
+  background-image: url(resource/widget/rap/button/check-grayed.png);
+}
+
+Button-CheckIcon:selected:grayed:hover {
+  background-image: url(resource/widget/rap/button/check-grayed-hover.png);
+}
+
+Button-CheckIcon.switch {
+  background-image: url(resource/widget/rap/button/switch-unselected.png);
+}
+
+Button-CheckIcon.switch:hover {
+  background-image: url(resource/widget/rap/button/switch-unselected-hover.png);
+}
+
+Button-CheckIcon.switch:selected {
+  background-image: url(resource/widget/rap/button/switch-selected.png);
+}
+
+Button-CheckIcon.switch:selected:hover {
+  background-image: url(resource/widget/rap/button/switch-selected-hover.png);
+}
+
+Button-CheckIcon.switch:selected:grayed {
+  background-image: url(resource/widget/rap/button/switch-grayed.png);
+}
+
+Button-CheckIcon.switch:selected:grayed:hover {
+  background-image: url(resource/widget/rap/button/switch-grayed-hover.png);
+}
+
+Button-RadioIcon {
+  background-image: url(resource/widget/rap/button/radio-unselected.png);
+}
+
+Button-RadioIcon:hover {
+  background-image: url(resource/widget/rap/button/radio-unselected-hover.png);
+}
+
+Button-RadioIcon:selected {
+  background-image: url(resource/widget/rap/button/radio-selected.png);
+}
+
+Button-RadioIcon:selected:hover {
+  background-image: url(resource/widget/rap/button/radio-selected-hover.png);
+}
+
+Button-ArrowIcon[UP] {
+  background-image: url(resource/widget/rap/button/arrow-up.png);
+}
+
+Button-ArrowIcon[DOWN] {
+  background-image: url(resource/widget/rap/button/arrow-down.png);
+}
+
+Button-ArrowIcon[LEFT] {
+  background-image: url(resource/widget/rap/button/arrow-left.png);
+}
+
+Button-ArrowIcon[RIGHT] {
+  background-image: url(resource/widget/rap/button/arrow-right.png);
+}
+
+Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
+  background-color: transparent;
+  border: none;
+}
+
+Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
+  background-color: transparent;
+  border: none;
+}
+
+Button[PUSH].inline,
+Button[PUSH].inline:default {
+  color: #4d4d4d;
+  border: none;
+  border-left: 1px solid #e6e6e6;
+  background-color: #fbfbfb;
+}
+
+Button[PUSH].inline:disabled {
+  background-color: #fafafa;
+  color: #d2d2d2;
+  border-left: 1px solid #e6e6e6;
+}
+
+Button[PUSH].inline:hover {
+  color: #000000;
+  border-left: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+}
+
+Button[PUSH].inline:pressed {
+  border-left: 1px solid #757575;
+  background-color: #757575;
+  color: #ffffff;
+}
+
+Button[PUSH].inbox,
+Button[PUSH].inbox:default {
+  color: #4d4d4d;
+  border: 1px solid #e6e6e6;
+  background-color: #fbfbfb;
+}
+
+Button[PUSH].inbox:disabled {
+  background-color: #fafafa;
+  color: #d2d2d2;
+  border: 1px solid #e6e6e6;
+}
+
+Button[PUSH].inbox:hover {
+  color: #000000;
+  border: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+}
+
+Button[PUSH].inbox:pressed {
+  border: 1px solid #757575;
+  background-color: #757575;
+  color: #ffffff;
+}
+
+
+Button[PUSH].item,
+Button[PUSH].item:default {
+  border: 1px solid #455a64;
+  background-color: #455a64;
+  color: #d9d9d9;
+}
+
+Button[PUSH].item:hover {
+  border: 1px solid #607d8b;
+  background-color: #607d8b;
+  color: #ffffff;
+}
+
+Button[PUSH].item:pressed {
+  border: 1px solid #263238;
+  background-color: #263238;
+  color: #ffffff;
+}
+
+Button[PUSH].normal,
+Button[PUSH].normal:default {
+  border: 1px solid #009688;
+  background-color: #009688;
+  color: #ffffff;
+}
+
+Button[PUSH].normal:disabled {
+  color: #d2d2d2;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH].normal:hover {
+  border: 1px solid #4db6ac;
+  background-color: #4db6ac;
+}
+
+Button[PUSH].normal:pressed {
+  border: 1px solid #004d40;
+  background-color: #004d40;
+  color: #ffffff;
+}
+
+Button[PUSH].info,
+Button[PUSH].info:default{
+  border: 1px solid #03a9f4;
+  background-color: #03a9f4;
+  color: #ffffff;
+}
+
+Button[PUSH].info:disabled{
+  color: #d2d2d2;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH].info:hover {
+  border: 1px solid #4fc3f7;
+  background-color: #4fc3f7;
+}
+
+Button[PUSH].info:pressed {
+  border: 1px solid #01579b;
+  background-color: #01579b;
+  color: #ffffff;
+}
+
+Button[PUSH].warning,
+Button[PUSH].warning:default {
+  border: 1px solid #ff9800;
+  background-color: #ff9800;
+  color: #ffffff;
+}
+
+Button[PUSH].warning:disabled{
+  color: #d2d2d2;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH].warning:hover {
+  border: 1px solid #ffb74d;
+  background-color: #ffb74d;
+}
+
+Button[PUSH].warning:pressed{
+  border: 1px solid #e65100;
+  background-color: #e65100;
+  color: #ffffff;
+}
+
+Button[PUSH].serious,
+Button[PUSH].serious:default {
+  border: 1px solid #e51c23;
+  background-color: #e51c23;
+  color: #ffffff;
+}
+
+Button[PUSH].serious:disabled{
+  color: #d2d2d2;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH].serious:hover {
+  border: 1px solid #f36c60;
+  background-color: #f36c60;
+}
+
+Button[PUSH].serious:pressed {
+  border: 1px solid #b0120a;
+  background-color: #b0120a;
+  color: #ffffff;
+}
+
+Button[TOGGLE].segmentleft{
+  border: none;
+  border-radius: 2px 0px 0px 2px;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+  border-right: none;
+}
+
+Button[TOGGLE].segmentleft:pressed,
+Button[TOGGLE].segmentleft:selected{
+  border: none;
+  border-radius: 2px 0px 0px 2px;
+  border-top: 1px solid #3f51b5;
+  border-bottom: 1px solid #3f51b5;
+  border-left: 1px solid #3f51b5;
+  border-right: none;
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+
+Button[TOGGLE].segment{
+  border: none;
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+Button[TOGGLE].segment:pressed,
+Button[TOGGLE].segment:selected{
+  border: none;
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid #3f51b5;
+  border-bottom: 1px solid #3f51b5;
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+Button[TOGGLE].segmentright{
+  border: none;
+  border-radius: 0px 2px 2px 0px;
+  border-left: none;
+  border-top: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+Button[TOGGLE].segmentright:pressed,
+Button[TOGGLE].segmentright:selected{
+  border: none;
+  border-radius: 0px 2px 2px 0px;
+  border-left: none;
+  border-top: 1px solid #3f51b5;
+  border-right: 1px solid #3f51b5;
+  border-bottom: 1px solid #3f51b5;
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+/* Combo default theme */
+
+Combo,
+Combo[BORDER] {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 0 2px 2px 0;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+Combo:focused,
+Combo[BORDER]:focused {
+  border: 1px solid #c9c9c9;
+  box-shadow: none;
+}
+
+Combo:disabled,
+Combo[BORDER]:disabled {
+  box-shadow: none;
+}
+
+Combo-Button {
+  cursor: default;
+  background-color: transparent;
+  border: none;
+  border-left: none;
+  border-radius: 0px 2px 2px 0px;
+  background-image: none;
+  width: 36px;
+}
+
+Combo-Button:disabled {
+  background-image: none;
+  background-color: transparent;
+}
+
+Combo-Button-Icon {
+  background-image: url(resource/widget/rap/combo/combo-down.png);
+}
+
+Combo-Button-Icon:hover {
+  background-image: url(resource/widget/rap/combo/combo-down-hover.png);
+}
+
+Combo-List {
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+}
+
+Combo-List-Item {
+  color: inherit;
+  background-color: transparent;
+  background-image: none;
+  text-decoration: none;
+  text-shadow: none;
+  padding: 8px 12px 8px 12px;
+}
+
+Combo-List-Item:hover, Combo-List-Item:even:hover  {
+  background-color: #d0d9ff;
+}
+
+Combo-List-Item:selected, Combo-List-Item:even:selected {
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+Combo-Field {
+  padding: 8px 12px 8px 12px;
+}
+
+Combo-FocusIndicator {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  opacity: 0;
+}
+
+/* DropDown default theme */
+
+DropDown {
+  border: 1px solid #4f7cb1;
+  border-radius: 0;
+  box-shadow: 0 0 5px #4f7cb1;
+}
+
+DropDown-Item {
+  color: inherit;
+  background-color: transparent;
+  background-image: none;
+  text-decoration: none;
+  text-shadow: none;
+  padding: 6px 10px 6px 10px;
+}
+
+DropDown-Item:hover {
+  background-color: #f0f0f0;
+}
+
+DropDown-Item:selected {
+  background-color: #c5dbef;
+}
+
+
+/* Label default theme */
+
+Label {
+  font: 14px 'Microsoft YaHei' ,"Segoe UI", Calibri, Tahoma, "Lucida Sans Unicode", sans-serif;
+  color: #000000;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: default;
+  opacity: 1;
+  text-shadow: none;
+  padding: 0;
+}
+
+Label[BORDER] {
+  border: 1px solid #03a9f4;
+}
+
+Label-SeparatorLine {
+  background-image: none;
+  background-color: #e6e6e6;
+  border: none;
+  border-radius: 0;
+  width: 1px;
+}
+
+Label-SeparatorLine.normal {
+  background-image: none;
+  background-color: #009688;
+  border: none;
+  border-radius: 0;
+  width: 2px;
+}
+
+Label-SeparatorLine.info {
+  background-image: none;
+  background-color: #03a9f4;
+  border: none;
+  border-radius: 0;
+  width: 2px;
+}
+
+Label-SeparatorLine.warning {
+  background-image: none;
+  background-color: #ff9800;
+  border: none;
+  border-radius: 0;
+  width: 2px;
+}
+
+Label-SeparatorLine.serious {
+  background-image: none;
+  background-color: #e51c23;
+  border: none;
+  border-radius: 0;
+  width: 2px;
+}
+
+Label.button {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.menu {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.caption {
+  font: 12px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.body1 {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.body2 {
+  font: bold 14px 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.subhead {
+  font: 16px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.title {
+  font: bold 20px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.headline {
+  font: 24px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.display1 {
+  font: 34px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.display2 {
+  font: 45px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.display3 {
+  font: 56px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.display4 {
+  font: 112px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+/* Link default theme */
+
+Link {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  text-shadow: none;
+  padding: 2px;
+}
+
+Link[BORDER] {
+  border: 1px solid #bdbdbd;
+}
+
+Link-Hyperlink {
+  color: #416693;
+  text-shadow: none;
+  text-decoration: none;
+}
+
+Link-Hyperlink:disabled {
+  color: #959595;
+}
+
+Link-Hyperlink:hover {
+  text-decoration: underline;
+}
+
+Link-Hyperlink:hover:disabled {
+  color: #959595;
+  text-decoration: none;
+}
+
+
+
+/* Shell default theme */
+
+Shell {
+  animation: none;
+  border: none;
+  border-radius: 2px;
+  background-color: #ffffff;
+  background-image: none;
+  padding: 0;
+  opacity: 1;
+  box-shadow: 0px 0px 6px 0px #888888;
+}
+
+Shell[TITLE], Shell[BORDER],Shell[BORDER]:inactive, Shell[TITLE]:inactive {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  box-shadow: 0px 0px 12px 3px #9e9e9e;
+}
+
+Shell:maximized, Shell:maximized:inactive {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+Shell-DisplayOverlay {
+  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
+  background-image: none;
+  background-color: #000000;
+  opacity: 0.2;
+}
+
+
+/* Shell titlebar */
+
+Shell-Titlebar {
+  font: 24px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  background-image: none;
+  padding: 16px 8px 8px 16px;
+  margin: 0px;
+  height: 48px;
+  border: none;
+  border-bottom: 2px solid #03a9f4;
+  border-radius: 0;
+  text-shadow: none;
+}
+
+Shell-Titlebar:inactive {
+  background-color: #fafafa;
+  background-image: none;
+}
+
+/* Shell buttons */
+Shell-MinButton,Shell-MinButton:hover,Shell-MinButton:inactive, Shell-MinButton:inactive:hover,
+Shell-MaxButton,Shell-MaxButton:hover,Shell-MaxButton:inactive,Shell-MaxButton:inactive:hover,
+Shell-MaxButton:maximized,Shell-MaxButton:maximized:hover,Shell-MaxButton:maximized:inactive,Shell-MaxButton:maximized:inactive:hover,
+Shell-CloseButton,Shell-CloseButton:hover,Shell-CloseButton:inactive,Shell-CloseButton:inactive:hover {
+  background-image: none;
+  margin: 0 -2px 0 0;
+}
+
+
+Shell.menu {
+  animation: none;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  background-image: none;
+  padding: 0;
+  opacity: 1;
+  box-shadow: none;
+}
+
+Shell-Titlebar.menu {
+  border-bottom: none;
+}
+
+
+
+/* TabFolder default theme */
+
+TabFolder {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  border: none;
+}
+
+TabFolder[BORDER] {
+  border: none;
+}
+
+TabFolder-ContentContainer {
+  border-top:  1px solid #e6e6e6;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  
+}
+
+TabItem {
+  color: #000000;
+  background-color: #ffffff;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  text-shadow: none;
+  padding: 8px 20px 8px 20px;
+  margin: 0px 0px 0px 0px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  
+}
+
+TabItem:selected {
+  background-image: none;
+  background-color: #ffffff;
+  margin: 0px 0px 0px 0px;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
+}
+
+TabItem:selected:first {
+  margin: 0px 0px 0px 0px;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
+}
+
+
+/* Text default theme */
+
+Text {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  border-radius: 0;
+  padding: 8px 12px 8px 12px;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+Text[MULTI] {
+/*
+ * padding currently has no effect because of bug 253644
+ * [TODO] remove comment if bug fixed
+ */
+  padding: 8px 12px 8px 12px;
+  box-shadow: none;
+}
+
+Text[BORDER],
+Text[MULTI][BORDER] {
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+Text[BORDER]:focused,
+Text[MULTI][BORDER]:focused{
+  border: 1px solid #c9c9c9;
+  box-shadow: none;
+}
+
+Text:focused {
+  border: none;
+  box-shadow: none;
+}
+
+Text[BORDER]:disabled,
+Text[MULTI][BORDER]:disabled,
+Text[BORDER]:read-only,
+Text[MULTI][BORDER]:read-only {
+  box-shadow: none;
+}
+
+Text-Message {
+  color: #a7a6aa;
+  text-shadow: none;
+}
+
+Text-Search-Icon {
+  background-image: url(resource/widget/rap/text/find.png);
+  spacing: 3px;
+}
+
+Text-Cancel-Icon {
+  background-image: url(resource/widget/rap/text/clear.gif);
+  spacing: 3px;
+}
+
+
+/* Tree/Grid default theme */
+
+Tree, Grid {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+}
+
+Tree[BORDER], Grid[BORDER] {
+  border: 1px solid #e6e6e6;
+}
+
+TreeItem, GridItem,
+TreeItem:linesvisible:even:rowtemplate {
+  background-color: transparent;
+  color: inherit;
+  text-decoration: none;
+  text-shadow: none;
+  background-image: none;
+  text-overflow: ellipsis;
+}
+
+TreeItem:linesvisible:even {
+  background-color: #f5f5f5;
+  color: inherit;
+  border: none;
+}
+
+Tree-RowOverlay, Grid-RowOverlay {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}
+
+Tree-RowOverlay:hover, Grid-RowOverlay:hover {
+  color: inherit;
+  background-color: rgba( 192, 192, 192, 0.2);
+  background-image: none;
+}
+
+Tree-RowOverlay:selected, Grid-RowOverlay:selected,
+Tree-RowOverlay:selected:unfocused, Grid-RowOverlay:selected:unfocused {
+  color: inherit;
+  background-color: rgba(163, 200, 255, 0.25);
+  background-image: none;
+}
+
+TreeColumn, GridColumn {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: inherit;
+  background-color: #f9f9f9;
+  background-image:none;
+  padding: 8px 8px 8px 8px;
+  border-bottom: 1px solid #e6e6e6;
+  text-shadow: none;
+  text-overflow: ellipsis;
+}
+
+TreeColumn:hover, GridColumn:hover {
+  background-image: none;
+}
+
+TreeColumn-SortIndicator, GridColumn-SortIndicator {
+  background-image: none;
+}
+
+Tree-Cell, Grid-Cell {
+  spacing: 4px;
+  padding: 8px 8px 8px 8px;
+}
+
+Tree-GridLine,
+Tree-GridLine:vertical:rowtemplate, Grid-GridLine:vertical:rowtemplate {
+  color: transparent;
+}
+
+Tree-GridLine:vertical,
+Tree-GridLine:header,
+Tree-GridLine:horizontal:rowtemplate,
+Grid-GridLine {
+  color: #e6e6e6;
+}
+
+Tree-Indent, Grid-Indent {
+  width: 20px;
+  background-image: none;
+}
+
+Tree-Indent:line, Grid-Indent:line,
+Tree-Indent:first, Grid-Indent:first,
+Tree-Indent:last, Grid-Indent:last,
+Tree-Indent:first:last, Grid-Indent:first:last {
+  background-image: none;
+}
+
+Tree-Indent:collapsed, Grid-Indent:collapsed,
+Tree-Indent:first:collapsed, Grid-Indent:first:collapsed,
+Tree-Indent:last:collapsed, Grid-Indent:last:collapsed,
+Tree-Indent:first:last:collapsed, Grid-Indent:first:last:collapsed {
+  background-image: url(resource/widget/rap/tree/tree-collapsed.png);
+}
+
+Tree-Indent:collapsed:hover, Grid-Indent:collapsed:hover,
+Tree-Indent:first:collapsed:hover, Grid-Indent:first:collapsed:hover,
+Tree-Indent:last:collapsed:hover, Grid-Indent:last:collapsed:hover,
+Tree-Indent:first:last:collapsed:hover, Grid-Indent:first:last:collapsed:hover {
+  background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
+}
+
+Tree-Indent:expanded, Grid-Indent:expanded,
+Tree-Indent:first:expanded, Grid-Indent:first:expanded,
+Tree-Indent:last:expanded, Grid-Indent:last:expanded,
+Tree-Indent:first:last:expanded, Grid-Indent:first:last:expanded{
+  background-image: url(resource/widget/rap/tree/tree-expanded.png);
+}
+
+Tree-Indent:expanded:hover, Grid-Indent:expanded:hover,
+Tree-Indent:first:expanded:hover, Grid-Indent:first:expanded:hover,
+Tree-Indent:last:expanded:hover, Grid-Indent:last:expanded:hover,
+Tree-Indent:first:last:expanded:hover, Grid-Indent:first:last:expanded:hover {
+  background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
+}
+
+/* sidebar tree */
+Grid.menu {
+  font: 16px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-color: transparent;
+  border: none;
+  color: #d9d9d9;
+}
+
+GridItem.menu {
+  background-color: transparent;
+  color: #d9d9d9;
+  text-decoration: none;
+  text-shadow: none;
+  background-image: none;
+  text-overflow: ellipsis;
+}
+
+GridItem.menu:selected,
+GridItem.menu:hover {
+  color: #ffffff;
+}
+
+Grid-RowOverlay.menu:hover {
+  color: inherit;
+  background-color: rgba( 255, 255, 255,0.8);
+  background-image: none;
+}
+
+Grid-RowOverlay.menu:selected {
+  color: inherit;
+  background-color: #3f51b5;
+  background-image: none;
+}
+
+Grid-RowOverlay.menu:selected:unfocused {
+  background-color: #3f51b5;
+  background-image: none;
+  color: inherit;
+}
+
+Grid-Cell.menu {
+  spacing: 3px;
+  padding: 5px 3px 5px 3px;
+}
+
+/* ToolTip default theme */
+
+ToolTip {
+  cursor: default;
+  border: 1px solid #a0b3ca;
+  border-radius: 2px;
+  padding: 8px;
+  opacity: 1;
+  color: #4a4a4a;
+  background-image : gradient(
+    linear, left top, right top,
+    from( #f8f9ff ),
+    to( #f4f4f4 )
+ );
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-color: #fcfcfc;
+  animation: fadeIn 200ms linear, fadeOut 600ms ease-out;
+  box-shadow: 0 0 4px #adadad;
+  width: auto;
+  height: auto;
+}
+
+ToolTip-Image[ICON_ERROR] {
+  background-image: url(resource/widget/rap/tooltip/error.png);
+}
+
+ToolTip-Image[ICON_INFORMATION] {
+  background-image: url(resource/widget/rap/tooltip/information.png);
+}
+
+ToolTip-Image[ICON_WARNING] {
+  background-image: url(resource/widget/rap/tooltip/warning.png);
+}
+
+ToolTip-Text {
+  color: #4a4a4a;
+  font: bold 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  text-shadow: none;
+}
+
+ToolTip-Message {
+  color: #4a4a4a;
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  text-shadow: none;
+}
+
+/* ScrollBar default theme */
+
+ScrollBar {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 2px;
+  opacity: 0;
+}
+
+ScrollBar[VERTICAL] {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 8px;
+  opacity: 0;
+}
+
+ScrollBar[HORIZONTAL] {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 8px;
+  opacity: 0;
+}
+
+ScrollBar:active {
+  opacity: 0.8;
+}
+
+ScrollBar-Thumb {
+  background-color: #cccccc;
+  border: 1px solid #bdbdbd;
+  border-radius: 15px;
+  background-image: none;
+  min-height: 20px;
+}
+
+ScrollBar-UpButton,
+ScrollBar-DownButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+  background-image: none;
+}
+
+
+/* ProgressBar default theme */
+
+ProgressBar {
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  border-radius: 0px;
+  width: 16px;
+}
+
+ProgressBar-Indicator {
+  background-color: #009688;
+  background-image: none;
+  opacity: 1;
+}
+
+ProgressBar-Indicator:paused {
+  background-color: #ff9800;
+  background-image: none;
+}
+
+ProgressBar-Indicator:error {
+  background-image: none;
+  background-color: #e51c23;
+}
+
+/* FileUpload default theme */
+
+FileUpload.inline {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border-radius: 0px;
+  padding: 4px 4px;
+  spacing: 0px;
+  cursor: pointer;
+  animation: none;
+  color: #4d4d4d;
+  border: none;
+  border-left: 1px solid #e6e6e6;
+  background-color: #fbfbfb;
+  opacity: 1;
+  text-shadow: none;
+}
+
+FileUpload.inline:disabled {
+  cursor: default;
+  color: #d2d2d2;
+  background-image: none;
+  background-color: #fbfbfb;
+  border-left: 1px solid #e6e6e6;
+}
+
+FileUpload.inline:hover {
+  background-image: none;
+  border-left: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+  color: #000000;
+  cursor: pointer;
+}
+
+FileUpload.inline:pressed {
+  background-image: none;
+  background-color: #757575;
+  border-left: 1px solid #757575;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+FileUpload-FocusIndicator.inline {
+  background-color: transparent;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  opacity: 0;
+}
+
+/* JFace specific theming */
+
+Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
+  border: 1px solid #bdbdbd;
+  padding: 0;
+  box-shadow: 0 0 4px #ababab;
+}

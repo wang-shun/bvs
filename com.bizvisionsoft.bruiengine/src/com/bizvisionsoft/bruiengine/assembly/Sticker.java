@@ -1,0 +1,62 @@
+package com.bizvisionsoft.bruiengine.assembly;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Composite;
+
+import com.bizvisionsoft.bruicommons.annotation.CreateUI;
+import com.bizvisionsoft.bruicommons.annotation.GetContainer;
+import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.BruiActionEngine;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.session.UserSession;
+
+public class Sticker {
+
+	@Inject
+	private IBruiService service;
+
+	private Assembly assembly;
+
+	@GetContainer
+	private Composite content;
+	
+	@Inject
+	private IBruiContext context;
+
+	public Sticker(Assembly assembly) {
+		this.assembly = assembly;
+	}
+
+	@CreateUI
+	public void createUI(Composite parent) {
+		parent.setLayout(new FormLayout());
+
+		Titlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setServices(service)
+				.setText(assembly.getStickerTitle()).setActions(assembly.getActions());
+		FormData fd = new FormData();
+		bar.setLayoutData(fd);
+		fd.left = new FormAttachment(0);
+		fd.top = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.height = 48;
+
+		content = UserSession.bruiToolkit().newContentPanel(parent);
+		fd = new FormData();
+		content.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 12);
+		fd.top = new FormAttachment(bar, 12);
+		fd.right = new FormAttachment(100, -12);
+		fd.bottom = new FormAttachment(100, -12);
+
+		bar.addListener(SWT.Selection, e -> {
+			Action action = ((Action)e.data);
+			BruiActionEngine.create(action, service).invokeExecute(e,context);
+		});
+	}
+}
