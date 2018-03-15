@@ -173,6 +173,12 @@ Composite[BORDER] {
   border-radius: 2px;
 }
 
+Composite[BORDER].inline {
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 0px;
+}
+
 /* Button default theme */
 
 Button {
@@ -1316,7 +1322,7 @@ ProgressBar {
   background-image: none;
   border: none;
   border-radius: 0px;
-  width: 16px;
+  width: 4px;
 }
 
 ProgressBar-Indicator {
@@ -1426,6 +1432,31 @@ FileUpload-FocusIndicator {
   margin: 0px;
   padding: 0px;
   opacity: 0;
+}
+
+FileUpload.inbox,
+FileUpload.inbox:default {
+  color: #4d4d4d;
+  border: 1px solid #e6e6e6;
+  background-color: #fbfbfb;
+}
+
+FileUpload.inbox:disabled {
+  background-color: #fafafa;
+  color: #d2d2d2;
+  border: 1px solid #e6e6e6;
+}
+
+FileUpload.inbox:hover {
+  color: #000000;
+  border: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+}
+
+FileUpload.inbox:pressed {
+  border: 1px solid #757575;
+  background-color: #757575;
+  color: #ffffff;
 }
 
 /* JFace specific theming */

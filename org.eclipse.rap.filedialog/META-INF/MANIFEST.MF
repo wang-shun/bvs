@@ -1,0 +1,131 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.rap.filedialog
+Archiver-Version: Plexus Archiver
+Built-By: genie.rap
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[3.4.0,4.0.0)",org
+ .eclipse.rap.fileupload;bundle-version="[3.4.0,4.0.0)"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/rap/or
+ g.eclipse.rap.git;path="bundles/org.eclipse.rap.filedialog";commitId=
+ c84c96fc1c7def522bc1b018cb04b4d10b282cc6
+Bundle-Vendor: %Bundle-Vendor
+Import-Package: javax.servlet;version="[2.3.0,4.0.0)",javax.servlet.ht
+ tp;version="[2.3.0,4.0.0)"
+Export-Package: org.eclipse.swt.internal.widgets;version="3.4.0";x-fri
+ ends:="org.eclipse.rap.filedialog.test",org.eclipse.swt.widgets;versi
+ on="3.4.0"
+Bundle-Version: 3.4.0.20171017-0945
+Bundle-Name: %Bundle-Name
+Bundle-Localization: plugin
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_131
+
+Name: org/eclipse/swt/widgets/FileDialog$6.class
+SHA-256-Digest: edPggLxM2QnpW2aSkHewmRzyZCXxC07Ha1P6DT7tAYM=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$UploadProgre
+ ssListener$1.class
+SHA-256-Digest: rcU5FJQYAkyjE73w26HEwVR2H1t1Rl2wkAAnhgDUK7I=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$State.class
+SHA-256-Digest: 1nQtYa0XU5GUmS2+4w5f9LA2HQGM/6xp4ka1GEX2ntk=
+
+Name: org/eclipse/swt/widgets/FileDialog$3.class
+SHA-256-Digest: HRpRs3GbevFFHTRgA+HH8BfP85BMtSmjBBt2RrpzcCQ=
+
+Name: resources/waiting.png
+SHA-256-Digest: TvwfXeSS1LDSgpars5ErmEQEAMgkN3l2Tqty81SSkC8=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable.class
+SHA-256-Digest: RIzM904mZ1H9WjbFiid+JurAi/ASS0/brRGlegeJf0w=
+
+Name: resources/empty.png
+SHA-256-Digest: WX7ucdRrzYqHn/JSSjR3WRK7k12yA4LvSV9HelpsnQk=
+
+Name: org/eclipse/swt/internal/widgets/ProgressCollector.class
+SHA-256-Digest: Yzb7ZxcGW0UT+jbwxyEuq+T85FtQwnrj1Liys0vysHo=
+
+Name: org/eclipse/swt/widgets/FileDialog$4.class
+SHA-256-Digest: 3zfCH+g0QTSrGeVtC7R8t9N3UJdIo6UHoW1wESDAt6A=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$UploadProgre
+ ssListener.class
+SHA-256-Digest: kJFUy73f8JyisxQ3UAIeUvM5QiFZMa4khVWFjIGYL7U=
+
+Name: org/eclipse/swt/internal/widgets/LayoutUtil.class
+SHA-256-Digest: fbDtwj0zrFYQjo8+ecpG7tGeqkWwlVHCGqttRZZjp/M=
+
+Name: plugin.properties
+SHA-256-Digest: euwaQZFyNDbQa7C7/l2t9LEM8c3gcur3/NEy5L/g4j4=
+
+Name: org/eclipse/swt/internal/widgets/UploaderWidget.class
+SHA-256-Digest: 0pP6t5P5va6gYOdUs5KUa32INRL9/c5CYnUNhBgMuts=
+
+Name: org/eclipse/swt/internal/widgets/ImageUtil.class
+SHA-256-Digest: weRRnPsB4jVVGawv2MnFEREyqPP10N5i5wYJO5bLbu0=
+
+Name: resources/failed.png
+SHA-256-Digest: /2fj86ppgsoZFJot33T9YiB5te5ItX4Q5alePd6B7DQ=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$UploadProgre
+ ssListener$3.class
+SHA-256-Digest: pn0OrAtv/b/DTU/NiNmnHfaVEK3gB2kBZOXY4Sjc4xc=
+
+Name: resources/finished.png
+SHA-256-Digest: YFso6T7oLUl5lqxdY3Xe0zvKXPevk1PuG2dLZjA7NEE=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$2.class
+SHA-256-Digest: vSBOZCjJQxj+o4cWh9W+O5kbGqzYr0eSvmWy6qakysg=
+
+Name: org/eclipse/swt/widgets/FileDialog$1.class
+SHA-256-Digest: xqw0I4Fj2NnO/UGlCS3t85I1PhTDXRUrJehkxVA1L04=
+
+Name: resources/uploading.png
+SHA-256-Digest: 3wkCiI0EvPF6MLIGopAM8aP2q3iqNjWBRkUdL7oVMGs=
+
+Name: org/eclipse/swt/internal/widgets/Uploader.class
+SHA-256-Digest: BMvCOKX1E1kMKteleNKiZHlzQTMoBCkntFooUUAlEM4=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$3.class
+SHA-256-Digest: 6NYnhr5/GAGleDH1UqJ4h1mc7UBFzo7wOO3oyA01slE=
+
+Name: about.html
+SHA-256-Digest: 1fuYr0bu6NsJZCAmSom5QtnvnV0Cg8DwLn77Dd1Ql24=
+
+Name: org/eclipse/swt/widgets/FileDialog$7.class
+SHA-256-Digest: daF/7WvS8WUuCaDst5jb63nu84kuyskBGPAO8R9EOi0=
+
+Name: org/eclipse/swt/internal/widgets/UploadPanel.class
+SHA-256-Digest: QbP0FZpYHNnJ4Ca1ZBD2IvWJ9FKaPg6OS7h4PBRfRu4=
+
+Name: org/eclipse/swt/internal/widgets/UploaderService.class
+SHA-256-Digest: cScrlITqvVejZyEat8AOYkg1oIDhqihReb3F82+BtYQ=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.filedialog/pom.xm
+ l
+SHA-256-Digest: yAbkYcKqk17fsDeh2qDr/ZzhVRzPLsfGQ7qske48abI=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$UploadProgre
+ ssListener$2.class
+SHA-256-Digest: K7w5HRpns+kprrXrmuAHrl6eTy9mM9MycSSyjgtcqIY=
+
+Name: org/eclipse/swt/internal/widgets/FileUploadRunnable$1.class
+SHA-256-Digest: u/6Eb7erotWkZu5EchoNWLenQRt1Qg8HPB9YhvgyNaI=
+
+Name: org/eclipse/swt/widgets/FileDialog$2.class
+SHA-256-Digest: 24eZoD8c+JBx1Oq/I3kqIB9WMXnqbj+UsVXTPwGevig=
+
+Name: META-INF/maven/org.eclipse.rap/org.eclipse.rap.filedialog/pom.pr
+ operties
+SHA-256-Digest: uIqLyTk1+AsamQcxHgEiHcICGwcwc0cjXW65j4YX2fg=
+
+Name: org/eclipse/swt/widgets/FileDialog$SingleThreadExecutor.class
+SHA-256-Digest: Tl6XZK8GVa5RopOwU5R3RzyyELla6QwjDbtwSyYMmsM=
+
+Name: org/eclipse/swt/widgets/FileDialog$5.class
+SHA-256-Digest: pbL3SqMjxXBwViqQZ1VJLzi7kpO/kr4l2UJ+5t9iYS8=
+
+Name: org/eclipse/swt/widgets/FileDialog.class
+SHA-256-Digest: 7QnllELHt/20l3FfzuI2EiT4Gx8Ca+KPJ2/DMyV4tyw=
+
