@@ -20,8 +20,6 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 	private final List<File> targetFiles;
 	private final List<FileDetails> targetFileDetails;
 
-	private File contentTypeFile;
-
 	public SessionDiskUploadReceiver() {
 		targetFiles = new ArrayList<>();
 		targetFileDetails = new ArrayList<>();
@@ -34,7 +32,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 		Util.copyStream(dataStream, outputStream, true);
 		targetFiles.add(targetFile);
 		targetFileDetails.add(details);
-		contentTypeFile = createContentTypeFile(targetFile, details);
+		File contentTypeFile = createContentTypeFile(targetFile, details);
 		if (contentTypeFile != null) {
 			PrintWriter pw = new PrintWriter(contentTypeFile);
 			pw.print(details.getContentType());
@@ -76,6 +74,11 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 			throw new IOException("无法创建临时文件夹 " + result.getAbsolutePath());
 		}
 		return result;
+	}
+
+	public void clear() {
+		targetFileDetails.clear();
+		targetFiles.clear();
 	}
 
 }

@@ -87,7 +87,9 @@ public class FileField extends EditorField implements FileUploadListener {
 		fileDelete.setData(RWT.CUSTOM_VARIANT, "inline");
 		fileDelete.setText("清空");
 		fileDelete.addListener(SWT.Selection, e -> {
-			// TODO
+			value.clear();
+			receiver.clear();
+			presentation();
 		});
 
 		FormData fd = new FormData();
@@ -140,12 +142,14 @@ public class FileField extends EditorField implements FileUploadListener {
 			return;
 
 		String labelText = "";
-		if (receiver.getTargetFiles().length == 0) {// 没有上传文件
+		File[] targetFiles = receiver.getTargetFiles();
+		if (targetFiles.length == 0) {// 没有上传文件
 			if (this.value != null && !this.value.isEmpty()) {
 				try {
-					String url = Publisher.url + "/fs/" + value.get(0).namepace + "/" + value.get(0)._id + "/"
-							+ URLEncoder.encode(value.get(0).name, "utf-8");
-					labelText = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + value.get(0).name
+					RemoteFile remoteFile = value.get(0);
+					String url = Publisher.url + "/fs/" + remoteFile.namepace + "/" + remoteFile._id + "/"
+							+ URLEncoder.encode(remoteFile.name, "utf-8");
+					labelText = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name
 							+ "</a>";
 				} catch (UnsupportedEncodingException e) {
 					labelText = "文件名含有非法字符";
@@ -154,9 +158,10 @@ public class FileField extends EditorField implements FileUploadListener {
 				labelText = "请上传文件";
 			}
 		} else {
-			String url = UserSession.bruiToolkit().createLocalFileDownloadURL(receiver.getTargetFiles()[0].getPath());
+			String url = UserSession.bruiToolkit()
+					.createLocalFileDownloadURL(targetFiles[targetFiles.length - 1].getPath());
 			labelText = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>"
-					+ receiver.getTargetFiles()[0].getName() + "</a>";
+					+ targetFiles[targetFiles.length - 1].getName() + "</a>";
 		}
 
 		label.setText("<div style='margin-top:8px;margin-left:16px'>" + labelText + "</div>");
@@ -182,7 +187,7 @@ public class FileField extends EditorField implements FileUploadListener {
 		// 如果receiver中有文件，需要替换掉
 		if (receiver.getTargetFiles().length > 0) {
 			FileService fs = Services.get(FileService.class);
-			File file = receiver.getTargetFiles()[0];
+			File file = receiver.getTargetFiles()[receiver.getTargetFiles().length - 1];
 			RemoteFile remoteFile = fs.upload(new FileInputStream(file), file.getName(), fieldConfig.getFileNamespace(),
 					Util.getContentType(file, null), Brui.sessionManager.getSessionUserInfo().getUserId());
 			if (value == null)
