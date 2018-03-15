@@ -56,4 +56,11 @@ public class FileServiceImpl implements FileService {
 		return rf;
 	}
 
+	@Override
+	public void delete(String id, String namespace) {
+		ObjectId _id = new ObjectId(id);
+		GridFSBucket bucket = GridFSBuckets.create(Service.db(), namespace);
+		bucket.delete(_id);
+	}
+
 }

@@ -3,6 +3,7 @@ package com.bizvisionsoft.service;
 import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,6 +31,13 @@ public interface FileService {
 	@Produces("application/json;charset=UTF-8")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public RemoteFile upload(@FormDataParam("file") InputStream fileInputStream, @FormDataParam("name") String fileName,
-			@FormDataParam("namespace") String namespace,@FormDataParam("contentType") String contentType,@FormDataParam("uploadBy") String uploadBy);
+			@FormDataParam("namespace") String namespace, @FormDataParam("contentType") String contentType,
+			@FormDataParam("uploadBy") String uploadBy);
+
+	@DELETE
+	@Path("/{namespace}/{id}")
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public void delete(@PathParam("id") String id, @PathParam("namespace") String namespace);
 
 }

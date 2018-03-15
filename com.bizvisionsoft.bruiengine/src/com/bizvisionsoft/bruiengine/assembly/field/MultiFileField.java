@@ -325,11 +325,15 @@ public class MultiFileField extends EditorField {
 			List<RemoteFile> needToDelete = new ArrayList<RemoteFile>();
 			needToDelete.addAll(value);
 			needToDelete.removeAll(newValue);
-			// TODO CALL Service to delete
-		}
+			needToDelete.forEach(rf -> {
+				Services.get(FileService.class).delete(rf._id.toString(), rf.namepace);
+			});
 
-		value.clear();
-		value.addAll(newValue);
+			value.clear();
+			value.addAll(newValue);
+		} else {
+			value = newValue;
+		}
 
 		super.saveBefore();
 	}
