@@ -75,6 +75,7 @@ public class LoginPage {
 		try {
 			user = Services.get(UserService.class).check(userName, password);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		if (user == null) {

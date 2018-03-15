@@ -1,6 +1,8 @@
 package com.bizvisionsoft.serviceconsumer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -14,42 +16,42 @@ public class Services implements BundleActivator {
 
 	private static BundleContext bundleContext;
 
-	private static HashMap<Class<?>, ServiceReference<?>> registry;
+	private static HashMap<String, Class<?>> nameRegistry = new HashMap<>();
+
+	private static List<ServiceReference<?>> references = new ArrayList<>();
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		Services.bundleContext = bundleContext;
-		registry = new HashMap<Class<?>, ServiceReference<?>>();
-		// 注册服务
-		register(bundleContext, FileService.class);
-		register(bundleContext, UserService.class);
-		register(bundleContext, OrganizationService.class);
-
+		// 注册服务名
+		register(FileService.class);
+		register(UserService.class);
+		register(OrganizationService.class);
 	}
 
-	private void register(BundleContext bundleContext, Class<?> type) {
-		ServiceReference<?> reference = bundleContext.getServiceReference(type);
-		registry.put(type, reference);
+	private void register(Class<?> type) {
+		nameRegistry.put(type.getName(), type);
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
-		registry.values().forEach(reference -> bundleContext.ungetService(reference));
+		references.forEach(reference -> bundleContext.ungetService(reference));
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T get(Class<T> clazz) {
-		return (T) bundleContext.getService(registry.get(clazz));
+		ServiceReference<T> reference = bundleContext.getServiceReference(clazz);
+		if (!references.contains(reference))
+			references.add(reference);
+		return bundleContext.getService(reference);
 	}
 
 	public static Object get(String classname) {
-		return registry.keySet().stream().filter(c -> c.getName().equals(classname)).findFirst().map(c -> get(c))
-				.orElseThrow(NoClassDefFoundError::new);
+		return get(nameRegistry.get(classname));
 	}
 
 	public static Object[] getService(String classname) {
-		return registry.keySet().stream().filter(c -> c.getName().equals(classname)).findFirst()
-				.map(c -> new Object[] { c, get(c) }).orElseThrow(NoClassDefFoundError::new);
+		Class<?> clazz = nameRegistry.get(classname);
+		return new Object[] { clazz, get(clazz) };
 	}
 
 }
