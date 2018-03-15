@@ -7,15 +7,19 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-public class Services implements BundleActivator {
+public class ServicesLoader implements BundleActivator {
 
 	private static BundleContext bundleContext;
 
 	private static final List<ServiceReference<?>> references = new ArrayList<>();
 
+	public static String url;
+
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		Services.bundleContext = bundleContext;
+		ServicesLoader.bundleContext = bundleContext;
+		url = (String) bundleContext.getProperty("com.bizvisionsoft.service.url");
+
 	}
 
 	@Override

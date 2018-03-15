@@ -52,8 +52,8 @@ import org.eclipse.swt.widgets.Listener;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.FileService;
+import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
-import com.bizvisionsoft.serviceconsumer.Publisher;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class MultiFileField extends EditorField {
@@ -271,12 +271,7 @@ public class MultiFileField extends EditorField {
 			String[] items = new String[this.value.size()];
 			for (int i = 0; i < this.value.size(); i++) {
 				RemoteFile remoteFile = this.value.get(i);
-				String url = "";
-				try {
-					url = Publisher.url + "/fs/" + remoteFile.namepace + "/" + remoteFile._id + "/"
-							+ URLEncoder.encode(remoteFile.name, "utf-8");
-				} catch (UnsupportedEncodingException e) {
-				}
+				String url = remoteFile.getURL(ServicesLoader.url);
 				items[i] = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name + "</a>";
 			}
 			createUploadPanel(items, this.value);

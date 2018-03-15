@@ -17,4 +17,4 @@ Export-Package: com.bizvisionsoft.service,
  com.bizvisionsoft.service.datatools,
  com.bizvisionsoft.service.model,
  com.bizvisionsoft.service.provider
-Bundle-Activator: com.bizvisionsoft.service.Services
+Bundle-Activator: com.bizvisionsoft.service.ServicesLoader

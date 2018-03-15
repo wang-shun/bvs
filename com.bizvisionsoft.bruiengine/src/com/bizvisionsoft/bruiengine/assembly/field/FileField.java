@@ -2,8 +2,6 @@ package com.bizvisionsoft.bruiengine.assembly.field;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +27,8 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.SessionDiskUploadReceiver;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.FileService;
+import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
-import com.bizvisionsoft.serviceconsumer.Publisher;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class FileField extends EditorField implements FileUploadListener {
@@ -145,15 +143,11 @@ public class FileField extends EditorField implements FileUploadListener {
 		File[] targetFiles = receiver.getTargetFiles();
 		if (targetFiles.length == 0) {// 没有上传文件
 			if (this.value != null && !this.value.isEmpty()) {
-				try {
-					RemoteFile remoteFile = value.get(0);
-					String url = Publisher.url + "/fs/" + remoteFile.namepace + "/" + remoteFile._id + "/"
-							+ URLEncoder.encode(remoteFile.name, "utf-8");
-					labelText = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name
-							+ "</a>";
-				} catch (UnsupportedEncodingException e) {
-					labelText = "文件名含有非法字符";
-				}
+				RemoteFile remoteFile = value.get(0);
+				String url = remoteFile.getURL(ServicesLoader.url);
+				if (url == null)
+					url = "文件名含有非法字符";
+				labelText = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name + "</a>";
 			} else {
 				labelText = "请上传文件";
 			}

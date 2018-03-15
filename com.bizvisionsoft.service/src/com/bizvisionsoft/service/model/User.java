@@ -12,7 +12,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.mongocodex.annotations.Persistence;
 import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
 import com.bizvisionsoft.service.OrganizationService;
-import com.bizvisionsoft.service.Services;
+import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.annotations.ReadOptions;
 import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.WriteValue;
@@ -60,13 +60,11 @@ public class User {
 	@WriteValue(" 用户编辑器 # 激活 ")
 	private boolean activated;
 
-	private String headpicURL;
-	
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private List<RemoteFile> headPics;
-	
+
 	@Persistence
 	@ReadValue(" 用户编辑器 # testCombo ")
 	@WriteValue(" 用户编辑器 # testCombo ")
@@ -87,8 +85,7 @@ public class User {
 	@ReadValue
 	@WriteValue
 	private List<String> leaders;
-	
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -108,7 +105,9 @@ public class User {
 	}
 
 	public String getHeadpicURL() {
-		return headpicURL;
+		if (headPics != null && headPics.size()>0) 
+			return headPics.get(0).getURL(ServicesLoader.url);
+		return null;
 	}
 
 	public User setActivated(boolean activated) {
@@ -133,11 +132,6 @@ public class User {
 
 	public User setUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-
-	public User setHeadpicURL(String headpicURL) {
-		this.headpicURL = headpicURL;
 		return this;
 	}
 
@@ -200,7 +194,7 @@ public class User {
 
 	@ReadValue(" 用户编辑器 # organization ")
 	public Organization getOrganization() {
-		return Services.get(OrganizationService.class).get(organizationId);
+		return ServicesLoader.get(OrganizationService.class).get(organizationId);
 	}
 
 	@WriteValue(" 用户编辑器 # organizations ")
@@ -214,7 +208,7 @@ public class User {
 		if (orgIds != null) {
 			BasicDBObject condition = new Query()
 					.filter(new BasicDBObject().append("_id", new BasicDBObject("$in", orgIds))).bson();
-			return Services.get(OrganizationService.class).createDataSet(condition);
+			return ServicesLoader.get(OrganizationService.class).createDataSet(condition);
 		}
 		return new ArrayList<Organization>();
 	}

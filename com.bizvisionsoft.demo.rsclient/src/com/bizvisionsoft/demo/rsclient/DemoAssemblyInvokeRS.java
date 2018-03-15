@@ -34,8 +34,8 @@ public class DemoAssemblyInvokeRS {
 		Button button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
 		button.setText("创建一个用户");
 		button.addListener(SWT.Selection, e -> {
-			User user = new User().setActivated(true).setEmail("zh@bizvisionsoft.com").setHeadpicURL("/asdasd/aaa.png")
-					.setName("钟华").setPassword("1").setTel("1234").setUserId("zh");
+			User user = new User().setActivated(true).setEmail("zh@bizvisionsoft.com").setName("钟华").setPassword("1")
+					.setTel("1234").setUserId("zh");
 			Services.get(UserService.class).insert(user);
 		});
 
@@ -51,9 +51,10 @@ public class DemoAssemblyInvokeRS {
 		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
 		button.setText("更新一个用户，根据用户Id");
 		button.addListener(SWT.Selection, e -> {
-//			BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("name", "ABCD"));
-//			long cnt = Services.get(UserService.class).updateByUserId("1", update);
-//			System.out.println(cnt);
+			// BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("name",
+			// "ABCD"));
+			// long cnt = ServicesLoader.get(UserService.class).updateByUserId("1", update);
+			// System.out.println(cnt);
 		});
 
 		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
@@ -82,7 +83,6 @@ public class DemoAssemblyInvokeRS {
 				User user = new User()//
 						.setActivated(true)//
 						.setEmail(id + "@bizvisionsoft.com")//
-						.setHeadpicURL("/asdasd/aaa.png")//
 						.setName("新用户" + (i + 1))//
 						.setPassword("1")//
 						.setTel("1234")//

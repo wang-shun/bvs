@@ -28,8 +28,8 @@ public class CreateUser {
 		InputDialog id = new InputDialog(bruiService.getCurrentShell(), "创建用户", "输入用户Id", "username", null);
 		if (InputDialog.OK == id.open()) {
 			String userId = id.getValue();
-			User user = new User().setActivated(true).setEmail("zh@bizvisionsoft.com").setHeadpicURL("/asdasd/aaa.png")
-					.setName("用户" + userId).setPassword("1").setTel("1234").setUserId(userId);
+			User user = new User().setActivated(true).setEmail("zh@bizvisionsoft.com").setName("用户" + userId)
+					.setPassword("1").setTel("1234").setUserId(userId);
 			UserService service = Services.get(UserService.class);
 			service.insert(user);
 			List<UserInfo> ds = service.createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1)

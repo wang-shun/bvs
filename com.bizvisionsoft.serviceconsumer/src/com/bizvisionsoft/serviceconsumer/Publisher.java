@@ -10,10 +10,9 @@ import org.osgi.service.component.ComponentContext;
 public class Publisher {
 
 	private ConsumerPublisher publisher;
-	public static String url;
 
 	public void activate(ComponentContext context) {
-		url = (String) context.getBundleContext().getProperty("com.bizvisionsoft.service.url");
+		String url = (String) context.getBundleContext().getProperty("com.bizvisionsoft.service.url");
 		publisher.publishConsumers(url,
 				new Class<?>[] { FileService.class, UserService.class, OrganizationService.class },
 				new Object[] { new BsonProvider<Object>() });
