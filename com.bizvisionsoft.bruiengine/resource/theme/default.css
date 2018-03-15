@@ -1387,6 +1387,47 @@ FileUpload-FocusIndicator.inline {
   opacity: 0;
 }
 
+
+FileUpload {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border-radius: 2px;
+  padding: 8px 24px;
+  spacing: 0px;
+  animation: none;
+  color: #4d4d4d;
+  border: 1px solid #e6e6e6;
+  background-color: #ffffff;
+  opacity: 1;
+  text-shadow: none;
+}
+
+FileUpload:disabled {
+  color: #d2d2d2;
+  background-image: none;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+FileUpload:hover {
+  background-image: none;
+  border: 1px solid #03a9f4;
+}
+
+FileUpload:pressed {
+  color: #ffffff;
+}
+
+FileUpload-FocusIndicator {
+  background-color: transparent;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  opacity: 0;
+}
+
 /* JFace specific theming */
 
 Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
