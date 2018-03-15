@@ -14,8 +14,10 @@ import static org.eclipse.swt.internal.Compatibility.getMessage;
 import static org.eclipse.swt.internal.widgets.LayoutUtil.createGridLayout;
 import static org.eclipse.swt.internal.widgets.LayoutUtil.createHorizontalFillData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.rap.fileupload.UploadSizeLimitExceededException;
 import org.eclipse.rap.fileupload.UploadTimeLimitExceededException;
@@ -23,7 +25,9 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.internal.widgets.FileUploadRunnable.State;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -35,27 +39,47 @@ public class UploadPanel extends Composite {
 	private static long SEC = 1000;
 	private static long MIN = 60 * 1000;
 
-	private final String[] fileNames;
 	private Image emptyIcon;
 	private Image waitingIcon;
 	private Image uploadingIcon;
 	private Image finishedIcon;
 	private Image failedIcon;
-	private final List<Label> icons;
-	private boolean embed;
 
-	public UploadPanel(Composite parent, String[] fileNames, boolean embed) {
+	private final List<Label> icons;
+	private final List<Label> names;
+
+	private final List<String> fileNames;
+	private final List<Button> removeBtns;
+	private final List<Composite> containers;
+
+	private List<Object> remotesFiles;
+	private List<File> localFiles;
+
+	private boolean embed;
+	private Function<File, String> maker;
+	private boolean readOnly;
+
+	public UploadPanel(Composite parent, List<String> fileNames, boolean embed, List<?> remotesFiles,
+			boolean readOnly) {
 		super(parent, SWT.NONE);
-		this.fileNames = fileNames;
+		this.readOnly = readOnly;
+		this.fileNames = new ArrayList<>();
+		this.fileNames.addAll(fileNames);
 		this.embed = embed;
+		this.remotesFiles = new ArrayList<>();
+		if (remotesFiles != null)
+			this.remotesFiles.addAll(remotesFiles);
 		initImages();
-		setLayout(createGridLayout(1, 0, embed ? 0 : 5));
+		setLayout(createGridLayout(1, 0, embed ? 0 : 4));
 		icons = new ArrayList<>();
+		names = new ArrayList<>();
+		removeBtns = new ArrayList<>();
+		containers = new ArrayList<>();
 		createChildren();
 	}
 
-	public UploadPanel(Composite parent, String[] fileNames) {
-		this(parent, fileNames, false);
+	public UploadPanel(Composite parent, List<String> fileNames) {
+		this(parent, fileNames, false, null, false);
 	}
 
 	private void initImages() {
@@ -67,27 +91,79 @@ public class UploadPanel extends Composite {
 		failedIcon = ImageUtil.getImage(display, "failed.png");
 	}
 
+	public void updateFiles(List<File> files) {
+		this.localFiles = new ArrayList<File>();
+		this.localFiles.addAll(files);
+		if (maker != null) {
+			for (int i = 0; i < files.size(); i++) {
+				names.get(i).setText(maker.apply(files.get(i)));
+				removeBtns.get(i).setVisible(true);
+			}
+			layout();
+		}
+	}
+
+	public void setURLMaker(Function<File, String> func) {
+		this.maker = func;
+	}
+
 	private void createChildren() {
-		for (String fileName : fileNames) {
-			if (fileName != null) {
-				Composite container = new Composite(this, SWT.BORDER);
-				if (embed) {
-					container.setData(RWT.CUSTOM_VARIANT, "inline");
-				}
-				container.setLayout(createContainerLayout());
-				container.setLayoutData(createHorizontalFillData());
-				Label icon = new Label(container, SWT.NONE);
-				icon.setImage(emptyIcon);
-				icons.add(icon);
-				Label name = new Label(container, SWT.NONE);
-				name.setLayoutData(createHorizontalFillData());
-				name.setText(fileName);
+		for (int index = 0; index < fileNames.size(); index++) {
+			Composite container = new Composite(this, SWT.BORDER);
+			containers.add(container);
+			if (embed) {
+				container.setData(RWT.CUSTOM_VARIANT, "inline");
+			}
+			GridLayout layout = createContainerLayout();
+			layout.numColumns = embed && !readOnly ? 3 : 2;
+			container.setLayout(layout);
+			container.setLayoutData(createHorizontalFillData());
+			Label icon = new Label(container, SWT.NONE);
+			icon.setImage(remotesFiles != null ? finishedIcon : emptyIcon);
+			icons.add(icon);
+			Label name = new Label(container, SWT.NONE);
+			name.setLayoutData(createHorizontalFillData());
+			if (embed) {
+				name.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+				name.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+			}
+			name.setText(fileNames.get(index));
+			names.add(name);
+			if (embed && !readOnly) {
+				Button btn = new Button(container, SWT.PUSH);
+				btn.setText("É¾³ý");
+				removeBtns.add(btn);
+				GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+				gd.widthHint = 56;
+				gd.heightHint = 24;
+				btn.setLayoutData(gd);
+				btn.setVisible(remotesFiles != null);
+				btn.addListener(SWT.Selection, e -> {
+					removeItem(container);
+				});
 			}
 		}
 	}
 
+	private void removeItem(Composite container) {
+		int idx = containers.indexOf(container);
+		containers.remove(idx);
+		icons.remove(idx);
+		removeBtns.remove(idx);
+		names.remove(idx);
+		fileNames.remove(idx);
+		if (remotesFiles != null && remotesFiles.size() > idx) {
+			remotesFiles.remove(idx);
+		}
+		if (localFiles != null && localFiles.size() > idx) {
+			localFiles.remove(idx);
+		}
+		container.dispose();
+		layout();
+	}
+
 	private static GridLayout createContainerLayout() {
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(3, false);
 		layout.verticalSpacing = 0;
 		return layout;
 	}
@@ -153,6 +229,14 @@ public class UploadPanel extends Composite {
 			return Math.round(time / SEC) + " sec";
 		}
 		return time + " milliseconds";
+	}
+
+	public List<Object> getRemotesFiles() {
+		return remotesFiles;
+	}
+
+	public List<File> getLocalFiles() {
+		return localFiles;
 	}
 
 }

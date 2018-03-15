@@ -29,7 +29,7 @@ public class CheckField extends EditorField {
 		// 读取配置进行设置
 
 		// 设置文本是否只读
-		control.setEnabled(!fieldConfig.isReadOnly());
+		control.setEnabled(!isReadOnly());
 
 		control.addListener(SWT.Selection, e -> {
 			try {

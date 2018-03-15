@@ -33,7 +33,7 @@ public class TextField extends EditorField {
 		Optional.ofNullable(fieldConfig.getTextMessage()).ifPresent(o -> control.setMessage(o));
 
 		// 设置文本是否只读
-		control.setEditable(!fieldConfig.isReadOnly());
+		control.setEditable(!isReadOnly());
 
 		// 设置文本是否显示为密码
 		// ^ style

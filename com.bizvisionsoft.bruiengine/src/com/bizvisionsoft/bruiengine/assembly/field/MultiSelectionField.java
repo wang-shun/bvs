@@ -36,7 +36,7 @@ public class MultiSelectionField extends SelectionField {
 		grid = ((DataGrid) brui.getTarget()).disablePagination().disableDateSetEngine();
 
 		// 如果可以编辑，增加 添加按钮，删除按钮，表格增加勾选框
-		if (!fieldConfig.isReadOnly()) {
+		if (!isReadOnly()) {
 			// 2. 设置表格项的选择
 			grid.setCheckOn()
 					// 3. 增加工具栏按钮
@@ -63,7 +63,7 @@ public class MultiSelectionField extends SelectionField {
 	@Override
 	protected Object getControlLayoutData() {
 		GridData gd = (GridData) super.getControlLayoutData();
-		gd.heightHint = fieldConfig.isReadOnly()?215:227;// 显示4行，带有工具栏
+		gd.heightHint = isReadOnly()?215:227;// 显示4行，带有工具栏
 		return gd;
 	}
 

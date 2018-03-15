@@ -34,7 +34,7 @@ public class SelectionField extends EditorField {
 
 		text = new Text(pane, SWT.NONE);
 		text.setEditable(false);
-		if (!fieldConfig.isReadOnly()) {
+		if (!isReadOnly()) {
 			Button clear = new Button(pane, SWT.PUSH);
 			clear.setData(RWT.CUSTOM_VARIANT, "inline");
 			clear.setText("Çå¿Õ");

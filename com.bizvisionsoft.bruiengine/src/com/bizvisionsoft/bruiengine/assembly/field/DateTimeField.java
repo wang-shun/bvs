@@ -28,7 +28,7 @@ public class DateTimeField extends EditorField {
 
 	@Override
 	protected Control createControl(Composite parent) {
-		if (fieldConfig.isReadOnly()) {
+		if (isReadOnly()) {
 			return createText(parent);
 		} else {
 			return createDateTime(parent);
@@ -69,7 +69,7 @@ public class DateTimeField extends EditorField {
 
 		control = new DateTime(parent, setting);
 
-		control.setEnabled(!fieldConfig.isReadOnly());
+		control.setEnabled(!isReadOnly());
 
 		control.addListener(SWT.Modify, e -> {
 			try {

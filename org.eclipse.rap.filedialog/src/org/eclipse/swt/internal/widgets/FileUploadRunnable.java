@@ -12,6 +12,7 @@ package org.eclipse.swt.internal.widgets;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -94,11 +95,18 @@ public class FileUploadRunnable implements Runnable {
 		progressCollector.updateProgress(percent);
 	}
 
-	void handleFinished(List<String> targetFileNames) {
+	void handleFinished(File[] files) {
 		state.set(State.FINISHED);
 		uploadPanel.updateIcons(State.FINISHED);
+		uploadPanel.updateFiles(Arrays.asList(files));
 		progressCollector.resetToolTip();
-		progressCollector.updateCompletedFiles(targetFileNames);
+
+		List<String> fileNames = new ArrayList<String>();
+		for (int i = 0; i < files.length; i++) {
+			fileNames.add(files[i].getName());
+		}
+
+		progressCollector.updateCompletedFiles(fileNames);
 	}
 
 	void handleFailed(Exception exception) {
@@ -152,12 +160,11 @@ public class FileUploadRunnable implements Runnable {
 		@Override
 		public void uploadFinished(FileUploadEvent event) {
 			FileUploadHandler uploadHandler = (FileUploadHandler) event.getSource();
-			DiskFileUploadReceiver receiver = (DiskFileUploadReceiver) uploadHandler.getReceiver();
-			final List<String> targetFileNames = getTargetFileNames(receiver);
+			final DiskFileUploadReceiver receiver = (DiskFileUploadReceiver) uploadHandler.getReceiver();
 			asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					handleFinished(targetFileNames);
+					handleFinished(receiver.getTargetFiles());
 				}
 			});
 			doNotify();
@@ -174,13 +181,13 @@ public class FileUploadRunnable implements Runnable {
 			doNotify();
 		}
 
-		private List<String> getTargetFileNames(DiskFileUploadReceiver receiver) {
-			List<String> result = new ArrayList<>();
-			for (File targetFile : receiver.getTargetFiles()) {
-				result.add(targetFile.getAbsolutePath());
-			}
-			return result;
-		}
+		// private List<String> getTargetFileNames(DiskFileUploadReceiver receiver) {
+		// List<String> result = new ArrayList<>();
+		// for (File targetFile : receiver.getTargetFiles()) {
+		// result.add(targetFile.getAbsolutePath());
+		// }
+		// return result;
+		// }
 
 	}
 

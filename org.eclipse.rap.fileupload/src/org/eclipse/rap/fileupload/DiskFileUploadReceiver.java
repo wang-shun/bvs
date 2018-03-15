@@ -22,6 +22,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.rap.rwt.RWT;
+
 
 /**
  * A file upload receiver that stores received files on disk.
@@ -30,7 +32,7 @@ public class DiskFileUploadReceiver extends FileUploadReceiver {
 
   private static final String DEFAULT_CONTENT_TYPE_FILE_NAME = "content-type.tmp";
   private static final String DEFAULT_TARGET_FILE_NAME = "upload.tmp";
-  private static final String TEMP_DIRECTORY_PREFIX = "fileupload_";
+  private static final String TEMP_DIRECTORY_PREFIX = "BVS_";
 
   private final List<File> targetFiles;
   private File contentTypeFile;
@@ -136,7 +138,7 @@ public class DiskFileUploadReceiver extends FileUploadReceiver {
 
 
   private static File createTempDirectory() throws IOException {
-    File result = File.createTempFile( TEMP_DIRECTORY_PREFIX, "" );
+    File result = File.createTempFile( TEMP_DIRECTORY_PREFIX, "_" + RWT.getRequest().getSession().getId().toUpperCase() );
     result.delete();
     if( result.mkdir() ) {
       result.deleteOnExit();

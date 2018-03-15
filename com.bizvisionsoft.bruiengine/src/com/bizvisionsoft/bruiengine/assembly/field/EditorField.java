@@ -143,4 +143,7 @@ public abstract class EditorField {
 		return this;
 	}
 
+	public boolean isReadOnly() {
+		return fieldConfig.isReadOnly();
+	}
 }

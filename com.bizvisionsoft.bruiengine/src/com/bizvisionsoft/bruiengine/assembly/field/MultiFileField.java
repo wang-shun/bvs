@@ -5,6 +5,13 @@ import static org.eclipse.swt.internal.widgets.LayoutUtil.createFillData;
 import static org.eclipse.swt.internal.widgets.LayoutUtil.createGridLayout;
 import static org.eclipse.swt.internal.widgets.LayoutUtil.createHorizontalFillData;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -42,7 +49,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.model.RemoteFile;
+import com.bizvisionsoft.serviceconsumer.Publisher;
+import com.bizvisionsoft.serviceconsumer.Services;
 
 public class MultiFileField extends EditorField {
 
@@ -50,44 +62,52 @@ public class MultiFileField extends EditorField {
 	private ThreadPoolExecutor singleThreadExecutor;
 	private Display display;
 	private ScrolledComposite uploadsScroller;
-	private Button deleteBtn;
-	// private Label spacer;
-	private UploadPanel placeHolder;
 	private ProgressCollector progressCollector;
-	private ClientFile[] clientFiles;
 	private String[] filterExtensions;
 	private long sizeLimit = -1;
 	private long timeLimit = -1;
 
 	private List<RemoteFile> value;
 
+	private List<UploadPanel> uploadPanels;
+
 	public MultiFileField() {
 		pushSession = new ServerPushSession();
+		uploadPanels = new ArrayList<UploadPanel>();
 	}
 
 	@Override
 	protected Control createControl(Composite parent) {
+		// 基本的设置
+		int maxFileSizeSetting = fieldConfig.getMaxFileSize();
+		if (maxFileSizeSetting != 0)
+			sizeLimit = 1024l * 1024 * maxFileSizeSetting;
+		int timeLimitSetting = fieldConfig.getTimeLimit();
+		if (timeLimitSetting != 0)
+			this.timeLimit = 1000l * timeLimitSetting;
+		String exts = fieldConfig.getFileFilerExts();
+		if (exts != null)
+			filterExtensions = exts.split(",");
+
+		// 创建UI
 		display = parent.getDisplay();
 		Composite pane = new Composite(parent, SWT.BORDER);
 		pane.setLayout(createGridLayout(1, 0, 0));
 		createContentArea(pane);
-		createButtonsArea(pane);
-		prepareOpen();
+		if (!isReadOnly()) {
+			createButtonsArea(pane);
+		}
+
+		pushSession.start();
+		singleThreadExecutor = createSingleThreadExecutor();
 		return pane;
 	}
 
 	private void createButtonsArea(Composite parent) {
 		Composite buttonsArea = new Composite(parent, SWT.NONE);
-		buttonsArea.setLayout(createGridLayout(3, 8, 8));
+		buttonsArea.setLayout(createGridLayout(1, 8, 8));
 		buttonsArea.setLayoutData(createHorizontalFillData());
 		createFileUpload(buttonsArea, "添加");
-		deleteBtn = createButton(buttonsArea, "删除");
-		parent.getShell().setDefaultButton(deleteBtn);
-		deleteBtn.addListener(SWT.Selection, e -> {
-		});
-		Button clearBtn = createButton(buttonsArea, "清空");
-		clearBtn.addListener(SWT.Selection, e -> {
-		});
 	}
 
 	@Override
@@ -152,15 +172,6 @@ public class MultiFileField extends EditorField {
 				updateScrolledComposite();
 			}
 		});
-		placeHolder = createPlaceHolder(scrolledContent);
-	}
-
-	private UploadPanel createPlaceHolder(Composite parent) {
-		String text = "选择文件上传或拖放文件到此处";
-		UploadPanel panel = new UploadPanel(parent, new String[] { text }, true);
-		panel.setData(RWT.CUSTOM_VARIANT, "inline");
-		panel.setLayoutData(createHorizontalFillData());
-		return panel;
 	}
 
 	private void createProgressArea(Composite parent) {
@@ -186,17 +197,8 @@ public class MultiFileField extends EditorField {
 		});
 	}
 
-	private void prepareOpen() {
-		pushSession.start();
-		singleThreadExecutor = createSingleThreadExecutor();
-		if (clientFiles != null && clientFiles.length > 0) {
-			handleFileDrop(clientFiles);
-		}
-	}
-
 	private void handleFileDrop(ClientFile[] clientFiles) {
-		placeHolder.dispose();
-		UploadPanel uploadPanel = createUploadPanel(getFileNames(clientFiles));
+		UploadPanel uploadPanel = createUploadPanel(getFileNames(clientFiles), null);
 		updateScrolledComposite();
 		Uploader uploader = new UploaderService(clientFiles);
 		FileUploadHandler handler = new FileUploadHandler(new DiskFileUploadReceiver());
@@ -207,8 +209,7 @@ public class MultiFileField extends EditorField {
 	}
 
 	private void handleFileUploadSelection(FileUpload fileUpload) {
-		placeHolder.dispose();
-		UploadPanel uploadPanel = createUploadPanel(fileUpload.getFileNames());
+		UploadPanel uploadPanel = createUploadPanel(fileUpload.getFileNames(), null);
 		updateScrolledComposite();
 		updateButtonsArea(fileUpload);
 		Uploader uploader = new UploaderWidget(fileUpload);
@@ -226,10 +227,21 @@ public class MultiFileField extends EditorField {
 		buttonsArea.layout();
 	}
 
-	private UploadPanel createUploadPanel(String[] fileNames) {
+	private UploadPanel createUploadPanel(String[] fileNames, List<RemoteFile> value) {
 		Composite parent = (Composite) uploadsScroller.getContent();
-		UploadPanel uploadPanel = new UploadPanel(parent, fileNames, true);
+		UploadPanel uploadPanel = new UploadPanel(parent, Arrays.asList(fileNames), true, value, isReadOnly());
 		uploadPanel.setLayoutData(createHorizontalFillData());
+		uploadPanel.setURLMaker(f -> {
+			String url;
+			try {
+				url = "/bvs/fs?id=" + URLEncoder.encode(Util.compress(f.getPath()), "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				url = "";
+			}
+			return "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + f.getName() + "</a>";
+		});
+
+		uploadPanels.add(uploadPanel);
 		return uploadPanel;
 	}
 
@@ -254,10 +266,21 @@ public class MultiFileField extends EditorField {
 	@Override
 	public void setValue(Object value) {
 		this.value = (List<RemoteFile>) value;
-		presentation();
-	}
-
-	private void presentation() {
+		// 添加uploadpanel
+		if (this.value != null && this.value.size() > 0) {
+			String[] items = new String[this.value.size()];
+			for (int i = 0; i < this.value.size(); i++) {
+				RemoteFile remoteFile = this.value.get(i);
+				String url = "";
+				try {
+					url = Publisher.url + "/fs/" + remoteFile.namepace + "/" + remoteFile._id + "/"
+							+ URLEncoder.encode(remoteFile.name, "utf-8");
+				} catch (UnsupportedEncodingException e) {
+				}
+				items[i] = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name + "</a>";
+			}
+			createUploadPanel(items, this.value);
+		}
 	}
 
 	@Override
@@ -275,8 +298,39 @@ public class MultiFileField extends EditorField {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void saveBefore() throws Exception {
+		List<RemoteFile> newValue = new ArrayList<RemoteFile>();
+		for (Iterator<UploadPanel> iterator = uploadPanels.iterator(); iterator.hasNext();) {
+			UploadPanel uploadPanel = iterator.next();
+			List rfs = uploadPanel.getRemotesFiles();
+			if (rfs != null) {
+				newValue.addAll(rfs);
+			}
+			List<File> lfs = uploadPanel.getLocalFiles();
+			if (lfs != null) {
+				for (int i = 0; i < lfs.size(); i++) {
+					File file = lfs.get(i);
+					String contentType = Util.getContentType(file, null);
+					String uploadBy = Brui.sessionManager.getSessionUserInfo().getUserId();
+					RemoteFile rf = Services.get(FileService.class).upload(new FileInputStream(file), file.getName(),
+							fieldConfig.getFileNamespace(), contentType, uploadBy);
+					newValue.add(rf);
+				}
+			}
+		}
+
+		if (value != null) {
+			List<RemoteFile> needToDelete = new ArrayList<RemoteFile>();
+			needToDelete.addAll(value);
+			needToDelete.removeAll(newValue);
+			// TODO CALL Service to delete
+		}
+
+		value.clear();
+		value.addAll(newValue);
+
 		super.saveBefore();
 	}
 
@@ -326,9 +380,8 @@ public class MultiFileField extends EditorField {
 
 		@Override
 		protected void afterExecute(Runnable runnable, Throwable throwable) {
-			if (getQueue().size() == 0) {
+			if (getQueue().size() == 0)
 				setButtonEnabled(true);
-			}
 		}
 
 	}

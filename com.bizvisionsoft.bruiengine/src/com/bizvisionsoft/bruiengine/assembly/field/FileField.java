@@ -60,9 +60,9 @@ public class FileField extends EditorField implements FileUploadListener {
 		int maxFileSize = fieldConfig.getMaxFileSize();
 		if (maxFileSize != 0)
 			uploadHandler.setMaxFileSize(1024l * 1024 * maxFileSize);
-		int textLimit = fieldConfig.getTextLimit();
-		if (textLimit != 0)
-			uploadHandler.setUploadTimeLimit(1000l * textLimit);
+		int timeLimit = fieldConfig.getTimeLimit();
+		if (timeLimit != 0)
+			uploadHandler.setUploadTimeLimit(1000l * timeLimit);
 
 		Composite pane = new Composite(parent, SWT.BORDER);
 		pane.setLayout(new FormLayout());
