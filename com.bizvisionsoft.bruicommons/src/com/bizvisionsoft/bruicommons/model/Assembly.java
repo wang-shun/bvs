@@ -7,12 +7,14 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_STICKER = "sticker";
 
 	public static final String TYPE_GRID = "grid";
-	
+
 	public static final String TYPE_EDITOR = "editor";
 
 	private String id;
 
 	private String name;
+	
+	private String title;
 
 	private String description;
 
@@ -42,6 +44,16 @@ public class Assembly extends ModelObject {
 		Object old = this.name;
 		this.name = name;
 		firePropertyChange("name", old, this.name);
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		Object old = this.title;
+		this.title = title;
+		firePropertyChange("title", old, this.title);
 	}
 
 	public String getDescription() {
@@ -86,7 +98,7 @@ public class Assembly extends ModelObject {
 	public boolean isCustomized() {
 		return type != null || (bundleId != null && !bundleId.isEmpty() && className != null && !className.isEmpty());
 	}
-	
+
 	public boolean isEmptyContainer() {
 		return !isCustomized();
 	}
@@ -153,8 +165,8 @@ public class Assembly extends ModelObject {
 	private String gridDataSetClassName;
 
 	private List<Column> columns;
-	
-	//±à¼­Æ÷
+
+	// ±à¼­Æ÷
 	private List<FormField> fields;
 
 	private boolean gridAutoColumnWidth;
@@ -385,11 +397,11 @@ public class Assembly extends ModelObject {
 		this.gridDataSetClassName = gridDataSetClassName;
 		firePropertyChange("gridDataSetClassName", old, this.gridDataSetClassName);
 	}
-	
+
 	public boolean isGridAutoColumnWidth() {
 		return gridAutoColumnWidth;
 	}
-	
+
 	public void setGridAutoColumnWidth(boolean gridAutoColumnWidth) {
 		this.gridAutoColumnWidth = gridAutoColumnWidth;
 	}
@@ -408,16 +420,36 @@ public class Assembly extends ModelObject {
 
 	// *******************************************************************************************
 	// form field
-	
+
 	public List<FormField> getFields() {
 		return fields;
 	}
-	
+
 	public void setFields(List<FormField> fields) {
 		this.fields = fields;
 	}
 
+	// *********************************************************************************************
+	// ²éÑ¯¶¨Òå
+	private String queryBuilderBundle;
 
-	
+	private String queryBuilderClass;
+
+
+	public String getQueryBuilderBundle() {
+		return queryBuilderBundle;
+	}
+
+	public String getQueryBuilderClass() {
+		return queryBuilderClass;
+	}
+
+	public void setQueryBuilderBundle(String queryBuilderBundle) {
+		this.queryBuilderBundle = queryBuilderBundle;
+	}
+
+	public void setQueryBuilderClass(String queryBuilderClass) {
+		this.queryBuilderClass = queryBuilderClass;
+	}
 
 }

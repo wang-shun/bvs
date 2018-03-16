@@ -36,7 +36,7 @@ public class EditUser {
 					long cnt = service.update(filterAndUpdate.bson());
 					if (cnt == 1) {
 						UserInfo info = service.info(user.getUserId());
-						DataGrid grid = (DataGrid) context.getContext("用户列表").getContent();
+						DataGrid grid = (DataGrid) context.getChildContextByAssemblyName("用户列表").getContent();
 						grid.replaceItem(elem, info);
 					}
 				}

@@ -33,7 +33,7 @@ public class DemoAction {
 						.append("update", new BasicDBObject("$set", new BasicDBObject("name", userName)));
 				long cnt = Services.get(UserService.class).update(filterAndUpdate);
 				if (cnt == 1) {
-					DataGrid grid = (DataGrid) context.getContext("用户列表").getContent();
+					DataGrid grid = (DataGrid) context.getChildContextByAssemblyName("用户列表").getContent();
 					((UserInfo) elem).setName(userName);
 					grid.update(elem);
 				}

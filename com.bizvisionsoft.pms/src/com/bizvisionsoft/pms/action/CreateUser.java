@@ -34,7 +34,7 @@ public class CreateUser {
 			service.insert(user);
 			List<UserInfo> ds = service.createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1)
 					.append("filter", new BasicDBObject("userId", userId)));
-			DataGrid grid = (DataGrid) context.getContext("用户列表").getContent();
+			DataGrid grid = (DataGrid) context.getChildContextByAssemblyName("用户列表").getContent();
 			grid.insert(ds.get(0), 0);
 		}
 	}

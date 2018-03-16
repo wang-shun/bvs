@@ -20,9 +20,10 @@ public class BruiActionEngine extends BruiEngine {
 
 		if (staId != null && !staId.isEmpty()) {// 用于切换内容区的内置Action
 			brui = new BruiActionEngine(new SwitchContentToAssembly(Brui.site.getAssembly(staId)));
-		} else if (editorId != null && !editorId.isEmpty()) {
+		} else if (editorId != null && !editorId.isEmpty()) {// 用于打开编辑器的Action
 			brui = new BruiActionEngine(
 					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
+//		} else if(t) {//显示表格查询
 		} else {
 			brui = load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
@@ -60,7 +61,7 @@ public class BruiActionEngine extends BruiEngine {
 	 */
 	public void invokeExecute(Event event, IBruiContext context) {
 		invokeMethodInjectParams(Execute.class, new Object[] { event, context },
-				new String[] { Execute.PARAM_EVENT, Execute.PARAM_CONTEXT },null);
+				new String[] { Execute.PARAM_EVENT, Execute.PARAM_CONTEXT }, null);
 	}
 
 }

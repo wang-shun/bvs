@@ -14,7 +14,8 @@ public class Editor extends Popup {
 	public Editor(Assembly assembly, IBruiContext parentContext) {
 		super(assembly, parentContext);
 		setShellStyle(SWT.TITLE | SWT.RESIZE | SWT.ON_TOP | SWT.APPLICATION_MODAL);
-		setTitle(assembly.getName());
+		String title = assembly.getTitle();
+		setTitle(title == null ? assembly.getName() : title);
 	}
 
 	@Override
@@ -31,7 +32,6 @@ public class Editor extends Popup {
 		getContext().setInput(input);
 		return this;
 	}
-
 
 	@Override
 	public BruiEditorContext getContext() {

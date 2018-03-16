@@ -78,7 +78,7 @@ public class BruiEngine {
 				return method.invoke(getTarget(), args);
 			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			} catch (InvocationTargetException e1) {
-				throw new RuntimeException("注解为" + methodAnnotation + "调用目标对象错误。");
+				throw new RuntimeException("注解为" + methodAnnotation + "调用目标对象错误。", e1);
 			}
 			return null;
 		}).orElse(defaultValueForNoMethod);
@@ -94,9 +94,9 @@ public class BruiEngine {
 				return null;
 			}
 		} catch (IllegalAccessException e) {
-			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。");
+			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
 		} catch (IllegalArgumentException e1) {
-			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。");
+			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
 		}
 	}
 
@@ -116,11 +116,11 @@ public class BruiEngine {
 				return null;
 			}
 		} catch (IllegalAccessException e) {
-			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。");
+			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
 		} catch (IllegalArgumentException e1) {
-			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。");
+			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
 		} catch (InvocationTargetException e2) {
-			throw new RuntimeException("注解为" + annoClass + "调用目标对象错误。");
+			throw new RuntimeException("注解为" + annoClass + "调用目标对象错误。", e2);
 		}
 	}
 
@@ -132,9 +132,9 @@ public class BruiEngine {
 				field.set(target, value);
 			}
 		} catch (IllegalAccessException e) {
-			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。");
+			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
 		} catch (IllegalArgumentException e1) {
-			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。");
+			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class BruiEngine {
 			if (clazz != null)
 				target = clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			new RuntimeException(clazz + "无法实例化。");
+			new RuntimeException(clazz + "无法实例化。", e);
 		}
 		return this;
 	}
@@ -185,9 +185,9 @@ public class BruiEngine {
 						f.setAccessible(true);
 						f.set(target, value);
 					} catch (IllegalAccessException e) {
-						throw new RuntimeException("注解为" + Inject.class + "的字段或方法无法访问。");
+						throw new RuntimeException("注解为" + Inject.class + "的字段或方法无法访问。", e);
 					} catch (IllegalArgumentException e1) {
-						throw new RuntimeException("注解为" + Inject.class + "的字段或方法参数错误。");
+						throw new RuntimeException("注解为" + Inject.class + "的字段或方法参数错误。", e1);
 					}
 				}
 			}
@@ -206,9 +206,9 @@ public class BruiEngine {
 			try {
 				return field.get(element);
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。");
-			} catch (IllegalArgumentException e1) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。");
+				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。", e);
 			}
 		}
 
@@ -218,11 +218,11 @@ public class BruiEngine {
 			try {
 				return method.invoke(element);
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。");
-			} catch (IllegalArgumentException e1) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。");
+				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。", e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException("注解为" + Structure.class + "调用目标对象错误。");
+				throw new RuntimeException("注解为" + Structure.class + "调用目标对象错误。", e);
 			}
 		}
 		return noAnnotationValue;
@@ -253,11 +253,20 @@ public class BruiEngine {
 	 * @return
 	 */
 	public static Object readValue(Object element, String cName, String fName, Object defaultValue) {
-		return read(element.getClass(), ReadValue.class, element, cName, fName, defaultValue, a -> a.value());
+		if (element instanceof Map<?, ?>) {
+			return ((Map<?, ?>) element).get(fName);
+		} else {
+			return read(element.getClass(), ReadValue.class, element, cName, fName, defaultValue, a -> a.value());
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void writeValue(Object element, String cName, String fName, Object value) {
-		write(element.getClass(), WriteValue.class, element, cName, fName, value, a -> a.value());
+		if (element instanceof Map<?, ?>) {
+			((Map<String, Object>) element).put(fName, value);
+		} else {
+			write(element.getClass(), WriteValue.class, element, cName, fName, value, a -> a.value());
+		}
 	}
 
 	public static <T extends Annotation> Object read(Class<?> c, Class<T> annoClass, Object element, String cName,
@@ -425,12 +434,13 @@ public class BruiEngine {
 	}
 
 	/**
-	 * 复制对象的属性
+	 * 复制对象的属性,只复制字段值
 	 * 
 	 * @param info
 	 * @param elem
+	 * @return
 	 */
-	public static void copy(Object source, Object target) {
+	public static Object simpleCopy(Object source, Object target) {
 		Arrays.asList(source.getClass().getDeclaredFields()).forEach(srcField -> {
 			try {
 				Field tgtField = target.getClass().getDeclaredField(srcField.getName());
@@ -441,6 +451,7 @@ public class BruiEngine {
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			}
 		});
+		return target;
 	}
 
 }

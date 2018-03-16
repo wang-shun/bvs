@@ -23,6 +23,8 @@ public class AssemblyEditorEditor extends ModelEditor {
 		createTextField(parent, "唯一标识符：", inputData, "id", SWT.READ_ONLY);
 
 		createTextField(parent, "组件名称：", inputData, "name", SWT.BORDER);
+		
+		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 		

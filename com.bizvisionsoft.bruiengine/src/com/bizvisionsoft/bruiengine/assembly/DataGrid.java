@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.Document;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
@@ -36,10 +38,12 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
+import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
 public class DataGrid {
@@ -427,8 +431,7 @@ public class DataGrid {
 	}
 
 	public void replaceItem(Object elem, Object info) {
-		BruiEngine.copy(info, elem);
-		update(elem);
+		update(BruiEngine.simpleCopy(info, elem));
 	}
 
 	public void update(Object elem) {
@@ -450,6 +453,31 @@ public class DataGrid {
 
 	public void removeAllItem() {
 		viewer.getGrid().removeAll();
+	}
+
+	/**
+	 * ÷¥––≤È—Ø
+	 */
+	public void doQuery() {
+
+		Assembly queryConfig = (Assembly) BruiEngine.simpleCopy(config, new Assembly());
+		queryConfig.setType(Assembly.TYPE_EDITOR);
+		queryConfig.setTitle("≤È—Ø");
+
+		String bundleId = config.getQueryBuilderBundle();
+		String classId = config.getQueryBuilderClass();
+		Object input;
+		if (bundleId != null && classId != null) {
+			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
+		} else {
+			input = new Document();
+		}
+
+		Editor editor = bruiService.open(queryConfig, input, true, context);
+		if (Window.OK == editor.open()) {
+			Object result = editor.getResult();
+			System.out.println(result);
+		}
 	}
 
 }

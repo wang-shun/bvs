@@ -36,6 +36,8 @@ public abstract class EditorField {
 
 	protected BruiAssemblyContext context;
 
+	private boolean editorIsEditable;
+
 	public EditorField setFieldConfig(FormField fieldConfig) {
 		this.fieldConfig = fieldConfig;
 		return this;
@@ -72,7 +74,7 @@ public abstract class EditorField {
 		if (fieldConfig.isHasInfoLabel())
 			createInfoLabel(container).setLayoutData(getInfoLayoutData());
 
-		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName(),null));
+		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
 
 		container.addListener(SWT.Dispose, e -> {
 			dispose();
@@ -144,6 +146,11 @@ public abstract class EditorField {
 	}
 
 	public boolean isReadOnly() {
-		return fieldConfig.isReadOnly();
+		return (!editorIsEditable) || fieldConfig.isReadOnly();
+	}
+
+	public EditorField setEditable(boolean editorIsEditable) {
+		this.editorIsEditable = editorIsEditable;
+		return this;
 	}
 }

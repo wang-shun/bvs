@@ -23,6 +23,8 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private IBruiContext parentContext;
 
+	private String name;
+
 	public BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
@@ -56,20 +58,36 @@ public class BruiAssemblyContext implements IBruiContext {
 		return engine.getContent(name);
 	}
 
-	public IBruiContext getContext(String name) {
+	public IBruiContext getChildContextByAssemblyName(String assemblyName) {
 		if (assembly == null) {
 			return null;
 		}
-		if (assembly.getName().equals(name)) {
+		if (assembly.getName().equals(assemblyName)) {
 			return this;
 		}
 		for (int i = 0; i < children.size(); i++) {
-			IBruiContext c = children.get(i).getContext(name);
+			IBruiContext c = children.get(i).getChildContextByAssemblyName(assemblyName);
 			if (c != null)
 				return c;
 		}
 		return null;
 	}
+	
+	public IBruiContext getChildContextByName(String name) {
+		if (name == null) {
+			return null;
+		}
+		if (name.equals(this.name)) {
+			return this;
+		}
+		for (int i = 0; i < children.size(); i++) {
+			IBruiContext c = children.get(i).getChildContextByName(name);
+			if (c != null)
+				return c;
+		}
+		return null;
+	}
+	
 
 	public Object getContent() {
 		return getContent("this");
@@ -96,12 +114,20 @@ public class BruiAssemblyContext implements IBruiContext {
 	public IBruiContext getParentContext() {
 		return parentContext;
 	}
-	
+
 	@Override
 	public void remove(IBruiContext childContext) {
-		if(childContext != null) {
+		if (childContext != null) {
 			children.remove(childContext);
 		}
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

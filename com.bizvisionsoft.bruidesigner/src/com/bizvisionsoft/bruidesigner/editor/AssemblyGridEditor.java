@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
+import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 
 public class AssemblyGridEditor extends ModelEditor {
@@ -23,6 +24,8 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "唯一标识符：", inputData, "id", SWT.READ_ONLY);
 
 		createTextField(parent, "组件名称：", inputData, "name", SWT.BORDER);
+		
+		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
@@ -76,6 +79,15 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "取数完整的类名:", inputData, "gridDataSetClassName", SWT.BORDER);
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER).setMessage("例如：UserService.list");
+
+		new Label(parent, SWT.SEPARATOR|SWT.HORIZONTAL).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		l = new Label(parent,SWT.NONE);
+		l.setText("自定义查询构造模型：");
+		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+		createTextField(parent, "查询构造模型（Bundle Id）:", inputData, "queryBuilderBundle", SWT.BORDER);
+
+		createTextField(parent, "查询构造模型完整的类名:", inputData, "queryBuilderClass", SWT.BORDER);
 		
 		parent = createTabItemContent("表格列");
 		List<Column> cols = ((Assembly) inputData).getColumns();
@@ -88,6 +100,12 @@ public class AssemblyGridEditor extends ModelEditor {
 		if (actions == null)
 			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
+		
+		parent = createTabItemContent("查询字段");
+		List<FormField> fields = ((Assembly) inputData).getFields();
+		if(fields==null) 
+			((Assembly) inputData).setFields(fields = new ArrayList<FormField>());
+		new FormFieldsEditPane(parent, fields,this);
 		
 		addPartNamePropertyChangeListener("name");
 		

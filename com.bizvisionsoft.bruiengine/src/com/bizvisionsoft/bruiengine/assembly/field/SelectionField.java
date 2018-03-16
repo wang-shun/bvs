@@ -108,7 +108,7 @@ public class SelectionField extends EditorField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (saveCheck && value == null)
+		if (saveCheck && value == null && fieldConfig.isRequired())
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 	}
 

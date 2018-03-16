@@ -44,6 +44,11 @@ public class AssemblyContainer {
 		return this;
 	}
 
+	private AssemblyContainer setContextName(String name) {
+		context.setName(name);
+		return this;
+	}
+
 	public AssemblyContainer create() {
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 如果是自定义的组件，先创建，并获得container
@@ -121,9 +126,11 @@ public class AssemblyContainer {
 		layout.getAssemblys().forEach(al -> // 迭代
 		new AssemblyContainer((Composite) content, context)// 创建嵌套AssemblyContainer
 				.setAssembly(Brui.site.getAssembly(al.getId()))// 设置组件
+				.setContextName(al.getLayoutName())// 设置命名
 				.setServices(services)// 传递服务
 				.create()// 创建
 				.setContainerLayoutData(al)// 布局
+
 		);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////

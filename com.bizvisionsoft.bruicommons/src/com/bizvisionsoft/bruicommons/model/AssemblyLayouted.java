@@ -20,12 +20,24 @@ public class AssemblyLayouted extends ModelObject {
 
 	private int heightHint;
 
+	private String layoutName;
+
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getLayoutName() {
+		return layoutName;
+	}
+
+	public void setLayoutName(String layoutName) {
+		Object old = this.layoutName;
+		this.layoutName = layoutName;
+		firePropertyChange("layoutName", old, this.layoutName);
 	}
 
 	public int getHorizontalAlignment() {

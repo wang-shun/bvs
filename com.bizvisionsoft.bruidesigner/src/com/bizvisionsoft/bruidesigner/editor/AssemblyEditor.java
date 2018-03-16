@@ -22,6 +22,8 @@ public class AssemblyEditor extends ModelEditor {
 
 		createTextField(parent, "组件名称:", inputData, "name", SWT.BORDER);
 
+		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
+
 		createTextField(parent, "描述:", inputData, "description", SWT.BORDER);
 
 		createTextField(parent, "自定义插件唯一标识符:", inputData, "bundleId", SWT.BORDER);

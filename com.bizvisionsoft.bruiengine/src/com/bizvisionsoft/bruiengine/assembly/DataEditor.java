@@ -81,6 +81,8 @@ public class DataEditor {
 
 	private String title;
 
+	private boolean editable;
+
 	public DataEditor(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
@@ -92,6 +94,7 @@ public class DataEditor {
 
 		this.contentArea = parent;
 		input = context.getInput();
+		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
 		layout.spacing = 16;
@@ -114,30 +117,17 @@ public class DataEditor {
 		okBtn.setText("确定");
 		okBtn.addListener(SWT.Selection, e -> {
 			try {
-				save();
-				setReturnCode(Window.OK);
+				if (editable) {
+					save();
+					setReturnCode(Window.OK);
+				}
 				bruiService.closeCurrentPart();
 			} catch (Exception e1) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "错误", e1.getMessage());
 			}
 		});
 
-		Button cancelBtn = UserSession.bruiToolkit().newStyledControl(Button.class, parent, SWT.PUSH,
-				BruiToolkit.CSS_WARNING);
-		cancelBtn.setText("取消");
-		cancelBtn.addListener(SWT.Selection, e -> {
-			setReturnCode(Window.CANCEL);
-			bruiService.closeCurrentPart();
-		});
-
 		FormData fd = new FormData();
-		folder.setLayoutData(fd);
-		fd.top = new FormAttachment();
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(okBtn, -32);
-
-		fd = new FormData();
 		okBtn.setLayoutData(fd);
 		fd.height = 32;
 		fd.width = 120;
@@ -145,11 +135,29 @@ public class DataEditor {
 		fd.right = new FormAttachment(100);
 
 		fd = new FormData();
-		cancelBtn.setLayoutData(fd);
-		fd.height = 32;
-		fd.width = 120;
-		fd.bottom = new FormAttachment(100);
-		fd.right = new FormAttachment(okBtn);
+		folder.setLayoutData(fd);
+		fd.top = new FormAttachment();
+		fd.left = new FormAttachment();
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(okBtn, -32);
+
+		if (editable) {
+			Button cancelBtn = UserSession.bruiToolkit().newStyledControl(Button.class, parent, SWT.PUSH,
+					BruiToolkit.CSS_WARNING);
+			cancelBtn.setText("取消");
+			cancelBtn.addListener(SWT.Selection, e -> {
+				setReturnCode(Window.CANCEL);
+				bruiService.closeCurrentPart();
+			});
+
+			fd = new FormData();
+			cancelBtn.setLayoutData(fd);
+			fd.height = 32;
+			fd.width = 120;
+			fd.bottom = new FormAttachment(100);
+			fd.right = new FormAttachment(okBtn);
+
+		}
 
 	}
 
@@ -196,7 +204,7 @@ public class DataEditor {
 				} else {
 					fieldPart = new TextField();
 				}
-				fields.put(f, fieldPart.setEditorConfig(config).setFieldConfig(f).setInput(input));
+				fields.put(f, fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
 				fieldPart.setEditor(this).createUI(parent)// 创建UI
 						.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
 			}

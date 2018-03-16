@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.bizvisionsoft.bruicommons;bundle-version="1.0.0",
  com.bizvisionsoft.serviceconsumer;bundle-version="1.0.0",
  com.bizvisionsoft.service,
- com.bizvisionsoft.bruiengine
+ com.bizvisionsoft.bruiengine,
+ com.google.gson,
+ com.bizvisionsoft.mongocodex
 Import-Package: com.mongodb;version="3.6.0",
  org.bson.types

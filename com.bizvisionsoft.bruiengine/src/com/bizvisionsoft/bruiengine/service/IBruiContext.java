@@ -14,7 +14,7 @@ public interface IBruiContext extends IServiceWithId{
 
 	void dispose();
 
-	IBruiContext getContext(String name);
+	IBruiContext getChildContextByAssemblyName(String name);
 
 	Object getContent();
 
@@ -29,5 +29,7 @@ public interface IBruiContext extends IServiceWithId{
 	IBruiContext add(IBruiContext iBruiContext);
 
 	void remove(IBruiContext iBruiContext);
+
+	IBruiContext getChildContextByName(String name);
 
 }
