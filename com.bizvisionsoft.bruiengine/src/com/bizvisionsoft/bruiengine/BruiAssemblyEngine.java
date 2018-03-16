@@ -1,10 +1,5 @@
 package com.bizvisionsoft.bruiengine;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
@@ -98,62 +93,19 @@ public class BruiAssemblyEngine extends BruiEngine {
 	 * @return
 	 */
 	public Composite getContainer() {
-		Field field = Arrays.asList(clazz.getDeclaredFields()).stream()
-				.filter(f -> f.getAnnotation(GetContainer.class) != null).findFirst().orElse(null);
-		Object result;
-		if (field != null) {
-			try {
-				field.setAccessible(true);
-				result = field.get(target);
-				if (result instanceof Composite) {
-					return (Composite) result;
-				}
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				new RuntimeException(e.getCause());
-			}
-		}
-		Method method = Arrays.asList(clazz.getDeclaredMethods()).stream()
-				.filter(f -> f.getAnnotation(GetContainer.class) != null).findFirst().orElse(null);
-		if (method != null) {
-			try {
-				method.setAccessible(true);
-				result = method.invoke(target);
-				if (result instanceof Composite) {
-					return (Composite) result;
-				}
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				new RuntimeException(e.getCause());
-			}
+		Object value = getValue(GetContainer.class);
+		if (value instanceof Composite) {
+			return (Composite) value;
 		}
 		return null;
-
 	}
 
 	public Object getContent(String name) {
 		if (name.equals("this")) {
 			return target;
 		}
-		return getField(clazz, e -> {
-			GetContent anno = e.getAnnotation(GetContent.class);
-			return anno != null && anno.value().equals(name);
-		}).map(f -> {
-			try {
-				f.setAccessible(true);
-				return f.get(target);
-			} catch (IllegalArgumentException | IllegalAccessException e1) {
-				return null;
-			}
-		}).orElse(getMethod(clazz, e -> {
-			GetContent anno = e.getAnnotation(GetContent.class);
-			return anno != null && anno.value().equals(name);
-		}).map(f -> {
-			try {
-				f.setAccessible(true);
-				return f.invoke(target);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-				return null;
-			}
-		}).orElse(null));
+		Object value = getValue(GetContent.class);
+		return value;
 	}
 
 	@Override

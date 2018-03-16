@@ -86,9 +86,11 @@ public class UserServiceImpl implements UserService {
 				.append("tel", 1)//
 				.append("userId", 1)//
 				.append("email", 1)//
-				.append("headpicURL", 1)//
+				.append("headPics", 1)//
 				.append("orgId", 1)//
 				.append("activated", 1)//
+				.append("mobile", 1)//
+				.append("weixin", 1)//
 				.append("orgFullName", "$fullName")//
 		));
 

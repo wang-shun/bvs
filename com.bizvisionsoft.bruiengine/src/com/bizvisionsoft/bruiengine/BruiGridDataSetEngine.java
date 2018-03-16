@@ -3,7 +3,6 @@ package com.bizvisionsoft.bruiengine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -65,7 +64,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	public Object query(Integer skip, Integer limit, BasicDBObject filter) {
-		Method method = getMethod(clazz, e -> match(assembly.getName(), DataSet.LIST, e.getAnnotation(DataSet.class)))
+		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.LIST, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] args = new Object[method.getParameterCount()];
@@ -74,14 +73,14 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
 				if (sp != null) {
 					String paramName = sp.value();
-//					if (paramName.equals(ServiceParam.SKIP)) {
-//						args[i] = skip;
-//					} else if (paramName.equals(ServiceParam.LIMIT)) {
-//						args[i] = limit;
-//					} else if (paramName.equals(ServiceParam.FILTER)) {
-//						args[i] = filter;
-//					} else 
-						if (paramName.equals(ServiceParam.CONDITION)) {
+					// if (paramName.equals(ServiceParam.SKIP)) {
+					// args[i] = skip;
+					// } else if (paramName.equals(ServiceParam.LIMIT)) {
+					// args[i] = limit;
+					// } else if (paramName.equals(ServiceParam.FILTER)) {
+					// args[i] = filter;
+					// } else
+					if (paramName.equals(ServiceParam.CONDITION)) {
 						args[i] = new BasicDBObject().append("skip", skip).append("limit", limit).append("filter",
 								filter);
 					} else {
@@ -95,12 +94,10 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			try {
 				method.setAccessible(true);
 				return method.invoke(getTarget(), args);
-			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			} catch (InvocationTargetException e1) {
-				throw new RuntimeException(e1);
+			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		}
-		return null;
+		throw new RuntimeException("没有注解" + DataSet.class + " 值为 list的方法。");
 	}
 
 	public long count() {
@@ -112,31 +109,29 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	private Object noParamDataSetMethodInvoke(String paramValue) {
-		return getMethod(clazz, method -> {
-			return match(assembly.getName(), paramValue, method.getAnnotation(DataSet.class));
-		}).map(m -> {
+		Method m = getContainerMethod(clazz, DataSet.class, assembly.getName(), paramValue, a -> a.value())
+				.orElse(null);
+		if (m != null) {
 			try {
 				return m.invoke(getTarget());
-			} catch (IllegalAccessException | IllegalArgumentException e1) {
-				return null;
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			}
-		}).orElseThrow(null);
+		}
+		throw new RuntimeException("没有注解" + DataSet.class + " 值为" + paramValue + "的无参方法。");
 	}
 
-	private boolean match(String assemblyName, String useage, DataSet lf) {
-		return Optional.ofNullable(lf).map(a -> a.value()).map(vs -> {
-			for (int i = 0; i < vs.length; i++) {
-				String[] loc = vs[i].split("#");
-				if (loc.length == 1 && useage.equals(loc[0].trim())) {
-					return true;
-				} else if (loc.length > 1 && assemblyName.equals(loc[0].trim()) && useage.equals(loc[1].trim())) {
-					return true;
-				}
-			}
-			return false;
-		}).orElse(false);
-	}
+//	private boolean match(String assemblyName, String useage, DataSet lf) {
+//		return Optional.ofNullable(lf).map(a -> a.value()).map(vs -> {
+//			for (int i = 0; i < vs.length; i++) {
+//				String[] loc = vs[i].split("#");
+//				if (loc.length == 1 && useage.equals(loc[0].trim())) {
+//					return true;
+//				} else if (loc.length > 1 && assemblyName.equals(loc[0].trim()) && useage.equals(loc[1].trim())) {
+//					return true;
+//				}
+//			}
+//			return false;
+//		}).orElse(false);
+//	}
 
 }

@@ -97,7 +97,7 @@ public class SelectionField extends EditorField {
 
 	protected void presentation() {
 		Object label = Optional.ofNullable(value)
-				.map(v -> BruiEngine.readValue(v, assemblyConfig.getName(), ReadValue.LABEL)).orElse("");
+				.map(v -> BruiEngine.readValue(v, assemblyConfig.getName(), ReadValue.LABEL,null)).orElse("");
 		text.setText("" + label);
 	}
 
@@ -108,7 +108,7 @@ public class SelectionField extends EditorField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (value == null)
+		if (saveCheck && value == null)
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 	}
 

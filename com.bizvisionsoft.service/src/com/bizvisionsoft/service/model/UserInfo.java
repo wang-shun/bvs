@@ -6,7 +6,7 @@ import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
 import com.bizvisionsoft.mongocodex.annotations.SetValue;
 import com.bizvisionsoft.service.annotations.ReadValue;
 
-@PersistenceCollection(value = "account")
+@PersistenceCollection("account")
 public class UserInfo {
 
 	@SetValue

@@ -72,7 +72,7 @@ public abstract class EditorField {
 		if (fieldConfig.isHasInfoLabel())
 			createInfoLabel(container).setLayoutData(getInfoLayoutData());
 
-		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName()));
+		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName(),null));
 
 		container.addListener(SWT.Dispose, e -> {
 			dispose();
