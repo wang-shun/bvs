@@ -80,6 +80,17 @@ public class User {
 
 	@Persistence
 	private List<ObjectId> orgIds;
+	
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private String description;
+	
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private List<String> testMultiCheck;
+
 
 	@Persistence
 	@ReadValue
@@ -169,7 +180,7 @@ public class User {
 		this.weixin = weixin;
 	}
 
-	@ReadOptions(" 用户编辑器 # testCombo ")
+	@ReadOptions({" 用户编辑器 # testCombo ","testMultiCheck"})
 	public Map<String, Object> getOptionsForTestCombo() {
 		LinkedHashMap<String, Object> options = new LinkedHashMap<String, Object>();
 		options.put("北京", "PEK");

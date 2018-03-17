@@ -37,6 +37,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.DateTimeField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.FileField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
+import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
@@ -204,6 +205,8 @@ public class DataEditor {
 					fieldPart = new MultiFileField();
 				} else if (FormField.TYPE_TEXT_MULTILINE.equals(type)) {
 					fieldPart = new TextAreaField();
+				} else if (FormField.TYPE_MULTI_CHECK.equals(type)) {
+					fieldPart = new MultiCheckField();
 				} else {
 					fieldPart = new TextField();
 				}

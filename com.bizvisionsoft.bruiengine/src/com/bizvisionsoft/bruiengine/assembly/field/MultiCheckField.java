@@ -16,15 +16,16 @@ import org.eclipse.swt.widgets.Control;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 
-public class RadioField extends EditorField {
+public class MultiCheckField extends EditorField {
 
 	private Composite control;
 	private List<String> labels;
 	private List<Object> choice;
-	private Object value;
+	private List<Object> value;
 	private ArrayList<Button> buttons;
 
-	public RadioField() {
+	public MultiCheckField() {
+		value = new ArrayList<Object>();
 	}
 
 	@Override
@@ -69,30 +70,29 @@ public class RadioField extends EditorField {
 					item = new Button(control, SWT.TOGGLE);
 					item.setData(RWT.CUSTOM_VARIANT, "segmentleft");
 				} else {
-					item = new Button(control, SWT.RADIO);
+					item = new Button(control, SWT.CHECK);
 				}
 			} else if (i == choice.size() - 1) {
 				if (FormField.RADIO_STYLE_SEGMENT.equals(fieldConfig.getRadioStyle())) {
 					item = new Button(control, SWT.TOGGLE);
 					item.setData(RWT.CUSTOM_VARIANT, "segmentright");
 				} else {
-					item = new Button(control, SWT.RADIO);
+					item = new Button(control, SWT.CHECK);
 				}
 			} else {
 				if (FormField.RADIO_STYLE_SEGMENT.equals(fieldConfig.getRadioStyle())) {
 					item = new Button(control, SWT.TOGGLE);
 					item.setData(RWT.CUSTOM_VARIANT, "segment");
 				} else {
-					item = new Button(control, SWT.RADIO);
+					item = new Button(control, SWT.CHECK);
 				}
 			}
 			item.setText(labels.get(i));
 			item.setData(choice.get(i));
 			item.addListener(SWT.Selection, e -> {
 				try {
-					this.value = e.widget.getData();
-					for (int j = 0; j < buttons.size(); j++)
-						buttons.get(j).setSelection(j == choice.indexOf(value));
+					value.clear();
+					buttons.stream().filter(b -> b.getSelection()).forEach(s -> value.add(s.getData()));
 					writeToInput(false);
 				} catch (Exception e1) {
 					MessageDialog.openError(control.getShell(), "´íÎó", e1.getMessage());
@@ -128,15 +128,22 @@ public class RadioField extends EditorField {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setValue(Object value) {
-		int indexOf = choice.indexOf(value);
-		if (indexOf != -1) {
-			this.value = value;
-			for (int i = 0; i < buttons.size(); i++) {
-				buttons.get(i).setSelection(i == indexOf);
-			}
-		}
+		if (value instanceof List<?>)
+			this.value = (List<Object>) value;
+		else
+			this.value = new ArrayList<Object>();
+		presentation();
+	}
+
+	protected void presentation() {
+		buttons.forEach(b -> b.setSelection(false));
+		this.value.forEach(v -> {
+			int idx = choice.indexOf(v);
+			buttons.get(idx).setSelection(idx != -1);
+		});
 	}
 
 	@Override
@@ -147,8 +154,9 @@ public class RadioField extends EditorField {
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
 		// ±ØÌî¼ì²é
-		if (fieldConfig.isRequired() && value == null)
+		if (fieldConfig.isRequired() && (value == null || value.isEmpty())) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
+		}
 	}
 
 }
