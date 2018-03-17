@@ -12,7 +12,7 @@ public class FormFieldEmptyTypePane {
 		editor.createTextField(parent, "Î¨Ò»±êÊ¶·û:", element, "id", SWT.READ_ONLY);
 
 		String[] fields = null;
-		if (type.equals("edit")) {
+		if (type.equals("editor")) {
 			fields = new String[] {
 					FormField.TYPE_PAGE, 
 					FormField.TYPE_INLINE, 

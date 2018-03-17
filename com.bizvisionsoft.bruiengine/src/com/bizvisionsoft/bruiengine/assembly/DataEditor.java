@@ -41,6 +41,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
+import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextField;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
@@ -201,6 +202,8 @@ public class DataEditor {
 					fieldPart = new FileField();
 				} else if (FormField.TYPE_MULTI_FILE.equals(type)) {
 					fieldPart = new MultiFileField();
+				} else if (FormField.TYPE_TEXT_MULTILINE.equals(type)) {
+					fieldPart = new TextAreaField();
 				} else {
 					fieldPart = new TextField();
 				}

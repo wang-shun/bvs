@@ -412,7 +412,6 @@ public class ModelToolkit {
 		field.setId(generateId());
 		String generateName = generateName("ÐÂ×Ö¶Î");
 		field.setName(generateName);
-		field.setText(generateName);
 		field.setFormFields(new ArrayList<FormField>());
 		field.setType(FormField.TYPE_INLINE);
 		return field;

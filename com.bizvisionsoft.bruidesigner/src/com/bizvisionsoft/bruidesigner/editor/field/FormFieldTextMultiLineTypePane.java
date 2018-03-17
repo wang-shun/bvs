@@ -22,6 +22,8 @@ public class FormFieldTextMultiLineTypePane extends FormFieldEmptyTypePane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
+		
+		editor.createIntegerField(parent, "字数限定（0代表不限定）：", element, "textLimit", SWT.BORDER, 0, 999);
 
 	}
 
