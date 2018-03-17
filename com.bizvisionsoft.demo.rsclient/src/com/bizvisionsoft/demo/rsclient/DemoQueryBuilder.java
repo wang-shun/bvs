@@ -46,6 +46,9 @@ public class DemoQueryBuilder {
 
 	@WriteValue
 	private Object max;
+	
+	@WriteValue
+	private Object min;
 
 	private Date minDate;
 

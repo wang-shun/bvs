@@ -300,7 +300,7 @@ public class FormFieldsEditPane extends Composite {
 				new MultiFilePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_TEXT.equals(fieldType)) {
-				new TextQueryTypePane(element, editor, parent, type);
+				new TextQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_CHECK.equals(fieldType)) {
 				new FormFieldQueryCheckTypePane(element, editor, parent, type);
@@ -310,6 +310,9 @@ public class FormFieldsEditPane extends Composite {
 			
 			} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(fieldType)) {
 				new FormFieldQueryMultiSelectionTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(fieldType)) {
+				new NumberRangeQueryPane(element, editor, parent, type);
 			
 			}
 

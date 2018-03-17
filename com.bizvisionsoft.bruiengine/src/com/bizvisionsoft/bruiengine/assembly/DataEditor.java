@@ -42,6 +42,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.NumberRangeField;
+import com.bizvisionsoft.bruiengine.assembly.field.NumberRangeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
@@ -90,6 +91,8 @@ public class DataEditor {
 
 	private boolean ignoreNull;
 
+	private boolean wrapList;
+
 	public DataEditor(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
@@ -102,6 +105,7 @@ public class DataEditor {
 		this.contentArea = parent;
 		input = context.getInput();
 		ignoreNull = context.isIgnoreNull();
+		wrapList = context.isWrapList();
 		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
@@ -175,17 +179,7 @@ public class DataEditor {
 			iterator.next().writeToInput(true);
 		}
 
-		BasicDBObject result = Util.getBson(input);
-		if (ignoreNull) {
-			this.result = new BasicDBObject();
-			result.keySet().forEach(k -> {
-				Object v = result.get(k);
-				if (v != null)
-					this.result.append(k, v);
-			});
-		} else {
-			this.result = result;
-		}
+		result = Util.getBson(input, ignoreNull,wrapList);
 	}
 
 	private void setReturnCode(int returnCode) {
@@ -229,6 +223,8 @@ public class DataEditor {
 					fieldPart = new DateTimeQueryField();
 				} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
 					fieldPart = new TextQueryField();
+				} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(type)) {// 查询专用
+					fieldPart = new NumberRangeQueryField();
 				} else {
 					fieldPart = new TextField();
 				}

@@ -32,7 +32,17 @@ public class Editor extends Popup {
 		getContext().setIgnoreNull(ignoreNull);
 		return this;
 	}
-
+	
+	public Editor setWrapList(boolean wrapList) {
+		getContext().setWrapList(wrapList);
+		return this;
+	}
+	
+	public Editor setQueryMode(boolean queryMode) {
+		getContext().setWrapList(queryMode);
+		getContext().setIgnoreNull(queryMode);
+		return this;
+	}
 
 	public Editor setInput(Object input) {
 		getContext().setInput(input);

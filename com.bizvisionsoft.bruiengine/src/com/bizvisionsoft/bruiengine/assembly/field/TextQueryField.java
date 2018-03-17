@@ -76,7 +76,9 @@ public class TextQueryField extends EditorField {
 		control = new Text(pane, SWT.BORDER);
 		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		// 设置输入检验
+
+		Optional.ofNullable(fieldConfig.getTextMessage()).ifPresent(o -> control.setMessage(o));
+		
 		Optional.ofNullable(getVerfifyListener()).ifPresent(listener -> control.addListener(SWT.Modify, listener));
 
 		// 设置修改

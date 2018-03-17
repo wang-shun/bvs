@@ -35,7 +35,7 @@ public class TypeSelectionPane {
 					FormField.TYPE_PAGE, 
 					FormField.TYPE_INLINE, 
 					FormField.TYPE_QUERY_TEXT,//TODO
-					FormField.TYPE_TEXT_RANGE,
+					FormField.TYPE_QUERY_TEXT_RANGE,
 					FormField.TYPE_COMBO, 
 					FormField.TYPE_RADIO, 
 					FormField.TYPE_QUERY_CHECK, //TODO

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -101,12 +102,28 @@ public class Util {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static BasicDBObject getBson(Object input) {
+	public static BasicDBObject getBson(Object input, boolean ignoreNull, boolean wrapList) {
 		Codec codec = CodexProvider.getRegistry().get(input.getClass());
 		StringWriter sw = new StringWriter();
 		codec.encode(new JsonWriter(sw), input, EncoderContext.builder().build());
 		String json = sw.toString();
-		return BasicDBObject.parse(json);
+		BasicDBObject result = BasicDBObject.parse(json);
+
+		BasicDBObject _result = new BasicDBObject();
+		Iterator<String> iter = result.keySet().iterator();
+		while (iter.hasNext()) {
+			String k = iter.next();
+			Object v = result.get(k);
+			if (ignoreNull && v == null) {
+				continue;
+			}
+			if (wrapList && v instanceof List<?>) {
+				_result.append("$and", getList((List<Object>) v, i -> new BasicDBObject(k, i)));
+			} else {
+				_result.append(k, v);
+			}
+		}
+		return _result;
 	}
 
 	public static <T, R> List<R> getList(List<T> source, Function<T, R> func) {

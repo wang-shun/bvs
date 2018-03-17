@@ -14,9 +14,9 @@ import org.eclipse.swt.widgets.Text;
 
 public class NumberRangeField extends EditorField {
 
-	private Text from;
+	protected Text from;
 
-	private Text to;
+	protected Text to;
 
 	public NumberRangeField() {
 	}

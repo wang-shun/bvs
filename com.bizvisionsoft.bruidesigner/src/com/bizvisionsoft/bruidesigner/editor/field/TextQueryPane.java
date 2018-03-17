@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class TextQueryTypePane extends TypeSelectionPane {
+public class TextQueryPane extends TypeSelectionPane {
 
-	public TextQueryTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public TextQueryPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent, type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -16,6 +16,8 @@ public class TextQueryTypePane extends TypeSelectionPane {
 		editor.createTextField(parent, "字段显示文本（不超过120像素的宽度显示）：", element, "text", SWT.BORDER);
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
+
+		editor.createTextField(parent, "文本框内提示信息：", element, "textMessage", SWT.BORDER);
 
 		editor.createComboField(parent,
 				new String[] { FormField.TEXT_QUERY_TYPE_NUMBER, FormField.TEXT_QUERY_TYPE_STRING },

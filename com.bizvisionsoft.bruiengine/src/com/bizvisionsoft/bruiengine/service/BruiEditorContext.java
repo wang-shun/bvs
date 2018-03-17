@@ -5,6 +5,7 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 	private boolean editable;
 	private Object input;
 	private boolean ignoreNull;
+	private boolean wrapList;
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
@@ -28,6 +29,15 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 	
 	public boolean isIgnoreNull() {
 		return ignoreNull;
+	}
+
+	@Override
+	public boolean isWrapList() {
+		return wrapList;
+	}
+	
+	public void setWrapList(boolean wrapList) {
+		this.wrapList = wrapList;
 	}
 
 }
