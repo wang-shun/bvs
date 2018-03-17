@@ -92,7 +92,7 @@ public class ComboField extends EditorField {
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
 		// ±ØÌî¼ì²é
-		if (fieldConfig.isRequired() && control.getSelectionIndex() == -1) {
+		if (saveCheck && fieldConfig.isRequired() && control.getSelectionIndex() == -1) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 

@@ -89,7 +89,7 @@ public class MultiSelectionField extends SelectionField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (fieldConfig.isRequired() && (value == null || value.isEmpty()))
+		if (saveCheck && fieldConfig.isRequired() && (value == null || value.isEmpty()))
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 	}
 

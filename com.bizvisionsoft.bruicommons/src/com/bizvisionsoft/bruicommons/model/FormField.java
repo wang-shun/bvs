@@ -351,6 +351,58 @@ public class FormField extends ModelObject {
 		this.fileFilerExts = fileFilerExts;
 	}
 	
+	
+	//数值范围
+	public Integer textRangeMinValue;
+	
+	public Integer textRangeMaxValue;
+	
+	public Boolean textRangeLimitMinValue;
+	
+	public Boolean textRangeLimitMaxValue;
+	
+	public String textMessage2;
+	
+	public String getTextMessage2() {
+		return textMessage2;
+	}
+	
+	public void setTextMessage2(String textMessage2) {
+		this.textMessage2 = textMessage2;
+	}
+	
+	public Boolean getTextRangeLimitMaxValue() {
+		return textRangeLimitMaxValue;
+	}
+	
+	public Boolean getTextRangeLimitMinValue() {
+		return textRangeLimitMinValue;
+	}
+	
+	public Integer getTextRangeMaxValue() {
+		return textRangeMaxValue;
+	}
+	
+	public Integer getTextRangeMinValue() {
+		return textRangeMinValue;
+	}
+	
+	public void setTextRangeLimitMaxValue(Boolean textRangeLimitMaxValue) {
+		this.textRangeLimitMaxValue = textRangeLimitMaxValue;
+	}
+	
+	public void setTextRangeLimitMinValue(Boolean textRangeLimitMinValue) {
+		this.textRangeLimitMinValue = textRangeLimitMinValue;
+	}
+	
+	public void setTextRangeMaxValue(Integer textRangeMaxValue) {
+		this.textRangeMaxValue = textRangeMaxValue;
+	}
+	
+	public void setTextRangeMinValue(Integer textRangeMinValue) {
+		this.textRangeMinValue = textRangeMinValue;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//用于查询的字段
 	public static final String TYPE_QUERY_TEXT = "文本输入框（查询）";

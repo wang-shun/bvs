@@ -267,7 +267,7 @@ public class FormFieldsEditPane extends Composite {
 				new TextMultiLinePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_TEXT_RANGE.equals(fieldType)) {
-				new FormFieldTextRangeTypePane(element, editor, parent, type);
+				new TextRangePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_COMBO.equals(fieldType)) {
 				new ComboPane(element, editor, parent, type);

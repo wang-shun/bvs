@@ -121,7 +121,7 @@ public class DateTimeField extends EditorField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (fieldConfig.isRequired() && value == null) {
+		if (saveCheck && fieldConfig.isRequired() && value == null) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 	}

@@ -40,6 +40,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionField;
+import com.bizvisionsoft.bruiengine.assembly.field.NumberRangeField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
@@ -207,6 +208,8 @@ public class DataEditor {
 					fieldPart = new TextAreaField();
 				} else if (FormField.TYPE_MULTI_CHECK.equals(type)) {
 					fieldPart = new MultiCheckField();
+				} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
+					fieldPart = new NumberRangeField();
 				} else {
 					fieldPart = new TextField();
 				}

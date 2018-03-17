@@ -80,22 +80,27 @@ public class User {
 
 	@Persistence
 	private List<ObjectId> orgIds;
-	
+
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private String description;
-	
+
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private List<String> testMultiCheck;
 
-
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private List<String> leaders;
+
+	@Persistence
+	private Double max;
+
+	@Persistence
+	private Double min;
 
 	public String getEmail() {
 		return email;
@@ -111,12 +116,23 @@ public class User {
 		return tel;
 	}
 
+	@ReadValue("testNumberRange")
+	public Double[] getTestNumberRange() {
+		return new Double[] { this.min, this.max };
+	}
+
+	@WriteValue("testNumberRange")
+	public void setTestNumberRange(Double[] range) {
+		this.min = range[0];
+		this.max = range[1];
+	}
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public String getHeadpicURL() {
-		if (headPics != null && headPics.size()>0) 
+		if (headPics != null && headPics.size() > 0)
 			return headPics.get(0).getURL(ServicesLoader.url);
 		return null;
 	}
@@ -180,7 +196,7 @@ public class User {
 		this.weixin = weixin;
 	}
 
-	@ReadOptions({" 用户编辑器 # testCombo ","testMultiCheck"})
+	@ReadOptions({ " 用户编辑器 # testCombo ", "testMultiCheck" })
 	public Map<String, Object> getOptionsForTestCombo() {
 		LinkedHashMap<String, Object> options = new LinkedHashMap<String, Object>();
 		options.put("北京", "PEK");

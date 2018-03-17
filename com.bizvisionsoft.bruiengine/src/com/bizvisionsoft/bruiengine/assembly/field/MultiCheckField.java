@@ -154,7 +154,7 @@ public class MultiCheckField extends EditorField {
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
 		// ±ØÌî¼ì²é
-		if (fieldConfig.isRequired() && (value == null || value.isEmpty())) {
+		if (saveCheck &&  fieldConfig.isRequired() && (value == null || value.isEmpty())) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 	}

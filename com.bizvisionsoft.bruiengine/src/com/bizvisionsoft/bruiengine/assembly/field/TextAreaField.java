@@ -75,7 +75,7 @@ public class TextAreaField extends EditorField {
 	protected void check(boolean saveCheck) throws Exception {
 		// ±ØÌî¼ì²é
 		String text = control.getText().trim();
-		if (fieldConfig.isRequired() && text.isEmpty()) {
+		if (saveCheck && fieldConfig.isRequired() && text.isEmpty()) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 	}
