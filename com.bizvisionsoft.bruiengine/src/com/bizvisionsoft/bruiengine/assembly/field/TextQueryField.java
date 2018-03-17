@@ -30,7 +30,11 @@ public class TextQueryField extends EditorField {
 
 	private static final String NUL = "空";
 
-	private static final String C = "包含";
+	private static final String CONTAIN = "包含";
+
+	private static final String STARTWITH = "开头为";
+
+	private static final String ENDWITH = "结尾为";
 
 	private Text control;
 
@@ -59,12 +63,16 @@ public class TextQueryField extends EditorField {
 			operator.add(LT);
 			operator.select(2);
 		} else {
-			operator.add(C);
+			operator.add(CONTAIN);
 			operator.add(EQ);
+			operator.add(STARTWITH);
+			operator.add(ENDWITH);
 			operator.select(0);
 		}
 		operator.add(NUL);
-
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+		gd.widthHint = 120;
+		operator.setLayoutData(gd);
 		control = new Text(pane, SWT.BORDER);
 		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -108,7 +116,11 @@ public class TextQueryField extends EditorField {
 				return new BasicDBObject("$lte", v);
 			}
 		} else {
-			if (C.equals(op)) {
+			if (CONTAIN.equals(op)) {
+				return Pattern.compile(value, Pattern.CASE_INSENSITIVE);
+			} else if (STARTWITH.equals(op)) {
+				return Pattern.compile("^" + value, Pattern.CASE_INSENSITIVE);
+			} else if (ENDWITH.equals(op)) {
 				return Pattern.compile(value + "$", Pattern.CASE_INSENSITIVE);
 			} else if (EQ.equals(op)) {
 				return new BasicDBObject("$eq", value);

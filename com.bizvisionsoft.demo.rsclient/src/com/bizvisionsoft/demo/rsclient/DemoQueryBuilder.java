@@ -9,9 +9,6 @@ import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.mongocodex.annotations.Exclude;
-import com.bizvisionsoft.service.OrganizationService;
-import com.bizvisionsoft.service.ServicesLoader;
-import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.WriteValue;
 import com.bizvisionsoft.service.model.Organization;
 
@@ -32,28 +29,24 @@ public class DemoQueryBuilder {
 	public Object location;
 
 	@WriteValue("姓名")
-	public Object username;
+	public Object name;
 
 	public ObjectId organizationId;
 
 	@WriteValue
 	private List<String> leaders;
 
-	
 	@WriteValue("激活")
 	public Boolean activated;
 
-	
 	@WriteValue(" 组织 ")
 	public void setOrganization(Organization org) {
 		this.organizationId = org.get_id();
 	}
 
-	@ReadValue("组织")
-	public Organization getOrganization() {
-		return ServicesLoader.get(OrganizationService.class).get(organizationId);
-	}
-	
+	@WriteValue
+	private Object max;
+
 	private Date minDate;
 
 	private Date maxDate;
