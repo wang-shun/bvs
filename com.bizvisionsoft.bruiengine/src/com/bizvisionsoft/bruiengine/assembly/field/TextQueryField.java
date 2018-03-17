@@ -32,6 +32,10 @@ public class TextQueryField extends EditorField {
 
 	private static final String CONTAIN = "包含";
 
+	private static final String NOT_CONTAIN = "不包含";
+
+	private static final String NOT_EQ = "不等于";
+
 	private static final String STARTWITH = "开头为";
 
 	private static final String ENDWITH = "结尾为";
@@ -61,12 +65,15 @@ public class TextQueryField extends EditorField {
 			operator.add(EQ);
 			operator.add(LTE);
 			operator.add(LT);
+			operator.add(NOT_EQ);
 			operator.select(2);
 		} else {
 			operator.add(CONTAIN);
 			operator.add(EQ);
 			operator.add(STARTWITH);
 			operator.add(ENDWITH);
+			operator.add(NOT_CONTAIN);
+			operator.add(NOT_EQ);
 			operator.select(0);
 		}
 		operator.add(NUL);
@@ -76,9 +83,8 @@ public class TextQueryField extends EditorField {
 		control = new Text(pane, SWT.BORDER);
 		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-
 		Optional.ofNullable(fieldConfig.getTextMessage()).ifPresent(o -> control.setMessage(o));
-		
+
 		Optional.ofNullable(getVerfifyListener()).ifPresent(listener -> control.addListener(SWT.Modify, listener));
 
 		// 设置修改
@@ -116,6 +122,8 @@ public class TextQueryField extends EditorField {
 				return new BasicDBObject("$lt", v);
 			} else if (LTE.equals(op)) {
 				return new BasicDBObject("$lte", v);
+			} else if (NOT_EQ.equals(op)) {
+				return new BasicDBObject("$ne", v);
 			}
 		} else {
 			if (CONTAIN.equals(op)) {
@@ -126,6 +134,10 @@ public class TextQueryField extends EditorField {
 				return Pattern.compile(value + "$", Pattern.CASE_INSENSITIVE);
 			} else if (EQ.equals(op)) {
 				return new BasicDBObject("$eq", value);
+			} else if (NOT_EQ.equals(op)) {
+				return new BasicDBObject("$ne", value);
+			} else if (NOT_CONTAIN.equals(op)) {
+				return new BasicDBObject("$not", Pattern.compile(value, Pattern.CASE_INSENSITIVE));
 			}
 		}
 		return null;
