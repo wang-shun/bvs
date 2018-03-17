@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class TextRangePane extends TypeSelectionPane {
+public class NumberRangePane extends TypeSelectionPane {
 
-	public TextRangePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public NumberRangePane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent, type);
 
 		editor.createTextField(parent, "×Ö¶ÎÃû³Æ£º", element, "name", SWT.BORDER);
