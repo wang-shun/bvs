@@ -14,6 +14,7 @@ import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.annotations.ReadOptions;
+import com.bizvisionsoft.service.annotations.ReadValidation;
 import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.WriteValue;
 import com.bizvisionsoft.service.datatools.Query;
@@ -102,10 +103,6 @@ public class User {
 	@Persistence
 	private Double min;
 
-	private Date minDate;
-
-	private Date maxDate;
-
 	public String getEmail() {
 		return email;
 	}
@@ -132,16 +129,6 @@ public class User {
 	}
 	
 	
-	@ReadValue("testDateTimeRange")
-	public Date[] getTestDateTimeRange() {
-		return new Date[] { this.minDate, this.maxDate};
-	}
-
-	@WriteValue("testDateTimeRange")
-	public void setTestDateTimeRange(Date[] range) {
-		this.minDate = range[0];
-		this.maxDate = range[1];
-	}
 
 	public String getUserId() {
 		return userId;
@@ -254,6 +241,15 @@ public class User {
 			return ServicesLoader.get(OrganizationService.class).createDataSet(condition);
 		}
 		return new ArrayList<Organization>();
+	}
+	
+	/**
+	 * 演示时间的最大值和最小值控制
+	 * @return
+	 */
+	@ReadValidation("lastLogin")
+	public String[] maxAndMinDateLimit() {
+		return new String[] {"2017-8-11 12:30:00","2018-8-11 11:30:00"};
 	}
 
 }

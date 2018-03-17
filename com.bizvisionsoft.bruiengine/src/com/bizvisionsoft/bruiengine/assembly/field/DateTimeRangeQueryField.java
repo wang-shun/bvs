@@ -17,7 +17,7 @@ import com.bizivisionsoft.widgets.DateTimeSetting;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 
-public class DateTimeRangeField extends EditorField {
+public class DateTimeRangeQueryField extends EditorField {
 
 	// private Button control;
 
@@ -25,7 +25,7 @@ public class DateTimeRangeField extends EditorField {
 	private Date value;
 	private Date endValue;
 
-	public DateTimeRangeField() {
+	public DateTimeRangeQueryField() {
 	}
 
 	@Override

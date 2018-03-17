@@ -59,13 +59,13 @@ public class DateTimeField extends EditorField {
 		}
 
 		// 最大值和最小值
-		// TODO
-
-		// TODO Range
-
-		// TODO 关闭
-
-		// TODO 接管
+		Object validation = BruiEngine.readValidation(input, assemblyConfig.getName(), fieldConfig.getName());
+		if (validation instanceof String[]) {
+			if (((String[]) validation).length > 0)
+				setting.setMin(((String[]) validation)[0]);
+			if (((String[]) validation).length > 1)
+				setting.setMax(((String[]) validation)[1]);
+		}
 
 		control = new DateTime(parent, setting);
 

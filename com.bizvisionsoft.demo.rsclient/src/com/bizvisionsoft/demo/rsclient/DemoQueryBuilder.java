@@ -1,5 +1,6 @@
 package com.bizvisionsoft.demo.rsclient;
 
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -57,5 +58,20 @@ public class DemoQueryBuilder {
 	@ReadValue("×éÖ¯")
 	public Organization getOrganization() {
 		return ServicesLoader.get(OrganizationService.class).get(organizationId);
+	}
+	
+	private Date minDate;
+
+	private Date maxDate;
+
+	@ReadValue("testDateTimeRange")
+	public Date[] getTestDateTimeRange() {
+		return new Date[] { this.minDate, this.maxDate};
+	}
+
+	@WriteValue("testDateTimeRange")
+	public void setTestDateTimeRange(Date[] range) {
+		this.minDate = range[0];
+		this.maxDate = range[1];
 	}
 }

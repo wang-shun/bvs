@@ -17,6 +17,7 @@ import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.service.annotations.ReadOptions;
+import com.bizvisionsoft.service.annotations.ReadValidation;
 import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.Structure;
 import com.bizvisionsoft.service.annotations.WriteValue;
@@ -231,10 +232,15 @@ public class BruiEngine {
 
 	//
 	////////////////////////////////////////////////////////////////////////////////////////////////
+
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> readOptions(Object element, String cName, String fName) {
 		return (Map<String, Object>) read(element.getClass(), ReadOptions.class, element, cName, fName,
 				new LinkedHashMap<String, Object>(), a -> a.value());
+	}
+
+	public static Object readValidation(Object element, String cName, String fName) {
+		return read(element.getClass(), ReadValidation.class, element, cName, fName, null, a -> a.value());
 	}
 
 	/**

@@ -34,7 +34,7 @@ import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.ComboField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeField;
-import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeField;
+import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.FileField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
@@ -212,7 +212,7 @@ public class DataEditor {
 				} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
 					fieldPart = new NumberRangeField();
 				} else if (FormField.TYPE_DATETIME_RANGE.equals(type)) {
-					fieldPart = new DateTimeRangeField();
+					fieldPart = new DateTimeRangeQueryField();
 				} else {
 					fieldPart = new TextField();
 				}

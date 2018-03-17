@@ -24,6 +24,7 @@ public class TypeSelectionPane {
 					FormField.TYPE_CHECK, 
 					FormField.TYPE_MULTI_CHECK, //TODO
 					FormField.TYPE_DATETIME,
+//					FormField.TYPE_DATETIME_RANGE,//初始值问题
 					FormField.TYPE_SELECTION, 
 					FormField.TYPE_MULTI_SELECTION, 
 					FormField.TYPE_FILE,
