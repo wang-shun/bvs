@@ -166,7 +166,7 @@ public abstract class ModelEditor extends EditorPart {
 		return text;
 	}
 
-	protected Text createAssemblyField(Composite parent, String labelText, Object bean, String property,
+	public Text createAssemblyField(Composite parent, String labelText, Object bean, String property,
 			boolean editable) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
@@ -235,7 +235,7 @@ public abstract class ModelEditor extends EditorPart {
 		return assembly;
 	}
 
-	protected Text createTextField(Composite parent, String labelText, Object bean, String property, int style) {
+	public Text createTextField(Composite parent, String labelText, Object bean, String property, int style) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		layoutLabel(label);
@@ -249,7 +249,7 @@ public abstract class ModelEditor extends EditorPart {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Spinner createIntegerField(Composite parent, String labelText, Object bean, String property, int style,
+	public Spinner createIntegerField(Composite parent, String labelText, Object bean, String property, int style,
 			int min, int max) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
@@ -264,7 +264,7 @@ public abstract class ModelEditor extends EditorPart {
 		return control;
 	}
 
-	protected void layoutControl(int style, Control text, int space) {
+	public void layoutControl(int style, Control text, int space) {
 		GridData layoutData;
 		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, space, 1);
 		if ((style & SWT.MULTI) != 0) {
@@ -273,7 +273,7 @@ public abstract class ModelEditor extends EditorPart {
 		text.setLayoutData(layoutData);
 	}
 
-	protected Button createCheckboxField(Composite parent, String labelText, Object bean, String property, int style) {
+	public Button createCheckboxField(Composite parent, String labelText, Object bean, String property, int style) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		layoutLabel(label);
@@ -296,7 +296,7 @@ public abstract class ModelEditor extends EditorPart {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Combo createComboField(Composite parent, String[] labels, Object[] values, String labelText, Object bean,
+	public Combo createComboField(Composite parent, String[] labels, Object[] values, String labelText, Object bean,
 			String property, int style) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);

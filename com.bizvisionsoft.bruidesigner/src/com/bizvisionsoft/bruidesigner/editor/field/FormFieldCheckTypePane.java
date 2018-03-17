@@ -1,9 +1,10 @@
-package com.bizvisionsoft.bruidesigner.editor;
+package com.bizvisionsoft.bruidesigner.editor.field;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizvisionsoft.bruicommons.model.FormField;
+import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
 public class FormFieldCheckTypePane extends FormFieldEmptyTypePane {
 

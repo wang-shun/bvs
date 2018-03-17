@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruidesigner.editor;
+package com.bizvisionsoft.bruidesigner.editor.field;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.model.FormField;
+import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
 public class FormFieldRadioTypePane extends FormFieldEmptyTypePane {
 
