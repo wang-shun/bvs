@@ -67,11 +67,13 @@ public class FormFieldsEditPane extends Composite {
 	private TreeViewer viewer;
 	private Composite rightPane;
 	private FormField current;
+	private String type;
 
-	public FormFieldsEditPane(Composite parent, List<FormField> FormFields, ModelEditor editor) {
+	public FormFieldsEditPane(Composite parent, List<FormField> FormFields, ModelEditor editor, String type) {
 		super(parent, SWT.HORIZONTAL);
 		this.FormFields = FormFields;
 		this.editor = editor;
+		this.type = type;
 		GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
 		setLayoutData(layoutData);
 
@@ -251,27 +253,27 @@ public class FormFieldsEditPane extends Composite {
 
 		if (element != null) {
 			if (element.getType().equals(FormField.TYPE_INLINE)) {
-				new FormFieldEmptyTypePane(element, editor, parent);
+				new FormFieldEmptyTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_PAGE)) {
-				new FormFieldPageTypePane(element, editor, parent);
+				new FormFieldPageTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_TEXT)) {
-				new FormFieldTextTypePane(element, editor, parent);
+				new FormFieldTextTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_COMBO)) {
-				new FormFieldComboTypePane(element, editor, parent);
+				new FormFieldComboTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_RADIO)) {
-				new FormFieldRadioTypePane(element, editor, parent);
+				new FormFieldRadioTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_CHECK)) {
-				new FormFieldCheckTypePane(element, editor, parent);
+				new FormFieldCheckTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_DATETIME)) {
-				new FormFieldDateTimeTypePane(element, editor, parent);
+				new FormFieldDateTimeTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_SELECTION)) {
-				new FormFieldSelectionTypePane(element, editor, parent);
+				new FormFieldSelectionTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_MULTI_SELECTION)) {
-				new FormFieldMultiSelectionTypePane(element, editor, parent);
+				new FormFieldMultiSelectionTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_FILE)) {
-				new FormFieldFileTypePane(element, editor, parent);
+				new FormFieldFileTypePane(element, editor, parent, type);
 			} else if (element.getType().equals(FormField.TYPE_MULTI_FILE)) {
-				new FormFieldMultiFileTypePane(element, editor, parent);
+				new FormFieldMultiFileTypePane(element, editor, parent, type);
 			}
 
 			element.addPropertyChangeListener("name", listener);

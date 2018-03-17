@@ -7,8 +7,8 @@ import com.bizvisionsoft.bruicommons.model.FormField;
 
 public class FormFieldCheckTypePane extends FormFieldEmptyTypePane {
 
-	public FormFieldCheckTypePane(FormField element, ModelEditor editor, Composite parent) {
-		super(element, editor, parent);
+	public FormFieldCheckTypePane(FormField element, ModelEditor editor, Composite parent,String type) {
+		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "×Ö¶ÎÃû³Æ£º", element, "name", SWT.BORDER);
 

@@ -7,8 +7,8 @@ import com.bizvisionsoft.bruicommons.model.FormField;
 
 public class FormFieldPageTypePane extends FormFieldEmptyTypePane{
 
-	public FormFieldPageTypePane(FormField element, ModelEditor editor, Composite parent) {
-		super(element, editor, parent);
+	public FormFieldPageTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+		super(element, editor, parent, type);
 		
 		editor.createTextField(parent, "±êÇ©Ò³Ãû³Æ:", element, "name", SWT.BORDER);
 		

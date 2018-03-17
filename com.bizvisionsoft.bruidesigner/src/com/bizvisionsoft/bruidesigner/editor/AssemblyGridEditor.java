@@ -105,7 +105,7 @@ public class AssemblyGridEditor extends ModelEditor {
 		List<FormField> fields = ((Assembly) inputData).getFields();
 		if(fields==null) 
 			((Assembly) inputData).setFields(fields = new ArrayList<FormField>());
-		new FormFieldsEditPane(parent, fields,this);
+		new FormFieldsEditPane(parent, fields,this,"query");
 		
 		addPartNamePropertyChangeListener("name");
 		

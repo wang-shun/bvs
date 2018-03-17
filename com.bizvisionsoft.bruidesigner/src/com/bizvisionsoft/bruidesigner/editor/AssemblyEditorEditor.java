@@ -41,7 +41,7 @@ public class AssemblyEditorEditor extends ModelEditor {
 		List<FormField> fields = ((Assembly) inputData).getFields();
 		if(fields==null) 
 			((Assembly) inputData).setFields(fields = new ArrayList<FormField>());
-		new FormFieldsEditPane(parent, fields,this);
+		new FormFieldsEditPane(parent, fields,this,"editor");
 
 		parent = createTabItemContent("²Ù×÷");
 		List<Action> actions = ((Assembly) inputData).getActions();
