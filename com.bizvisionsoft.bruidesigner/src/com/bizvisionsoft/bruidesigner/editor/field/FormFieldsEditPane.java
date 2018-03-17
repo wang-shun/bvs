@@ -300,7 +300,7 @@ public class FormFieldsEditPane extends Composite {
 				new MultiFilePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_TEXT.equals(fieldType)) {
-				new FormFieldQueryCheckTypePane(element, editor, parent, type);
+				new TextQueryTypePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_CHECK.equals(fieldType)) {
 				new FormFieldQueryCheckTypePane(element, editor, parent, type);

@@ -27,6 +27,12 @@ public class Editor extends Popup {
 		getContext().setEditable(editable);
 		return this;
 	}
+	
+	public Editor setIgnoreNull(boolean ignoreNull) {
+		getContext().setIgnoreNull(ignoreNull);
+		return this;
+	}
+
 
 	public Editor setInput(Object input) {
 		getContext().setInput(input);
@@ -75,5 +81,6 @@ public class Editor extends Popup {
 	public Object getResult() {
 		return brui.getReturnObject();
 	}
+
 
 }

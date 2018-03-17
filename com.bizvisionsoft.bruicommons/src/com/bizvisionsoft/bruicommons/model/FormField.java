@@ -414,8 +414,20 @@ public class FormField extends ModelObject {
 	public static final String TYPE_QUERY_MULTI_SELECTION = "多个对象选择框（查询）";
 
 	public static final String TYPE_QUERY_MULTI_CHECK = "多项勾选框（查询）";
+
+	private String textQueryType;
 	
+	public static final String TEXT_QUERY_TYPE_NUMBER = "数值";
 	
+	public static final String TEXT_QUERY_TYPE_STRING = "字符串";
+	
+	public String getTextQueryType() {
+		return textQueryType;
+	}
+	
+	public void setTextQueryType(String textQueryType) {
+		this.textQueryType = textQueryType;
+	}
 	
 	
 }

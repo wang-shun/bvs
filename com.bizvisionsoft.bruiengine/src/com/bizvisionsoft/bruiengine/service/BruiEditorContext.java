@@ -4,6 +4,7 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 
 	private boolean editable;
 	private Object input;
+	private boolean ignoreNull;
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
@@ -19,6 +20,14 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 	
 	public Object getInput() {
 		return input;
+	}
+
+	public void setIgnoreNull(boolean ignoreNull) {
+		this.ignoreNull = ignoreNull;
+	}
+	
+	public boolean isIgnoreNull() {
+		return ignoreNull;
 	}
 
 }

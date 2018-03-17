@@ -39,14 +39,14 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织选择器 # "+ DataSet.LIST)
 	public List<Organization> createDataSet(
-			@ServiceParam(value = ServiceParam.CONDITION) BasicDBObject condition);
+			@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 	
 	
-	@GET
-	@Path("/count")
+	@POST
+	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织选择器 # count")
-	public long count();
+	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
 
 }

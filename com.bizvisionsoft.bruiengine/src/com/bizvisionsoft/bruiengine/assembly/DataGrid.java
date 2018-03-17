@@ -45,6 +45,7 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.mongodb.BasicDBObject;
 
 public class DataGrid {
 
@@ -89,6 +90,8 @@ public class DataGrid {
 	private boolean forceDisablePagination;
 
 	private boolean disableDateSetEngine;
+
+	private BasicDBObject filter;
 
 	public DataGrid(Assembly gridConfig) {
 		this.config = gridConfig;
@@ -200,7 +203,7 @@ public class DataGrid {
 	}
 
 	private Control createPageControl() {
-		count = dataSetEngine.count();
+		count = dataSetEngine.count(filter);
 		// 获得最佳的每页记录数
 		limit = LIMIT;
 		// 起始
@@ -368,7 +371,7 @@ public class DataGrid {
 
 	private void setInput() {
 		if (!disableDateSetEngine) {
-			setInput((List<?>) dataSetEngine.query(skip, limit, null));
+			setInput((List<?>) dataSetEngine.query(skip, limit, filter));
 		}
 	}
 
@@ -473,10 +476,14 @@ public class DataGrid {
 			input = new Document();
 		}
 
-		Editor editor = bruiService.open(queryConfig, input, true, context);
+		Editor editor = bruiService.open(queryConfig, input, true, true, context);
 		if (Window.OK == editor.open()) {
-			Object result = editor.getResult();
-			System.out.println(result);
+			filter = (BasicDBObject) editor.getResult();
+			System.out.println(filter);
+			skip = 0;
+			count = dataSetEngine.count(filter);
+			page.setCount(count);
+			setInput();
 		}
 	}
 

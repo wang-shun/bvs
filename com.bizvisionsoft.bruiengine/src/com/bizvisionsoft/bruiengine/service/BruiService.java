@@ -63,13 +63,13 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public Editor open(Assembly assembly, Object input, boolean editable, IBruiContext context) {
-		return new Editor(assembly, context).setEditable(editable).setInput(input);
+	public Editor open(Assembly assembly, Object input, boolean editable, boolean ignoreNull, IBruiContext context) {
+		return new Editor(assembly, context).setEditable(editable).setInput(input).setIgnoreNull(ignoreNull);
 	}
 
 	@Override
-	public Editor openByName(String assemblyName, Object input, boolean editable, IBruiContext context) {
-		return open(Brui.site.getAssemblyByName(assemblyName), input, editable, context);
+	public Editor openByName(String assemblyName, Object input, boolean editable, boolean ignoreNull, IBruiContext context) {
+		return open(Brui.site.getAssemblyByName(assemblyName), input, editable, ignoreNull,context);
 	}
 
 }

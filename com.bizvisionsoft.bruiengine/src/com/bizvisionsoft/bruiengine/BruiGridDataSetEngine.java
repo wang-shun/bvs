@@ -100,8 +100,28 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		throw new RuntimeException("没有注解" + DataSet.class + " 值为 list的方法。");
 	}
 
-	public long count() {
-		return (long) noParamDataSetMethodInvoke(DataSet.COUNT);
+	public long count(BasicDBObject filter) {
+		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.COUNT, a -> a.value())
+				.orElse(null);
+		if (method != null) {
+			Object[] args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
+				if (ServiceParam.FILTER.equals(sp.value())) {
+					args[i] = filter;
+				} else {
+					args[i] = null;
+				}
+			}
+
+			try {
+				method.setAccessible(true);
+				return (long) method.invoke(getTarget(), filter);
+			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			}
+		}
+		throw new RuntimeException("没有注解" + DataSet.class + " 值为 count的方法。");
 	}
 
 	public Object query() {
@@ -120,18 +140,19 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		throw new RuntimeException("没有注解" + DataSet.class + " 值为" + paramValue + "的无参方法。");
 	}
 
-//	private boolean match(String assemblyName, String useage, DataSet lf) {
-//		return Optional.ofNullable(lf).map(a -> a.value()).map(vs -> {
-//			for (int i = 0; i < vs.length; i++) {
-//				String[] loc = vs[i].split("#");
-//				if (loc.length == 1 && useage.equals(loc[0].trim())) {
-//					return true;
-//				} else if (loc.length > 1 && assemblyName.equals(loc[0].trim()) && useage.equals(loc[1].trim())) {
-//					return true;
-//				}
-//			}
-//			return false;
-//		}).orElse(false);
-//	}
+	// private boolean match(String assemblyName, String useage, DataSet lf) {
+	// return Optional.ofNullable(lf).map(a -> a.value()).map(vs -> {
+	// for (int i = 0; i < vs.length; i++) {
+	// String[] loc = vs[i].split("#");
+	// if (loc.length == 1 && useage.equals(loc[0].trim())) {
+	// return true;
+	// } else if (loc.length > 1 && assemblyName.equals(loc[0].trim()) &&
+	// useage.equals(loc[1].trim())) {
+	// return true;
+	// }
+	// }
+	// return false;
+	// }).orElse(false);
+	// }
 
 }

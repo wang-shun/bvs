@@ -10,4 +10,6 @@ public interface IBruiEditorContext extends IBruiContext{
 
 	void setEditable(boolean editable);
 
+	boolean isIgnoreNull();
+
 }

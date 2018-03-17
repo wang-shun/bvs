@@ -36,8 +36,7 @@ public interface UserService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("用户列表 # list")
-	public List<UserInfo> createDataSet(
-			@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+	public List<UserInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 	@GET
 	@Path("/check/{userId}/{password}")
@@ -57,12 +56,11 @@ public interface UserService {
 	@Produces("application/json; charset=UTF-8")
 	public UserInfo info(@PathParam("userId") String userId);
 
-	
-	@GET
-	@Path("/count")
+	@POST
+	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("用户列表 # count")
-	public long count();
+	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
 
 }

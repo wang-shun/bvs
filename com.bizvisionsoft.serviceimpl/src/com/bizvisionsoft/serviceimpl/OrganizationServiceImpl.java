@@ -55,7 +55,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
-	public long count() {
+	public long count(BasicDBObject filter) {
+		if (filter != null)
+			return Service.col(Organization.class).count(filter);
 		return Service.col(Organization.class).count();
 	}
 

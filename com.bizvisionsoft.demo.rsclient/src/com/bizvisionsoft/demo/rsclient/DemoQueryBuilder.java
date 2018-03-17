@@ -25,27 +25,21 @@ public class DemoQueryBuilder {
 	@Exclude
 	private IBruiContext context;
 
-	@ReadValue(" 账号")
 	@WriteValue(" 账号")
-	public String userId;
+	public Object userId;
 
-	@ReadValue(" 位置")
 	@WriteValue("位置")
-	public String location;
+	public Object location;
 
-	@ReadValue(" 姓名")
 	@WriteValue("姓名")
-	public String username;
+	public Object username;
 
 	public ObjectId organizationId;
 
-	
-	@ReadValue
 	@WriteValue
 	private List<String> leaders;
 
 	
-	@ReadValue(" 激活")
 	@WriteValue("激活")
 	public Boolean activated;
 
@@ -63,11 +57,6 @@ public class DemoQueryBuilder {
 	private Date minDate;
 
 	private Date maxDate;
-
-	@ReadValue("testDateTimeRange")
-	public Date[] getTestDateTimeRange() {
-		return new Date[] { this.minDate, this.maxDate};
-	}
 
 	@WriteValue("testDateTimeRange")
 	public void setTestDateTimeRange(Date[] range) {

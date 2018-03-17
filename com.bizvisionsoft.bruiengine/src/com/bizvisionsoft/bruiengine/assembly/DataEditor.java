@@ -34,7 +34,7 @@ import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.ComboField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeField;
-import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeQueryField;
+import com.bizvisionsoft.bruiengine.assembly.field.DateTimeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.FileField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
@@ -46,6 +46,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextField;
+import com.bizvisionsoft.bruiengine.assembly.field.TextQueryField;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -87,6 +88,8 @@ public class DataEditor {
 
 	private boolean editable;
 
+	private boolean ignoreNull;
+
 	public DataEditor(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
@@ -98,6 +101,7 @@ public class DataEditor {
 
 		this.contentArea = parent;
 		input = context.getInput();
+		ignoreNull = context.isIgnoreNull();
 		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
@@ -171,7 +175,17 @@ public class DataEditor {
 			iterator.next().writeToInput(true);
 		}
 
-		result = Util.getBson(input);
+		BasicDBObject result = Util.getBson(input);
+		if (ignoreNull) {
+			this.result = new BasicDBObject();
+			result.keySet().forEach(k -> {
+				Object v = result.get(k);
+				if (v != null)
+					this.result.append(k, v);
+			});
+		} else {
+			this.result = result;
+		}
 	}
 
 	private void setReturnCode(int returnCode) {
@@ -211,12 +225,15 @@ public class DataEditor {
 					fieldPart = new MultiCheckField();
 				} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
 					fieldPart = new NumberRangeField();
-				} else if (FormField.TYPE_DATETIME_RANGE.equals(type)) {
-					fieldPart = new DateTimeRangeQueryField();
+				} else if (FormField.TYPE_DATETIME_RANGE.equals(type)) {// 查询专用
+					fieldPart = new DateTimeQueryField();
+				} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
+					fieldPart = new TextQueryField();
 				} else {
 					fieldPart = new TextField();
 				}
-				fields.put(f, fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
+				fields.put(f,
+						fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
 				fieldPart.setEditor(this).createUI(parent)// 创建UI
 						.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
 			}

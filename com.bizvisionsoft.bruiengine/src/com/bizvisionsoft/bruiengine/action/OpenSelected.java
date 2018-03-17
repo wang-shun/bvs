@@ -23,10 +23,10 @@ public class OpenSelected {
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.ifFristElementSelected(elem -> {
-			bruiService.open(assembly, elem, editable,context);
-			
-			//TODO 默认的打开方式
-			
+			bruiService.open(assembly, elem, editable, false, context);
+
+			// TODO 默认的打开方式
+
 		});
 	}
 
