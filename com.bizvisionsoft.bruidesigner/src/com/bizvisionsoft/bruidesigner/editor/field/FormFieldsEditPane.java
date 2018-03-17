@@ -253,28 +253,64 @@ public class FormFieldsEditPane extends Composite {
 		Arrays.asList(parent.getChildren()).stream().filter(c -> !c.isDisposed()).forEach(ctl -> ctl.dispose());
 
 		if (element != null) {
-			if (element.getType().equals(FormField.TYPE_INLINE)) {
+			String fieldType = element.getType();
+			if (FormField.TYPE_INLINE.equals(fieldType)) {
 				new FormFieldEmptyTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_PAGE)) {
+				
+			} else if (FormField.TYPE_PAGE.equals(fieldType)) {
 				new FormFieldPageTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_TEXT)) {
+
+			} else if (FormField.TYPE_TEXT.equals(fieldType)) {
 				new FormFieldTextTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_COMBO)) {
+			
+			} else if (FormField.TYPE_TEXT_MULTILINE.equals(fieldType)) {
+				new FormFieldTextMultiLineTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_TEXT_RANGE.equals(fieldType)) {
+				new FormFieldTextRangeTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_COMBO.equals(fieldType)) {
 				new FormFieldComboTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_RADIO)) {
+			
+			} else if (FormField.TYPE_RADIO.equals(fieldType)) {
 				new FormFieldRadioTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_CHECK)) {
+			
+			} else if (FormField.TYPE_CHECK.equals(fieldType)) {
 				new FormFieldCheckTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_DATETIME)) {
+			
+			} else if (FormField.TYPE_MULTI_CHECK.equals(fieldType)) {
+				new FormFieldMultiCheckTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_DATETIME.equals(fieldType)) {
 				new FormFieldDateTimeTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_SELECTION)) {
+			
+			} else if (FormField.TYPE_DATETIME_RANGE.equals(fieldType)) {
+				new FormFieldDateTimeRangeTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_SELECTION.equals(fieldType)) {
 				new FormFieldSelectionTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_MULTI_SELECTION)) {
+			
+			} else if (FormField.TYPE_MULTI_SELECTION.equals(fieldType)) {
 				new FormFieldMultiSelectionTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_FILE)) {
+			
+			} else if (FormField.TYPE_FILE.equals(fieldType)) {
 				new FormFieldFileTypePane(element, editor, parent, type);
-			} else if (element.getType().equals(FormField.TYPE_MULTI_FILE)) {
+			
+			} else if (FormField.TYPE_MULTI_FILE.equals(fieldType)) {
 				new FormFieldMultiFileTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_TEXT.equals(fieldType)) {
+				new FormFieldQueryCheckTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_CHECK.equals(fieldType)) {
+				new FormFieldQueryCheckTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_MULTI_CHECK.equals(fieldType)) {
+				new FormFieldQueryMultiCheckTypePane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(fieldType)) {
+				new FormFieldQueryMultiSelectionTypePane(element, editor, parent, type);
+			
 			}
 
 			element.addPropertyChangeListener("name", listener);
