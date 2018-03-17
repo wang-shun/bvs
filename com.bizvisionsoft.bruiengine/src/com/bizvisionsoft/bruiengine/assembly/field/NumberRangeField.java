@@ -112,10 +112,13 @@ public class NumberRangeField extends EditorField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
+		if (!saveCheck)
+			return;
+
 		String fromText = from.getText().trim();
 		String toText = to.getText().trim();
 		// 必填检查
-		if (saveCheck && fieldConfig.isRequired() && fromText.isEmpty() && toText.isEmpty()) {
+		if (fieldConfig.isRequired() && fromText.isEmpty() && toText.isEmpty()) {
 			throw new Exception(fieldConfig.getFieldText() + "必填。");
 		}
 		// 类型检查
@@ -130,8 +133,24 @@ public class NumberRangeField extends EditorField {
 		} catch (Exception e) {
 			throw new Exception(fieldConfig.getFieldText() + "要求输入数值。");
 		}
+
 		if (_from != null && _to != null && _from > _to)
 			throw new Exception(fieldConfig.getFieldText() + "最小值必须小于最大值。");
+
+		if (Boolean.TRUE.equals(fieldConfig.getTextRangeLimitMaxValue())) {
+			// 如果有最大值限定
+			Integer max = fieldConfig.getTextRangeMaxValue();
+			if (max != null && (_to == null || _to > max)) {
+				throw new Exception(fieldConfig.getFieldText() + "超过最大值的限制：" + max);
+			}
+		}
+		if (Boolean.TRUE.equals(fieldConfig.getTextRangeLimitMinValue())) {
+			// 如果有最大值限定
+			Integer min = fieldConfig.getTextRangeMinValue();
+			if (min != null && (_from == null || _from < min)) {
+				throw new Exception(fieldConfig.getFieldText() + "低于最小值的限制：" + min);
+			}
+		}
 
 	}
 

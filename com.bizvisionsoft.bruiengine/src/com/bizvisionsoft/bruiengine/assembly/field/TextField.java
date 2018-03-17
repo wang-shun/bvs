@@ -117,9 +117,12 @@ public class TextField extends EditorField {
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
+		if (!saveCheck)
+			return;
+
 		// 必填检查
 		String text = control.getText().trim();
-		if (saveCheck && fieldConfig.isRequired() && text.isEmpty()) {
+		if (fieldConfig.isRequired() && text.isEmpty()) {
 			throw new Exception(fieldConfig.getFieldText() + "必填。");
 		}
 		// 类型检查
@@ -147,6 +150,5 @@ public class TextField extends EditorField {
 		}
 
 	}
-
 
 }
