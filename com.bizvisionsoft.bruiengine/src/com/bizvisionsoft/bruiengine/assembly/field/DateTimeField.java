@@ -18,8 +18,6 @@ import com.bizvisionsoft.bruiengine.BruiEngine;
 
 public class DateTimeField extends EditorField {
 
-	// private Button control;
-
 	private Control control;
 	private Date value;
 
