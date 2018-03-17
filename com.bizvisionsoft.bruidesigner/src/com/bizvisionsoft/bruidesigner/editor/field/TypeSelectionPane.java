@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldEmptyTypePane {
+public class TypeSelectionPane {
 
-	public FormFieldEmptyTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public TypeSelectionPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		editor.createTextField(parent, "Î¨Ò»±êÊ¶·û:", element, "id", SWT.READ_ONLY);
 
 		String[] fields = null;

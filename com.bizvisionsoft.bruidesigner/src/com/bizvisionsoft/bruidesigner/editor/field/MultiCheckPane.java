@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldComboTypePane extends FormFieldEmptyTypePane {
+public class MultiCheckPane extends TypeSelectionPane {
 
-	public FormFieldComboTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public MultiCheckPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -24,7 +24,14 @@ public class FormFieldComboTypePane extends FormFieldEmptyTypePane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
-		
+
+		editor.createComboField(parent,
+				new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+						FormField.RADIO_STYLE_VERTICAL },
+				new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+						FormField.RADIO_STYLE_VERTICAL },
+				"样式", element, "radioStyle", SWT.READ_ONLY | SWT.BORDER);
+
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);

@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldMultiFileTypePane extends FormFieldEmptyTypePane {
+public class MultiSelectionPane extends TypeSelectionPane {
 
-	public FormFieldMultiFileTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public MultiSelectionPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -23,14 +23,7 @@ public class FormFieldMultiFileTypePane extends FormFieldEmptyTypePane {
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
 		
-		editor.createTextField(parent, "上传文件保存的名称空间：", element, "fileNamespace", SWT.BORDER);
-		
-		editor.createIntegerField(parent, "上传文件的尺寸限制（兆, 0代表不限）：", element, "maxFileSize", SWT.BORDER, 0, 1024);
-
-		editor.createIntegerField(parent, "上传超时设置限制（秒, 0代表不限）：", element, "timeLimit", SWT.BORDER, 0, 120);
-		
-		editor.createTextField(parent, "文件扩展名（不填代表不限制。逗号分隔多个.jpg,.png）：", element, "fileFilerExts", SWT.BORDER);
-
+		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
 	}
 
 }

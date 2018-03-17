@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldRadioTypePane extends FormFieldEmptyTypePane {
+public class RadioPane extends TypeSelectionPane {
 
-	public FormFieldRadioTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public RadioPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "×Ö¶ÎÃû³Æ£º", element, "name", SWT.BORDER);

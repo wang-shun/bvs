@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldDateTimeTypePane extends FormFieldEmptyTypePane {
+public class MultiFilePane extends TypeSelectionPane {
 
-	public FormFieldDateTimeTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public MultiFilePane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -22,11 +22,14 @@ public class FormFieldDateTimeTypePane extends FormFieldEmptyTypePane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
+		
+		editor.createTextField(parent, "上传文件保存的名称空间：", element, "fileNamespace", SWT.BORDER);
+		
+		editor.createIntegerField(parent, "上传文件的尺寸限制（兆, 0代表不限）：", element, "maxFileSize", SWT.BORDER, 0, 1024);
 
-		editor.createComboField(parent, new String[] { "日期", "日期时间", "时间", "年", "月" },
-				new String[] { FormField.DATE_TYPE_DATE, FormField.DATE_TYPE_DATETIME, FormField.DATE_TYPE_TIME,
-						FormField.DATE_TYPE_YEAR, FormField.DATE_TYPE_MONTH },
-				"日期类型", element, "dateType", SWT.READ_ONLY | SWT.BORDER);
+		editor.createIntegerField(parent, "上传超时设置限制（秒, 0代表不限）：", element, "timeLimit", SWT.BORDER, 0, 120);
+		
+		editor.createTextField(parent, "文件扩展名（不填代表不限制。逗号分隔多个.jpg,.png）：", element, "fileFilerExts", SWT.BORDER);
 
 	}
 

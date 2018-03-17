@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldTextRangeTypePane extends TypeSelectionPane {
+public class SelectionPane extends TypeSelectionPane {
 
-	public FormFieldTextRangeTypePane(FormField element, ModelEditor editor, Composite parent,String type) {
+	public SelectionPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -22,7 +22,8 @@ public class FormFieldTextRangeTypePane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
-
+		
+		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
 	}
 
 }

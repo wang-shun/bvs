@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldDateTimeRangeTypePane extends FormFieldEmptyTypePane {
+public class FormFieldDateTimeRangeTypePane extends TypeSelectionPane {
 
 	public FormFieldDateTimeRangeTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);

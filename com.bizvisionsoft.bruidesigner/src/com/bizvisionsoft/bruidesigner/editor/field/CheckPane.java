@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldSelectionTypePane extends FormFieldEmptyTypePane {
+public class CheckPane extends TypeSelectionPane {
 
-	public FormFieldSelectionTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public CheckPane(FormField element, ModelEditor editor, Composite parent,String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -22,8 +22,11 @@ public class FormFieldSelectionTypePane extends FormFieldEmptyTypePane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
-		
-		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
+
+		editor.createComboField(parent, new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC },
+				new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC }, "样式", element,
+				"checkStyle", SWT.READ_ONLY | SWT.BORDER);
+
 	}
 
 }

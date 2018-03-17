@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldQueryMultiCheckTypePane extends FormFieldEmptyTypePane {
+public class FormFieldQueryMultiCheckTypePane extends TypeSelectionPane {
 
 	public FormFieldQueryMultiCheckTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
