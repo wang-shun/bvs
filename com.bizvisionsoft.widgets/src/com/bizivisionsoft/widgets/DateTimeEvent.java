@@ -17,4 +17,8 @@ public class DateTimeEvent extends Event {
 		return endDate;
 	}
 
+	public Date getDate() {
+		return (Date) data;
+	}
+
 }

@@ -102,6 +102,10 @@ public class User {
 	@Persistence
 	private Double min;
 
+	private Date minDate;
+
+	private Date maxDate;
+
 	public String getEmail() {
 		return email;
 	}
@@ -125,6 +129,18 @@ public class User {
 	public void setTestNumberRange(Double[] range) {
 		this.min = range[0];
 		this.max = range[1];
+	}
+	
+	
+	@ReadValue("testDateTimeRange")
+	public Date[] getTestDateTimeRange() {
+		return new Date[] { this.minDate, this.maxDate};
+	}
+
+	@WriteValue("testDateTimeRange")
+	public void setTestDateTimeRange(Date[] range) {
+		this.minDate = range[0];
+		this.maxDate = range[1];
 	}
 
 	public String getUserId() {

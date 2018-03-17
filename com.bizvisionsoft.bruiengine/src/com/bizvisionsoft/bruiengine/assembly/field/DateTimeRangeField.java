@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import com.bizivisionsoft.widgets.DateTime;
+import com.bizivisionsoft.widgets.DateTimeEvent;
 import com.bizivisionsoft.widgets.DateTimeSetting;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiEngine;
@@ -22,6 +23,7 @@ public class DateTimeRangeField extends EditorField {
 
 	private Control control;
 	private Date value;
+	private Date endValue;
 
 	public DateTimeRangeField() {
 	}
@@ -69,14 +71,14 @@ public class DateTimeRangeField extends EditorField {
 
 		// TODO ½Ó¹Ü
 
-		
 		control = new DateTime(parent, setting);
 
 		control.setEnabled(!isReadOnly());
 
 		control.addListener(SWT.Modify, e -> {
 			try {
-				value = (Date) e.data;
+				value = ((DateTimeEvent) e).getDate();
+				endValue = ((DateTimeEvent) e).getEndDate();
 				writeToInput(false);
 			} catch (Exception e1) {
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "´íÎó", e1.getMessage());
@@ -93,8 +95,11 @@ public class DateTimeRangeField extends EditorField {
 
 	@Override
 	public void setValue(Object value) {
+		
+		
 		this.value = (Date) value;
 		if (control instanceof DateTime) {
+			((DateTime) control).setDate((Date) value);
 			((DateTime) control).setDate((Date) value);
 		} else {
 			if (value == null) {
@@ -119,12 +124,12 @@ public class DateTimeRangeField extends EditorField {
 
 	@Override
 	public Object getValue() {
-		return value;
+		return new Date[] { value, endValue };
 	}
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (saveCheck && fieldConfig.isRequired() && value == null) {
+		if (saveCheck && fieldConfig.isRequired() && value == null && endValue == null) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 	}

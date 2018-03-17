@@ -285,7 +285,7 @@ public class FormFieldsEditPane extends Composite {
 				new DateTimePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_DATETIME_RANGE.equals(fieldType)) {
-				new FormFieldDateTimeRangeTypePane(element, editor, parent, type);
+				new DateTimeRangeTypePane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_SELECTION.equals(fieldType)) {
 				new SelectionPane(element, editor, parent, type);
