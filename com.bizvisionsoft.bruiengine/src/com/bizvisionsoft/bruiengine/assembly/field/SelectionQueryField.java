@@ -11,10 +11,6 @@ public class SelectionQueryField extends SelectionField {
 	}
 
 	@Override
-	public void setValue(Object value) {
-	}
-
-	@Override
 	protected void check(boolean saveCheck) throws Exception {
 	}
 

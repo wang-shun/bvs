@@ -36,11 +36,11 @@ import com.bizvisionsoft.bruiengine.assembly.field.CheckQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.ComboField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeQueryField;
+import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.FileField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
-import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiSelectionQueryField;
@@ -224,6 +224,8 @@ public class DataEditor {
 				} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
 					fieldPart = new NumberRangeField();
 				} else if (FormField.TYPE_QUERY_DATETIME_RANGE.equals(type)) {// 查询专用
+					fieldPart = new DateTimeRangeQueryField();
+				} else if (FormField.TYPE_QUERY_DATETIME.equals(type)) {// 查询专用
 					fieldPart = new DateTimeQueryField();
 				} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
 					fieldPart = new TextQueryField();
@@ -231,8 +233,6 @@ public class DataEditor {
 					fieldPart = new NumberRangeQueryField();
 				} else if (FormField.TYPE_QUERY_CHECK.equals(type)) {// 查询专用
 					fieldPart = new CheckQueryField();
-				} else if (FormField.TYPE_QUERY_MULTI_CHECK.equals(type)) {// 查询专用
-					fieldPart = new MultiCheckQueryField();
 				} else if (FormField.TYPE_QUERY_SELECTION.equals(type)) {// 查询专用
 					fieldPart = new SelectionQueryField();
 				} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(type)) {// 查询专用

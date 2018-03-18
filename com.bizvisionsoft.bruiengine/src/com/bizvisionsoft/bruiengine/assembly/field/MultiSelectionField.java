@@ -19,7 +19,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class MultiSelectionField extends SelectionField {
 
-	private List<Object> value;
+	protected List<Object> value;
 	private DataGrid grid;
 
 	public MultiSelectionField() {
@@ -40,14 +40,14 @@ public class MultiSelectionField extends SelectionField {
 			// 2. 设置表格项的选择
 			grid.setCheckOn()
 					// 3. 增加工具栏按钮
-					.addToolItem(new ToolItemDescriptor("添加","inbox", e -> {
+					.addToolItem(new ToolItemDescriptor("添加", "inbox", e -> {
 						showSelector();
-					})).addToolItem(new ToolItemDescriptor("删除","inbox", e -> {
+					})).addToolItem(new ToolItemDescriptor("删除", "inbox", e -> {
 						if (value == null)
 							return;
 						value.removeAll(grid.getSelectedItems());
 						grid.removeSelectedItem();
-					})).addToolItem(new ToolItemDescriptor("清空","inbox", e -> {
+					})).addToolItem(new ToolItemDescriptor("清空", "inbox", e -> {
 						value.clear();
 						grid.removeAllItem();
 					}));
@@ -63,7 +63,7 @@ public class MultiSelectionField extends SelectionField {
 	@Override
 	protected Object getControlLayoutData() {
 		GridData gd = (GridData) super.getControlLayoutData();
-		gd.heightHint = isReadOnly()?215:227;// 显示4行，带有工具栏
+		gd.heightHint = isReadOnly() ? 215 : 227;// 显示4行，带有工具栏
 		return gd;
 	}
 
@@ -91,16 +91,23 @@ public class MultiSelectionField extends SelectionField {
 
 	public boolean setSelection(List<Object> data) {
 		try {
-			if (value == null)
+			if (value == null) {
 				value = new ArrayList<Object>();
-
-			data.removeAll(value);
-			value.addAll(data);
+				value.addAll(data);
+			} else {
+				data.forEach(d -> {
+					if (!value.contains(d))
+						value.add(d);
+				});
+			}
 
 			presentation();
 			writeToInput(false);
 			return true;
 		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				e.printStackTrace();
+			}
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误", e.getMessage());
 			return false;
 		}

@@ -8,9 +8,11 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.mongocodex.annotations.Exclude;
 import com.bizvisionsoft.service.annotations.WriteValue;
 import com.bizvisionsoft.service.model.Organization;
+import com.mongodb.BasicDBObject;
 
 public class DemoQueryBuilder {
 
@@ -31,6 +33,8 @@ public class DemoQueryBuilder {
 	@WriteValue("ÐÕÃû")
 	public Object name;
 
+	public Object orgIds;
+
 	public ObjectId orgId;
 
 	@WriteValue
@@ -45,6 +49,15 @@ public class DemoQueryBuilder {
 			this.orgId = null;
 		else
 			this.orgId = org.get_id();
+	}
+
+	@WriteValue("orgIds")
+	public void setOrgIds(List<Organization> orgs) {
+		if (orgs == null || orgs.isEmpty()) {
+			orgIds = null;
+		} else {
+			orgIds = new BasicDBObject("$in", Util.getList(orgs, o -> o.get_id()));
+		}
 	}
 
 	@WriteValue
