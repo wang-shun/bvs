@@ -12,6 +12,4 @@ public interface IBruiEditorContext extends IBruiContext{
 
 	boolean isIgnoreNull();
 
-	boolean isWrapList();
-
 }

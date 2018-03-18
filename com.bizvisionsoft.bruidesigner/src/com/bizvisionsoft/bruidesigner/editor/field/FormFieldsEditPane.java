@@ -305,6 +305,9 @@ public class FormFieldsEditPane extends Composite {
 			} else if (FormField.TYPE_QUERY_TEXT.equals(fieldType)) {
 				new TextQueryPane(element, editor, parent, type);
 			
+			} else if (FormField.TYPE_QUERY_COMBO.equals(fieldType)) {
+				new ComboQueryPane(element, editor, parent, type);
+			
 			} else if (FormField.TYPE_QUERY_CHECK.equals(fieldType)) {
 				new CheckQueryPane(element, editor, parent, type);
 			

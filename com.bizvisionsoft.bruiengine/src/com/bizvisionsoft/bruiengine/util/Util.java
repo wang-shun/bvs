@@ -102,7 +102,7 @@ public class Util {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static BasicDBObject getBson(Object input, boolean ignoreNull, boolean wrapList) {
+	public static BasicDBObject getBson(Object input, boolean ignoreNull) {
 		Codec codec = CodexProvider.getRegistry().get(input.getClass());
 		StringWriter sw = new StringWriter();
 		codec.encode(new JsonWriter(sw), input, EncoderContext.builder().build());
@@ -117,11 +117,7 @@ public class Util {
 			if (ignoreNull && v == null) {
 				continue;
 			}
-			if (wrapList && v instanceof List<?>) {
-				_result.append("$and", getList((List<Object>) v, i -> new BasicDBObject(k, i)));
-			} else {
-				_result.append(k, v);
-			}
+			_result.append(k, v);
 		}
 		return _result;
 	}

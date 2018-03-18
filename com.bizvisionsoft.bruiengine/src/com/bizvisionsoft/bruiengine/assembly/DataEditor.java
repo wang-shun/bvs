@@ -34,6 +34,7 @@ import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.ComboField;
+import com.bizvisionsoft.bruiengine.assembly.field.ComboQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeQueryField;
@@ -95,8 +96,6 @@ public class DataEditor {
 
 	private boolean ignoreNull;
 
-	private boolean wrapList;
-
 	public DataEditor(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
@@ -109,7 +108,6 @@ public class DataEditor {
 		this.contentArea = parent;
 		input = context.getInput();
 		ignoreNull = context.isIgnoreNull();
-		wrapList = context.isWrapList();
 		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
@@ -183,7 +181,7 @@ public class DataEditor {
 			iterator.next().writeToInput(true);
 		}
 
-		result = Util.getBson(input, ignoreNull,wrapList);
+		result = Util.getBson(input, ignoreNull);
 	}
 
 	private void setReturnCode(int returnCode) {
@@ -229,6 +227,8 @@ public class DataEditor {
 					fieldPart = new DateTimeQueryField();
 				} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
 					fieldPart = new TextQueryField();
+				} else if (FormField.TYPE_QUERY_COMBO.equals(type)) {// 查询专用
+					fieldPart = new ComboQueryField();
 				} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(type)) {// 查询专用
 					fieldPart = new NumberRangeQueryField();
 				} else if (FormField.TYPE_QUERY_CHECK.equals(type)) {// 查询专用

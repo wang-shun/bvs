@@ -1,9 +1,6 @@
 package com.bizvisionsoft.bruiengine.assembly.field;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.conversions.Bson;
+import java.util.Optional;
 
 import com.mongodb.BasicDBObject;
 
@@ -20,24 +17,21 @@ public class NumberRangeQueryField extends NumberRangeField {
 	public Object getValue() {
 		String fromText = from.getText().trim();
 		String toText = to.getText().trim();
-		List<Bson> filters = new ArrayList<Bson>();
+
+		BasicDBObject filter = null;
 		if (!fromText.isEmpty())
 			try {
-				filters.add(new BasicDBObject("$gte", Double.parseDouble(fromText)));
+				double _from = Double.parseDouble(fromText);
+				filter = new BasicDBObject("$gte", _from);
 			} catch (Exception e) {
 			}
 		if (!toText.isEmpty())
 			try {
-				filters.add(new BasicDBObject("$lte", Double.parseDouble(toText)));
+				double _to = Double.parseDouble(toText);
+				Optional.ofNullable(filter).orElse(new BasicDBObject()).append("$lte", _to);
 			} catch (Exception e) {
 			}
-		if (filters.isEmpty()) {
-			return null;
-		} else if (filters.size() == 1) {
-			return filters.get(0);
-		} else {
-			return filters;
-		}
+		return filter;
 	}
 
 	@Override

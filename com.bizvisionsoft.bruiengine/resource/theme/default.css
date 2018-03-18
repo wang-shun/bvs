@@ -645,8 +645,8 @@ Combo-Button-Icon:hover {
 }
 
 Combo-List {
-  border: 1px solid #e6e6e6;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  border: 1px solid #d2d2d2;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
 }
 

@@ -25,9 +25,7 @@ public class ComboField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		int style = SWT.BORDER | SWT.READ_ONLY;
-
-		control = new Combo(parent, style);
+		control = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
 
 		//////////////////////////////////////////////////////////////////////////////////////
 		// 读取配置进行设置

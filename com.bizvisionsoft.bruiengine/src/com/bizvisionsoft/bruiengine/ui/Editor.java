@@ -33,13 +33,7 @@ public class Editor extends Popup {
 		return this;
 	}
 	
-	public Editor setWrapList(boolean wrapList) {
-		getContext().setWrapList(wrapList);
-		return this;
-	}
-	
 	public Editor setQueryMode(boolean queryMode) {
-		getContext().setWrapList(queryMode);
 		getContext().setIgnoreNull(queryMode);
 		return this;
 	}

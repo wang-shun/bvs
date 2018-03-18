@@ -406,6 +406,8 @@ public class FormField extends ModelObject {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//用于查询的字段
 	public static final String TYPE_QUERY_TEXT = "文本输入框（查询）";
+	
+	public static final String TYPE_QUERY_COMBO = "下拉选择框（查询）";
 
 	public static final String TYPE_QUERY_CHECK = "多选框（查询）";
 

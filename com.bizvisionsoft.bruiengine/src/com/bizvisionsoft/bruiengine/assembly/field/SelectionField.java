@@ -44,7 +44,7 @@ public class SelectionField extends EditorField {
 
 			Button select = new Button(pane, SWT.PUSH);
 			select.setData(RWT.CUSTOM_VARIANT, "inline");
-			select.setText("Ñ¡Ôñ...");
+			select.setText("Ñ¡Ôñ");
 			select.addListener(SWT.Selection, e -> {
 				showSelector();
 			});

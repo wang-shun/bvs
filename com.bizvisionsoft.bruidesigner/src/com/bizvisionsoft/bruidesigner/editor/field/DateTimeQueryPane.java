@@ -17,12 +17,6 @@ public class DateTimeQueryPane extends TypeSelectionPane {
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
-		editor.createCheckboxField(parent, "在文本框外显示提示：", element, "hasInfoLabel", SWT.CHECK);
-
-		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
-
-		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
-
 		editor.createComboField(parent, new String[] { "日期", "日期时间", "时间", "年", "月" },
 				new String[] { FormField.DATE_TYPE_DATE, FormField.DATE_TYPE_DATETIME, FormField.DATE_TYPE_TIME,
 						FormField.DATE_TYPE_YEAR, FormField.DATE_TYPE_MONTH },
