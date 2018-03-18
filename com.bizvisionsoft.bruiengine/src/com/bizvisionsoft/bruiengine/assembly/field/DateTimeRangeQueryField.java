@@ -1,27 +1,26 @@
 package com.bizvisionsoft.bruiengine.assembly.field;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+import java.util.Optional;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.DateTime;
 import com.bizivisionsoft.widgets.DateTimeEvent;
 import com.bizivisionsoft.widgets.DateTimeSetting;
-import com.bizvisionsoft.bruicommons.model.FormField;
-import com.bizvisionsoft.bruiengine.BruiEngine;
+import com.mongodb.BasicDBObject;
 
 public class DateTimeRangeQueryField extends EditorField {
 
 	// private Button control;
 
-	private Control control;
+	private DateTime from;
+	private DateTime to;
 	private Date value;
 	private Date endValue;
 
@@ -30,108 +29,52 @@ public class DateTimeRangeQueryField extends EditorField {
 
 	@Override
 	protected Control createControl(Composite parent) {
-		if (isReadOnly()) {
-			return createText(parent);
-		} else {
-			return createDateTime(parent);
-		}
-	}
+		Composite pane = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout(3, false);
+		layout.horizontalSpacing = 8;
+		layout.verticalSpacing = 0;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
 
-	private Control createDateTime(Composite parent) {
-		DateTimeSetting setting;
-		String type = fieldConfig.getDateType();
-		if (FormField.DATE_TYPE_YEAR.equals(type)) {
-			setting = DateTimeSetting.year();
-		} else if (FormField.DATE_TYPE_MONTH.equals(type)) {
-			setting = DateTimeSetting.month();
-		} else if (FormField.DATE_TYPE_TIME.equals(type)) {
-			setting = DateTimeSetting.time();
-		} else if (FormField.DATE_TYPE_DATETIME.equals(type)) {
-			setting = DateTimeSetting.dateTime();
-		} else {
-			setting = DateTimeSetting.date();
-		}
+		pane.setLayout(layout);
+		from = new DateTime(pane, DateTimeSetting.dateTime());
+		new Label(pane, SWT.NONE).setText(" - ");
+		to = new DateTime(pane, DateTimeSetting.dateTime());
 
-		// 获取mark
-		Map<String, Object> marks = BruiEngine.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
-		if (marks != null) {
-			marks.keySet().forEach(k -> {
-				setting.addMark(k, marks.get(k).toString());
-			});
-		}
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.widthHint = 120;
+		from.setLayoutData(gd);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.widthHint = 120;
+		to.setLayoutData(gd);
 
-		setting.setRange(true);
-
-		// 最大值和最小值
-		// TODO
-
-		// TODO Range
-
-		// TODO 关闭
-
-		// TODO 接管
-
-		control = new DateTime(parent, setting);
-
-		control.setEnabled(!isReadOnly());
-
-		control.addListener(SWT.Modify, e -> {
-			try {
-				value = ((DateTimeEvent) e).getDate();
-				endValue = ((DateTimeEvent) e).getEndDate();
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误", e1.getMessage());
-			}
+		from.addListener(SWT.Modify, e -> {
+			value = ((DateTimeEvent) e).getDate();
 		});
-		return control;
-	}
-
-	private Control createText(Composite parent) {
-		control = new Text(parent, SWT.BORDER);
-		((Text) control).setEditable(false);
-		return control;
+		to.addListener(SWT.Modify, e -> {
+			endValue = ((DateTimeEvent) e).getDate();
+		});
+		return pane;
 	}
 
 	@Override
 	public void setValue(Object value) {
-		
-		
-		this.value = (Date) value;
-		if (control instanceof DateTime) {
-			((DateTime) control).setDate((Date) value);
-			((DateTime) control).setDate((Date) value);
-		} else {
-			if (value == null) {
-				((Text) control).setText("");
-			} else {
-				String type = fieldConfig.getDateType();
-				if (FormField.DATE_TYPE_YEAR.equals(type)) {
-					((Text) control).setText(new SimpleDateFormat(DateTimeSetting.FORMAT_YEAR).format((Date) value));
-				} else if (FormField.DATE_TYPE_MONTH.equals(type)) {
-					((Text) control).setText(new SimpleDateFormat(DateTimeSetting.FORMAT_MONTH).format((Date) value));
-				} else if (FormField.DATE_TYPE_TIME.equals(type)) {
-					((Text) control).setText(new SimpleDateFormat(DateTimeSetting.FORMAT_TIME).format((Date) value));
-				} else if (FormField.DATE_TYPE_DATETIME.equals(type)) {
-					((Text) control)
-							.setText(new SimpleDateFormat(DateTimeSetting.FORMAT_DATETIME).format((Date) value));
-				} else {
-					((Text) control).setText(new SimpleDateFormat(DateTimeSetting.FORMAT_DATE).format((Date) value));
-				}
-			}
-		}
 	}
 
 	@Override
 	public Object getValue() {
-		return new Date[] { value, endValue };
+		BasicDBObject filter = null;
+		if (value != null)
+			filter = new BasicDBObject("$gte", value);
+		if (endValue != null)
+			filter = Optional.ofNullable(filter).orElse(new BasicDBObject()).append("$lte", endValue);
+		return filter;
 	}
 
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
-		if (saveCheck && fieldConfig.isRequired() && value == null && endValue == null) {
-			throw new Exception(fieldConfig.getFieldText() + "必填。");
-		}
+		if (value != null && endValue != null && value.after(endValue))
+			throw new Exception(fieldConfig.getFieldText() + "最小值必须小于最大值。");
 	}
 
 }

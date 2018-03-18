@@ -17,11 +17,6 @@ public class DateTimeQueryPane extends TypeSelectionPane {
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
-		editor.createComboField(parent, new String[] { "日期", "日期时间", "时间", "年", "月" },
-				new String[] { FormField.DATE_TYPE_DATE, FormField.DATE_TYPE_DATETIME, FormField.DATE_TYPE_TIME,
-						FormField.DATE_TYPE_YEAR, FormField.DATE_TYPE_MONTH },
-				"日期类型", element, "dateType", SWT.READ_ONLY | SWT.BORDER);
-
 	}
 
 }

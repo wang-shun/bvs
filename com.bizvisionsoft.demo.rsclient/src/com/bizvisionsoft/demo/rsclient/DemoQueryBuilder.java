@@ -69,6 +69,9 @@ public class DemoQueryBuilder {
 	private Date minDate;
 
 	private Date maxDate;
+	
+	@WriteValue
+	private Object lastLogin;
 
 	@WriteValue("testDateTimeRange")
 	public void setTestDateTimeRange(Date[] range) {

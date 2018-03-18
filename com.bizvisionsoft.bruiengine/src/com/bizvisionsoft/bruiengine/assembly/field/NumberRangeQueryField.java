@@ -21,14 +21,13 @@ public class NumberRangeQueryField extends NumberRangeField {
 		BasicDBObject filter = null;
 		if (!fromText.isEmpty())
 			try {
-				double _from = Double.parseDouble(fromText);
-				filter = new BasicDBObject("$gte", _from);
+				filter = new BasicDBObject("$gte", Double.parseDouble(fromText));
 			} catch (Exception e) {
 			}
 		if (!toText.isEmpty())
 			try {
-				double _to = Double.parseDouble(toText);
-				Optional.ofNullable(filter).orElse(new BasicDBObject()).append("$lte", _to);
+				filter = Optional.ofNullable(filter).orElse(new BasicDBObject()).append("$lte",
+						Double.parseDouble(toText));
 			} catch (Exception e) {
 			}
 		return filter;
