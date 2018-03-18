@@ -284,8 +284,11 @@ public class FormFieldsEditPane extends Composite {
 			} else if (FormField.TYPE_DATETIME.equals(fieldType)) {
 				new DateTimePane(element, editor, parent, type);
 			
-			} else if (FormField.TYPE_DATETIME_RANGE.equals(fieldType)) {
-				new DateTimeRangeTypePane(element, editor, parent, type);
+			} else if (FormField.TYPE_QUERY_DATETIME_RANGE.equals(fieldType)) {
+				new DateTimeRangeQueryPane(element, editor, parent, type);
+			
+			} else if (FormField.TYPE_QUERY_DATETIME.equals(fieldType)) {
+				new DateTimeQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_SELECTION.equals(fieldType)) {
 				new SelectionPane(element, editor, parent, type);
@@ -303,13 +306,13 @@ public class FormFieldsEditPane extends Composite {
 				new TextQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_CHECK.equals(fieldType)) {
-				new FormFieldQueryCheckTypePane(element, editor, parent, type);
+				new CheckQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_MULTI_CHECK.equals(fieldType)) {
-				new FormFieldQueryMultiCheckTypePane(element, editor, parent, type);
+				new MultiCheckQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(fieldType)) {
-				new FormFieldQueryMultiSelectionTypePane(element, editor, parent, type);
+				new MultiSelectionQueryPane(element, editor, parent, type);
 			
 			} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(fieldType)) {
 				new NumberRangeQueryPane(element, editor, parent, type);

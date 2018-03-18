@@ -407,8 +407,6 @@ public class FormField extends ModelObject {
 	//用于查询的字段
 	public static final String TYPE_QUERY_TEXT = "文本输入框（查询）";
 
-	public static final String TYPE_DATETIME_RANGE = "日期范围";
-
 	public static final String TYPE_QUERY_CHECK = "多选框（查询）";
 
 	public static final String TYPE_QUERY_MULTI_SELECTION = "多个对象选择框（查询）";
@@ -422,6 +420,10 @@ public class FormField extends ModelObject {
 	public static final String TEXT_QUERY_TYPE_NUMBER = "数值";
 	
 	public static final String TEXT_QUERY_TYPE_STRING = "字符串";
+
+	public static final String TYPE_QUERY_DATETIME = "日期时间（查询）";
+
+	public static final String TYPE_QUERY_DATETIME_RANGE = "日期时间范围（查询）";
 	
 	public String getTextQueryType() {
 		return textQueryType;

@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 
-public class FormFieldQueryMultiSelectionTypePane extends TypeSelectionPane {
+public class DateTimeRangeQueryPane extends TypeSelectionPane {
 
-	public FormFieldQueryMultiSelectionTypePane(FormField element, ModelEditor editor, Composite parent, String type) {
+	public DateTimeRangeQueryPane(FormField element, ModelEditor editor, Composite parent, String type) {
 		super(element, editor, parent,type);
 
 		editor.createTextField(parent, "字段名称：", element, "name", SWT.BORDER);
@@ -22,8 +22,12 @@ public class FormFieldQueryMultiSelectionTypePane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
-		
-		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
+
+		editor.createComboField(parent, new String[] { "日期", "日期时间", "时间", "年", "月" },
+				new String[] { FormField.DATE_TYPE_DATE, FormField.DATE_TYPE_DATETIME, FormField.DATE_TYPE_TIME,
+						FormField.DATE_TYPE_YEAR, FormField.DATE_TYPE_MONTH },
+				"日期类型", element, "dateType", SWT.READ_ONLY | SWT.BORDER);
+
 	}
 
 }
