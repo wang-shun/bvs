@@ -140,13 +140,17 @@ public class DataGrid {
 	@CreateUI
 	public void createUI(Composite parent) {
 		parent.setLayout(new FormLayout());
+
 		Control grid = createGrid(parent);
 		Control pagec = createToolbar(parent);
-		FormData fd = new FormData();
+
+		FormData fd;
+		fd = new FormData();
 		grid.setLayoutData(fd);
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
+
 		if (pagec != null) {
 			fd.bottom = new FormAttachment(pagec);
 			fd = new FormData();
