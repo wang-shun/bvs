@@ -37,8 +37,18 @@ public class DemoQueryBuilder {
 
 	public ObjectId orgId;
 
-	@WriteValue
-	private List<String> leaders;
+	private Object leaders;
+
+	@WriteValue("leaders")
+	public void setLeaders(List<String> leaders) {
+		if (Util.isEmptyOrNull(leaders)) {
+			this.leaders = null;
+		} else if (leaders.size() == 1) {
+			this.leaders = leaders.get(0);
+		} else {
+			this.leaders = new BasicDBObject("$in", leaders);
+		}
+	}
 
 	@WriteValue("¼¤»î")
 	public Object activated;
@@ -69,7 +79,7 @@ public class DemoQueryBuilder {
 	private Date minDate;
 
 	private Date maxDate;
-	
+
 	@WriteValue
 	private Object lastLogin;
 

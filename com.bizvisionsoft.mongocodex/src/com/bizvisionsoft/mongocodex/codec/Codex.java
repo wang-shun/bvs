@@ -43,6 +43,7 @@ import com.bizvisionsoft.mongocodex.annotations.Persistence;
 import com.bizvisionsoft.mongocodex.annotations.PostDecoding;
 import com.bizvisionsoft.mongocodex.annotations.PreEncoding;
 import com.bizvisionsoft.mongocodex.annotations.SetValue;
+import com.bizvisionsoft.mongocodex.annotations.Strict;
 import com.mongodb.MongoClient;
 
 public class Codex<T> implements CollectibleCodec<T> {
@@ -85,8 +86,8 @@ public class Codex<T> implements CollectibleCodec<T> {
 		setMethods = new HashMap<String, Method>();
 		getMethods = new HashMap<String, Method>();
 
-		// autoCoding = clazz.getAnnotation(Strict.class) == null;
-		autoCoding = true;
+		autoCoding = clazz.getAnnotation(Strict.class) == null;
+		// autoCoding = true;
 
 		Arrays.asList(clazz.getDeclaredFields()).forEach(m -> {
 
@@ -679,7 +680,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 		Codec<Document> codec = registry.get(Document.class);
 		BsonReaderMark mark = reader.getMark();
 		Document document = codec.decode(reader, decoderContext);
-		
+
 		String dtype = document.getString(DTYPE);
 		Class<?> targetClass = null;
 		if (dtype != null) {
