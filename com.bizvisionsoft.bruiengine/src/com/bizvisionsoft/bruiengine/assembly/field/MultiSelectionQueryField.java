@@ -67,10 +67,6 @@ public class MultiSelectionQueryField extends SelectionField {
 		return gd;
 	}
 
-	private void showSelector() {
-		editor.switchContent(this, fieldConfig.getSelectorAssemblyId());
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setValue(Object value) {

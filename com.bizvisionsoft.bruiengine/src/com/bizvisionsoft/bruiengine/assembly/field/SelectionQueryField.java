@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.assembly.field;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
@@ -16,13 +15,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
-import com.bizvisionsoft.bruiengine.BruiEngine;
-import com.bizvisionsoft.service.annotations.ReadValue;
-
 public class SelectionQueryField extends SelectionField {
-
-	private Text text;
-	private Object value;
 
 	public SelectionQueryField() {
 	}
@@ -76,23 +69,8 @@ public class SelectionQueryField extends SelectionField {
 		return pane;
 	}
 
-	private void showSelector() {
-		editor.switchContent(this, fieldConfig.getSelectorAssemblyId());
-	}
-
 	@Override
 	public void setValue(Object value) {
-	}
-
-	protected void presentation() {
-		Object label = Optional.ofNullable(value)
-				.map(v -> BruiEngine.readValue(v, assemblyConfig.getName(), ReadValue.LABEL, null)).orElse("");
-		text.setText("" + label);
-	}
-
-	@Override
-	public Object getValue() {
-		return value;
 	}
 
 	@Override

@@ -21,8 +21,8 @@ import com.bizvisionsoft.service.annotations.ReadValue;
 
 public class SelectionField extends EditorField {
 
-	private Text text;
-	private Object value;
+	protected Text text;
+	protected Object value;
 
 	public SelectionField() {
 	}
@@ -85,7 +85,7 @@ public class SelectionField extends EditorField {
 		return pane;
 	}
 
-	private void showSelector() {
+	protected void showSelector() {
 		editor.switchContent(this, fieldConfig.getSelectorAssemblyId());
 	}
 
