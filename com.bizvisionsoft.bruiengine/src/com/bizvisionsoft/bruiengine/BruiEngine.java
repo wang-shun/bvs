@@ -21,6 +21,7 @@ import com.bizvisionsoft.service.annotations.ReadValidation;
 import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.Structure;
 import com.bizvisionsoft.service.annotations.WriteValue;
+import com.google.gson.GsonBuilder;
 
 public class BruiEngine {
 
@@ -473,6 +474,11 @@ public class BruiEngine {
 			}
 		});
 		return target;
+	}
+
+	public static Object deepCopy(Object elem) {
+		String json = new GsonBuilder().create().toJson(elem);
+		return new GsonBuilder().create().fromJson(json, elem.getClass());
 	}
 
 }

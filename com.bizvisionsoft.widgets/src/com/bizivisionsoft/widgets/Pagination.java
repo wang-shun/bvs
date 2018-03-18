@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
@@ -43,7 +44,9 @@ public class Pagination extends Composite {
 			event.item = Pagination.this;
 			event.display = Pagination.this.getDisplay();
 			event.data = parameters;
-			Arrays.asList(getListeners(SWT.Selection)).forEach(l -> l.handleEvent(event));
+			Display.getCurrent().asyncExec(() -> {
+				Arrays.asList(getListeners(SWT.Selection)).forEach(l -> l.handleEvent(event));
+			});
 		}
 	};
 

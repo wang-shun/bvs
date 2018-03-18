@@ -557,7 +557,7 @@ public class DataGrid {
 
 	private void doQuery(BasicDBObject result) {
 		filter = result;
-		System.out.println(filter);
+		currentPage = 0;
 		skip = 0;
 		count = dataSetEngine.count(filter);
 		page.setCount(count);

@@ -23,7 +23,6 @@ public class BruiActionEngine extends BruiEngine {
 		} else if (editorId != null && !editorId.isEmpty()) {// 用于打开编辑器的Action
 			brui = new BruiActionEngine(
 					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
-//		} else if(t) {//显示表格查询
 		} else {
 			brui = load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
