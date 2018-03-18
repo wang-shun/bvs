@@ -31,17 +31,17 @@ public class DemoQueryBuilder {
 	@WriteValue("姓名")
 	public Object name;
 
-	public ObjectId organizationId;
+	public ObjectId orgId;
 
 	@WriteValue
 	private List<String> leaders;
 
 	@WriteValue("激活")
-	public Boolean activated;
+	public Object activated;
 
 	@WriteValue(" 组织 ")
 	public void setOrganization(Organization org) {
-		this.organizationId = org.get_id();
+		this.orgId = org.get_id();
 	}
 
 	@WriteValue

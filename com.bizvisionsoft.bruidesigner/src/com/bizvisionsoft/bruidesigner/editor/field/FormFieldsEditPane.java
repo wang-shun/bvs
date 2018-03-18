@@ -311,6 +311,9 @@ public class FormFieldsEditPane extends Composite {
 			} else if (FormField.TYPE_QUERY_MULTI_CHECK.equals(fieldType)) {
 				new MultiCheckQueryPane(element, editor, parent, type);
 			
+			} else if (FormField.TYPE_QUERY_SELECTION.equals(fieldType)) {
+				new SelectionQueryPane(element, editor, parent, type);
+			
 			} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(fieldType)) {
 				new MultiSelectionQueryPane(element, editor, parent, type);
 			

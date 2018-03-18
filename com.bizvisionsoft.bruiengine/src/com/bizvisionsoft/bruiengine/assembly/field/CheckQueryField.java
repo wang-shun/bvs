@@ -6,8 +6,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.mongodb.BasicDBObject;
-
 public class CheckQueryField extends EditorField {
 
 	private Combo control;
@@ -21,8 +19,7 @@ public class CheckQueryField extends EditorField {
 		control = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		control.add("ÊÇ");
 		control.add("·ñ");
-		control.add("¿Õ");
-		control.select(0);
+		control.add("");
 
 		control.addListener(SWT.Selection, e -> {
 			try {
@@ -45,9 +42,10 @@ public class CheckQueryField extends EditorField {
 			return true;
 		} else if ("·ñ".equals(control.getText())) {
 			return false;
-		} else {
-			return new BasicDBObject("$eq", null);
+		} else if ("".equals(control.getText())) {
+			return null;
 		}
+		return null;
 	}
 
 	@Override

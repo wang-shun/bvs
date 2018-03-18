@@ -48,6 +48,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.NumberRangeField;
 import com.bizvisionsoft.bruiengine.assembly.field.NumberRangeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
+import com.bizvisionsoft.bruiengine.assembly.field.SelectionQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextQueryField;
@@ -232,6 +233,8 @@ public class DataEditor {
 					fieldPart = new CheckQueryField();
 				} else if (FormField.TYPE_QUERY_MULTI_CHECK.equals(type)) {// 查询专用
 					fieldPart = new MultiCheckQueryField();
+				} else if (FormField.TYPE_QUERY_SELECTION.equals(type)) {// 查询专用
+					fieldPart = new SelectionQueryField();
 				} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(type)) {// 查询专用
 					fieldPart = new MultiSelectionQueryField();
 				} else {
