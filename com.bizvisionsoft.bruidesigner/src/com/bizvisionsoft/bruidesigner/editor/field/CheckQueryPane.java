@@ -17,9 +17,6 @@ public class CheckQueryPane extends TypeSelectionPane {
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
-		editor.createCheckboxField(parent, "在文本框外显示提示：", element, "hasInfoLabel", SWT.CHECK);
-
-
 	}
 
 }

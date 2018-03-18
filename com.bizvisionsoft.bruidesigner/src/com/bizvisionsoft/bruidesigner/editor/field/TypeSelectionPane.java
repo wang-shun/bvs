@@ -37,8 +37,8 @@ public class TypeSelectionPane {
 					FormField.TYPE_QUERY_TEXT,
 					FormField.TYPE_QUERY_TEXT_RANGE,
 					FormField.TYPE_QUERY_CHECK, //TODO
-					FormField.TYPE_QUERY_MULTI_CHECK, 
-					FormField.TYPE_QUERY_DATETIME,
+					FormField.TYPE_QUERY_MULTI_CHECK, //TODO
+					FormField.TYPE_QUERY_DATETIME,//TODO
 					FormField.TYPE_QUERY_DATETIME_RANGE,//TODO
 					FormField.TYPE_QUERY_MULTI_SELECTION//TODO
 					};

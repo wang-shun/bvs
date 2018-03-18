@@ -1,17 +1,16 @@
 package com.bizvisionsoft.bruiengine.assembly.field;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.bizvisionsoft.bruicommons.model.FormField;
+import com.mongodb.BasicDBObject;
 
 public class CheckQueryField extends EditorField {
 
-	private Button control;
+	private Combo control;
 
 	public CheckQueryField() {
 	}
@@ -19,17 +18,11 @@ public class CheckQueryField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		if (FormField.CHECK_STYLE_SWITCH.equals(fieldConfig.getCheckStyle())) {
-			control = new Button(parent, SWT.CHECK);
-			control.setData(RWT.CUSTOM_VARIANT, "switch");
-		}else {
-			control = new Button(parent, SWT.CHECK);
-		}
-		//////////////////////////////////////////////////////////////////////////////////////
-		// 读取配置进行设置
-
-		// 设置文本是否只读
-		control.setEnabled(!isReadOnly());
+		control = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
+		control.add("是");
+		control.add("否");
+		control.add("空");
+		control.select(0);
 
 		control.addListener(SWT.Selection, e -> {
 			try {
@@ -39,18 +32,22 @@ public class CheckQueryField extends EditorField {
 			}
 		});
 
-		// 设置修改
 		return control;
 	}
 
 	@Override
 	public void setValue(Object value) {
-		control.setSelection(Boolean.TRUE.equals(value));
 	}
 
 	@Override
 	public Object getValue() {
-		return control.getSelection();
+		if ("是".equals(control.getText())) {
+			return true;
+		} else if ("否".equals(control.getText())) {
+			return false;
+		} else {
+			return new BasicDBObject("$eq", null);
+		}
 	}
 
 	@Override
