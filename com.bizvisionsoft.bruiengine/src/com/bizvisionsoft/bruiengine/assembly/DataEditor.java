@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
@@ -40,6 +41,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.DateTimeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.DateTimeRangeQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.FileField;
+import com.bizvisionsoft.bruiengine.assembly.field.HtmlPageField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiFileField;
@@ -52,6 +54,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.SelectionField;
 import com.bizvisionsoft.bruiengine.assembly.field.SelectionQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextField;
+import com.bizvisionsoft.bruiengine.assembly.field.TextPageField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextQueryField;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
@@ -122,7 +125,13 @@ public class DataEditor {
 		if (FormField.TYPE_PAGE.equals(fields.get(0).getType())) {
 			fields.forEach(f -> {
 				Composite content = createTabItem(f.getFieldText());
-				createFields(content, f.getFormFields());
+				if (FormField.TYPE_PAGE_HTML.equals(f.getType())) {
+					createField(content, f).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				} else if (FormField.TYPE_PAGE_NOTE.equals(f.getType())) {
+					createField(content, f).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				} else {
+					createFields(content, f.getFormFields());
+				}
 			});
 		}
 
@@ -196,57 +205,65 @@ public class DataEditor {
 				container.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 				createFields(container, f.getFormFields());
 			} else {
-				EditorField fieldPart = null;
-				if (FormField.TYPE_TEXT.equals(type)) {
-					fieldPart = new TextField();
-				} else if (FormField.TYPE_COMBO.equals(type)) {
-					fieldPart = new ComboField();
-				} else if (FormField.TYPE_RADIO.equals(type)) {
-					fieldPart = new RadioField();
-				} else if (FormField.TYPE_CHECK.equals(type)) {
-					fieldPart = new CheckField();
-				} else if (FormField.TYPE_DATETIME.equals(type)) {
-					fieldPart = new DateTimeField();
-				} else if (FormField.TYPE_SELECTION.equals(type)) {
-					fieldPart = new SelectionField();
-				} else if (FormField.TYPE_MULTI_SELECTION.equals(type)) {
-					fieldPart = new MultiSelectionField();
-				} else if (FormField.TYPE_FILE.equals(type)) {
-					fieldPart = new FileField();
-				} else if (FormField.TYPE_MULTI_FILE.equals(type)) {
-					fieldPart = new MultiFileField();
-				} else if (FormField.TYPE_TEXT_MULTILINE.equals(type)) {
-					fieldPart = new TextAreaField();
-				} else if (FormField.TYPE_MULTI_CHECK.equals(type)) {
-					fieldPart = new MultiCheckField();
-				} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
-					fieldPart = new NumberRangeField();
-				} else if (FormField.TYPE_QUERY_DATETIME_RANGE.equals(type)) {// 查询专用
-					fieldPart = new DateTimeRangeQueryField();
-				} else if (FormField.TYPE_QUERY_DATETIME.equals(type)) {// 查询专用
-					fieldPart = new DateTimeQueryField();
-				} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
-					fieldPart = new TextQueryField();
-				} else if (FormField.TYPE_QUERY_COMBO.equals(type)) {// 查询专用
-					fieldPart = new ComboQueryField();
-				} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(type)) {// 查询专用
-					fieldPart = new NumberRangeQueryField();
-				} else if (FormField.TYPE_QUERY_CHECK.equals(type)) {// 查询专用
-					fieldPart = new CheckQueryField();
-				} else if (FormField.TYPE_QUERY_SELECTION.equals(type)) {// 查询专用
-					fieldPart = new SelectionQueryField();
-				} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(type)) {// 查询专用
-					fieldPart = new MultiSelectionQueryField();
-				} else {
-					fieldPart = new TextField();
-				}
-				fields.put(f,
-						fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
-				fieldPart.setEditor(this).createUI(parent)// 创建UI
-						.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
+				createField(parent, f);
 			}
-
 		});
+	}
+
+	private Control createField(Composite parent, FormField f) {
+		String type = f.getType();
+		EditorField fieldPart = null;
+		if (FormField.TYPE_TEXT.equals(type)) {
+			fieldPart = new TextField();
+		} else if (FormField.TYPE_COMBO.equals(type)) {
+			fieldPart = new ComboField();
+		} else if (FormField.TYPE_RADIO.equals(type)) {
+			fieldPart = new RadioField();
+		} else if (FormField.TYPE_CHECK.equals(type)) {
+			fieldPart = new CheckField();
+		} else if (FormField.TYPE_DATETIME.equals(type)) {
+			fieldPart = new DateTimeField();
+		} else if (FormField.TYPE_SELECTION.equals(type)) {
+			fieldPart = new SelectionField();
+		} else if (FormField.TYPE_MULTI_SELECTION.equals(type)) {
+			fieldPart = new MultiSelectionField();
+		} else if (FormField.TYPE_FILE.equals(type)) {
+			fieldPart = new FileField();
+		} else if (FormField.TYPE_MULTI_FILE.equals(type)) {
+			fieldPart = new MultiFileField();
+		} else if (FormField.TYPE_TEXT_MULTILINE.equals(type)) {
+			fieldPart = new TextAreaField();
+		} else if (FormField.TYPE_MULTI_CHECK.equals(type)) {
+			fieldPart = new MultiCheckField();
+		} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
+			fieldPart = new NumberRangeField();
+		} else if (FormField.TYPE_QUERY_DATETIME_RANGE.equals(type)) {// 查询专用
+			fieldPart = new DateTimeRangeQueryField();
+		} else if (FormField.TYPE_QUERY_DATETIME.equals(type)) {// 查询专用
+			fieldPart = new DateTimeQueryField();
+		} else if (FormField.TYPE_QUERY_TEXT.equals(type)) {// 查询专用
+			fieldPart = new TextQueryField();
+		} else if (FormField.TYPE_QUERY_COMBO.equals(type)) {// 查询专用
+			fieldPart = new ComboQueryField();
+		} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(type)) {// 查询专用
+			fieldPart = new NumberRangeQueryField();
+		} else if (FormField.TYPE_QUERY_CHECK.equals(type)) {// 查询专用
+			fieldPart = new CheckQueryField();
+		} else if (FormField.TYPE_QUERY_SELECTION.equals(type)) {// 查询专用
+			fieldPart = new SelectionQueryField();
+		} else if (FormField.TYPE_QUERY_MULTI_SELECTION.equals(type)) {// 查询专用
+			fieldPart = new MultiSelectionQueryField();
+		} else if (FormField.TYPE_PAGE_HTML.equals(type)) {// 整页专用
+			fieldPart = new HtmlPageField();
+		} else if (FormField.TYPE_PAGE_NOTE.equals(type)) {// 整页专用
+			fieldPart = new TextPageField();
+		} else {
+			fieldPart = new TextField();
+		}
+		fields.put(f, fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
+		fieldPart.setEditor(this).createUI(parent)// 创建UI
+				.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
+		return fieldPart.getContainer();
 	}
 
 	private Composite createTabItem(String tabText) {

@@ -260,6 +260,12 @@ public class FormFieldsEditPane extends Composite {
 			} else if (FormField.TYPE_PAGE.equals(fieldType)) {
 				new PagePane(element, editor, parent, type);
 
+			} else if (FormField.TYPE_PAGE_HTML.equals(fieldType)) {
+				new PagePane(element, editor, parent, type);
+
+			} else if (FormField.TYPE_PAGE_NOTE.equals(fieldType)) {
+				new PagePane(element, editor, parent, type);
+
 			} else if (FormField.TYPE_TEXT.equals(fieldType)) {
 				new TextPane(element, editor, parent, type);
 			

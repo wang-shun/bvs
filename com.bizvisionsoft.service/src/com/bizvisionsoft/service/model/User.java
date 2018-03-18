@@ -251,5 +251,21 @@ public class User {
 	public String[] maxAndMinDateLimit() {
 		return new String[] {"2017-8-11 12:30:00","2018-8-11 11:30:00"};
 	}
+	
+	/**
+	 * 超文本字段
+	 */
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private String demoHtml;
+	
+	/**
+	 * 超文本字段
+	 */
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private String demoNote;
 
 }

@@ -15,6 +15,8 @@ public class TypeSelectionPane {
 		if (type.equals("editor")) {
 			fields = new String[] {
 					FormField.TYPE_PAGE, 
+					FormField.TYPE_PAGE_HTML, 
+					FormField.TYPE_PAGE_NOTE, 
 					FormField.TYPE_INLINE, 
 					FormField.TYPE_TEXT,
 					FormField.TYPE_TEXT_RANGE,

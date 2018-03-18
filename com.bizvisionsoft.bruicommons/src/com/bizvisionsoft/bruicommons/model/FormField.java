@@ -31,6 +31,11 @@ public class FormField extends ModelObject {
 	public final static String TYPE_INLINE = "行";
 
 	public final static String TYPE_PAGE = "标签页";
+	
+	public final static String TYPE_PAGE_HTML = "标签页（HTML编辑）";
+	
+	public final static String TYPE_PAGE_NOTE = "标签页（文本编辑）";
+
 
 	private String id;
 

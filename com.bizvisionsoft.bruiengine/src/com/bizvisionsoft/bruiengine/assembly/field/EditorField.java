@@ -24,7 +24,7 @@ public abstract class EditorField {
 
 	private Label infoLabel;
 
-	private Composite container;
+	protected Composite container;
 
 	protected Object input;
 
@@ -152,5 +152,9 @@ public abstract class EditorField {
 	public EditorField setEditable(boolean editorIsEditable) {
 		this.editorIsEditable = editorIsEditable;
 		return this;
+	}
+	
+	public Composite getContainer() {
+		return container;
 	}
 }
