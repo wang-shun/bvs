@@ -245,4 +245,13 @@ public class Util {
 		}
 		return contentType == null ? (defaultType == null ? "application/octet-stream" : defaultType) : contentType;
 	}
+
+	public static boolean isEmptyOrNull(String s) {
+		return s == null || s.isEmpty();
+	}
+
+	public static boolean isEmptyOrNull(List<?> s) {
+		return s == null || s.isEmpty();
+	}
+
 }

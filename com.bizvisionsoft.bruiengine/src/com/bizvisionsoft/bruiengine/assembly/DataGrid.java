@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bson.Document;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
@@ -23,6 +24,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
@@ -35,12 +37,16 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
+import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.Editor;
@@ -93,6 +99,8 @@ public class DataGrid {
 
 	private BasicDBObject filter;
 
+	private boolean queryOn;
+
 	public DataGrid(Assembly gridConfig) {
 		this.config = gridConfig;
 	}
@@ -117,8 +125,13 @@ public class DataGrid {
 		return this;
 	}
 
-	public DataGrid setCheckOn() {
-		checkOn = true;
+	public DataGrid setCheckOn(boolean checkOn) {
+		this.checkOn = checkOn;
+		return this;
+	}
+
+	public DataGrid setQueryOn(boolean queryOn) {
+		this.queryOn = queryOn;
 		return this;
 	}
 
@@ -140,14 +153,31 @@ public class DataGrid {
 	@CreateUI
 	public void createUI(Composite parent) {
 		parent.setLayout(new FormLayout());
-
+		Control queryPanel = createQueryPanel(parent);
 		Control grid = createGrid(parent);
 		Control pagec = createToolbar(parent);
 
-		FormData fd;
-		fd = new FormData();
+		Label sep = null;
+		if (queryPanel != null) {
+			FormData fd = new FormData();
+			queryPanel.setLayoutData(fd);
+			fd.top = new FormAttachment();
+			fd.left = new FormAttachment();
+			fd.right = new FormAttachment(100);
+			fd.height = 220;
+
+			sep = new Label(parent, SWT.HORIZONTAL | SWT.SEPARATOR);
+			fd = new FormData();
+			sep.setLayoutData(fd);
+			fd.top = new FormAttachment(queryPanel);
+			fd.left = new FormAttachment();
+			fd.right = new FormAttachment(100);
+			fd.height = 1;
+		}
+
+		FormData fd = new FormData();
 		grid.setLayoutData(fd);
-		fd.top = new FormAttachment();
+		fd.top = new FormAttachment(sep);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 
@@ -162,6 +192,46 @@ public class DataGrid {
 		fd.bottom = new FormAttachment(100);
 
 		setInput();
+	}
+
+	private Control createQueryPanel(Composite parent) {
+		if (!queryOn) {
+			return null;
+		}
+		Composite queryPanel = new Composite(parent, SWT.NONE);
+
+		Assembly queryConfig = (Assembly) BruiEngine.simpleCopy(config, new Assembly());
+		queryConfig.setType(Assembly.TYPE_EDITOR);
+		queryConfig.setTitle("查询");
+
+		String bundleId = config.getQueryBuilderBundle();
+		String classId = config.getQueryBuilderClass();
+		Object input;
+		if (bundleId != null && classId != null) {
+			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
+		} else {
+			input = new Document();
+		}
+
+		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(queryConfig);
+		IBruiContext childContext = new BruiEditorContext().setEditable(true).setCompact(true).setInput(input)
+				.setIgnoreNull(true).setParent(context).setAssembly(queryConfig).setEngine(brui);
+		context.add(childContext);
+
+		final DataEditor editor = (DataEditor) brui.getTarget();
+		// 2. 设置查询
+		editor.addToolItem(new ToolItemDescriptor("查询", BruiToolkit.CSS_INFO, e -> {
+			try {
+				doQuery((BasicDBObject) editor.save());
+			} catch (Exception e1) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误", e1.getMessage());
+			}
+
+		}));
+
+		brui.init(new IServiceWithId[] { bruiService, childContext }).createUI(queryPanel);
+
+		return queryPanel;
 	}
 
 	private Control createToolbar(Composite parent) {
@@ -465,8 +535,7 @@ public class DataGrid {
 	/**
 	 * 执行查询
 	 */
-	public void doQuery() {
-
+	public void openQueryEditor() {
 		Assembly queryConfig = (Assembly) BruiEngine.simpleCopy(config, new Assembly());
 		queryConfig.setType(Assembly.TYPE_EDITOR);
 		queryConfig.setTitle("查询");
@@ -480,15 +549,20 @@ public class DataGrid {
 			input = new Document();
 		}
 
-		Editor editor = bruiService.open(queryConfig, input, true, true, context);
+		Editor editor = bruiService.createEditor(queryConfig, input, true, true, context);
 		if (Window.OK == editor.open()) {
-			filter = (BasicDBObject) editor.getResult();
-			System.out.println(filter);
-			skip = 0;
-			count = dataSetEngine.count(filter);
-			page.setCount(count);
-			setInput();
+			doQuery((BasicDBObject) editor.getResult());
 		}
+	}
+
+	private void doQuery(BasicDBObject result) {
+		filter = result;
+		System.out.println(filter);
+		skip = 0;
+		count = dataSetEngine.count(filter);
+		page.setCount(count);
+		setInput();
+
 	}
 
 }

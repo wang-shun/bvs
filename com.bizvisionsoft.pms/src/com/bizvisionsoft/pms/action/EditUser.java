@@ -29,7 +29,7 @@ public class EditUser {
 		context.ifFristElementSelected(elem -> {
 			UserService service = Services.get(UserService.class);
 			Optional.ofNullable(service.get(((UserInfo) elem).getUserId())).ifPresent(user -> {
-				Editor editor = bruiService.openByName("用户编辑器", user, true,false, context);
+				Editor editor = bruiService.createEditorByName("用户编辑器", user, true,false, context);
 				if (Window.OK == editor.open()) {
 					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
 							.filter(new BasicDBObject("userId", user.getUserId())).set(editor.getResult());

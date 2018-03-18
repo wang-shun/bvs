@@ -59,7 +59,7 @@ public class TextQueryField extends EditorField {
 		pane.setLayout(layout);
 
 		operator = new Combo(pane, SWT.READ_ONLY | SWT.BORDER);
-		if (FormField.TEXT_QUERY_TYPE_NUMBER.endsWith(fieldConfig.getTextQueryType())) {
+		if (FormField.TEXT_QUERY_TYPE_NUMBER.equals(fieldConfig.getTextQueryType())) {
 			operator.add(GT);
 			operator.add(GTE);
 			operator.add(EQ);
@@ -110,7 +110,7 @@ public class TextQueryField extends EditorField {
 			return null;
 		}
 
-		if (FormField.TEXT_QUERY_TYPE_NUMBER.endsWith(fieldConfig.getTextQueryType())) {
+		if (FormField.TEXT_QUERY_TYPE_NUMBER.equals(fieldConfig.getTextQueryType())) {
 			float v = Float.parseFloat(value);
 			if (EQ.equals(op)) {
 				return new BasicDBObject("$eq", v);
@@ -144,7 +144,7 @@ public class TextQueryField extends EditorField {
 	}
 
 	private ClientListener getVerfifyListener() {
-		if (FormField.TEXT_QUERY_TYPE_NUMBER.endsWith(fieldConfig.getTextQueryType())) {
+		if (FormField.TEXT_QUERY_TYPE_NUMBER.equals(fieldConfig.getTextQueryType())) {
 			String js = "var handleEvent = function(event) {"
 					+ "	var reg1 = /^-?([1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*|0?\\.0+|0)$/;"
 					+ "	var reg2 = /^-?[1-9]\\d*$/;"
@@ -169,7 +169,7 @@ public class TextQueryField extends EditorField {
 		if (text.isEmpty()) {
 			return;
 		}
-		if (FormField.TEXT_QUERY_TYPE_NUMBER.endsWith(fieldConfig.getTextQueryType())) {
+		if (FormField.TEXT_QUERY_TYPE_NUMBER.equals(fieldConfig.getTextQueryType())) {
 			try {
 				Float.parseFloat(text);
 			} catch (Exception e) {

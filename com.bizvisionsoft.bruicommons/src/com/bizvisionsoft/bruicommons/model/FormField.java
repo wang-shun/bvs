@@ -414,7 +414,7 @@ public class FormField extends ModelObject {
 	
 	public static final String TYPE_QUERY_COMBO = "下拉选择框（查询）";
 
-	public static final String TYPE_QUERY_CHECK = "多选框（查询）";
+	public static final String TYPE_QUERY_CHECK = "复选框（查询）";
 
 	public static final String TYPE_QUERY_MULTI_SELECTION = "多个对象选择框（查询）";
 

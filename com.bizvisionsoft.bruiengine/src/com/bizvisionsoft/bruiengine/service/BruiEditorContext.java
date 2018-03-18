@@ -5,13 +5,16 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 	private boolean editable;
 	private Object input;
 	private boolean ignoreNull;
+	private boolean compact;
 
-	public void setEditable(boolean editable) {
+	public BruiEditorContext setEditable(boolean editable) {
 		this.editable = editable;
+		return this;
 	}
 
-	public void setInput(Object input) {
+	public BruiEditorContext setInput(Object input) {
 		this.input = input;
+		return this;
 	}
 	
 	public boolean isEditable() {
@@ -22,12 +25,22 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 		return input;
 	}
 
-	public void setIgnoreNull(boolean ignoreNull) {
+	public BruiEditorContext setIgnoreNull(boolean ignoreNull) {
 		this.ignoreNull = ignoreNull;
+		return this;
 	}
 	
 	public boolean isIgnoreNull() {
 		return ignoreNull;
+	}
+
+	public BruiEditorContext setCompact(boolean compact) {
+		this.compact = compact;
+		return this;
+	}
+	
+	public boolean isEmbedded() {
+		return compact;
 	}
 
 }

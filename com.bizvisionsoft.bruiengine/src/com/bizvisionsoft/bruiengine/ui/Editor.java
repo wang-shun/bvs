@@ -33,11 +33,6 @@ public class Editor extends Popup {
 		return this;
 	}
 	
-	public Editor setQueryMode(boolean queryMode) {
-		getContext().setIgnoreNull(queryMode);
-		return this;
-	}
-
 	public Editor setInput(Object input) {
 		getContext().setInput(input);
 		return this;

@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -99,9 +100,16 @@ public class DataEditor {
 
 	private boolean ignoreNull;
 
+	private List<ToolItemDescriptor> toolitems = new ArrayList<ToolItemDescriptor>();
+
 	public DataEditor(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
+	}
+
+	public DataEditor addToolItem(ToolItemDescriptor ti) {
+		toolitems.add(ti);
+		return this;
 	}
 
 	@CreateUI
@@ -114,9 +122,9 @@ public class DataEditor {
 		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
-		layout.spacing = 16;
-		layout.marginWidth = 16;
-		layout.marginHeight = 16;
+		layout.spacing = context.isEmbedded() ? 8 : 16;
+		layout.marginWidth = context.isEmbedded() ? 8 : 16;
+		layout.marginHeight = context.isEmbedded() ? 8 : 16;
 
 		parent.setLayout(layout);
 		folder = new TabFolder(parent, SWT.TOP | SWT.BORDER);
@@ -135,62 +143,94 @@ public class DataEditor {
 			});
 		}
 
-		Button okBtn = UserSession.bruiToolkit().newStyledControl(Button.class, parent, SWT.PUSH,
-				BruiToolkit.CSS_NORMAL);
-		okBtn.setText("确定");
-		okBtn.addListener(SWT.Selection, e -> {
-			try {
-				if (editable) {
-					save();
-					setReturnCode(Window.OK);
-				}
-				bruiService.closeCurrentPart();
-			} catch (Exception e1) {
-				MessageDialog.openError(bruiService.getCurrentShell(), "错误", e1.getMessage());
-			}
-		});
-
+		Composite bar = createButtons(parent);
 		FormData fd = new FormData();
-		okBtn.setLayoutData(fd);
+		bar.setLayoutData(fd);
 		fd.height = 32;
-		fd.width = 120;
-		fd.bottom = new FormAttachment(100);
+		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
 
 		fd = new FormData();
 		folder.setLayoutData(fd);
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(okBtn, -32);
-
-		if (editable) {
-			Button cancelBtn = UserSession.bruiToolkit().newStyledControl(Button.class, parent, SWT.PUSH,
-					BruiToolkit.CSS_WARNING);
-			cancelBtn.setText("取消");
-			cancelBtn.addListener(SWT.Selection, e -> {
-				setReturnCode(Window.CANCEL);
-				bruiService.closeCurrentPart();
-			});
-
-			fd = new FormData();
-			cancelBtn.setLayoutData(fd);
-			fd.height = 32;
-			fd.width = 120;
-			fd.bottom = new FormAttachment(100);
-			fd.right = new FormAttachment(okBtn);
-
-		}
-
+		fd.bottom = new FormAttachment(bar, context.isEmbedded() ? -16 : -32);
 	}
 
-	private void save() throws Exception {
+	private Composite createButtons(Composite parent) {
+		Composite toolbar = new Composite(parent, SWT.NONE);
+		toolbar.setLayout(new FormLayout());
+
+		Control right = null;
+		if (!context.isEmbedded()) {// 嵌入到其他页面时，不显示原有的按钮
+			Button okBtn = UserSession.bruiToolkit().newStyledControl(Button.class, toolbar, SWT.PUSH,
+					BruiToolkit.CSS_NORMAL);
+			okBtn.setText("确定");
+			okBtn.addListener(SWT.Selection, e -> {
+				try {
+					if (editable) {
+						save();
+						setReturnCode(Window.OK);
+					}
+					bruiService.closeCurrentPart();
+				} catch (Exception e1) {
+					MessageDialog.openError(bruiService.getCurrentShell(), "错误", e1.getMessage());
+				}
+			});
+
+			FormData fd = new FormData();
+			okBtn.setLayoutData(fd);
+			fd.width = 120;
+			fd.top = new FormAttachment();
+			fd.bottom = new FormAttachment(100);
+			fd.right = new FormAttachment(100);
+			right = okBtn;
+			if (editable) {
+				Button cancelBtn = UserSession.bruiToolkit().newStyledControl(Button.class, toolbar, SWT.PUSH,
+						BruiToolkit.CSS_WARNING);
+				cancelBtn.setText("取消");
+				cancelBtn.addListener(SWT.Selection, e -> {
+					setReturnCode(Window.CANCEL);
+					bruiService.closeCurrentPart();
+				});
+
+				fd = new FormData();
+				cancelBtn.setLayoutData(fd);
+				fd.width = 120;
+				fd.top = new FormAttachment();
+				fd.bottom = new FormAttachment(100);
+				fd.right = new FormAttachment(okBtn, -16);
+				right = cancelBtn;
+			}
+		}
+
+		// 创建自定义工具按钮
+		for (Iterator<ToolItemDescriptor> iterator = toolitems.iterator(); iterator.hasNext();) {
+			ToolItemDescriptor desc = iterator.next();
+			Button btn = UserSession.bruiToolkit().newStyledControl(Button.class, toolbar, SWT.PUSH, desc.style);
+			btn.setText(desc.label);
+			btn.addListener(SWT.Selection, desc.listener);
+			FormData fd = new FormData();
+			btn.setLayoutData(fd);
+			fd.top = new FormAttachment();
+			fd.bottom = new FormAttachment(100);
+			fd.right = right == null ? new FormAttachment(100) : new FormAttachment(right, -16);
+			right = btn;
+		}
+
+		return toolbar;
+	}
+
+	Object save() throws Exception {
 		Collection<EditorField> fs = fields.values();
 		for (Iterator<EditorField> iterator = fs.iterator(); iterator.hasNext();) {
 			iterator.next().writeToInput(true);
 		}
 
 		result = Util.getBson(input, ignoreNull);
+		return result;
 	}
 
 	private void setReturnCode(int returnCode) {
@@ -307,25 +347,23 @@ public class DataEditor {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// 扩展DataGrid
 		// 1. 实例化，设置上下文
-		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(Brui.site.getAssembly(assemblyId));
+		Assembly gridConfig = Brui.site.getAssembly(assemblyId);
+		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(gridConfig);
 		context.add(containerContext = new BruiAssemblyContext().setParent(context));
 		containerContext.setEngine(brui);
 
 		DataGrid grid = ((DataGrid) brui.getTarget());
 
-		if (field instanceof MultiSelectionField) {// 如果是多选，添加check
-			grid.setCheckOn();
-		}
+		// 如果是多选，添加check
+		grid.setCheckOn(field instanceof MultiSelectionField);
+
+		// 如果表格有查询字段定义
+		grid.setQueryOn(gridConfig.getFields() != null && !gridConfig.getFields().isEmpty());
 
 		// 2. 设置表格项的选择
 		grid.addItemSelector(new ToolItemDescriptor("选择", e -> {
 			if ("choice".equals(e.text) && field.setSelection(Arrays.asList(new Object[] { e.item.getData() })))
 				closeContainer();
-		}));
-
-		// 3. 增加工具栏按钮
-		grid.addToolItem(new ToolItemDescriptor("查询", BruiToolkit.CSS_INFO, e -> {
-			// TODO
 		}));
 
 		if (field instanceof MultiSelectionField) {

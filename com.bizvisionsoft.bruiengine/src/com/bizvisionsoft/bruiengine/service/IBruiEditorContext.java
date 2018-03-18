@@ -6,10 +6,16 @@ public interface IBruiEditorContext extends IBruiContext{
 
 	boolean isEditable();
 
-	void setInput(Object input);
+	IBruiEditorContext setInput(Object input);
 
-	void setEditable(boolean editable);
+	IBruiEditorContext setEditable(boolean editable);
 
 	boolean isIgnoreNull();
+
+	IBruiEditorContext setIgnoreNull(boolean ignoreNull);
+
+	IBruiEditorContext setCompact(boolean compact);
+
+	boolean isEmbedded();
 
 }

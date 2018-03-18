@@ -19,7 +19,7 @@ public class QueryUser {
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
 		//»ñµÃ
 		DataGrid content = (DataGrid) context.getChildContextByName("demo").getContent();
-		content.doQuery();
+		content.openQueryEditor();
 	}
 
 }

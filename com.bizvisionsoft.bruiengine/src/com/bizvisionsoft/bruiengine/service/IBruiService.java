@@ -30,8 +30,8 @@ public interface IBruiService extends IServiceWithId {
 
 	public void switchContentByName(String assemblyName, Object input);
 
-	public Editor open(Assembly assembly, Object input, boolean editable, boolean ignoreNull, IBruiContext context);
+	public Editor createEditor(Assembly assembly, Object input, boolean editable, boolean ignoreNull, IBruiContext context);
 
-	public Editor openByName(String assemblyName, Object input, boolean editable, boolean ignoreNull, IBruiContext context);
+	public Editor createEditorByName(String assemblyName, Object input, boolean editable, boolean ignoreNull, IBruiContext context);
 
 }
