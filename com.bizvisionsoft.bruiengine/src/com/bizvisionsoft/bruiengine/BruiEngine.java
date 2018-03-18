@@ -80,7 +80,7 @@ public class BruiEngine {
 			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			} catch (InvocationTargetException e1) {
 				e1.printStackTrace();
-				throw new RuntimeException("注解为" + methodAnnotation + "调用目标对象错误。", e1);
+				throw new RuntimeException("注解为" + methodAnnotation + "调用目标错误。", e1);
 			}
 			return null;
 		}).orElse(defaultValueForNoMethod);
@@ -122,7 +122,7 @@ public class BruiEngine {
 		} catch (IllegalArgumentException e1) {
 			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
 		} catch (InvocationTargetException e2) {
-			throw new RuntimeException("注解为" + annoClass + "调用目标对象错误。", e2);
+			throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e2);
 		}
 	}
 
@@ -224,7 +224,7 @@ public class BruiEngine {
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。", e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException("注解为" + Structure.class + "调用目标对象错误。", e);
+				throw new RuntimeException("注解为" + Structure.class + "调用目标错误。", e);
 			}
 		}
 		return noAnnotationValue;
@@ -283,7 +283,10 @@ public class BruiEngine {
 			try {
 				f.setAccessible(true);
 				return f.get(element);
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("注解为" + annoClass + "的字段无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + annoClass + "的字段参数错误。", e);
 			}
 
 		Method m = getContainerMethod(c, annoClass, cName, fName, func).orElse(null);
@@ -291,8 +294,12 @@ public class BruiEngine {
 			try {
 				m.setAccessible(true);
 				return m.invoke(element);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e1) {
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("注解为" + annoClass + "的方法无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e);
 			}
 
 		return defaultValue;
@@ -306,7 +313,10 @@ public class BruiEngine {
 				f.setAccessible(true);
 				f.set(element, value);
 				return;
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("注解为" + annoClass + "的字段无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + annoClass + "的字段参数错误。", e);
 			}
 
 		Method m = getContainerMethod(c, annoClass, cName, fName, func).orElse(null);
@@ -315,8 +325,12 @@ public class BruiEngine {
 				m.setAccessible(true);
 				m.invoke(element, value);
 				return;
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e1) {
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("注解为" + annoClass + "的方法无法访问。", e);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e);
 			}
 	}
 

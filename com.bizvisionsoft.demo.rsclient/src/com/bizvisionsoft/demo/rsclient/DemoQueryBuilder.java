@@ -41,12 +41,15 @@ public class DemoQueryBuilder {
 
 	@WriteValue(" ×éÖ¯ ")
 	public void setOrganization(Organization org) {
-		this.orgId = org.get_id();
+		if (org == null)
+			this.orgId = null;
+		else
+			this.orgId = org.get_id();
 	}
 
 	@WriteValue
 	private Object max;
-	
+
 	@WriteValue
 	private Object min;
 

@@ -115,8 +115,8 @@ public class SelectionField extends EditorField {
 	public boolean setSelection(List<Object> data) {
 		try {
 			this.value = data.isEmpty() ? null : data.get(0);
-			presentation();
 			writeToInput(false);
+			presentation();
 			return true;
 		} catch (Exception e) {
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "´íÎó", e.getMessage());
