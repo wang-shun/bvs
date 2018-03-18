@@ -10,7 +10,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.widgets.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -61,8 +60,6 @@ public class Pagination extends Composite {
 	 */
 	public Pagination(Composite parent, int style) {
 		super(parent, SWT.NONE);
-		String name = WidgetUtil.getId(this);
-		setHtmlAttribute("id", name);
 		WidgetToolkit.requireWidgetsJs("pagination");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);

@@ -14,7 +14,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.widgets.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -58,8 +57,6 @@ public class DateTime extends Composite {
 	public DateTime(Composite parent, DateTimeSetting setting) {
 		super(parent, SWT.NONE);
 		this.setting = setting;
-		String name = WidgetUtil.getId(this);
-		setHtmlAttribute("id", name);
 		WidgetToolkit.requireWidgetsJs("datetime");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
