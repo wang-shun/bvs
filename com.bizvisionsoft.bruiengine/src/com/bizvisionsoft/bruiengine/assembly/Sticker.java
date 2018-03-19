@@ -5,7 +5,6 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContainer;
@@ -41,43 +40,15 @@ public class Sticker {
 		String cssClass = "";
 		if(assembly.isBorderTop()) {
 			cssClass += " brui_borderTop";
-//			Label label = new Label(parent,SWT.SEPARATOR|SWT.HORIZONTAL);
-//			FormData fd = new FormData();
-//			label.setLayoutData(fd);
-//			fd.top = new FormAttachment();
-//			fd.left = new FormAttachment();
-//			fd.right = new FormAttachment(100);
-//			fd.height =1;
 		}
 		if(assembly.isBorderRight()) {
 			cssClass += " brui_borderRight";
-//			Label label = new Label(parent,SWT.SEPARATOR|SWT.VERTICAL);
-//			FormData fd = new FormData();
-//			label.setLayoutData(fd);
-//			fd.bottom = new FormAttachment(100);
-//			fd.right = new FormAttachment(100);
-//			fd.top = new FormAttachment();
-//			fd.width =1;
 		}
 		if(assembly.isBorderBottom()) {
 			cssClass += " brui_borderBottom";
-//			Label label = new Label(parent,SWT.SEPARATOR|SWT.HORIZONTAL);
-//			FormData fd = new FormData();
-//			label.setLayoutData(fd);
-//			fd.bottom = new FormAttachment(100);
-//			fd.left = new FormAttachment();
-//			fd.right = new FormAttachment(100);
-//			fd.height =1;
 		}
 		if(assembly.isBorderLeft()) {
 			cssClass += " brui_borderLeft";
-//			Label label = new Label(parent,SWT.SEPARATOR|SWT.VERTICAL);
-//			FormData fd = new FormData();
-//			label.setLayoutData(fd);
-//			fd.bottom = new FormAttachment(100);
-//			fd.left = new FormAttachment();
-//			fd.top = new FormAttachment();
-//			fd.width =1;
 		}
 		
 		parent.setHtmlAttribute("class", cssClass);
