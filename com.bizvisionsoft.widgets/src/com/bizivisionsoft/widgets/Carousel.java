@@ -2,12 +2,8 @@ package com.bizivisionsoft.widgets;
 
 import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
-import java.util.function.Function;
-
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
-import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -15,6 +11,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
 
@@ -22,38 +19,31 @@ public class Carousel extends Composite {
 
 	private static final String REMOTE_TYPE = "bizvision.carousel";
 
-	private final OperationHandler operationHandler = new AbstractOperationHandler() {
-
-		@Override
-		public void handleCall(String method, JsonObject parameters) {
-			System.out.println(method);
-			System.out.println(parameters);
-		}
-	};
-
 	private RemoteObject remoteObject;
 
 	private JsonObject renderSetting;
 
-	public Carousel(Composite parent) {
-		super(parent, SWT.NONE);
+	public Carousel(Composite parent, int style) {
+		super(parent, style);
 		WidgetToolkit.requireWidgetsJs("carousel");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
-		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
 		renderSetting = new JsonObject();
 		remoteObject.set("renderSetting", renderSetting);
 		setAnimation("default");
 		setAutoplay(true);
-		setInterval(1000);
+		setInterval(3000);
 		setArrow("hover");
 		setIndicator("inside");
 
-		setLayout(new FormLayout());
+		super.setLayout(new FormLayout());
 	}
 
-	public <T extends Control> T addPage(Function<Carousel, T> func) {
-		T control = func.apply(this);
+	public <T extends Control> T addPage(T control) {
+		checkWidget();
+		if (control.getParent() != this) {
+			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+		}
 		FormData fd = new FormData();
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
@@ -61,6 +51,11 @@ public class Carousel extends Composite {
 		fd.right = new FormAttachment(100);
 		control.setLayoutData(fd);
 		return control;
+	}
+
+	@Override
+	public void setLayout(Layout layout) {
+		SWT.error(SWT.ERROR_INVALID_ARGUMENT);
 	}
 
 	/**

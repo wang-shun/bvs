@@ -66,7 +66,7 @@ public class DemoQueryBuilder {
 		if (orgs == null || orgs.isEmpty()) {
 			orgIds = null;
 		} else {
-			orgIds = new BasicDBObject("$in", Util.getList(orgs, o -> o.get_id()));
+			orgIds = new BasicDBObject("$in", Util.getList(orgs, Organization::get_id));
 		}
 	}
 

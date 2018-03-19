@@ -3,17 +3,31 @@ package com.bizvisionsoft.demo.rsclient;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import com.bizivisionsoft.widgets.Carousel;
+import com.bizivisionsoft.widgets.TimeLine;
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContainer;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
+import com.bizvisionsoft.bruiengine.BruiColors;
+import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
+import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
 public class CarouselDemo {
 
@@ -26,21 +40,108 @@ public class CarouselDemo {
 	@CreateUI
 	private void createUI(Composite parent) {
 		parent.setLayout(new FillLayout());
-		Carousel carousel = new Carousel(parent);
+//		createCarousel(parent);
+		createTimeLine(parent);
+
+	}
+
+	private void createTimeLine(Composite parent) {
+		TimeLine tl = new TimeLine(parent,SWT.BORDER);
+		tl.append("3月17日上午", 
+				"        中国正在等待一个时刻到来，每个人都将是见证者，这一时刻前所未有。" + 
+				"        <br>上午10时38分，在十三届全国人大一次会议第五次全体会议上，习近平全票当选中华人民共和国主席、中华人民共和国中央军事委员会主席。" + 
+				"      ");
+		tl.append("8月17日",  
+				"        中国人民抗日战争胜利72周年" + 
+				"        <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代" + 
+				"        <br>铭记、感恩" + 
+				"        <br>所有为中华民族浴血奋战的英雄将士" + 
+				"        <br>永垂不朽" + 
+				"      ");
+		tl.append("8月18日",  
+				"        中国人民抗日战争胜利72周年" + 
+				"        <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代" + 
+				"        <br>铭记、感恩" + 
+				"        <br>所有为中华民族浴血奋战的英雄将士" + 
+				"        <br>永垂不朽" + 
+				"      ");
+		tl.append("8月20日", "" + 
+				"        中国人民抗日战争胜利72周年" + 
+				"        <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代" + 
+				"        <br>铭记、感恩" + 
+				"        <br>所有为中华民族浴血奋战的英雄将士" + 
+				"        <br>永垂不朽" );
+	}
+
+	private void createCarousel(Composite parent) {
+		Carousel carousel = new Carousel(parent, SWT.BORDER);
 
 		// 放一个Label
-		carousel.addPage(c -> new Label(c, SWT.NONE)).setText("page1");
-		carousel.addPage(c -> new Composite(c, SWT.NONE))
-				.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
+		Label page = carousel.addPage(new Label(carousel, SWT.NONE));
+		UserSession.bruiToolkit().enableMarkup(page);
+		page.setText("<div style='font-size:24px'> 这个是轮播的第一页，后面是两个不同颜色的容器 </div>");
 
-		carousel.addPage(c -> {
-			TableViewer viewer = new TableViewer(c, SWT.BORDER);
-			viewer.setContentProvider(ArrayContentProvider.getInstance());
-			viewer.setLabelProvider(new LabelProvider());
-			viewer.setInput(new String[] { "page3-1", "表格行2", "表格行3", "表格行4" });
-			return viewer.getControl();
-		});
+		carousel.addPage(new Composite(carousel, SWT.NONE)).setBackground(BruiColors.getColor(BruiColor.Indigo_500));
 
+		carousel.addPage(new Composite(carousel, SWT.NONE)).setBackground(BruiColors.getColor(BruiColor.Teal_700));
+
+		page = carousel.addPage(new Label(carousel, SWT.NONE));
+		UserSession.bruiToolkit().enableMarkup(page);
+		page.setText("<div style='font-size:24px'> 接下来显示一个TableViewer</div>");
+
+		TableViewer viewer = new TableViewer(carousel, SWT.NONE);
+		carousel.addPage(viewer.getControl());
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setLabelProvider(new LabelProvider());
+		viewer.setInput(new String[] { "page3-1", "表格行2", "表格行3", "表格行4" });
+
+		page = carousel.addPage(new Label(carousel, SWT.NONE));
+		UserSession.bruiToolkit().enableMarkup(page);
+		page.setText("<div style='vertical-align: middle;font-size:24px'> 因为可以放置容器，所以可以构造一个复杂一点界面</div>");
+
+		Composite container = carousel.addPage(new Composite(carousel, SWT.NONE));
+		container.setLayout(new FormLayout());
+		Text text = new Text(container, SWT.BORDER);
+		FormData fd = new FormData();
+		text.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 16);
+		fd.top = new FormAttachment(0, 16);
+		fd.right = new FormAttachment(100, -16);
+
+		Button btn = new Button(container, SWT.PUSH);
+		btn.setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_NORMAL);
+		btn.setText("确定");
+		fd = new FormData();
+		btn.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 16);
+		fd.top = new FormAttachment(text, 16);
+
+		Button btn1 = new Button(container, SWT.PUSH);
+		btn1.setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_INFO);
+		btn1.setText("查看详细");
+		fd = new FormData();
+		btn1.setLayoutData(fd);
+		fd.left = new FormAttachment(btn, 16);
+		fd.top = new FormAttachment(text, 16);
+
+		TableViewer viewer1 = new TableViewer(container, SWT.BORDER);
+		viewer1.setContentProvider(ArrayContentProvider.getInstance());
+		viewer1.setLabelProvider(new LabelProvider());
+		viewer1.setInput(new String[] { "行1", "行2", "行3", "行4" });
+		fd = new FormData();
+		viewer1.getTable().setLayoutData(fd);
+		fd.left = new FormAttachment(0, 16);
+		fd.top = new FormAttachment(btn1, 16);
+		fd.right = new FormAttachment(100, -16);
+		fd.bottom = new FormAttachment(100, -16);
+
+		page = carousel.addPage(new Label(carousel, SWT.NONE));
+		UserSession.bruiToolkit().enableMarkup(page);
+		page.setText("<div style='vertical-align: middle;font-size:24px'> 当然也可以加一个重量级的组件</div>");
+
+		container = carousel.addPage(new Composite(carousel, SWT.NONE));
+		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(Brui.site.getAssemblyByName("用户列表"));
+		brui.init(new IServiceWithId[] { bruiService, new BruiAssemblyContext().setEngine(brui) }).createUI(container);
 	}
 
 }
