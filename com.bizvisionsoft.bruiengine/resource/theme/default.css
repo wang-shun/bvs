@@ -173,6 +173,11 @@ Composite[BORDER] {
   border-radius: 2px;
 }
 
+Composite[BORDER].timeline {
+  border: 1px solid #ffffff;
+  border-radius: 0px;
+}
+
 Composite[BORDER].inline {
   border: none;
   border-bottom: 1px solid #e6e6e6;

@@ -24,8 +24,8 @@
 		this.element = document.createElement("ul");
 		this.element.className = "layui-timeline";
 		this.element.style.setProperty('width', '100%');
-		this.element.style.setProperty('height', '100%');
-		this.element.style.setProperty('overflow-y', 'scroll');
+		this.element.style.setProperty('height', 'auto');
+
 		this.parent.append(this.element);
 
 		this.renderSetting = rap.getObject(properties.renderSetting);
@@ -38,17 +38,28 @@
 		onRender : function() {
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
+
 				while (this.element.hasChildNodes()) {
 					this.element.removeChild(this.element.firstChild);
 				}
 				this.renderSetting.forEach(this.createItem);
+				var height = this.element.offsetHeight;
+				var width = this.element.offsetWidth;
+				
+				var sc = $("[name='timeline']").get(0);
+				sc.style.setProperty('border', 'none');
+				
+				rap.getRemoteObject(this).call("rendered", {
+					'width' : width,
+					'height' : height
+				});
 			}
 		},
 
 		createItem : function(elem) {
 			var li = document.createElement("li");
 			li.className = "layui-timeline-item";
-			
+
 			var i = document.createElement("i");
 			i.className = "layui-icon layui-timeline-axis";
 			i.innerHTML = "&#xe63f;";
