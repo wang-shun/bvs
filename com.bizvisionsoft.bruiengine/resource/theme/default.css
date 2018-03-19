@@ -740,6 +740,14 @@ Label-SeparatorLine {
   width: 1px;
 }
 
+Label-SeparatorLine.main {
+  background-image: none;
+  background-color: #c9c9c9;
+  border: none;
+  border-radius: 0;
+  width: 1px;
+}
+
 Label-SeparatorLine.normal {
   background-image: none;
   background-color: #009688;

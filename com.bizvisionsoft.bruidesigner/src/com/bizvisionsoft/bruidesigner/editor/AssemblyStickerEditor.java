@@ -25,6 +25,14 @@ public class AssemblyStickerEditor extends ModelEditor {
 		createTextField(parent, "描述:", inputData, "description", SWT.BORDER);
 
 		createTextField(parent, "标题栏文本:", inputData, "stickerTitle", SWT.BORDER);
+		
+		createCheckboxField(parent, "上边框：", inputData, "borderTop", SWT.CHECK);
+		
+		createCheckboxField(parent, "右边框：", inputData, "borderRight", SWT.CHECK);
+		
+		createCheckboxField(parent, "下边框：", inputData, "borderBottom", SWT.CHECK);
+		
+		createCheckboxField(parent, "左边框：", inputData, "borderLeft", SWT.CHECK);
 
 		parent = createTabItemContent("布局和子组件");
 		List<Layout> layouts = ((Assembly) inputData).getLayout();

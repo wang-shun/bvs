@@ -13,7 +13,7 @@ public class Assembly extends ModelObject {
 	private String id;
 
 	private String name;
-	
+
 	private String title;
 
 	private String description;
@@ -45,7 +45,7 @@ public class Assembly extends ModelObject {
 		this.name = name;
 		firePropertyChange("name", old, this.name);
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -435,7 +435,6 @@ public class Assembly extends ModelObject {
 
 	private String queryBuilderClass;
 
-
 	public String getQueryBuilderBundle() {
 		return queryBuilderBundle;
 	}
@@ -450,6 +449,43 @@ public class Assembly extends ModelObject {
 
 	public void setQueryBuilderClass(String queryBuilderClass) {
 		this.queryBuilderClass = queryBuilderClass;
+	}
+
+	private boolean borderTop;
+	private boolean borderRight;
+	private boolean borderBottom;
+	private boolean borderLeft;
+
+	public boolean isBorderBottom() {
+		return borderBottom;
+	}
+
+	public boolean isBorderLeft() {
+		return borderLeft;
+	}
+
+	public boolean isBorderRight() {
+		return borderRight;
+	}
+
+	public boolean isBorderTop() {
+		return borderTop;
+	}
+
+	public void setBorderBottom(boolean borderBottom) {
+		this.borderBottom = borderBottom;
+	}
+
+	public void setBorderLeft(boolean borderLeft) {
+		this.borderLeft = borderLeft;
+	}
+
+	public void setBorderRight(boolean borderRight) {
+		this.borderRight = borderRight;
+	}
+
+	public void setBorderTop(boolean borderTop) {
+		this.borderTop = borderTop;
 	}
 
 }
