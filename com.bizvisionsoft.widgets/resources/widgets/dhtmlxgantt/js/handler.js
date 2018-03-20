@@ -42,6 +42,9 @@
 					}
 				}
 
+				gantt.config.keep_grid_width = false;
+				gantt.config.grid_resize = true;
+				
 				gantt.init(this.element, this.initFrom, this.initTo);
 				gantt.parse(this.inputData);
 

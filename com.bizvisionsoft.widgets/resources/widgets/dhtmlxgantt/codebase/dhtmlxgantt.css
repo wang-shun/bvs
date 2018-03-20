@@ -186,7 +186,7 @@
 .gantt_grid_scale,
 .gantt_task_scale {
   color: #6b6b6b;
-  font-size: 12px;
+  font-size: 13px;
   border-bottom: 1px solid #CECECE;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -656,7 +656,7 @@ div.dhx_modal_cover {
   height: 100%;
 }
 .gantt_task_content {
-  font-size: 12px;
+  font-size: 13px;
   color: #fff;
   width: 100%;
   top: 0;
@@ -895,7 +895,7 @@ div.dhx_modal_cover {
   border-left: 1px dotted #cecece;
   border-top: 1px dotted #cecece;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 8pt;
+  font-size: 9pt;
   color: #444;
   padding: 6px;
   line-height: 20px;
@@ -920,7 +920,7 @@ div.dhx_modal_cover {
   background-color: #e8f1ff;
 }
 .gantt_task_row.gantt_selected .gantt_task_cell {
-  border-right-color: #ffec6e;
+  border-right-color: #e8f1ff;
 }
 .gantt_task_line.gantt_selected {
   -webkit-box-shadow: 0 0 5px #299cb4;
@@ -1007,7 +1007,6 @@ div.dhx_modal_cover {
   font-size: 13px;
   border: 1px solid #CECECE;
   color: #6b6b6b;
-  font-size: 12px;
   position: absolute;
   z-index: 10001;
   width: 550px;
@@ -1053,7 +1052,7 @@ div.dhx_modal_cover {
 .gantt_cal_lsection .gantt_fullday {
   float: right;
   margin-right: 5px;
-  font-size: 12px;
+  font-size: 13px12px;
   font-weight: normal;
   line-height: 20px;
   vertical-align: top;
@@ -1418,7 +1417,7 @@ div.dhx_modal_cover {
   background: inherit;
   color: white;
   position: absolute;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 12px;
   opacity: 0.8;
 }
