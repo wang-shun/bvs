@@ -43,23 +43,12 @@ public class Gantt extends Composite {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载插件
-		// WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_csp.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_fullscreen.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_keyboard_navigation.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_marker.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_multiselect.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_quick_info.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_smart_rendering.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_tooltip.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_undo.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_critical_path.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_grouping.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_marker.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_smart_rendering.js");
+//		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_tooltip.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale

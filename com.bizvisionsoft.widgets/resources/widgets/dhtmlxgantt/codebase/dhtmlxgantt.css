@@ -1,8 +1,7 @@
 /*!
  * @license
  * 
- * dhtmlxGantt v.5.1.0 Stardard
- * This software is covered by GPL license. You also can obtain Commercial or Enterprise license to use it in non-GPL project - please contact sales@dhtmlx.com. Usage without proper license is prohibited.
+ * dhtmlxGantt v.5.1.0 dhtmlx.com
  * 
  * (c) Dinamenta, UAB.
  * 
@@ -160,7 +159,7 @@
   border-left: 1px solid rgba(0, 0, 0, 0.07);
   border-top: 1px solid rgba(0, 0, 0, 0.07);
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 8pt;
+  font-size: 9pt;
   color: #454545;
 }
 .gantt_container {
@@ -265,7 +264,7 @@
 }
 .gantt_grid_data .gantt_row:hover,
 .gantt_grid_data .gantt_row.odd:hover {
-  background-color: #f2f2f2;
+  background-color: #e8f1ff;
 }
 .gantt_grid_data .gantt_row:hover .gantt_add,
 .gantt_grid_data .gantt_row.odd:hover .gantt_add {
@@ -921,7 +920,7 @@ div.dhx_modal_cover {
   background-color: #e8f1ff;
 }
 .gantt_task_row.gantt_selected .gantt_task_cell {
-  border-right-color: #e8f1ff;
+  border-right-color: #ffec6e;
 }
 .gantt_task_line.gantt_selected {
   -webkit-box-shadow: 0 0 5px #299cb4;
