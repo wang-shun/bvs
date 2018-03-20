@@ -1,6 +1,5 @@
 package com.bizvisionsoft.demo.rsclient;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
@@ -37,9 +36,9 @@ public class GanttDemo {
 		cal.add(Calendar.MONTH, 6);
 		Date to = cal.getTime();
 		gantt.setInitDateRange(from, to);
-		
+
 		try {
-			InputStream s = GanttDemo.class.getResourceAsStream("data.json");
+			InputStream s = GanttDemo.class.getResourceAsStream("demodata.json");
 			JsonObject inputData = JsonObject.readFrom(new InputStreamReader(s));
 			gantt.setInputData(inputData);
 		} catch (Exception e) {

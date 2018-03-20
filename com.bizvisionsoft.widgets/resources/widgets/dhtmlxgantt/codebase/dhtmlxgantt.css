@@ -12,13 +12,13 @@
 }
 /* colors for items with inline styles assigned (task.color, link.color)*/
 .gridHoverStyle {
-  background-color: #FFF3A1;
+  background-color: #f2f2f2;
 }
 .gridSelection {
-  background-color: #FFF3A1;
+  background-color: #e8f1ff;
 }
 .timelineSelection {
-  background-color: #FFF3A1;
+  background-color: #e8f1ff;
 }
 .gantt_grid_scale .gantt_grid_head_cell {
   color: #a6a6a6;
@@ -159,13 +159,13 @@
   background-color: white;
   border-left: 1px solid rgba(0, 0, 0, 0.07);
   border-top: 1px solid rgba(0, 0, 0, 0.07);
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 8pt;
   color: #454545;
 }
 .gantt_container {
   background-color: #FFFFFF;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 13px;
   border: 1px solid #CECECE;
   position: relative;
@@ -265,7 +265,7 @@
 }
 .gantt_grid_data .gantt_row:hover,
 .gantt_grid_data .gantt_row.odd:hover {
-  background-color: #FFF3A1;
+  background-color: #f2f2f2;
 }
 .gantt_grid_data .gantt_row:hover .gantt_add,
 .gantt_grid_data .gantt_row.odd:hover .gantt_add {
@@ -418,13 +418,13 @@
   width: 18px;
 }
 .gantt_tree_icon.gantt_folder_open {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAs0lEQVQ4T62T0Q2EIBBEpQlzuaaMsQoqooqLsSljbMLLmMxmUXBR4U+Qt7Mzi2sqLVeJ00SgEMKWAnvvzYLyAyHfT5sU2fXDJSwCAXK8MI0/UTkva7IIFJsg3NSwnKdFoKtAWOQ1CN7CEqeTotE5L7QyJhmBcklZM4ZgTiAr3iOU3kD93ppO5SkMjB1EeXdBWoSkRql3YeIRe+cGvktS056JR9wsmeBUkujCfNXWCPC8GugPqn5ii/hV+FoAAAAASUVORK5CYII=);
+  background-image: url(/resource/image/project_open.png);
 }
 .gantt_tree_icon.gantt_folder_closed {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAfElEQVQ4T2NkoBJgpJI5DCgGTZ8+/T82gzMzMwlaCFcAM0RKQgyrI/0Dg/EahmIQyBB0DRvXr4W78tmLV1gtAbmYoEEgnciG4QpTogzCFyEwSyg2CBS2oCAZNQh3cA+hMAJ5AlcKxuVBlOgnNgVjMwyUrQjmamKLGaoZBAAOTFyLnFFW4wAAAABJRU5ErkJggg==);
+  background-image: url(/resource/image/project.png);
 }
 .gantt_tree_icon.gantt_file {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAeElEQVQ4T2NkoBJgRDZn+vTp/wmZm5mZiaIHph7DICkJMUJmMfgHBmMYhtUgbAo3rl+L4lp0NUQbBPI2umuRDaPIIFAYwAyjv0HoMQALM5JdhG4QLMxGDcKdyIdoGIE89OzFK4KZF5Rl8EY/QROQFGA1iBQD0NUCAJVjcxO0naAQAAAAAElFTkSuQmCC);
+  background-image: url(/resource/image/work.gif);
 }
 .gantt_grid_head_cell .gantt_sort {
   position: absolute;
@@ -485,7 +485,7 @@
 .gantt-info {
   min-width: 120px;
   padding: 4px 4px 4px 20px;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   z-index: 10000;
   margin: 5px;
   margin-bottom: 10px;
@@ -509,7 +509,7 @@
   z-index: 20000;
   -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.07);
           box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.07);
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   border-radius: 6px;
   border: 1px solid #CECECE;
   background: #fff;
@@ -895,7 +895,7 @@ div.dhx_modal_cover {
   background-color: #fff;
   border-left: 1px dotted #cecece;
   border-top: 1px dotted #cecece;
-  font-family: Tahoma;
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 8pt;
   color: #444;
   padding: 6px;
@@ -915,13 +915,13 @@ div.dhx_modal_cover {
 }
 .gantt_grid_data .gantt_row.gantt_selected,
 .gantt_grid_data .gantt_row.odd.gantt_selected {
-  background-color: #FFF3A1;
+  background-color: #e8f1ff;
 }
 .gantt_task_row.gantt_selected {
-  background-color: #FFF3A1;
+  background-color: #e8f1ff;
 }
 .gantt_task_row.gantt_selected .gantt_task_cell {
-  border-right-color: #ffec6e;
+  border-right-color: #e8f1ff;
 }
 .gantt_task_line.gantt_selected {
   -webkit-box-shadow: 0 0 5px #299cb4;
@@ -1004,7 +1004,7 @@ div.dhx_modal_cover {
   -webkit-tap-highlight-color: transparent;
   background: #fff;
   border-radius: 6px;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 13px;
   border: 1px solid #CECECE;
   color: #6b6b6b;
@@ -1020,7 +1020,7 @@ div.dhx_modal_cover {
   width: 650px;
 }
 .gantt_cal_light select {
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   border: 1px solid #CECECE;
   font-size: 13px;
   padding: 2px;
@@ -1070,7 +1070,7 @@ div.dhx_modal_cover {
 .gantt_cal_ltext textarea {
   overflow-y: auto;
   overflow-x: hidden;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 13px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -1145,7 +1145,7 @@ div.dhx_modal_cover {
 }
 .gantt_custom_button {
   padding: 0px 3px 0px 3px;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 13px;
   font-weight: normal;
   margin-right: 10px;
@@ -1649,7 +1649,7 @@ div.dhx_modal_cover {
   position: absolute;
   top: -1000px;
   left: -1000px;
-  font-family: "Arial";
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 13px;
 }
 .gantt_drag_marker .gantt_tree_indent,
