@@ -46,7 +46,7 @@ public class TimeLine extends ScrolledComposite {
 			remoteObject.set("renderSetting", renderSetting);
 		});
 		
-		WidgetToolkit.requireWidgetsJs("timeline");
+		WidgetToolkit.requireWidgetHandlerJs("timeline");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("parent", getId(content));
 		remoteObject.setHandler(operationHandler);

@@ -19,7 +19,7 @@ public class Container extends Composite {
 		
 		String name = WidgetUtil.getId(this);
 		setHtmlAttribute("name", name);
-		WidgetToolkit.requireWidgetsJs("container");
+		WidgetToolkit.requireWidgetHandlerJs("container");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("name", name);
 		remoteObject.set("target", target);

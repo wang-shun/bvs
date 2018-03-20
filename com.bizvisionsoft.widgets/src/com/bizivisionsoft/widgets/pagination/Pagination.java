@@ -60,7 +60,7 @@ public class Pagination extends Composite {
 	 */
 	public Pagination(Composite parent, int style) {
 		super(parent, SWT.NONE);
-		WidgetToolkit.requireWidgetsJs("pagination");
+		WidgetToolkit.requireWidgetHandlerJs("pagination");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));

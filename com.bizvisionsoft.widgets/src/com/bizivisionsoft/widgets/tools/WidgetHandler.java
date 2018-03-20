@@ -112,7 +112,7 @@ public class WidgetHandler {
 	 * create a globe widget handler
 	 */
 	public WidgetHandler() {
-		WidgetToolkit.requireWidgetsJs("widgethandler");
+		WidgetToolkit.requireWidgetHandlerJs("widgethandler");
 		Connection connection = RWT.getUISession().getConnection();
 		remoteObject = connection.createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);

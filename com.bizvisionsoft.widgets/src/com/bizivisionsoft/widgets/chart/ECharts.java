@@ -34,7 +34,7 @@ public class ECharts extends Composite {
 	 */
 	public ECharts(Composite parent, int style) {
 		super(parent, style);
-		WidgetToolkit.requireWidgetsJs("echarts");
+		WidgetToolkit.requireWidgetHandlerJs("echarts");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));

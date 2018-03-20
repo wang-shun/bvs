@@ -33,11 +33,24 @@ public class WidgetToolkit {
 		executor.execute(builder.toString());
 	}
 
-	public static void requireWidgetsJs(String widgetName) {
+	public static void requireWidgetHandlerJs(String widgetName) {
 		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
 		String uri = getSiteRoot();
 		jsLoader.requireJs(uri+"bvs/widgets/"+widgetName+"/js/handler.js");
 	}
+	
+	public static void requireWidgetJs(String widgetName,String path) {
+		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
+		String uri = getSiteRoot();
+		jsLoader.requireJs(uri+"bvs/widgets/"+widgetName+"/"+path);
+	}
+	
+	public static void requireWidgetCss(String widgetName,String path) {
+		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
+		String uri = getSiteRoot();
+		jsLoader.requireCss(uri+"bvs/widgets/"+widgetName+"/"+path);
+	}
+
 
 	public static String getSiteRoot() {
 		String uri = RWT.getRequest().getRequestURI();

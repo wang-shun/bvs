@@ -25,18 +25,22 @@ public class Carousel extends Composite {
 
 	public Carousel(Composite parent, int style) {
 		super(parent, style);
-		WidgetToolkit.requireWidgetsJs("carousel");
+		WidgetToolkit.requireWidgetHandlerJs("carousel");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("parent", getId(this));
-		renderSetting = new JsonObject();
+		initialize();
 		remoteObject.set("renderSetting", renderSetting);
+
+		super.setLayout(new FormLayout());
+	}
+
+	private void initialize() {
+		renderSetting = new JsonObject();
 		setAnimation("default");
 		setAutoplay(true);
 		setInterval(3000);
 		setArrow("hover");
 		setIndicator("inside");
-
-		super.setLayout(new FormLayout());
 	}
 
 	public <T extends Control> T addPage(T control) {

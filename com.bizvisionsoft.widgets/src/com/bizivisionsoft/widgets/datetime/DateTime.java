@@ -57,7 +57,7 @@ public class DateTime extends Composite {
 	public DateTime(Composite parent, DateTimeSetting setting) {
 		super(parent, SWT.NONE);
 		this.setting = setting;
-		WidgetToolkit.requireWidgetsJs("datetime");
+		WidgetToolkit.requireWidgetHandlerJs("datetime");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
