@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import com.bizivisionsoft.widgets.TimeLine;
+import com.bizivisionsoft.widgets.timeline.TimeLine;
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContainer;
 import com.bizvisionsoft.bruicommons.annotation.Inject;

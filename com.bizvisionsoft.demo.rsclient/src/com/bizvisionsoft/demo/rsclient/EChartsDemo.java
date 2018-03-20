@@ -6,7 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import com.bizivisionsoft.widgets.ECharts;
+import com.bizivisionsoft.widgets.chart.ECharts;
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContainer;
 import com.bizvisionsoft.bruicommons.annotation.Inject;

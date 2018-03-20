@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.bizivisionsoft.widgets.Carousel;
+import com.bizivisionsoft.widgets.carousel.Carousel;
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContainer;
 import com.bizvisionsoft.bruicommons.annotation.Inject;

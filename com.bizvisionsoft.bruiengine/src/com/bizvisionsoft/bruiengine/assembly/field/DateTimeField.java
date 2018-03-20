@@ -11,8 +11,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
-import com.bizivisionsoft.widgets.DateTime;
-import com.bizivisionsoft.widgets.DateTimeSetting;
+import com.bizivisionsoft.widgets.datetime.DateTime;
+import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 

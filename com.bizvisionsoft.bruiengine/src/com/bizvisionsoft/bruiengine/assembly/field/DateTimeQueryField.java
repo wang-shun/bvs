@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import com.bizivisionsoft.widgets.DateTime;
-import com.bizivisionsoft.widgets.DateTimeEvent;
-import com.bizivisionsoft.widgets.DateTimeSetting;
+import com.bizivisionsoft.widgets.datetime.DateTime;
+import com.bizivisionsoft.widgets.datetime.DateTimeEvent;
+import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
 import com.mongodb.BasicDBObject;
 
 public class DateTimeQueryField extends EditorField {

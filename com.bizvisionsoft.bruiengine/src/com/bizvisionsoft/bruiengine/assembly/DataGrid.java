@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
-import com.bizivisionsoft.widgets.Pagination;
+import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContent;
 import com.bizvisionsoft.bruicommons.annotation.Init;

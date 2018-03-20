@@ -10,6 +10,11 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  javax.servlet,
  org.eclipse.core.runtime,
  com.google.gson
-Export-Package: com.bizivisionsoft.widgets,
+Export-Package: com.bizivisionsoft.widgets.carousel,
+ com.bizivisionsoft.widgets.chart,
+ com.bizivisionsoft.widgets.datetime,
  com.bizivisionsoft.widgets.gesture,
+ com.bizivisionsoft.widgets.pagination,
+ com.bizivisionsoft.widgets.timeline,
+ com.bizivisionsoft.widgets.tools,
  com.bizivisionsoft.widgets.util
