@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
+import com.google.gson.GsonBuilder;
 
 public class Gantt extends Composite {
 
@@ -19,7 +21,7 @@ public class Gantt extends Composite {
 
 	private final String widgetName = "dhtmlxgantt";
 
-	private JsonObject config;
+	private Config config;
 
 	private JsonObject inputData;
 
@@ -29,15 +31,19 @@ public class Gantt extends Composite {
 
 	private RemoteObject remoteObject;
 
-	public Gantt(Composite parent, int style) {
-		super(parent, style);
+	public Gantt(Composite parent, Config config) {
+		super(parent, SWT.NONE);
+		this.config = config;
 		loadJsLibAndCSS();
 		WidgetToolkit.requireWidgetHandlerJs("dhtmlxgantt");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("parent", getId(this));
+		String json = new GsonBuilder().create().toJson(config);
+		remoteObject.set("config", JsonValue.readFrom(json));
 	}
 
 	private void loadJsLibAndCSS() {
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/dhtmlx.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/dhtmlxgantt.js");
 		WidgetToolkit.requireWidgetCss(widgetName, "codebase/dhtmlxgantt.css");
 
@@ -48,32 +54,16 @@ public class Gantt extends Composite {
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_marker.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_smart_rendering.js");
-//		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_tooltip.js");
+		// WidgetToolkit.requireWidgetJs(widgetName,
+		// "codebase/ext/dhtmlxgantt_tooltip.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/locale/locale_cn.js");
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// 皮肤
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_broadway.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_contrast_black.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_contrast_white.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_material.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_meadow.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_skyblue.css");
-		// WidgetToolkit.requireWidgetCss(widgetName,
-		// "codebase/skins/dhtmlxgantt_terrace.css");
-
 	}
 
-	public JsonObject getConfig() {
+	public Config getConfig() {
 		return config;
 	}
 
@@ -87,15 +77,6 @@ public class Gantt extends Composite {
 
 	public Date getInitTo() {
 		return initTo;
-	}
-
-	public void setConfig(JsonObject config) {
-		if (config == null)
-			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-
-		checkWidget();
-		this.config = config;
-		remoteObject.set("config", config);
 	}
 
 	public void setInputData(JsonObject inputData) {

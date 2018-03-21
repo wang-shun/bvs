@@ -20,17 +20,46 @@
   background-color: #e8f1ff;
 }
 .gantt_grid_scale .gantt_grid_head_cell {
-  color: #a6a6a6;
+  color: #000;
   border-top: none !important;
   border-right: none !important;
 }
 .gantt_grid_data .gantt_cell {
-  border-right: none;
+  border-right: 1px solid #ededed;
   color: #454545;
 }
 /*
 	Tasks
 */
+
+.level2_task {
+	border: 1px solid #0288d1 !important;
+	background: #03a9f4 !important;
+}
+
+.level2_task.gantt_selected {
+	-webkit-box-shadow: 0 0 5px #0288d1 !important;
+	box-shadow: 0 0 5px #0288d1 !important;
+}
+
+.level2_task .gantt_task_progress{
+    background:#0288d1 !important;
+}
+
+.level1_task {
+	border: 1px solid #512da8 !important;
+	background: #7e57c2 !important;
+}
+
+.level1_task.gantt_selected {
+	-webkit-box-shadow: 0 0 5px #512da8 !important;
+	box-shadow: 0 0 5px #512da8 !important;
+}
+
+.level1_task .gantt_task_progress{
+    background:#512da8 !important;
+}
+
 .gantt_task_link .gantt_link_arrow_right {
   border-width: 6px 6px 6px 6px;
   margin-top: -3px;
@@ -56,8 +85,8 @@
   background-color: #fff;
 }
 .gantt_task .gantt_task_scale .gantt_scale_cell {
-  color: #a6a6a6;
-  border-right: 1px solid #ebebeb;
+  color: #000;
+  border-right: 1px solid #c9c9c9;
 }
 /*
 	project highlight
@@ -71,11 +100,19 @@
   background-color: #f5fff6;
 }
 .gantt_task_line.gantt_project {
-  background-color: #65c16f;
-  border: 1px solid #3c9445;
+  background-color: #3f51b5;
+  border: 1px solid #303f9f;
 }
 .gantt_task_line.gantt_project .gantt_task_progress {
-  background-color: #46ad51;
+  background-color: #303f9f;
+}
+
+.gantt_task_cell.week_end {
+ background-color: #f2f2f2;
+}
+
+.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+ background-color: #e8f1ff;
 }
 /*
 	milestone
@@ -95,7 +132,7 @@
   border: 1px solid #CECECE;
 }
 .gantt_btn_set.gantt_save_btn_set {
-  background: #3db9d3;
+  background: #009688;
   text-shadow: 0 -1px 0 #248a9f;
   color: #fff;
 }
@@ -121,7 +158,7 @@
 	Message
 */
 .gantt_popup_button.gantt_ok_button {
-  background: #3db9d3;
+  background: #009688;
   text-shadow: 0 -1px 0 #248a9f;
   color: #fff;
   font-weight: bold;
@@ -165,7 +202,7 @@
 .gantt_container {
   background-color: #FFFFFF;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid #CECECE;
   position: relative;
   white-space: nowrap;
@@ -185,20 +222,20 @@
 }
 .gantt_grid_scale,
 .gantt_task_scale {
-  color: #6b6b6b;
-  font-size: 13px;
+  color: #000;
+  font-size: 14px;
   border-bottom: 1px solid #CECECE;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 .gantt_grid_scale {
-  background-color: #fff;
+  background-color: #f9f9f9;
 }
 .gantt_task_scale {
-  background-color: #fff;
+  background-color: #f9f9f9;
 }
 .gantt_task_vscroll {
-  background-color: #fff;
+  background-color: #f9f9f9;
 }
 .gantt_scale_line {
   -webkit-box-sizing: border-box;
@@ -264,7 +301,7 @@
 }
 .gantt_grid_data .gantt_row:hover,
 .gantt_grid_data .gantt_row.odd:hover {
-  background-color: #e8f1ff;
+  background-color: #f2f2f2;
 }
 .gantt_grid_data .gantt_row:hover .gantt_add,
 .gantt_grid_data .gantt_row.odd:hover .gantt_add {
@@ -273,7 +310,7 @@
 }
 .gantt_task_row,
 .gantt_row {
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #e6e6e6;
 }
 .gantt_row,
 .gantt_task_row {
@@ -321,13 +358,13 @@
 .gantt_cell {
   display: inline-block;
   vertical-align: top;
-  border-right: 1px solid #ebebeb;
+  border-right: 1px solid #e6e6e6;
   padding-left: 6px;
   padding-right: 6px;
   height: 100%;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 14px;
 }
 .gantt_grid_scale .gantt_last_cell,
 .gantt_grid_data .gantt_last_cell,
@@ -352,7 +389,7 @@
 .gantt_task_cell {
   display: inline-block;
   height: 100%;
-  border-right: 1px solid #ebebeb;
+  border-right: 1px solid #e6e6e6;
 }
 .gantt_layout_cell.gantt_ver_scroll {
   width: 0px;
@@ -656,7 +693,7 @@ div.dhx_modal_cover {
   height: 100%;
 }
 .gantt_task_content {
-  font-size: 13px;
+  font-size: 14px;
   color: #fff;
   width: 100%;
   top: 0;
@@ -668,7 +705,7 @@ div.dhx_modal_cover {
 .gantt_task_progress {
   text-align: center;
   z-index: 0;
-  background: #299cb4;
+  background: #00796b;
 }
 .gantt_task_progress_wrapper {
   border-radius: inherit;
@@ -678,12 +715,12 @@ div.dhx_modal_cover {
   overflow: hidden;
 }
 .gantt_task_line {
-  border-radius: 2px;
+  border-radius: 20px;
   position: absolute;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background-color: #3db9d3;
-  border: 1px solid #2898b0;
+  background-color: #009688;
+  border: 1px solid #00796b;
   -webkit-user-select: none;
   -moz-user-select: none;
   -moz-user-select: -moz-none;
@@ -796,8 +833,8 @@ div.dhx_modal_cover {
 }
 .gantt_link_source,
 .gantt_link_target {
-  -webkit-box-shadow: 0px 0px 3px #3db9d3;
-          box-shadow: 0px 0px 3px #3db9d3;
+  -webkit-box-shadow: 0px 0px 3px #009688;
+          box-shadow: 0px 0px 3px #009688;
 }
 .gantt_link_target.link_start_allow,
 .gantt_link_target.link_finish_allow {
@@ -920,15 +957,15 @@ div.dhx_modal_cover {
   background-color: #e8f1ff;
 }
 .gantt_task_row.gantt_selected .gantt_task_cell {
-  border-right-color: #e8f1ff;
+  border-right-color: #ebebeb;
 }
 .gantt_task_line.gantt_selected {
-  -webkit-box-shadow: 0 0 5px #299cb4;
-          box-shadow: 0 0 5px #299cb4;
+  -webkit-box-shadow: 0 0 5px #00796b;
+          box-shadow: 0 0 5px #00796b;
 }
 .gantt_task_line.gantt_project.gantt_selected {
-  -webkit-box-shadow: 0 0 5px #46ad51;
-          box-shadow: 0 0 5px #46ad51;
+  -webkit-box-shadow: 0 0 5px #303f9f;
+          box-shadow: 0 0 5px #303f9f;
 }
 .gantt_task_line.gantt_milestone {
   visibility: hidden;
@@ -1004,7 +1041,7 @@ div.dhx_modal_cover {
   background: #fff;
   border-radius: 6px;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid #CECECE;
   color: #6b6b6b;
   position: absolute;
@@ -1020,7 +1057,7 @@ div.dhx_modal_cover {
 .gantt_cal_light select {
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   border: 1px solid #CECECE;
-  font-size: 13px;
+  font-size: 14px;
   padding: 2px;
   margin: 0px;
 }
@@ -1052,14 +1089,14 @@ div.dhx_modal_cover {
 .gantt_cal_lsection .gantt_fullday {
   float: right;
   margin-right: 5px;
-  font-size: 13px12px;
+  font-size: 14px12px;
   font-weight: normal;
   line-height: 20px;
   vertical-align: top;
   cursor: pointer;
 }
 .gantt_cal_lsection {
-  font-size: 13px;
+  font-size: 14px;
 }
 .gantt_cal_ltext {
   padding: 2px	10px;
@@ -1069,7 +1106,7 @@ div.dhx_modal_cover {
   overflow-y: auto;
   overflow-x: hidden;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: 1px solid #CECECE;
@@ -1109,7 +1146,7 @@ div.dhx_modal_cover {
 }
 .gantt_btn_set div {
   float: left;
-  font-size: 13px;
+  font-size: 14px;
   height: 22px;
   line-height: 22px;
   background-repeat: no-repeat;
@@ -1144,7 +1181,7 @@ div.dhx_modal_cover {
 .gantt_custom_button {
   padding: 0px 3px 0px 3px;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: normal;
   margin-right: 10px;
   margin-top: -5px;
@@ -1187,7 +1224,7 @@ div.dhx_modal_cover {
   position: relative;
   padding: 10px 0;
   overflow: hidden;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #e6e6e6;
 }
 .gantt_cal_light_wide .gantt_section_time {
   overflow: hidden;
@@ -1231,7 +1268,7 @@ div.dhx_modal_cover {
   margin-left: 14px;
 }
 .gantt_cal_light input {
-  font-size: 13px;
+  font-size: 14px;
 }
 .gantt_section_time {
   background-color: white;
@@ -1343,11 +1380,11 @@ div.dhx_modal_cover {
   font-weight: bold;
 }
 .gantt_cal_qi_tcontent {
-  font-size: 13px;
+  font-size: 14px;
 }
 .gantt_cal_qi_content {
   padding: 16px 8px;
-  font-size: 13px;
+  font-size: 14px;
   color: #454545;
   overflow: hidden;
 }
@@ -1379,7 +1416,7 @@ div.dhx_modal_cover {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjFENzI3NUNDMzA0MTFFMjhBNjJGQTc3MUIyQzYzNEYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MjFENzI3NURDMzA0MTFFMjhBNjJGQTc3MUIyQzYzNEYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoyMUQ3Mjc1QUMzMDQxMUUyOEE2MkZBNzcxQjJDNjM0RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoyMUQ3Mjc1QkMzMDQxMUUyOEE2MkZBNzcxQjJDNjM0RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmUD0gAAAABvSURBVHjaYvz//z8DIyMjAxYQicReji4J0ofKQNP8HwmgGQbXB8IsWGwDSSwDuioKjY9uBthVjFAXYHUGAQA2kYmBUoAUBpGk0LAwgBvwH+YX4mkwptgLowYMRgOITUyYKRFIN/wnDjQgJySAAAMApryKzL8wjfUAAAAASUVORK5CYII=);
 }
 .gantt_qi_big_icon {
-  font-size: 13px;
+  font-size: 14px;
   border-radius: 4px;
   font-weight: bold;
   background: #fff;
@@ -1417,7 +1454,7 @@ div.dhx_modal_cover {
   background: inherit;
   color: white;
   position: absolute;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 12px;
   opacity: 0.8;
 }
@@ -1648,7 +1685,7 @@ div.dhx_modal_cover {
   top: -1000px;
   left: -1000px;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
 }
 .gantt_drag_marker .gantt_tree_indent,
 .gantt_drag_marker .gantt_tree_icon.gantt_blank,
@@ -1678,7 +1715,7 @@ div.dhx_modal_cover {
   background-color: #f8fdfd;
 }
 .gantt_popup_button.gantt_delete_button {
-  background: #3db9d3;
+  background: #009688;
   text-shadow: 0 -1px 0 #248a9f;
   color: #fff;
   font-weight: bold;

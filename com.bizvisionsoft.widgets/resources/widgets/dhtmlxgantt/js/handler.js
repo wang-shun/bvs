@@ -36,18 +36,120 @@
 		onRender : function() {
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 初始配置
+				gantt.config.keep_grid_width = false;
+				gantt.config.grid_resize = true;
+				gantt.config.start_on_monday = false;
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 表格列配置
+				gantt.config.columns = [ 
+					{ name : "text",label : "工作", tree : true,width : 320,resize : true },
+					{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
+					{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
+					{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
+//				    ,{ name : "add", label : "" } 
+					];
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置刻度
+				gantt.config.scale_unit = "month";
+				gantt.config.step = 1;
+				gantt.config.date_scale = "%Y年%n月";
+				gantt.config.min_column_width = 40;
+				gantt.config.scale_height = 90;
+				var weekScaleTemplate = function(date) {
+					var dateToStr = gantt.date.date_to_str("%n月%j日");
+					var endDate = gantt.date.add(gantt.date
+							.add(date, 1, "week"), -1, "day");
+					return dateToStr(date) + " - " + dateToStr(endDate);
+				};
+				gantt.config.subscales = [ {
+					unit : "week",
+					step : 1,
+					template : weekScaleTemplate
+				}, {
+					unit : "day",
+					step : 1,
+					date : "%j"
+				} ];
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置布局
+				gantt.config.layout = {
+					  cols: [
+					    {
+					      width:456,
+					      min_width: 320,
+					      rows:[
+					        {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"}, 
+					        {view: "scrollbar", id: "gridScroll", group:"horizontal"}       ]
+					    },
+					    {resizer: true, width: 1},
+					    {
+					      rows:[
+					        {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+					        {view: "scrollbar", id: "scrollHor", group:"horizontal"}        ]
+					    },
+					    {view: "scrollbar", id: "scrollVer"}
+					  ]
+				};
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置任务样式
+				gantt.config.task_height = 20;
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置任务类型
+				gantt.config.types.level1 = "level1";
+				gantt.locale.labels.type_level1 = "一级计划";
+
+				gantt.config.types.level2 = "level2";
+				gantt.locale.labels.type_level2 = "二级计划";
+
+				gantt.config.types.level3 = "level3";
+				gantt.locale.labels.type_level3 = "三级计划";
+
+				gantt.templates.task_class = function(start, end, task) {
+					if (task.type == gantt.config.types.level1) {
+						return "level1_task";
+					} else if (task.type == gantt.config.types.level2) {
+						return "level2_task";
+					} else if (task.type == gantt.config.types.level3) {
+						return "";
+					}
+					return "";
+				};
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置周末
+				gantt.templates.task_cell_class = function(task, date) {
+					if (!gantt.isWorkTime(date))
+						return "week_end";
+					return "";
+				};
+				gantt.config.work_time = true;
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置日期数据格式
+				gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
+
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 接受服务端配置
 				if (this.config) {
 					for ( var attr in this.config) {
 						gantt.config[attr] = this.config[attr];
 					}
 				}
-
-				gantt.config.keep_grid_width = false;
-				gantt.config.grid_resize = true;
 				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 初始化并加载数据
 				gantt.init(this.element, this.initFrom, this.initTo);
 				gantt.parse(this.inputData);
-
+				
 			}
 		},
 
