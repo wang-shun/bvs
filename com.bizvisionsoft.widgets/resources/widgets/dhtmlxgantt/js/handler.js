@@ -18,7 +18,7 @@
 	}
 
 	bizvision.dhtmlxgantt = function(properties) {
-		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy" ]);
+		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy","onGridMenuClick" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -27,30 +27,48 @@
 
 		this.parent.addListener("Dispose", this.destroy);
 		this.parent.addListener("Resize", this.layout);
+		
 
 		rap.on("render", this.onRender);
 	};
 
 	bizvision.dhtmlxgantt.prototype = {
-
+			
 		onRender : function() {
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
+				var remoteId = rap.getRemoteObject(this)._.id;
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始配置
-				gantt.config.keep_grid_width = false;
+				gantt.config.touch = "force";
 				gantt.config.grid_resize = true;
+				gantt.config.keep_grid_width = false;
 				gantt.config.start_on_monday = false;
+				gantt.config.details_on_create = true;
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 表格列配置
+//				gantt.config.columns = [ 
+//					{ name : "add", label : "",width : 24,resize: false },
+//					{ name : "text",label : "工作", tree : true,width : 320,resize : true },
+//					{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
+//					{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
+//					{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
+//					];
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 表格列和菜单配置
+				var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""+remoteId+"\")'></div>";
+				var colContent = function (task) {
+					return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""+remoteId+"\","+JSON.stringify(task)+")'></div>");
+				};
 				gantt.config.columns = [ 
+					{ name : "menu", label : colHeader ,width : 34,align : "center",resize: false,template: colContent },
 					{ name : "text",label : "工作", tree : true,width : 320,resize : true },
 					{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
 					{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
 					{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
-//				    ,{ name : "add", label : "" } 
 					];
 				
 				// ////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +99,7 @@
 				gantt.config.layout = {
 					  cols: [
 					    {
-					      width:456,
+					      width:480,
 					      min_width: 320,
 					      rows:[
 					        {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"}, 
@@ -149,9 +167,23 @@
 				// 初始化并加载数据
 				gantt.init(this.element, this.initFrom, this.initTo);
 				gantt.parse(this.inputData);
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 
 				
 			}
 		},
+		
+		onGridMenuClick: function(id){
+			var cObj = rap.getObject(id);
+			rap.getRemoteObject(cObj).call("gridMenuClicked", "");
+		},
+		
+		onGridRowMenuClick: function(id, task){
+			var cObj = rap.getObject(id);
+			rap.getRemoteObject(cObj).call("gridRowMenuClicked", task);
+		},
+
 
 		setConfig : function(config) {
 			this.config = config;

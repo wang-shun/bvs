@@ -8,6 +8,8 @@ import java.util.Date;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
+import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -30,6 +32,15 @@ public class Gantt extends Composite {
 	private Date initTo;
 
 	private RemoteObject remoteObject;
+	
+	private final OperationHandler operationHandler = new AbstractOperationHandler() {
+
+		@Override
+		public void handleCall(String method, JsonObject parameters) {
+			System.out.println(method);
+			System.out.println(parameters);
+		}
+	};
 
 	public Gantt(Composite parent, Config config) {
 		super(parent, SWT.NONE);
@@ -37,6 +48,7 @@ public class Gantt extends Composite {
 		loadJsLibAndCSS();
 		WidgetToolkit.requireWidgetHandlerJs("dhtmlxgantt");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
+		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
 		String json = new GsonBuilder().create().toJson(config);
 		remoteObject.set("config", JsonValue.readFrom(json));
