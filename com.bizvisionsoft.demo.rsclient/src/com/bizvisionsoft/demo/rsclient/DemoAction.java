@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Event;
 import com.bizvisionsoft.bruicommons.annotation.Execute;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.UserService;
@@ -33,7 +33,7 @@ public class DemoAction {
 						.append("update", new BasicDBObject("$set", new BasicDBObject("name", userName)));
 				long cnt = Services.get(UserService.class).update(filterAndUpdate);
 				if (cnt == 1) {
-					DataGrid grid = (DataGrid) context.getChildContextByAssemblyName("用户列表").getContent();
+					GridPart grid = (GridPart) context.getChildContextByAssemblyName("用户列表").getContent();
 					((UserInfo) elem).setName(userName);
 					grid.update(elem);
 				}

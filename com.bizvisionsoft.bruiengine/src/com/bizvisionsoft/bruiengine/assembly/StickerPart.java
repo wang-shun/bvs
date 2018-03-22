@@ -16,7 +16,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 
-public class Sticker {
+public class StickerPart {
 
 	@Inject
 	private IBruiService service;
@@ -29,7 +29,7 @@ public class Sticker {
 	@Inject
 	private IBruiContext context;
 
-	public Sticker(Assembly assembly) {
+	public StickerPart(Assembly assembly) {
 		this.assembly = assembly;
 	}
 
@@ -53,7 +53,7 @@ public class Sticker {
 		
 		parent.setHtmlAttribute("class", cssClass);
 		
-		Titlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setServices(service)
+		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setServices(service)
 				.setText(assembly.getStickerTitle()).setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);

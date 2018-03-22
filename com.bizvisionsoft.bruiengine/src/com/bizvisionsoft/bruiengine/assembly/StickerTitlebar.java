@@ -18,14 +18,14 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
-public class Titlebar extends Composite {
+public class StickerTitlebar extends Composite {
 
 	private Label label;
 	private Composite toolbar;
 	private BruiToolkit toolkit;
 	private IBruiService bruiService;
 
-	public Titlebar(Composite parent) {
+	public StickerTitlebar(Composite parent) {
 		super(parent, SWT.NONE);
 		toolkit = UserSession.bruiToolkit();
 		setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
@@ -51,12 +51,12 @@ public class Titlebar extends Composite {
 		toolbar.setLayout(rl);
 	}
 
-	public Titlebar setText(String text) {
+	public StickerTitlebar setText(String text) {
 		label.setText(text);
 		return this;
 	}
 
-	public Titlebar setActions(List<Action> actions) {
+	public StickerTitlebar setActions(List<Action> actions) {
 		Optional.ofNullable(actions).ifPresent(as -> as.forEach(a -> {
 			Button btn = new Button(toolbar, SWT.PUSH);
 			toolkit.enableMarkup(btn);
@@ -81,13 +81,13 @@ public class Titlebar extends Composite {
 			}
 			btn.addListener(SWT.Selection, e -> {
 				e.data = a;
-				Arrays.asList(Titlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
+				Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
 			});
 		}));
 		return this;
 	}
 
-	public Titlebar setServices(IBruiService bruiService) {
+	public StickerTitlebar setServices(IBruiService bruiService) {
 		this.bruiService = bruiService;
 		return this;
 	}

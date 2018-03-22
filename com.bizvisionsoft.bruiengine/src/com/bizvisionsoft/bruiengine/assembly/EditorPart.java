@@ -66,7 +66,7 @@ import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class DataEditor {
+public class EditorPart {
 
 	private Assembly config;
 
@@ -102,12 +102,12 @@ public class DataEditor {
 
 	private List<ToolItemDescriptor> toolitems = new ArrayList<ToolItemDescriptor>();
 
-	public DataEditor(Assembly assembly) {
+	public EditorPart(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
 	}
 
-	public DataEditor addToolItem(ToolItemDescriptor ti) {
+	public EditorPart addToolItem(ToolItemDescriptor ti) {
 		toolitems.add(ti);
 		return this;
 	}
@@ -352,7 +352,7 @@ public class DataEditor {
 		context.add(containerContext = new BruiAssemblyContext().setParent(context));
 		containerContext.setEngine(brui);
 
-		DataGrid grid = ((DataGrid) brui.getTarget());
+		GridPart grid = ((GridPart) brui.getTarget());
 
 		// 如果是多选，添加check
 		grid.setCheckOn(field instanceof MultiSelectionField);

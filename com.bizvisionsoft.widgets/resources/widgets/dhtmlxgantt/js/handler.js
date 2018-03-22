@@ -37,141 +37,194 @@
 		onRender : function() {
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
-				var remoteId = rap.getRemoteObject(this)._.id;
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始配置
-				gantt.config.touch = "force";
-				gantt.config.grid_resize = true;
-				gantt.config.keep_grid_width = false;
-				gantt.config.start_on_monday = false;
-				gantt.config.details_on_create = true;
+				this.genericConfig(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
-				// 表格列配置
-//				gantt.config.columns = [ 
-//					{ name : "add", label : "",width : 24,resize: false },
-//					{ name : "text",label : "工作", tree : true,width : 320,resize : true },
-//					{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
-//					{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
-//					{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
-//					];
-				
-				// ////////////////////////////////////////////////////////////////////////////////
 				// 表格列和菜单配置
-				var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""+remoteId+"\")'></div>";
-				var colContent = function (task) {
-					return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""+remoteId+"\","+JSON.stringify(task)+")'></div>");
-				};
-				gantt.config.columns = [ 
-					{ name : "menu", label : colHeader ,width : 34,align : "center",resize: false,template: colContent },
-					{ name : "text",label : "工作", tree : true,width : 320,resize : true },
-					{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
-					{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
-					{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
-					];
+				this.configGrid(this.config);
 				
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置刻度
-				gantt.config.scale_unit = "month";
-				gantt.config.step = 1;
-				gantt.config.date_scale = "%Y年%n月";
-				gantt.config.min_column_width = 40;
-				gantt.config.scale_height = 90;
-				var weekScaleTemplate = function(date) {
-					var dateToStr = gantt.date.date_to_str("%n月%j日");
-					var endDate = gantt.date.add(gantt.date
-							.add(date, 1, "week"), -1, "day");
-					return dateToStr(date) + " - " + dateToStr(endDate);
-				};
-				gantt.config.subscales = [ {
-					unit : "week",
-					step : 1,
-					template : weekScaleTemplate
-				}, {
-					unit : "day",
-					step : 1,
-					date : "%j"
-				} ];
+				this.configScale(this.config);
 				
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置布局
-				gantt.config.layout = {
-					  cols: [
-					    {
-					      width:480,
-					      min_width: 320,
-					      rows:[
-					        {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"}, 
-					        {view: "scrollbar", id: "gridScroll", group:"horizontal"}       ]
-					    },
-					    {resizer: true, width: 1},
-					    {
-					      rows:[
-					        {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
-					        {view: "scrollbar", id: "scrollHor", group:"horizontal"}        ]
-					    },
-					    {view: "scrollbar", id: "scrollVer"}
-					  ]
-				};
-				
+				this.configLayout(this.config);
+
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置任务样式
-				gantt.config.task_height = 20;
-
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 配置任务类型
-				gantt.config.types.level1 = "level1";
-				gantt.locale.labels.type_level1 = "一级计划";
-
-				gantt.config.types.level2 = "level2";
-				gantt.locale.labels.type_level2 = "二级计划";
-
-				gantt.config.types.level3 = "level3";
-				gantt.locale.labels.type_level3 = "三级计划";
-
-				gantt.templates.task_class = function(start, end, task) {
-					if (task.type == gantt.config.types.level1) {
-						return "level1_task";
-					} else if (task.type == gantt.config.types.level2) {
-						return "level2_task";
-					} else if (task.type == gantt.config.types.level3) {
-						return "";
-					}
-					return "";
-				};
-
+				this.configTaskStyle(this.config);
+				
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置周末
-				gantt.templates.task_cell_class = function(task, date) {
-					if (!gantt.isWorkTime(date))
-						return "week_end";
-					return "";
-				};
-				gantt.config.work_time = true;
-
+				this.configHolidays(this.config);
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 自动控制任务类型
+				this.handleTaskType();
+				
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 接受服务端配置
+				this.acceptServerConfig(this.config);
+				
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置日期数据格式
 				gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
 
-				
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 接受服务端配置
-				if (this.config) {
-					for ( var attr in this.config) {
-						gantt.config[attr] = this.config[attr];
-					}
-				}
-				
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始化并加载数据
 				gantt.init(this.element, this.initFrom, this.initTo);
 				gantt.parse(this.inputData);
-
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 
-				
 			}
+		},
+		
+		genericConfig: function(config){
+			gantt.config.touch = "force";
+			gantt.config.grid_resize = true;
+			gantt.config.keep_grid_width = false;
+			gantt.config.start_on_monday = false;
+			gantt.config.details_on_create = true;
+		},
+		
+		configGrid: function(config){
+			var remoteId = rap.getRemoteObject(this)._.id;
+			var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""+remoteId+"\")'></div>";
+			var colContent = function (task) {
+				return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""+remoteId+"\","+JSON.stringify(task)+")'></div>");
+			};
+			gantt.config.columns = [ 
+				{ name : "menu", label : colHeader ,width : 34,align : "center",resize: false,template: colContent },
+				{ name : "text",label : "工作", tree : true,width : 320,resize : true },
+				{ name : "start_date", label : "开始", align : "center", width : 96, resize : true }, 
+				{ name : "end_date", label : "完成", align : "center", width : 96, hide:true, resize : true }, 
+				{ name : "duration", label : "工期", align : "right", width : 40, resize : true }
+				];
+		},
+		
+		configScale: function(config){
+			gantt.config.scale_unit = "month";
+			gantt.config.step = 1;
+			gantt.config.date_scale = "%Y年%n月";
+			gantt.config.min_column_width = 40;
+			gantt.config.scale_height = 90;
+			var weekScaleTemplate = function(date) {
+				var dateToStr = gantt.date.date_to_str("%n月%j日");
+				var endDate = gantt.date.add(gantt.date
+						.add(date, 1, "week"), -1, "day");
+				return dateToStr(date) + " - " + dateToStr(endDate);
+			};
+			gantt.config.subscales = [ {
+				unit : "week",
+				step : 1,
+				template : weekScaleTemplate
+			}, {
+				unit : "day",
+				step : 1,
+				date : "%j"
+			} ];
+		},
+		
+		configLayout: function(config){
+			gantt.config.layout = {
+				  cols: [
+				    {
+				      width:490,
+				      min_width: 320,
+				      rows:[
+				        {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"}, 
+				        {view: "scrollbar", id: "gridScroll", group:"horizontal"}       ]
+				    },
+				    {resizer: true, width: 1},
+				    {
+				      rows:[
+				        {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+				        {view: "scrollbar", id: "scrollHor", group:"horizontal"}        ]
+				    },
+				    {view: "scrollbar", id: "scrollVer"}
+				  ]
+			};
+		},
+		
+		configTaskStyle: function(config){
+			gantt.config.task_height = 20;
+			gantt.templates.task_class = function(start, end, task) {
+				if (task.level == 0) {
+					return "level0_task";
+				} else if (task.level == 1) {
+					return "level1_task";
+				} else if (task.level == 2) {
+					return "level2_task";
+				}
+				return "";
+			};
+		},
+		
+		configHolidays: function(config){
+			gantt.templates.task_cell_class = function(task, date) {
+				if (!gantt.isWorkTime(date))
+					return "week_end";
+				return "";
+			};
+			gantt.config.work_time = true;
+		},
+		
+		acceptServerConfig: function(config){
+			if (config) {
+				for ( var attr in config) {
+					gantt.config[attr] = this.config[attr];
+				}
+			}
+		},
+		
+		
+		handleTaskType: function(){
+			var delTaskParent;
+	
+			function checkParents(id) {
+				setTaskType(id);
+				var parent = gantt.getParent(id);
+				if (parent != gantt.config.root_id) {
+					checkParents(parent);
+				}
+			}
+	
+			function setTaskType(id) {
+				id = id.id ? id.id : id;
+				var task = gantt.getTask(id);
+				var type = gantt.hasChild(task.id) ? gantt.config.types.project : gantt.config.types.task;
+				if (type != task.type) {
+					task.type = type;
+					gantt.updateTask(id);
+				}
+			}
+	
+			gantt.attachEvent("onParse", function () {
+				gantt.eachTask(function (task) {
+					setTaskType(task);
+				});
+			});
+	
+			gantt.attachEvent("onAfterTaskAdd", function onAfterTaskAdd(id) {
+				gantt.batchUpdate(function () {
+					checkParents(id)
+				});
+			});
+	
+			gantt.attachEvent("onBeforeTaskDelete", function onBeforeTaskDelete(id, task) {
+				delTaskParent = gantt.getParent(id);
+				return true;
+			});
+	
+			gantt.attachEvent("onAfterTaskDelete", function onAfterTaskDelete(id, task) {
+				if (delTaskParent != gantt.config.root_id) {
+					gantt.batchUpdate(function () {
+						checkParents(delTaskParent)
+					});
+				}
+			});
 		},
 		
 		onGridMenuClick: function(id){

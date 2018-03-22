@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +29,7 @@ public class GanttDemo {
 	@CreateUI
 	private void createUI(Composite parent) {
 		parent.setLayout(new FillLayout());
-		Gantt gantt = new Gantt(parent, Config.defaultConfig().setReadonly(false));
+		Gantt gantt = new Gantt(parent, Config.defaultConfig().setReadonly(true));
 		Calendar cal = Calendar.getInstance();
 		Date from = cal.getTime();
 		cal.add(Calendar.MONTH, 6);
@@ -42,6 +43,11 @@ public class GanttDemo {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> System.out.println("grid" + e));
+		gantt.addListener(Gantt.EVENT_ROW_MENU, e -> {
+			System.out.println("row" + e);
+			MessageDialog.openInformation(parent.getShell(), "¸ÊÌØÍ¼ÊÂ¼ş", "" + e.data);
+		});
 	}
 
 }

@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Event;
 import com.bizvisionsoft.bruicommons.annotation.Execute;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.UserService;
@@ -34,7 +34,7 @@ public class CreateUser {
 			service.insert(user);
 			List<UserInfo> ds = service.createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1)
 					.append("filter", new BasicDBObject("userId", userId)));
-			DataGrid grid = (DataGrid) context.getChildContextByAssemblyName("用户列表").getContent();
+			GridPart grid = (GridPart) context.getChildContextByAssemblyName("用户列表").getContent();
 			grid.insert(ds.get(0), 0);
 		}
 	}

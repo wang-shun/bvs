@@ -7,11 +7,11 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 
-public class DataGridActionColumnLabelProvider extends ColumnLabelProvider {
+public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 
 	private List<Action> actions;
 
-	public DataGridActionColumnLabelProvider(List<Action> actions) {
+	public GridPartActionColumnLabelProvider(List<Action> actions) {
 		this.actions = actions;
 	}
 

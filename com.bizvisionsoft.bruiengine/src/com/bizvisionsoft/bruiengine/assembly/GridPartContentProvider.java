@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import com.bizvisionsoft.bruiengine.BruiEngine;
 
-public class DataGridContentProvider implements ITreeContentProvider {
+public class GridPartContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {

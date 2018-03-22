@@ -7,7 +7,7 @@ import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiEngine;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
@@ -31,7 +31,7 @@ public class OpenSelected {
 			Object info = BruiEngine.deepCopy(elem);
 			Editor editor = bruiService.createEditor(assembly, info, editable, false, context);
 			if (Window.OK == editor.open()) {
-				((DataGrid) context.getContent()).replaceItem(elem, info);
+				((GridPart) context.getContent()).replaceItem(elem, info);
 			}
 		});
 	}

@@ -53,7 +53,7 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.mongodb.BasicDBObject;
 
-public class DataGrid {
+public class GridPart {
 
 	private static final int LIMIT = 50;
 
@@ -101,7 +101,7 @@ public class DataGrid {
 
 	private boolean queryOn;
 
-	public DataGrid(Assembly gridConfig) {
+	public GridPart(Assembly gridConfig) {
 		this.config = gridConfig;
 	}
 
@@ -115,22 +115,22 @@ public class DataGrid {
 			dataSetEngine = BruiGridDataSetEngine.create(config, bruiService);
 	}
 
-	public DataGrid addItemSelector(ToolItemDescriptor listener) {
+	public GridPart addItemSelector(ToolItemDescriptor listener) {
 		this.itemSelector = listener;
 		return this;
 	}
 
-	public DataGrid addToolItem(ToolItemDescriptor ti) {
+	public GridPart addToolItem(ToolItemDescriptor ti) {
 		toolitems.add(ti);
 		return this;
 	}
 
-	public DataGrid setCheckOn(boolean checkOn) {
+	public GridPart setCheckOn(boolean checkOn) {
 		this.checkOn = checkOn;
 		return this;
 	}
 
-	public DataGrid setQueryOn(boolean queryOn) {
+	public GridPart setQueryOn(boolean queryOn) {
 		this.queryOn = queryOn;
 		return this;
 	}
@@ -140,12 +140,12 @@ public class DataGrid {
 	 * 
 	 * @return
 	 */
-	public DataGrid disablePagination() {
+	public GridPart disablePagination() {
 		forceDisablePagination = true;
 		return this;
 	}
 
-	public DataGrid disableDateSetEngine() {
+	public GridPart disableDateSetEngine() {
 		disableDateSetEngine = true;
 		return this;
 	}
@@ -218,7 +218,7 @@ public class DataGrid {
 				.setIgnoreNull(true).setParent(context).setAssembly(queryConfig).setEngine(brui);
 		context.add(childContext);
 
-		final DataEditor editor = (DataEditor) brui.getTarget();
+		final EditorPart editor = (EditorPart) brui.getTarget();
 		// 2. 设置查询
 		editor.addToolItem(new ToolItemDescriptor("查询", BruiToolkit.CSS_INFO, e -> {
 			try {
@@ -369,7 +369,7 @@ public class DataGrid {
 			col.setData("fixedRight", true);
 
 			GridViewerColumn vcol = new GridViewerColumn(viewer, col);
-			vcol.setLabelProvider(new DataGridActionColumnLabelProvider(actions));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(actions));
 			grid.addListener(SWT.Selection, e -> {
 				actions.stream().filter(a -> a.getId().equals(e.text)).findFirst().ifPresent(action -> {
 					Object elem = e.item.getData();
@@ -391,7 +391,7 @@ public class DataGrid {
 			a.setText(itemSelector.label);
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
-			vcol.setLabelProvider(new DataGridActionColumnLabelProvider(Arrays.asList(new Action[] { a })));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(Arrays.asList(new Action[] { a })));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}
@@ -419,7 +419,7 @@ public class DataGrid {
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 内容提供
-		viewer.setContentProvider(new DataGridContentProvider());
+		viewer.setContentProvider(new GridPartContentProvider());
 
 		context.setSelectionProvider(viewer);
 
@@ -494,7 +494,7 @@ public class DataGrid {
 		col.setSummary(c.isSummary());
 
 		GridViewerColumn vcol = new GridViewerColumn(viewer, col);
-		DataGridColumnLabelProvider labelProvider = new DataGridColumnLabelProvider(renderEngine, c);
+		GridPartColumnLabelProvider labelProvider = new GridPartColumnLabelProvider(renderEngine, c);
 
 		vcol.setLabelProvider(labelProvider);
 

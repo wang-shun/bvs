@@ -6,12 +6,12 @@ import org.eclipse.jface.viewers.ViewerCell;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 
-public class DataGridColumnLabelProvider extends CellLabelProvider {
+public class GridPartColumnLabelProvider extends CellLabelProvider {
 
 	private BruiGridRenderEngine renderEngine;
 	private Column column;
 
-	public DataGridColumnLabelProvider(BruiGridRenderEngine renderEngine, Column column) {
+	public GridPartColumnLabelProvider(BruiGridRenderEngine renderEngine, Column column) {
 		this.renderEngine = renderEngine;
 		this.column = column;
 	}

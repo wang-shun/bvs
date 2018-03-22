@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Event;
 import com.bizvisionsoft.bruicommons.annotation.Execute;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
@@ -36,7 +36,7 @@ public class EditUser {
 					long cnt = service.update(filterAndUpdate.bson());
 					if (cnt == 1) {
 						UserInfo info = service.info(user.getUserId());
-						DataGrid grid = (DataGrid) context.getContent();
+						GridPart grid = (GridPart) context.getContent();
 						grid.replaceItem(elem, info);
 					}
 				}

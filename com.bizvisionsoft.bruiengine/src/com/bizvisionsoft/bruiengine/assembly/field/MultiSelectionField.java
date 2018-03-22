@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.ToolItemDescriptor;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -20,7 +20,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 public class MultiSelectionField extends SelectionField {
 
 	protected List<Object> value;
-	private DataGrid grid;
+	private GridPart grid;
 
 	public MultiSelectionField() {
 	}
@@ -33,7 +33,7 @@ public class MultiSelectionField extends SelectionField {
 		BruiAssemblyContext gridContext;
 		context.add(gridContext = new BruiAssemblyContext().setParent(context));
 		gridContext.setEngine(brui);
-		grid = ((DataGrid) brui.getTarget()).disablePagination().disableDateSetEngine();
+		grid = ((GridPart) brui.getTarget()).disablePagination().disableDateSetEngine();
 
 		// 如果可以编辑，增加 添加按钮，删除按钮，表格增加勾选框
 		if (!isReadOnly()) {

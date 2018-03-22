@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiEngine;
-import com.bizvisionsoft.bruiengine.assembly.DataEditor;
+import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 
 public abstract class EditorField {
@@ -32,7 +32,7 @@ public abstract class EditorField {
 
 	protected Locale locale;
 
-	protected DataEditor editor;
+	protected EditorPart editor;
 
 	protected BruiAssemblyContext context;
 
@@ -140,7 +140,7 @@ public abstract class EditorField {
 
 	public abstract Object getValue();
 
-	public EditorField setEditor(DataEditor editor) {
+	public EditorField setEditor(EditorPart editor) {
 		this.editor = editor;
 		return this;
 	}

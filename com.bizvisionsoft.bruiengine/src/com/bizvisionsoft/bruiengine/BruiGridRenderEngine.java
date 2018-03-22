@@ -12,7 +12,7 @@ import com.bizvisionsoft.bruiengine.annotations.GridRenderColumnHeader;
 import com.bizvisionsoft.bruiengine.annotations.GridRenderConfig;
 import com.bizvisionsoft.bruiengine.annotations.GridRenderInput;
 import com.bizvisionsoft.bruiengine.annotations.GridRenderUpdateCell;
-import com.bizvisionsoft.bruiengine.assembly.DataGridDefaultRender;
+import com.bizvisionsoft.bruiengine.assembly.GridPartDefaultRender;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class BruiGridRenderEngine extends BruiEngine {
@@ -37,7 +37,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 		return new BruiGridRenderEngine();
 	}
 
-	private DataGridDefaultRender defaultRender;
+	private GridPartDefaultRender defaultRender;
 	private Assembly config;
 
 	BruiGridRenderEngine(Class<?> clazz) {
@@ -46,7 +46,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 
 	BruiGridRenderEngine() {
 		super();
-		defaultRender = new DataGridDefaultRender();
+		defaultRender = new GridPartDefaultRender();
 	}
 
 	public void setInput(Object input) {

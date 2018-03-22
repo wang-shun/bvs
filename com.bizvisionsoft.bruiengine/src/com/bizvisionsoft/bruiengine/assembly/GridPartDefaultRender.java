@@ -10,7 +10,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.util.Util;
 
-public class DataGridDefaultRender {
+public class GridPartDefaultRender {
 
 	protected Object input;
 
@@ -18,7 +18,7 @@ public class DataGridDefaultRender {
 
 	private Locale locale;
 
-	public DataGridDefaultRender() {
+	public GridPartDefaultRender() {
 		locale = RWT.getLocale();
 	}
 

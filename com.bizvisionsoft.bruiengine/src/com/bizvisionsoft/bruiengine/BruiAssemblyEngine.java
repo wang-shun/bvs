@@ -10,9 +10,9 @@ import com.bizvisionsoft.bruicommons.annotation.GetContent;
 import com.bizvisionsoft.bruicommons.annotation.GetReturnCode;
 import com.bizvisionsoft.bruicommons.annotation.GetReturnResult;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.assembly.DataEditor;
-import com.bizvisionsoft.bruiengine.assembly.DataGrid;
-import com.bizvisionsoft.bruiengine.assembly.Sticker;
+import com.bizvisionsoft.bruiengine.assembly.EditorPart;
+import com.bizvisionsoft.bruiengine.assembly.GridPart;
+import com.bizvisionsoft.bruiengine.assembly.StickerPart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class BruiAssemblyEngine extends BruiEngine {
@@ -37,11 +37,11 @@ public class BruiAssemblyEngine extends BruiEngine {
 		String type = assembly.getType();
 		BruiEngine brui;
 		if (Assembly.TYPE_STICKER.equals(type)) {
-			brui = new BruiAssemblyEngine(new Sticker(assembly));
+			brui = new BruiAssemblyEngine(new StickerPart(assembly));
 		} else if (Assembly.TYPE_GRID.equals(type)) {
-			brui = new BruiAssemblyEngine(new DataGrid(assembly));
+			brui = new BruiAssemblyEngine(new GridPart(assembly));
 		} else if (Assembly.TYPE_EDITOR.equals(type)) {
-			brui = new BruiAssemblyEngine(new DataEditor(assembly));
+			brui = new BruiAssemblyEngine(new EditorPart(assembly));
 		} else {
 			brui = load(assembly.getBundleId(), assembly.getClassName())// load
 					.newInstance();

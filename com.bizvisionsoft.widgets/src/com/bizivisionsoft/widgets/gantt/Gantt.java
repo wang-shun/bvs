@@ -3,6 +3,7 @@ package com.bizivisionsoft.widgets.gantt;
 import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.eclipse.rap.json.JsonObject;
@@ -13,6 +14,8 @@ import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
 import com.google.gson.GsonBuilder;
@@ -32,13 +35,28 @@ public class Gantt extends Composite {
 	private Date initTo;
 
 	private RemoteObject remoteObject;
-	
+
+	public static final int EVENT_GRID_MENU = 1000;
+
+	public static final int EVENT_ROW_MENU = 1001;
+
 	private final OperationHandler operationHandler = new AbstractOperationHandler() {
 
 		@Override
 		public void handleCall(String method, JsonObject parameters) {
-			System.out.println(method);
-			System.out.println(parameters);
+			Event event = new Event();
+			int eventType;
+			if ("gridMenuClicked".equals(method)) {
+				eventType = EVENT_GRID_MENU;
+			} else if ("gridRowMenuClicked".equals(method)) {
+				event.data = parameters;
+				eventType = EVENT_ROW_MENU;
+			} else {
+				return;
+			}
+			Display.getCurrent().asyncExec(() -> {
+				Arrays.asList(getListeners(eventType)).forEach(l -> l.handleEvent(event));
+			});
 		}
 	};
 
