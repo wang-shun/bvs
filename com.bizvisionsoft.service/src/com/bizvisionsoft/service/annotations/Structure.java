@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target({ FIELD, METHOD })
 public @interface Structure {
 	
-	String name();
+	String[] value() default "";
 
 }

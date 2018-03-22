@@ -5,9 +5,16 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 
 public class GridPartContentProvider implements ITreeContentProvider {
+
+	private Assembly gridConfig;
+
+	public GridPartContentProvider(Assembly gridConfig) {
+		this.gridConfig = gridConfig;
+	}
 
 	@Override
 	public void dispose() {
@@ -31,7 +38,7 @@ public class GridPartContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		Object value = BruiEngine.getStructureValue(parentElement, "getChildren", new Object[0]);
+		Object value = BruiEngine.getStructureValue(parentElement, gridConfig.getName(), "list", new Object[0]);
 		if (value instanceof List) {
 			return ((List<?>) value).toArray();
 		} else if (value instanceof Object[]) {
@@ -47,10 +54,8 @@ public class GridPartContentProvider implements ITreeContentProvider {
 
 	@Override
 	public boolean hasChildren(Object element) {
-		Object value = BruiEngine.getStructureValue(element, "hasChildren", false);
-		if (value instanceof Boolean)
-			return ((Boolean) value).booleanValue();
-		return false;
+		Object value = BruiEngine.getStructureValue(element, gridConfig.getName(), "count", 0);
+		return value instanceof Number && ((Number) value).longValue() > 0;
 	}
 
 }

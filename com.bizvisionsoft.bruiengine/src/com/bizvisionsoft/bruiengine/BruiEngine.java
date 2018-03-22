@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import com.bizvisionsoft.bruicommons.annotation.Init;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
@@ -200,36 +199,8 @@ public class BruiEngine {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// 处理Structure 标记
-	public static Object getStructureValue(Object element, String name, Object noAnnotationValue) {
-		Class<? extends Object> eClass = element.getClass();
-
-		Field field = getField(eClass, Structure.class, name, a -> a.name()).orElse(null);
-		if (field != null) {
-			field.setAccessible(true);
-			try {
-				return field.get(element);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。", e);
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。", e);
-			}
-		}
-
-		Method method = getMethod(eClass, Structure.class, name, a -> a.name()).orElse(null);
-		if (method != null) {
-			method.setAccessible(true);
-			try {
-				return method.invoke(element);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法无法访问。", e);
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("注解为" + Structure.class + "的字段或方法参数错误。", e);
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException("注解为" + Structure.class + "调用目标错误。", e);
-			}
-		}
-		return noAnnotationValue;
-		// throw new RuntimeException("没有注解为" + Structure.class + "的字段或方法。");
+	public static Object getStructureValue(Object element, String cName, String fName, Object defaultValue) {
+		return read(element.getClass(), Structure.class, element, cName, fName, defaultValue, a -> a.value());
 	}
 
 	//
@@ -351,11 +322,6 @@ public class BruiEngine {
 				.findFirst();
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static Optional<Method> getMethod(Class clazz, Predicate<? super Method> predicate) {
-		return Arrays.asList(clazz.getDeclaredMethods()).stream().filter(predicate).findFirst();
-	}
-
 	/**
 	 * 
 	 * @param clazz
@@ -377,6 +343,34 @@ public class BruiEngine {
 			} else {
 				return anno != null && valueFunction.apply(anno).equals(annoValue);
 			}
+		}).findFirst();
+	}
+
+	final public static <T extends Annotation> Optional<Field> getField(Class<?> clazz, Class<T> annoClass,
+			Object annoValue, Function<T, Object> valueFunction, boolean withNameMatch) {
+		return Arrays.asList(clazz.getDeclaredFields()).stream().filter(f -> {
+			T anno = f.getAnnotation(annoClass);
+			if (anno == null) {// 没有注解
+				// 但有字段名称匹配的 返回真
+				if ((anno == null) && withNameMatch && f.getName().equals(annoValue)) {
+					return true;
+				} else {// 否则都不匹配
+					return false;
+				}
+			} else {// 有注解
+				if (valueFunction == null) {// 未指定取值函数的，注解匹配就可以
+					return true;
+				} else {
+					// 根据取值函数获取注解值
+					Object value = valueFunction.apply(anno);
+					if (value instanceof Object[]) {// 如果注解值是数组的，单一元素匹配就可以了
+						return Arrays.asList((Object[]) value).stream().allMatch(e -> e != null && e.equals(annoValue));
+					} else {
+						return value != null && value.equals(annoValue);
+					}
+				}
+			}
+
 		}).findFirst();
 	}
 
@@ -410,6 +404,34 @@ public class BruiEngine {
 
 	final public static <T extends Annotation> Optional<Method> getMethod(Class<?> clazz, Class<T> annoClass) {
 		return getMethod(clazz, annoClass, null, null);
+	}
+
+	final public static <T extends Annotation> Optional<Method> getMethod(Class<?> clazz, Class<T> annoClass,
+			Object annoValue, Function<T, Object> valueFunction, boolean withNameMatch) {
+		return Arrays.asList(clazz.getDeclaredMethods()).stream().filter(f -> {
+			T anno = f.getAnnotation(annoClass);
+			if (anno == null) {// 没有注解
+				// 但有字段名称匹配的 返回真
+				if ((anno == null) && withNameMatch && f.getName().equals(annoValue)) {
+					return true;
+				} else {// 否则都不匹配
+					return false;
+				}
+			} else {// 有注解
+				if (valueFunction == null) {// 未指定取值函数的，注解匹配就可以
+					return true;
+				} else {
+					// 根据取值函数获取注解值
+					Object value = valueFunction.apply(anno);
+					if (value instanceof Object[]) {// 如果注解值是数组的，单一元素匹配就可以了
+						return Arrays.asList((Object[]) value).stream().allMatch(e -> e != null && e.equals(annoValue));
+					} else {
+						return value != null && value.equals(annoValue);
+					}
+				}
+			}
+
+		}).findFirst();
 	}
 
 	/**

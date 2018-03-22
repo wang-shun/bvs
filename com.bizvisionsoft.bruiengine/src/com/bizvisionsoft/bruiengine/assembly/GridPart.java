@@ -419,7 +419,7 @@ public class GridPart {
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// ÄÚÈÝÌá¹©
-		viewer.setContentProvider(new GridPartContentProvider());
+		viewer.setContentProvider(new GridPartContentProvider(config));
 
 		context.setSelectionProvider(viewer);
 

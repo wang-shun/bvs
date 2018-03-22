@@ -459,12 +459,12 @@
   display: inline-block;
 }
 .gantt_tree_icon.gantt_open {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAArklEQVQ4T2NkoBJgpJI5DEPAoFOnTv0/c+YMQR+bmJgwmJmZwX2E4bVp06b9j4yMZODg4MBp2I8fPxiWL1/OkJWVNUAGcXJyMnz//h3uQrJdRLFBIAPQAchlJLsIFuCMjIwM////B5sJMoRkg2CuIdtrQcHBDOxsbHBfCQgIMHz48AHO//nrF8O6tWsJR7+7uzsDIxMTznT0/98/hp07d+I3iGopm2DewKFg8OV+AJWkfRMrTobLAAAAAElFTkSuQmCC);
+  background-image: url(/resource/widget/rap/tree/tree-collapsed.png);
   width: 18px;
   cursor: pointer;
 }
 .gantt_tree_icon.gantt_close {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAkUlEQVQ4T2NkoBJgpJI5DEPAoFOnTv0/c+YMQR+bmJgwmJmZwX2E4bVp06b9j4yMZODg4MBp2I8fPxiWL1/OkJWVNeIN4uTkxAin79+/M5AcRtgCHGQIyQbhijaiDQoKDmZgZ2PDGf0/f/1iWLd2LeHod3d3Z2BkYsJp0P9//xh27tyJ3yCqpWyCeQOHgsGX+wEZpW4T5LCxKwAAAABJRU5ErkJggg==);
+  background-image: url(/resource/widget/rap/tree/tree-expanded.png);
   width: 18px;
   cursor: pointer;
 }
