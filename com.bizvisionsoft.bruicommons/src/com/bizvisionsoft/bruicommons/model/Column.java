@@ -25,7 +25,7 @@ public class Column extends ModelObject {
 	private boolean detail;
 
 	private boolean summary;
-	
+
 	private boolean expanded;
 
 	private List<Column> columns;
@@ -129,21 +129,21 @@ public class Column extends ModelObject {
 		this.text = text;
 		firePropertyChange("text", old, this.text);
 	}
-	
+
 	public boolean isDetail() {
 		return detail;
 	}
-	
+
 	public boolean isSummary() {
 		return summary;
 	}
-	
+
 	public void setDetail(boolean detail) {
 		Object old = this.detail;
 		this.detail = detail;
 		firePropertyChange("detail", old, this.detail);
 	}
-	
+
 	public void setSummary(boolean summary) {
 		Object old = this.summary;
 		this.summary = summary;
@@ -153,7 +153,7 @@ public class Column extends ModelObject {
 	public boolean isExpanded() {
 		return expanded;
 	}
-	
+
 	public void setExpanded(boolean expanded) {
 		Object old = this.expanded;
 		this.expanded = expanded;
@@ -173,11 +173,23 @@ public class Column extends ModelObject {
 	public String getFormat() {
 		return this.format;
 	}
-	
+
 	public void setFormat(String format) {
 		Object old = this.format;
 		this.format = format;
 		firePropertyChange("format", old, this.format);
 	}
 
+	/**
+	 * gantt use!
+	 */
+	private boolean hide;
+
+	public boolean isHide() {
+		return hide;
+	}
+
+	public void setHide(boolean hide) {
+		this.hide = hide;
+	}
 }

@@ -11,6 +11,7 @@ import com.bizvisionsoft.bruicommons.annotation.GetReturnCode;
 import com.bizvisionsoft.bruicommons.annotation.GetReturnResult;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
+import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.StickerPart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -40,6 +41,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new StickerPart(assembly));
 		} else if (Assembly.TYPE_GRID.equals(type)) {
 			brui = new BruiAssemblyEngine(new GridPart(assembly));
+		} else if (Assembly.TYPE_GANTT.equals(type)) {
+			brui = new BruiAssemblyEngine(new GanttPart(assembly));
 		} else if (Assembly.TYPE_EDITOR.equals(type)) {
 			brui = new BruiAssemblyEngine(new EditorPart(assembly));
 		} else {

@@ -29,7 +29,7 @@ public class GanttDemo {
 	@CreateUI
 	private void createUI(Composite parent) {
 		parent.setLayout(new FillLayout());
-		Gantt gantt = new Gantt(parent, Config.defaultConfig().setReadonly(true));
+		Gantt gantt = new Gantt(parent, Config.defaultConfig(true));
 		Calendar cal = Calendar.getInstance();
 		Date from = cal.getTime();
 		cal.add(Calendar.MONTH, 6);

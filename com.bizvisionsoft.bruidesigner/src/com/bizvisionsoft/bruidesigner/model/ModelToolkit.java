@@ -355,6 +355,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyGridEditor";
 					} else if (Assembly.TYPE_EDITOR.equals(type)) {
 						editorId = "bruidesigner.assemblyEditorEditor";
+					} else if (Assembly.TYPE_GANTT.equals(type)) {
+						editorId = "bruidesigner.assemblyGanttEditor";
 					} else {
 						editorId = "bruidesigner.assemblyEditor";
 					}

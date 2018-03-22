@@ -3,8 +3,14 @@ package com.bizvisionsoft.bruiengine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.function.BiFunction;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -140,19 +146,91 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		throw new RuntimeException("没有注解" + DataSet.class + " 值为" + paramValue + "的无参方法。");
 	}
 
-	// private boolean match(String assemblyName, String useage, DataSet lf) {
-	// return Optional.ofNullable(lf).map(a -> a.value()).map(vs -> {
-	// for (int i = 0; i < vs.length; i++) {
-	// String[] loc = vs[i].split("#");
-	// if (loc.length == 1 && useage.equals(loc[0].trim())) {
-	// return true;
-	// } else if (loc.length > 1 && assemblyName.equals(loc[0].trim()) &&
-	// useage.equals(loc[1].trim())) {
-	// return true;
-	// }
-	// }
-	// return false;
-	// }).orElse(false);
-	// }
+	/**
+	 * 获得gantt图初始化时的时间范围
+	 * 
+	 * @return
+	 */
+	public Date[] getGanttInitDateRange() {
+		return (Date[]) read(clazz, DataSet.class, getTarget(), assembly.getName(), "initDateRange", null,
+				a -> a.value());
+	}
+
+	/**
+	 * 获取Gantt的输入
+	 * 
+	 * @param workFilter
+	 * 
+	 * @return
+	 */
+	public JsonObject getGanttInput(BasicDBObject workFilter, BasicDBObject linkFilter) {
+		// 调用服务
+		List<?> data = null;
+		List<?> links = null;
+		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
+				.orElse(null);
+		if (method != null) {
+			Object[] args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
+				if (ServiceParam.FILTER.equals(sp.value())) {
+					args[i] = workFilter;
+				} else {
+					args[i] = null;
+				}
+			}
+
+			try {
+				method.setAccessible(true);
+				data = (List<?>) method.invoke(getTarget(), workFilter);
+			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			}
+		} else {
+			throw new RuntimeException("没有注解" + DataSet.class + " 值为 data的方法。");
+		}
+
+		method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value()).orElse(null);
+		if (method != null) {
+			Object[] args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
+				if (ServiceParam.FILTER.equals(sp.value())) {
+					args[i] = linkFilter;
+				} else {
+					args[i] = null;
+				}
+			}
+
+			try {
+				method.setAccessible(true);
+				links = (List<?>) method.invoke(getTarget(), workFilter);
+			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			}
+		} else {
+		}
+
+		// 准备数据转换函数
+		BiFunction<String, Object, Object> convertor = (n, v) -> {
+			if (v instanceof Date)
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+			return v;
+		};
+
+		// 处理模型
+		JsonArray _data = new JsonArray();
+		JsonArray _links = new JsonArray();
+
+		if (data != null)
+			data.forEach(
+					o -> _data.add(readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor)));
+
+		if (links != null)
+			links.forEach(
+					o -> _links.add(readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor)));
+
+		return new JsonObject().add("data", _data).add("links", _links);
+	}
 
 }

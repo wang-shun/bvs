@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruidesigner.Activator;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 
-public class ColumnsEditPane extends Composite {
+public class GridColumnsEditPane extends Composite {
 
 	class LayoutContentProvider implements ITreeContentProvider {
 
@@ -68,7 +68,7 @@ public class ColumnsEditPane extends Composite {
 	private Composite rightPane;
 	private Column current;
 
-	public ColumnsEditPane(Composite parent, List<Column> columns, ModelEditor editor) {
+	public GridColumnsEditPane(Composite parent, List<Column> columns, ModelEditor editor) {
 		super(parent, SWT.HORIZONTAL);
 		this.columns = columns;
 		this.editor = editor;

@@ -468,6 +468,13 @@
   width: 18px;
   cursor: pointer;
 }
+.gantt_tree_icon.gantt_open:hover {
+  background-image: url(/resource/widget/rap/tree/tree-collapsed-hover.png);
+}
+.gantt_tree_icon.gantt_close:hover {
+  background-image: url(/resource/widget/rap/tree/tree-expanded-hover.png);
+}
+
 .gantt_tree_icon.gantt_blank {
   width: 18px;
 }

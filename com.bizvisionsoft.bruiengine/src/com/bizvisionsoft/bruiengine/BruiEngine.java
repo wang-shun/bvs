@@ -9,12 +9,17 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 
 import com.bizvisionsoft.bruicommons.annotation.Init;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
 import com.bizvisionsoft.bruicommons.annotation.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.annotations.ReadOptions;
 import com.bizvisionsoft.service.annotations.ReadValidation;
 import com.bizvisionsoft.service.annotations.ReadValue;
@@ -24,6 +29,7 @@ import com.google.gson.GsonBuilder;
 
 public class BruiEngine {
 
+	@ReadValue
 	protected Class<?> clazz;
 	protected Object target;
 
@@ -501,6 +507,113 @@ public class BruiEngine {
 	public static Object deepCopy(Object elem) {
 		String json = new GsonBuilder().create().toJson(elem);
 		return new GsonBuilder().create().fromJson(json, elem.getClass());
+	}
+
+	/**
+	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
+	 * 
+	 * @param <R>
+	 * @param <T>
+	 * 
+	 * @param clazz,
+	 *            被读取对象的类（带有注解的），对象可继承于该类
+	 * @param element,被读取的对象
+	 * @param cName
+	 *            容器名称
+	 * @param ignoreEmptyCName
+	 *            是否忽略容器名，如果忽略容器名，所有ReadValue 空注解的都将被读取
+	 * @param ignoreEmptyFName
+	 *            是否忽略字段名，如果忽略字段名，将采用类的字段名称读取
+	 * @param valueConvertor
+	 *            数据转换函数
+	 * @return
+	 */
+	public static JsonObject readJsonFrom(Class<?> clazz, Object element, String cName, boolean ignoreEmptyCName,
+			boolean ignoreEmptyFName, boolean ignoreNull, BiFunction<String, Object, Object> valueConvertor) {
+
+		JsonObject result = new JsonObject();
+		// 检查
+		if (Util.isEmptyOrNull(cName))
+			throw new IllegalArgumentException("容器名称为空");
+		if (element == null)
+			throw new IllegalArgumentException("目标对象为空");
+		if (!clazz.isAssignableFrom(element.getClass()))
+			throw new IllegalArgumentException("目标对象是指定类（或继承）的实例");
+		// 处理字段
+		Arrays.asList(clazz.getDeclaredFields()).stream().forEach(e -> {
+			String nName = e.getName();
+			ReadValue ano = e.getAnnotation(ReadValue.class);
+			String targetField = checkField(cName, ignoreEmptyCName, ignoreEmptyFName, nName, ano);
+			if (!Util.isEmptyOrNull(targetField))
+				try {
+					e.setAccessible(true);
+					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.get(element));
+				} catch (IllegalArgumentException | IllegalAccessException e1) {
+				}
+		});
+		// 处理方法
+		Arrays.asList(clazz.getDeclaredMethods()).stream().forEach(e -> {
+			String nName = e.getName();
+			ReadValue ano = e.getAnnotation(ReadValue.class);
+			String targetField = checkField(cName, ignoreEmptyCName, ignoreEmptyFName, nName, ano);
+
+			if (!Util.isEmptyOrNull(targetField))
+				try {
+					e.setAccessible(true);
+					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.invoke(element));
+				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
+				}
+		});
+		return result;
+	}
+
+	private static String checkField(String cName, boolean ignoreEmptyCName, boolean ignoreEmptyFName, String nName,
+			ReadValue ano) {
+		if (ano == null)
+			return null;
+		String[] v = ano.value();
+		if (v.length == 1 && v[0].equals("")) {// 没有写注解内容，使用的默认值
+			if (ignoreEmptyCName && ignoreEmptyFName) {// 如果忽略容器名和字段名
+				return nName;
+			} else {
+				return null;
+			}
+		} else {
+			for (int i = 0; i < v.length; i++) {
+				String[] loc = ((String[]) v)[i].split("#");
+				if (loc.length == 1 && ignoreEmptyCName) {// 注解的是fName// 如果忽略容器名
+					return loc[0].trim();
+				} else if (loc.length > 1 && cName.equals(loc[0].trim())) {// 容器名称匹配
+					return loc[1].trim();
+				}
+			}
+		}
+		return null;
+	}
+
+	private static void putJsonValue(Object element, boolean ignoreNull,
+			BiFunction<String, Object, Object> valueConvertor, JsonObject result, String targetField, Object value) {
+		if (valueConvertor != null)
+			value = valueConvertor.apply(targetField, value);
+		if (value == null && !ignoreNull) {
+			result.add(targetField, JsonValue.NULL);
+		} else if (value instanceof JsonValue) {
+			result.add(targetField, (JsonValue) value);
+		} else if (value instanceof String) {
+			result.add(targetField, (String) value);
+		} else if (value instanceof Integer) {
+			result.add(targetField, (Integer) value);
+		} else if (value instanceof Boolean) {
+			result.add(targetField, (Boolean) value);
+		} else if (value instanceof Double) {
+			result.add(targetField, (Double) value);
+		} else if (value instanceof Float) {
+			result.add(targetField, (Float) value);
+		} else if (value instanceof Long) {
+			result.add(targetField, (Long) value);
+		} else {
+			throw new IllegalArgumentException("不支持的类型");
+		}
 	}
 
 }

@@ -94,7 +94,7 @@ public class AssemblyGridEditor extends ModelEditor {
 		List<Column> cols = ((Assembly) inputData).getColumns();
 		if(cols==null) 
 			((Assembly) inputData).setColumns(cols = new ArrayList<Column>());
-		new ColumnsEditPane(parent, cols,this);
+		new GridColumnsEditPane(parent, cols,this);
 		
 		parent = createTabItemContent("²Ù×÷");
 		List<Action> actions = ((Assembly) inputData).getActions();

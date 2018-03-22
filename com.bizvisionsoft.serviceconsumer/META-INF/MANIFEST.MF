@@ -12,7 +12,8 @@ Import-Package: com.bizvisionsoft.service,
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.eclipsesource.jaxrs.jersey-all;bundle-version="2.22.2",
  com.eclipsesource.jaxrs.consumer;bundle-version="5.3.1",
- org.eclipse.osgi.services
+ org.eclipse.osgi.services,
+ org.mongodb.mongo-java-driver
 Bundle-Activator: com.bizvisionsoft.serviceconsumer.Services
 Export-Package: com.bizvisionsoft.serviceconsumer
 Service-Component: OSGI-INF/Publisher.xml

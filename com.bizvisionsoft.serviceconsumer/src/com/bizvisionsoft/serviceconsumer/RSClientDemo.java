@@ -3,17 +3,35 @@ package com.bizvisionsoft.serviceconsumer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.glassfish.jersey.client.ClientConfig;
 
 import com.bizvisionsoft.service.FileService;
+import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.model.WorkInfo;
+import com.bizvisionsoft.service.model.WorkLinkInfo;
 import com.bizvisionsoft.service.provider.BsonProvider;
 import com.eclipsesource.jaxrs.consumer.ConsumerFactory;
+import com.mongodb.BasicDBObject;
 
 public class RSClientDemo {
 
 	public static void main(String[] args) {
 		ClientConfig config = new ClientConfig().register(new BsonProvider<Object>());
+//		testFileService(config);
+		testWorkService(config);
+	}
+
+	public static void testWorkService(ClientConfig config) {
+		WorkService service = ConsumerFactory.createConsumer("http://127.0.0.1:9158/services",config, WorkService.class);		
+		List<WorkInfo> ds = service.createGanttDataSet(new BasicDBObject());
+		System.out.println(ds);
+		List<WorkLinkInfo> ls = service.createGanttLinkSet(new BasicDBObject());
+		System.out.println(ls);
+	}
+
+	public static void testFileService(ClientConfig config) {
 		FileService service = ConsumerFactory.createConsumer("http://127.0.0.1:9158/services",config, FileService.class);
 		try {
 			InputStream fileInputStream;

@@ -228,6 +228,12 @@
                label="创建编辑器组件"
                style="push">
          </command>
+         <command
+               commandId="bruidesigner.addGanttAssemblyToLib"
+               id="bruidesigner.addGanttAssemblyToLib"
+               label="创建甘特图组件"
+               style="push">
+         </command>
          <separator
                name="com.bizvisionsoft.bruidesigner.separator1"
                visible="true">
@@ -304,6 +310,11 @@
             defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateEditorAssembly"
             id="bruidesigner.addEditorAssemblyToLib"
             name="创建编辑器组件">
+      </command>
+      <command
+            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateGanttAssembly"
+            id="bruidesigner.addGanttAssemblyToLib"
+            name="创建甘特图组件">
       </command>
    </extension>
    <extension
@@ -461,6 +472,13 @@
             icon="icons/package.png"
             id="bruidesigner.assemblyEditorEditor"
             name="编辑器组件">
+      </editor>
+      <editor
+            class="com.bizvisionsoft.bruidesigner.editor.AssemblyGanttEditor"
+            default="false"
+            icon="icons/package.png"
+            id="bruidesigner.assemblyGanttEditor"
+            name="甘特图组件">
       </editor>
    </extension>
 

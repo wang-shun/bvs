@@ -11,6 +11,7 @@ import org.osgi.framework.ServiceReference;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.WorkService;
 
 public class Services implements BundleActivator {
 
@@ -27,6 +28,7 @@ public class Services implements BundleActivator {
 		register(FileService.class);
 		register(UserService.class);
 		register(OrganizationService.class);
+		register(WorkService.class);
 	}
 
 	private void register(Class<?> type) {

@@ -13,18 +13,17 @@ public class Config {
 	 * 
 	 * @return
 	 */
-	public static Config defaultConfig() {
-		Config config = new Config();
-		return config;
+	public static Config defaultConfig(boolean readonly) {
+		return new Config().setReadonly(readonly);
 	}
-
 
 	/**
 	 * defines the date format for the api_date template
 	 * 
 	 * Default value: "%d-%m-%Y"
 	 * 
-	 * @see <a href="https://docs.dhtmlx.com/gantt/desktop__date_format.html">https://docs.dhtmlx.com/gantt/desktop__date_format.html</a>
+	 * @see <a href=
+	 *      "https://docs.dhtmlx.com/gantt/desktop__date_format.html">https://docs.dhtmlx.com/gantt/desktop__date_format.html</a>
 	 * 
 	 **/
 	public String api_date;
@@ -792,7 +791,7 @@ public class Config {
 	 * Default value: "%d-%m-%Y %H:%i"
 	 **/
 	public String xml_date;
-	
+
 	public Config setReadonly(boolean b) {
 		readonly = b;
 		return this;
