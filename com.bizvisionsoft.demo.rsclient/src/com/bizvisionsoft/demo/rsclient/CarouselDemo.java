@@ -43,7 +43,7 @@ public class CarouselDemo {
 	}
 
 	private void createCarousel(Composite parent) {
-		Carousel carousel = new Carousel(parent, SWT.BORDER);
+		Carousel carousel = new Carousel(parent, SWT.NONE);
 
 		// ·ÅÒ»¸öLabel
 		Label page = carousel.addPage(new Label(carousel, SWT.NONE));
