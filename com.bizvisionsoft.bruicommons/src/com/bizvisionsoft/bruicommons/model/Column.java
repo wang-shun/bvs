@@ -192,4 +192,5 @@ public class Column extends ModelObject {
 	public void setHide(boolean hide) {
 		this.hide = hide;
 	}
+	
 }

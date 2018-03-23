@@ -30,13 +30,17 @@ public class AssemblyGanttEditor extends ModelEditor {
 
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
 
+		createCheckboxField(parent, "根据列宽自动设置表格宽度：", inputData, "ganttGridWidthCalculate", SWT.CHECK);
+		
+		createIntegerField(parent, "手动设置表格宽度：", inputData, "ganttGridWidth", SWT.BORDER, 200, 4000);
+		
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);
 		l.setText("自定义甘特图如何取数，您可以使用插件或选择调用服务：");
 		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-		createTextField(parent, "取数插件唯一标识符（Bundle Id）:", inputData, "gridDataSetBundleId", SWT.BORDER);
+		createTextField(parent, "取数插件唯一标识符（Bundle Id）：", inputData, "gridDataSetBundleId", SWT.BORDER);
 
 		createTextField(parent, "取数完整的类名:", inputData, "gridDataSetClassName", SWT.BORDER);
 

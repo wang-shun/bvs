@@ -94,46 +94,46 @@
 		},
 
 		configGrid : function(config) {
-			var remoteId = rap.getRemoteObject(this)._.id;
-			var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""
-					+ remoteId + "\")'></div>";
-			var colContent = function(task) {
-				return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
-						+ remoteId + "\"," + JSON.stringify(task) + ")'></div>");
-			};
-			gantt.config.columns = [ {
-				name : "menu",
-				label : colHeader,
-				width : 34,
-				align : "center",
-				resize : false,
-				template : colContent
-			}, {
-				name : "text",
-				label : "工作",
-				tree : true,
-				width : 320,
-				resize : true
-			}, {
-				name : "start_date",
-				label : "开始",
-				align : "center",
-				width : 96,
-				resize : true
-			}, {
-				name : "end_date",
-				label : "完成",
-				align : "center",
-				width : 96,
-				hide : true,
-				resize : true
-			}, {
-				name : "duration",
-				label : "工期",
-				align : "right",
-				width : 40,
-				resize : true
-			} ];
+//			var remoteId = rap.getRemoteObject(this)._.id;
+//			var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""
+//					+ remoteId + "\")'></div>";
+//			var colContent = function(task) {
+//				return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
+//						+ remoteId + "\"," + JSON.stringify(task) + ")'></div>");
+//			};
+//			gantt.config.columns = [ {
+//				name : "menu",
+//				label : colHeader,
+//				width : 34,
+//				align : "center",
+//				resize : false,
+//				template : colContent
+//			}, {
+//				name : "text",
+//				label : "工作",
+//				tree : true,
+//				width : 320,
+//				resize : true
+//			}, {
+//				name : "start_date",
+//				label : "开始",
+//				align : "center",
+//				width : 96,
+//				resize : true
+//			}, {
+//				name : "end_date",
+//				label : "完成",
+//				align : "center",
+//				width : 96,
+//				hide : true,
+//				resize : true
+//			}, {
+//				name : "duration",
+//				label : "工期",
+//				align : "right",
+//				width : 40,
+//				resize : true
+//			} ];
 		},
 
 		configScale : function(config) {
@@ -162,7 +162,7 @@
 		configLayout : function(config) {
 			gantt.config.layout = {
 				cols : [ {
-					width : 490,
+					width : config.grid_width,
 					min_width : 320,
 					rows : [ {
 						view : "grid",

@@ -9,7 +9,7 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_GRID = "grid";
 
 	public static final String TYPE_EDITOR = "editor";
-	
+
 	public static final String TYPE_GANTT = "gantt";
 
 	private String id;
@@ -29,7 +29,6 @@ public class Assembly extends ModelObject {
 	private String type;
 
 	private String stickerTitle;
-	
 
 	public String getId() {
 		return id;
@@ -490,7 +489,7 @@ public class Assembly extends ModelObject {
 	public void setBorderTop(boolean borderTop) {
 		this.borderTop = borderTop;
 	}
-	
+
 	/**
 	 * now, only gantt used£¡£¡£¡
 	 */
@@ -499,10 +498,29 @@ public class Assembly extends ModelObject {
 	public boolean isReadonly() {
 		return readonly;
 	}
-	
+
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
 	}
-	
 
+	private boolean ganttGridWidthCalculate;
+
+	public boolean isGanttGridWidthCalculate() {
+		return ganttGridWidthCalculate;
+	}
+
+	public void setGanttGridWidthCalculate(boolean ganttGridWidthCalculate) {
+		this.ganttGridWidthCalculate = ganttGridWidthCalculate;
+	}
+
+	private int ganttGridWidth;
+
+	public void setGanttGridWidth(int ganttGridWidth) {
+		this.ganttGridWidth = ganttGridWidth;
+	}
+	
+	public int getGanttGridWidth() {
+		return ganttGridWidth;
+	}
+	
 }

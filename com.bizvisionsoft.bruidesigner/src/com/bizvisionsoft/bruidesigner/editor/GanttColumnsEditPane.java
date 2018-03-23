@@ -195,13 +195,22 @@ public class GanttColumnsEditPane extends Composite {
 
 		if (element != null) {
 
-			editor.createTextField(parent, "唯一标识符:", element, "id", SWT.READ_ONLY);
+			editor.createTextField(parent, "唯一标识符：", element, "id", SWT.READ_ONLY);
 
-			editor.createTextField(parent, "列名称:", element, "name", SWT.BORDER);
 			
-			editor.createTextField(parent, "列头显示文本:", element, "text", SWT.BORDER);
+			String[] names = new String[] {
+					//系统字段
+					"text","start_date","end_date","duration","progress","$target","$level",
+					//扩展字段
+					"plan_start","plan_finish","charger","deadline"
+			};
+			editor.createComboField(parent,names , names, "列名称（选择系统字段）：", element, "name", SWT.BORDER|SWT.READ_ONLY);
+
+			editor.createTextField(parent, "输入字段名称：", element, "name", SWT.BORDER);
 			
-			editor.createTextField(parent, "描述:", element, "description", SWT.BORDER);
+			editor.createTextField(parent, "列头显示文本：", element, "text", SWT.BORDER);
+			
+			editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
 			editor.createComboField(parent, new String[] { "左对齐", "居中", "右对齐" },
 					new Integer[] { SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "对齐方式：", element, "alignment",
