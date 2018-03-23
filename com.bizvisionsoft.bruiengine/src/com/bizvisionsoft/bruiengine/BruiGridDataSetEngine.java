@@ -157,17 +157,75 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				a -> a.value());
 	}
 
-	/**
-	 * 获取Gantt的输入
-	 * 
-	 * @param workFilter
-	 * 
-	 * @return
-	 */
-	public JsonObject getGanttInput(BasicDBObject workFilter, BasicDBObject linkFilter) {
-		// 调用服务
-		List<?> data = null;
-		List<?> links = null;
+	public JsonObject transformToJsonInput(List<?> data, List<?> links) {
+		// 准备数据转换函数
+		BiFunction<String, Object, Object> convertor = (n, v) -> {
+			if (v instanceof Date)
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+			return v;
+		};
+
+		// 处理模型
+		JsonArray _data = new JsonArray();
+		JsonArray _links = new JsonArray();
+
+		if (data != null)
+			data.forEach(o -> {
+				JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+				String bundleId = null;
+				ClassLoader loader = o.getClass().getClassLoader();
+				if (loader instanceof EquinoxClassLoader) {
+					bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
+				}
+				// 添加类信息
+				jo.add("$classInfo",
+						new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
+				_data.add(jo);
+			});
+
+		if (links != null)
+			links.forEach(o -> {
+				JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+				String bundleId = null;
+				ClassLoader loader = o.getClass().getClassLoader();
+				if (loader instanceof EquinoxClassLoader) {
+					bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
+				}
+				// 添加类信息
+				jo.add("$classInfo",
+						new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
+				_links.add(jo);
+			});
+
+		return new JsonObject().add("data", _data).add("links", _links);
+	}
+
+	public List<?> getGanntInputLink(BasicDBObject linkFilter) {
+		Method method;
+		method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value()).orElse(null);
+		if (method != null) {
+			Object[] args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
+				if (ServiceParam.FILTER.equals(sp.value())) {
+					args[i] = linkFilter;
+				} else {
+					args[i] = null;
+				}
+			}
+
+			try {
+				method.setAccessible(true);
+				return (List<?>) method.invoke(getTarget(), args);
+			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			}
+		} else {
+		}
+		return null;
+	}
+
+	public List<?> getGanntInputData(BasicDBObject workFilter) {
 		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
 				.orElse(null);
 		if (method != null) {
@@ -184,74 +242,13 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 			try {
 				method.setAccessible(true);
-				data = (List<?>) method.invoke(getTarget(), workFilter);
+				return (List<?>) method.invoke(getTarget(), args);
 			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		} else {
 			throw new RuntimeException("没有注解" + DataSet.class + " 值为 data的方法。");
 		}
-
-		method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value()).orElse(null);
-		if (method != null) {
-			Object[] args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
-				if (ServiceParam.FILTER.equals(sp.value())) {
-					args[i] = linkFilter;
-				} else {
-					args[i] = null;
-				}
-			}
-
-			try {
-				method.setAccessible(true);
-				links = (List<?>) method.invoke(getTarget(), workFilter);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			}
-		} else {
-		}
-
-		// 准备数据转换函数
-		BiFunction<String, Object, Object> convertor = (n, v) -> {
-			if (v instanceof Date)
-				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
-			return v;
-		};
-
-		// 处理模型
-		JsonArray _data = new JsonArray();
-		JsonArray _links = new JsonArray();
-
-		if (data != null)
-			data.forEach(
-					o -> {
-						JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
-						String bundleId = null;
-						ClassLoader loader = o.getClass().getClassLoader();
-						if(loader instanceof EquinoxClassLoader) {
-							bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
-						}
-						//添加类信息
-						jo.add("$classInfo", new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
-						_data.add(jo);
-					});
-
-		if (links != null)
-			links.forEach(
-					o -> {
-						JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
-						String bundleId = null;
-						ClassLoader loader = o.getClass().getClassLoader();
-						if(loader instanceof EquinoxClassLoader) {
-							bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
-						}
-						//添加类信息
-						jo.add("$classInfo", new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
-						_links.add(jo);
-					});
-
-		return new JsonObject().add("data", _data).add("links", _links);
+		return null;
 	}
 
 }

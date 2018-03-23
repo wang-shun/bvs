@@ -8,8 +8,8 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import com.bizvisionsoft.bruicommons.annotation.CreateUI;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;

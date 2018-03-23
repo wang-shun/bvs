@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.mongocodex.annotations.Persistence;
+import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 
 public class RemoteFile {
 

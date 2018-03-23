@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
 
-import com.bizvisionsoft.bruicommons.annotation.Execute;
+import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;

@@ -2,8 +2,8 @@ package com.bizvisionsoft.service.model;
 
 import java.util.Date;
 
-import com.bizvisionsoft.mongocodex.annotations.Persistence;
-import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
+import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.service.annotations.ReadValue;
 import com.bizvisionsoft.service.annotations.WriteValue;
 

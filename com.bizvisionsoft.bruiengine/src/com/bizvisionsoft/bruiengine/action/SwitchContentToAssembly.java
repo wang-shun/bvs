@@ -1,7 +1,7 @@
 package com.bizvisionsoft.bruiengine.action;
 
-import com.bizvisionsoft.bruicommons.annotation.Execute;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 

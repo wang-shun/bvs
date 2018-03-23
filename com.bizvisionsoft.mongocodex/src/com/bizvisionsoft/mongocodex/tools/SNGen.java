@@ -3,7 +3,7 @@ package com.bizvisionsoft.mongocodex.tools;
 
 import org.bson.Document;
 
-import com.bizvisionsoft.mongocodex.annotations.IAutoGenerator;
+import com.bizvisionsoft.annotations.md.mongocodex.IAutoGenerator;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;

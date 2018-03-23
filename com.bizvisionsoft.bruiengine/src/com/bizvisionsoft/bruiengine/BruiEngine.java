@@ -15,9 +15,9 @@ import java.util.function.Function;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 
-import com.bizvisionsoft.bruicommons.annotation.Init;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
-import com.bizvisionsoft.bruicommons.annotation.MethodParam;
+import com.bizvisionsoft.annotations.ui.common.Init;
+import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.annotations.ReadOptions;

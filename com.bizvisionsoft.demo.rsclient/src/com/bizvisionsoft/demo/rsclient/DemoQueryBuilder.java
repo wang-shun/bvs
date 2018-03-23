@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.mongocodex.annotations.Exclude;
 import com.bizvisionsoft.service.annotations.WriteValue;
 import com.bizvisionsoft.service.model.Organization;
 import com.mongodb.BasicDBObject;

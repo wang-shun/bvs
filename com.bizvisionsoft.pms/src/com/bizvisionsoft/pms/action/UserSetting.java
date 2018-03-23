@@ -2,8 +2,8 @@ package com.bizvisionsoft.pms.action;
 
 import org.eclipse.jface.dialogs.InputDialog;
 
-import com.bizvisionsoft.bruicommons.annotation.Execute;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 
 public class UserSetting {

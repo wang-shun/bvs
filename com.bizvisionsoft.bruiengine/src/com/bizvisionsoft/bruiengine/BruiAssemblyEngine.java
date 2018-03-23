@@ -4,11 +4,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
-import com.bizvisionsoft.bruicommons.annotation.CreateUI;
-import com.bizvisionsoft.bruicommons.annotation.GetContainer;
-import com.bizvisionsoft.bruicommons.annotation.GetContent;
-import com.bizvisionsoft.bruicommons.annotation.GetReturnCode;
-import com.bizvisionsoft.bruicommons.annotation.GetReturnResult;
+import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.GetContainer;
+import com.bizvisionsoft.annotations.ui.common.GetContent;
+import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
+import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;

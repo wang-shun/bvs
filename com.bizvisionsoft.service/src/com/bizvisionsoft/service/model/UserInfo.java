@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
-import com.bizvisionsoft.mongocodex.annotations.SetValue;
+import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.annotations.ReadValue;

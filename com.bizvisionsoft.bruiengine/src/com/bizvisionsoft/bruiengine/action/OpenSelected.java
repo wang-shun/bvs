@@ -2,9 +2,9 @@ package com.bizvisionsoft.bruiengine.action;
 
 import org.eclipse.jface.window.Window;
 
-import com.bizvisionsoft.bruicommons.annotation.Execute;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
-import com.bizvisionsoft.bruicommons.annotation.MethodParam;
+import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiEngine;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;

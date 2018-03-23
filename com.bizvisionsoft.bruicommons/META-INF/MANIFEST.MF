@@ -5,8 +5,7 @@ Bundle-SymbolicName: com.bizvisionsoft.bruicommons
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: BIZVISIONSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: com.bizvisionsoft.bruicommons.annotation,
- com.bizvisionsoft.bruicommons.model
+Export-Package: com.bizvisionsoft.bruicommons.model
 Require-Bundle: org.eclipse.rap.rwt,
  com.bizvisionsoft.service,
  org.eclipse.rap.jface,

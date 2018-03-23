@@ -13,7 +13,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.mongocodex.codec.CodexProvider;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;

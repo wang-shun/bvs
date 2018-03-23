@@ -27,10 +27,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
-import com.bizvisionsoft.bruicommons.annotation.CreateUI;
-import com.bizvisionsoft.bruicommons.annotation.GetContent;
-import com.bizvisionsoft.bruicommons.annotation.Init;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.GetContent;
+import com.bizvisionsoft.annotations.ui.common.Init;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;

@@ -9,8 +9,8 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.mongocodex.annotations.Persistence;
-import com.bizvisionsoft.mongocodex.annotations.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
+import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.annotations.ReadOptions;

@@ -33,17 +33,17 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.EncodingType;
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
+import com.bizvisionsoft.annotations.md.mongocodex.Generator;
+import com.bizvisionsoft.annotations.md.mongocodex.GetValue;
+import com.bizvisionsoft.annotations.md.mongocodex.IAutoGenerator;
+import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
+import com.bizvisionsoft.annotations.md.mongocodex.PostDecoding;
+import com.bizvisionsoft.annotations.md.mongocodex.PreEncoding;
+import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.mongocodex.Strict;
 import com.bizvisionsoft.mongocodex.Activator;
-import com.bizvisionsoft.mongocodex.annotations.EncodingType;
-import com.bizvisionsoft.mongocodex.annotations.Exclude;
-import com.bizvisionsoft.mongocodex.annotations.Generator;
-import com.bizvisionsoft.mongocodex.annotations.GetValue;
-import com.bizvisionsoft.mongocodex.annotations.IAutoGenerator;
-import com.bizvisionsoft.mongocodex.annotations.Persistence;
-import com.bizvisionsoft.mongocodex.annotations.PostDecoding;
-import com.bizvisionsoft.mongocodex.annotations.PreEncoding;
-import com.bizvisionsoft.mongocodex.annotations.SetValue;
-import com.bizvisionsoft.mongocodex.annotations.Strict;
 import com.mongodb.MongoClient;
 
 public class Codex<T> implements CollectibleCodec<T> {

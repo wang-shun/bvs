@@ -15,10 +15,10 @@ import org.eclipse.swt.widgets.Event;
 import com.bizivisionsoft.widgets.gantt.ColumnConfig;
 import com.bizivisionsoft.widgets.gantt.Config;
 import com.bizivisionsoft.widgets.gantt.Gantt;
-import com.bizvisionsoft.bruicommons.annotation.CreateUI;
-import com.bizvisionsoft.bruicommons.annotation.GetContent;
-import com.bizvisionsoft.bruicommons.annotation.Init;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.GetContent;
+import com.bizvisionsoft.annotations.ui.common.Init;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
@@ -45,6 +45,10 @@ public class GanttPart {
 	private Config ganttConfig;
 
 	private BruiGridDataSetEngine dataSetEngine;
+
+	private List<?> tasks;
+
+	private List<?> links;
 
 	public GanttPart(Assembly config) {
 		this.config = config;
@@ -112,7 +116,13 @@ public class GanttPart {
 			gantt.setInitDateRange(dateRange[0], dateRange[1]);
 		}
 
-		gantt.setInputData(dataSetEngine.getGanttInput(new BasicDBObject(), new BasicDBObject()));
+		// 查询数据
+		tasks = dataSetEngine.getGanntInputData(new BasicDBObject());
+		links = dataSetEngine.getGanntInputLink(new BasicDBObject());
+
+		// 设置为gantt输入
+		JsonObject input = dataSetEngine.transformToJsonInput(tasks, links);
+		gantt.setInputData(input);
 
 		// 设置事件侦听
 		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> showHeadMenu());

@@ -13,9 +13,9 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.bizivisionsoft.widgets.gantt.Config;
 import com.bizivisionsoft.widgets.gantt.Gantt;
-import com.bizvisionsoft.bruicommons.annotation.CreateUI;
-import com.bizvisionsoft.bruicommons.annotation.GetContainer;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.GetContainer;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 
 public class GanttDemo {

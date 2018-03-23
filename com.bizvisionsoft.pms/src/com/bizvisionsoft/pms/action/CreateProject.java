@@ -3,8 +3,8 @@ package com.bizvisionsoft.pms.action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import com.bizvisionsoft.bruicommons.annotation.Execute;
-import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 
 public class CreateProject {

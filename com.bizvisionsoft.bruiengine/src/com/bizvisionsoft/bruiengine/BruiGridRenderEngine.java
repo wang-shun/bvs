@@ -5,13 +5,13 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.osgi.framework.Bundle;
 
+import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnFooter;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHeader;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderConfig;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderInput;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderUpdateCell;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
-import com.bizvisionsoft.bruiengine.annotations.GridRenderColumnFooter;
-import com.bizvisionsoft.bruiengine.annotations.GridRenderColumnHeader;
-import com.bizvisionsoft.bruiengine.annotations.GridRenderConfig;
-import com.bizvisionsoft.bruiengine.annotations.GridRenderInput;
-import com.bizvisionsoft.bruiengine.annotations.GridRenderUpdateCell;
 import com.bizvisionsoft.bruiengine.assembly.GridPartDefaultRender;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
