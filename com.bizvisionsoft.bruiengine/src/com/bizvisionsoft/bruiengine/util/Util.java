@@ -254,4 +254,33 @@ public class Util {
 		return s == null || s.isEmpty();
 	}
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param source
+	 *            要分割的数组
+	 * @param subSize
+	 *            分割的块大小
+	 * @return
+	 *
+	 */
+	public static <T> List<List<T>> splitArray(List<T> source, int subSize) {
+		int count = source.size() % subSize == 0 ? source.size() / subSize : source.size() / subSize + 1;
+
+		List<List<T>> subAryList = new ArrayList<List<T>>();
+
+		for (int i = 0; i < count; i++) {
+			int index = i * subSize;
+			List<T> list = new ArrayList<T>();
+			int j = 0;
+			while (j < subSize && index < source.size()) {
+				list.add(source.get(index++));
+				j++;
+			}
+			subAryList.add(list);
+		}
+
+		return subAryList;
+	}
+
 }

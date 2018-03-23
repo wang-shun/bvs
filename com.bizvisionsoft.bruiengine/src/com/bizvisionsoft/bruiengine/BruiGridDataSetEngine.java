@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.internal.loader.EquinoxClassLoader;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.osgi.framework.Bundle;
@@ -224,11 +225,31 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 		if (data != null)
 			data.forEach(
-					o -> _data.add(readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor)));
+					o -> {
+						JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+						String bundleId = null;
+						ClassLoader loader = o.getClass().getClassLoader();
+						if(loader instanceof EquinoxClassLoader) {
+							bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
+						}
+						//添加类信息
+						jo.add("$classInfo", new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
+						_data.add(jo);
+					});
 
 		if (links != null)
 			links.forEach(
-					o -> _links.add(readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor)));
+					o -> {
+						JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+						String bundleId = null;
+						ClassLoader loader = o.getClass().getClassLoader();
+						if(loader instanceof EquinoxClassLoader) {
+							bundleId = ((EquinoxClassLoader) loader).getBundle().getSymbolicName();
+						}
+						//添加类信息
+						jo.add("$classInfo", new JsonObject().add("bundleId", bundleId).add("className", o.getClass().getName()));
+						_links.add(jo);
+					});
 
 		return new JsonObject().add("data", _data).add("links", _links);
 	}

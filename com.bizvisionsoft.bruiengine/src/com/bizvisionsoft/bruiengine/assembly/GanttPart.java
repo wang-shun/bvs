@@ -2,11 +2,15 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.gantt.ColumnConfig;
 import com.bizivisionsoft.widgets.gantt.Config;
@@ -15,11 +19,13 @@ import com.bizvisionsoft.bruicommons.annotation.CreateUI;
 import com.bizvisionsoft.bruicommons.annotation.GetContent;
 import com.bizvisionsoft.bruicommons.annotation.Init;
 import com.bizvisionsoft.bruicommons.annotation.Inject;
+import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
@@ -88,7 +94,7 @@ public class GanttPart {
 
 		if (config.isGanttGridWidthCalculate()) {
 			ganttConfig.grid_width = gridWidth - 8;//
-			if(ganttConfig.brui_RowMenuEnable || ganttConfig.brui_HeadMenuEnable) {
+			if (ganttConfig.brui_RowMenuEnable || ganttConfig.brui_HeadMenuEnable) {
 				ganttConfig.grid_width += 34;
 			}
 		} else {
@@ -108,11 +114,42 @@ public class GanttPart {
 
 		gantt.setInputData(dataSetEngine.getGanttInput(new BasicDBObject(), new BasicDBObject()));
 
-		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> System.out.println("grid" + e));
-		gantt.addListener(Gantt.EVENT_ROW_MENU, e -> {
-			MessageDialog.openInformation(parent.getShell(), "甘特图事件", "" + e.data);
-		});
+		// 设置事件侦听
+		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> showHeadMenu());
+		gantt.addListener(Gantt.EVENT_ROW_MENU, e -> showRowMenu(e));
 
+	}
+
+	private void showRowMenu(Event e) {
+		JsonObject jo = (JsonObject) e.data;
+		JsonObject classInfo = (JsonObject) jo.get("$classInfo");
+		String bundleId = Optional.ofNullable(classInfo.get("bundleId")).map(o -> o.asString()).orElse(null);
+		String className = Optional.ofNullable(classInfo.get("className")).map(o -> o.asString()).orElse(null);
+		if (!Util.isEmptyOrNull(className)) {
+			try {
+				Class<?> clazz;
+				if (!Util.isEmptyOrNull(bundleId)) {
+					clazz = Platform.getBundle(bundleId).loadClass(className);
+				} else {
+					// 不清楚包的情况下无法加载
+					clazz = getClass().getClassLoader().loadClass(className);
+				}
+				if (clazz != null) {
+				}
+
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		List<Action> actions = config.getActions();
+		ActionMenu menu = new ActionMenu(actions);
+		menu.open();
+	}
+
+	private void showHeadMenu() {
+		List<Action> actions = config.getHeadActions();
+		new ActionMenu(actions).open();
 	}
 
 }

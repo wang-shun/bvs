@@ -25,7 +25,7 @@ public class StickerPart {
 
 	@GetContainer
 	private Composite content;
-	
+
 	@Inject
 	private IBruiContext context;
 
@@ -38,23 +38,23 @@ public class StickerPart {
 		parent.setLayout(new FormLayout());
 
 		String cssClass = "";
-		if(assembly.isBorderTop()) {
+		if (assembly.isBorderTop()) {
 			cssClass += " brui_borderTop";
 		}
-		if(assembly.isBorderRight()) {
+		if (assembly.isBorderRight()) {
 			cssClass += " brui_borderRight";
 		}
-		if(assembly.isBorderBottom()) {
+		if (assembly.isBorderBottom()) {
 			cssClass += " brui_borderBottom";
 		}
-		if(assembly.isBorderLeft()) {
+		if (assembly.isBorderLeft()) {
 			cssClass += " brui_borderLeft";
 		}
-		
+
 		parent.setHtmlAttribute("class", cssClass);
-		
-		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setServices(service)
-				.setText(assembly.getStickerTitle()).setActions(assembly.getActions());
+
+		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setText(assembly.getStickerTitle())
+				.setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
 		fd.left = new FormAttachment(0);
@@ -71,8 +71,8 @@ public class StickerPart {
 		fd.bottom = new FormAttachment(100, -12);
 
 		bar.addListener(SWT.Selection, e -> {
-			Action action = ((Action)e.data);
-			BruiActionEngine.create(action, service).invokeExecute(e,context);
+			Action action = ((Action) e.data);
+			BruiActionEngine.create(action, service).invokeExecute(e, context);
 		});
 	}
 }

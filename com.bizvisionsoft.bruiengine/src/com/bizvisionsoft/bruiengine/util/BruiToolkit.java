@@ -8,12 +8,15 @@ import java.net.URLEncoder;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.BruiColors;
+import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.assembly.StickerTitlebar;
 
 public class BruiToolkit {
@@ -99,7 +102,7 @@ public class BruiToolkit {
 
 	public Composite newContentPanel(Composite parent) {
 		Composite composite = newStyledControl(Composite.class, parent, SWT.BORDER, null);
-		composite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		composite.setBackground(BruiColors.getColor(BruiColor.Blue_Grey_100));
 		return composite;
 	}
 
@@ -185,6 +188,51 @@ public class BruiToolkit {
 			}
 		}
 		return null;
+	}
+
+	public Button createButton(Composite parent, Action a, String layoutStyle) {
+		Button btn = new Button(parent, SWT.PUSH);
+		enableMarkup(btn);
+		String imageUrl = a.getImage();
+		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
+
+		String text = "";
+		if (imageUrl != null) {
+			if ("block".equals(layoutStyle)) {// 块状布局
+				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
+						+ "' style='cursor:pointer;' width='32px' height='32px'></img>";
+			} else {// 行状布局
+				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
+						+ "' style='cursor:pointer;' width='20px' height='20px'></img>";
+			}
+		}
+		if (a.isForceText()) {
+			if (imageUrl != null) {
+				if ("block".equals(layoutStyle)) {// 块状布局
+					text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+				} else {
+					text += "<div style='display:inline-block;'>" + buttonText + "</div>";
+				}
+			} else {
+				if ("block".equals(layoutStyle)) {// 块状布局
+					text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+				} else {
+					text += "<div style='margin-left:4px;display:inline-block;'>" + buttonText + "</div>";
+				}
+			}
+		}else {
+			if ("block".equals(layoutStyle)) {// 块状布局
+				text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+			} 
+		}
+
+		btn.setText(text);
+		btn.setToolTipText(a.getTooltips());
+		String style = a.getStyle();
+		if (style != null && !style.isEmpty()) {
+			btn.setData(RWT.CUSTOM_VARIANT, style);
+		}
+		return btn;
 	}
 
 }

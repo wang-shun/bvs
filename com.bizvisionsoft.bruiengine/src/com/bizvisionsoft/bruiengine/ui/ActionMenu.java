@@ -1,84 +1,121 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.BruiActionEngine;
-import com.bizvisionsoft.bruiengine.BruiColors;
-import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public class ActionMenu extends Part {
 
+	private class PreviousPageAction extends Action {
+
+		public PreviousPageAction() {
+			super();
+			setName("<");
+			setStyle(BruiToolkit.CSS_INFO);
+			setImage("/img/left_w.svg");
+		}
+
+	}
+
+	private class NextPageAction extends Action {
+		public NextPageAction() {
+			super();
+			setName(">");
+			setStyle(BruiToolkit.CSS_INFO);
+			setImage("/img/right_w.svg");
+		}
+
+	}
+
 	private List<Action> actions;
-	public final static int width = 168;
-	private final static int idWidth = 16;
+	private List<List<Action>> pagedAction;
 	private BruiAssemblyContext context;
 	private IBruiService serive;
+	private int xUnit = 3;
+	private int yUnit = 3;
+	private int unitSize = 128;
+	private int currentPage = 0;
+	private Composite parent;
+	private Composite page;
 
 	public ActionMenu(List<Action> actions) {
 		super(UserSession.current().getShell());
 		this.actions = actions;
+		arrangeActions();
 		setShellStyle(SWT.ON_TOP);
+	}
+
+	private void arrangeActions() {
+		ArrayList<Action> _actions = new ArrayList<Action>();
+		int units = xUnit * yUnit;
+		int count = actions.size();
+		for (int i = 1; i <= count; i++) {
+			_actions.add(actions.get(i - 1));
+			if (i == units - 1 && i != count || i > units - 1 && (i - units + 1) % (units - 2) == 0 && i != count) {
+				_actions.add(new NextPageAction());
+				_actions.add(new PreviousPageAction());
+			}
+		}
+
+		pagedAction = Util.splitArray(_actions, units);
 	}
 
 	@Override
 	protected void createContents(Composite parent) {
-		parent.setLayout(new FormLayout());
-		Composite contentPanel = new Composite(parent, SWT.NONE);
-		contentPanel.setBackground(BruiColors.getColor(BruiColor.Blue_Grey_700));
-		// contentPanel.setHtmlAttribute("class", "menu");
-		RowLayout layout = new RowLayout(SWT.VERTICAL);
-		layout.type = SWT.VERTICAL;
-		layout.fill = true;
-		layout.spacing = 0;
-		layout.marginBottom = 8;
-		layout.marginLeft = 0;
-		layout.marginTop = 8;
-		layout.marginRight = 0;
-		contentPanel.setLayout(layout);
-		actions.forEach(a -> createMenuItem(contentPanel, a));
+		this.parent = parent;
+		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		Composite indicator = new Composite(parent, SWT.NONE);
-		indicator.setData(RWT.CUSTOM_VARIANT, "left");
+		parent.setLayout(new FillLayout());
+		createPage();
+	}
 
-		FormData fd = new FormData();
-		contentPanel.setLayoutData(fd);
-		fd.top = new FormAttachment();
-		fd.left = new FormAttachment();
-		fd.width = width - idWidth;
-		fd.bottom = new FormAttachment(100);
-
-		fd = new FormData();
-		indicator.setLayoutData(fd);
-		fd.top = new FormAttachment(50, -idWidth / 2);
-		fd.left = new FormAttachment(contentPanel, 0);
-		fd.width = 0;
-		fd.height = 0;
+	private void createPage() {
+		page = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout(xUnit, true);
+		layout.horizontalSpacing = 1;
+		layout.verticalSpacing = 1;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		page.setLayout(layout);
+		pagedAction.get(currentPage).forEach(a -> {
+			Button button = UserSession.bruiToolkit().createButton(page, a, "block");
+			button.setLayoutData(new GridData(unitSize, unitSize));
+			if (a instanceof NextPageAction) {
+				button.addListener(SWT.Selection, e -> nextPage());
+			} else if (a instanceof PreviousPageAction) {
+				button.addListener(SWT.Selection, e -> perviuosPage());
+			}
+		});
 
 	}
 
-	private void createMenuItem(Composite parent, Action action) {
-		Button l = new Button(parent, SWT.PUSH);
-		UserSession.bruiToolkit().enableMarkup(l);
-		l.setData(RWT.CUSTOM_VARIANT, "item");
-		l.setText(UserSession.bruiToolkit().getActionMenuItemHtml(action));
-		l.setLayoutData(new RowData(width - idWidth, 36));
-		l.addListener(SWT.Selection, e -> BruiActionEngine.create(action, serive).invokeExecute(e, context));
+	private void perviuosPage() {
+		currentPage--;
+		page.dispose();
+		createPage();
+		parent.layout();
+	}
+
+	private void nextPage() {
+		currentPage++;
+		page.dispose();
+		createPage();
+		parent.layout();
 	}
 
 	@Override
@@ -86,16 +123,6 @@ public class ActionMenu extends Part {
 		newShell.setData(RWT.CUSTOM_VARIANT, "menu");
 		newShell.addListener(SWT.Deactivate, e -> close());
 		super.configureShell(newShell);
-	}
-
-	@Override
-	public Point getInitialSize() {
-		return getShell().computeSize(width, SWT.DEFAULT, true);
-	}
-
-	public ActionMenu setLocation(Point location) {
-		getShell().setLocation(location);
-		return this;
 	}
 
 	public ActionMenu setContext(BruiAssemblyContext context) {

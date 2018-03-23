@@ -202,4 +202,9 @@ public class Action extends ModelObject {
 		firePropertyChange("editorAssemblyEditable", old, this.editorAssemblyEditable);
 	}
 
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

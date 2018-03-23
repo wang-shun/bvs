@@ -939,7 +939,7 @@ Shell.menu {
   background-image: none;
   padding: 0;
   opacity: 1;
-  box-shadow: none;
+  box-shadow: 0px 0px 6px 0px #888888;
 }
 
 Shell-Titlebar.menu {

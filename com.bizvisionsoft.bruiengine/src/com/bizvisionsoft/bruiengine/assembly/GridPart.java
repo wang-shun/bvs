@@ -14,10 +14,8 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
-import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -431,15 +429,8 @@ public class GridPart {
 			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
 		} else {
 			// œ‘ æ≤Àµ•
-			GridItem item = ((GridItem) e.item);
-			Grid grid = viewer.getGrid();
 			ActionMenu menu = new ActionMenu(action.getChildren()).setContext(context).setService(bruiService);
-			menu.create();
-			Point size = menu.getInitialSize();
-			int x = grid.getBounds().width - actionColWidth - size.x;
-			int y = item.getBounds(0).y - (size.y - item.getHeight()) / 2;
-			Point point = grid.toDisplay(x, y);
-			menu.setLocation(point).open();
+			menu.open();
 		}
 	}
 

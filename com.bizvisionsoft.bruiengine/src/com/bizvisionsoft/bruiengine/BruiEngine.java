@@ -509,6 +509,20 @@ public class BruiEngine {
 		return new GsonBuilder().create().fromJson(json, elem.getClass());
 	}
 
+	public static <T> Object createObjectFrom(Class<T> clazz, JsonObject json, String cName, boolean ignoreEmptyCName,
+			boolean ignoreEmptyFName, boolean ignoreNull, BiFunction<String, Object, Object> valueConvertor) {
+		T object = null;
+		try {
+			object = clazz.newInstance();
+			json.names();
+
+		} catch (InstantiationException | IllegalAccessException e) {
+		}
+
+		return object;
+
+	}
+
 	/**
 	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
 	 * 

@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
@@ -23,7 +22,6 @@ public class StickerTitlebar extends Composite {
 	private Label label;
 	private Composite toolbar;
 	private BruiToolkit toolkit;
-	private IBruiService bruiService;
 
 	public StickerTitlebar(Composite parent) {
 		super(parent, SWT.NONE);
@@ -58,27 +56,7 @@ public class StickerTitlebar extends Composite {
 
 	public StickerTitlebar setActions(List<Action> actions) {
 		Optional.ofNullable(actions).ifPresent(as -> as.forEach(a -> {
-			Button btn = new Button(toolbar, SWT.PUSH);
-			toolkit.enableMarkup(btn);
-			String text = "";
-			String imageUrl = a.getImage();
-			if (imageUrl != null) {
-				text += "<img alter='" + a.getName() + "' src='" + bruiService.getResourceURL(a.getImage())
-						+ "' style='cursor:pointer;' width='20px' height='20px'></img>";
-			}
-			if (a.isForceText()) {
-				if (text.isEmpty()) {
-					text += "<div style='display:inline-block;'>" + a.getText() + "</div>";
-				} else {
-					text += "<div style='margin-left:4px;display:inline-block;'>" + a.getText() + "</div>";
-				}
-			}
-			btn.setText(text);
-			btn.setToolTipText(a.getTooltips());
-			String style = a.getStyle();
-			if (style != null && !style.isEmpty()) {
-				btn.setData(RWT.CUSTOM_VARIANT, style);
-			}
+			Button btn = toolkit.createButton(toolbar, a, "line");
 			btn.addListener(SWT.Selection, e -> {
 				e.data = a;
 				Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
@@ -87,9 +65,5 @@ public class StickerTitlebar extends Composite {
 		return this;
 	}
 
-	public StickerTitlebar setServices(IBruiService bruiService) {
-		this.bruiService = bruiService;
-		return this;
-	}
 
 }
