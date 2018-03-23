@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
-import com.bizvisionsoft.bruiengine.BruiEngine;
-import com.bizvisionsoft.service.annotations.ReadValue;
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 
 public class SelectionField extends EditorField {
 
@@ -97,7 +97,7 @@ public class SelectionField extends EditorField {
 
 	protected void presentation() {
 		Object label = Optional.ofNullable(value)
-				.map(v -> BruiEngine.readValue(v, assemblyConfig.getName(), ReadValue.LABEL,null)).orElse("");
+				.map(v -> AUtil.readValue(v, assemblyConfig.getName(), ReadValue.LABEL,null)).orElse("");
 		text.setText("" + label);
 	}
 

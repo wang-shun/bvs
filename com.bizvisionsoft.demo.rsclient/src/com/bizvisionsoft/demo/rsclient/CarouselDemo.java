@@ -26,7 +26,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 
 public class CarouselDemo {
 

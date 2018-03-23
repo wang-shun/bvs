@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.osgi.framework.Bundle;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnFooter;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHeader;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderConfig;
@@ -99,9 +100,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private Object getColumnValue(Object element, Column column) {
-		String containerName = config.getName();
-		String fieldName = column.getName();
-		return readValue(element, containerName, fieldName, element);
+		return AUtil.readValue(element, config.getName(), column.getName(), element);
 	}
 
 }

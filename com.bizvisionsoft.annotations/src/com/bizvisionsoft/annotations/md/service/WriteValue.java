@@ -1,4 +1,4 @@
-package com.bizvisionsoft.service.annotations;
+package com.bizvisionsoft.annotations.md.service;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * 将模型的某个字段或方法暴露到表格记录的某个字段或者编辑器的某个字段 用于读取
+ * 将表格记录的某个字段或者编辑器的某个字段 写入模型的某个字段或方法
  * 
  * @author hua
  *
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD })
-public @interface ReadValidation {
+public @interface WriteValue {
 
 	/**
 	 * 空格不是必须的，只是为了好看，解释的时候会自动去掉前后多余的空格，如果该属性被多个表格或列使用时，可标记为数组
@@ -25,6 +25,6 @@ public @interface ReadValidation {
 	 * @author hua
 	 *
 	 */
-	String[] value();
+	String[] value() default "";
 
 }

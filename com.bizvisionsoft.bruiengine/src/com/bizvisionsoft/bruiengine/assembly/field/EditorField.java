@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
-import com.bizvisionsoft.bruiengine.BruiEngine;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 
@@ -74,7 +74,7 @@ public abstract class EditorField {
 		if (fieldConfig.isHasInfoLabel())
 			createInfoLabel(container).setLayoutData(getInfoLayoutData());
 
-		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
+		setValue(AUtil.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
 
 		container.addListener(SWT.Dispose, e -> {
 			dispose();
@@ -129,7 +129,7 @@ public abstract class EditorField {
 			saveBefore();
 		}
 		check(save);
-		BruiEngine.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), getValue());
+		AUtil.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), getValue());
 	}
 
 	protected void saveBefore() throws Exception {

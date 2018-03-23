@@ -10,8 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.bizvisionsoft.service.annotations.DataSet;
-import com.bizvisionsoft.service.annotations.ServiceParam;
+import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.model.UserInfo;
 import com.mongodb.BasicDBObject;

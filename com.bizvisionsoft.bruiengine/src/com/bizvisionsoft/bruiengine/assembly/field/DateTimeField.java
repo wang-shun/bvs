@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Text;
 
 import com.bizivisionsoft.widgets.datetime.DateTime;
 import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.FormField;
-import com.bizvisionsoft.bruiengine.BruiEngine;
 
 public class DateTimeField extends EditorField {
 
@@ -49,7 +49,7 @@ public class DateTimeField extends EditorField {
 		}
 
 		// 获取mark
-		Map<String, Object> marks = BruiEngine.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
+		Map<String, Object> marks = AUtil.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
 		if (marks != null) {
 			marks.keySet().forEach(k -> {
 				setting.addMark(k, marks.get(k).toString());
@@ -57,7 +57,7 @@ public class DateTimeField extends EditorField {
 		}
 
 		// 最大值和最小值
-		Object validation = BruiEngine.readValidation(input, assemblyConfig.getName(), fieldConfig.getName());
+		Object validation = AUtil.readValidation(input, assemblyConfig.getName(), fieldConfig.getName());
 		if (validation instanceof String[]) {
 			if (((String[]) validation).length > 0)
 				setting.setMin(((String[]) validation)[0]);

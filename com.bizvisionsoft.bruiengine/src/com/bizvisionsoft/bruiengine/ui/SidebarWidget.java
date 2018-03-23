@@ -29,7 +29,6 @@ import com.bizvisionsoft.bruiengine.BruiColors;
 import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
 public class SidebarWidget {
 

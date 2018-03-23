@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.bizvisionsoft.bruiengine.BruiEngine;
+import com.bizvisionsoft.annotations.AUtil;
 
 public class ComboField extends EditorField {
 
@@ -63,7 +63,7 @@ public class ComboField extends EditorField {
 			}
 			labels.forEach(s -> control.add(s));
 		} else {
-			Map<String, Object> options = BruiEngine.readOptions(input, assemblyConfig.getName(),
+			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(),
 					fieldConfig.getName());
 			options.keySet().forEach(k -> {
 				labels.add(k);

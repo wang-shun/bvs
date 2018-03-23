@@ -14,10 +14,11 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.osgi.framework.Bundle;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.service.annotations.DataSet;
-import com.bizvisionsoft.service.annotations.ServiceParam;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -71,7 +72,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	public Object query(Integer skip, Integer limit, BasicDBObject filter) {
-		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.LIST, a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.LIST, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] args = new Object[method.getParameterCount()];
@@ -108,7 +109,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	public long count(BasicDBObject filter) {
-		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.COUNT, a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.COUNT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] args = new Object[method.getParameterCount()];
@@ -136,7 +137,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	private Object noParamDataSetMethodInvoke(String paramValue) {
-		Method m = getContainerMethod(clazz, DataSet.class, assembly.getName(), paramValue, a -> a.value())
+		Method m = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), paramValue, a -> a.value())
 				.orElse(null);
 		if (m != null) {
 			try {
@@ -153,7 +154,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	 * @return
 	 */
 	public Date[] getGanttInitDateRange() {
-		return (Date[]) read(clazz, DataSet.class, getTarget(), assembly.getName(), "initDateRange", null,
+		return (Date[]) AUtil.read(clazz, DataSet.class, getTarget(), assembly.getName(), "initDateRange", null,
 				a -> a.value());
 	}
 
@@ -171,7 +172,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 		if (data != null)
 			data.forEach(o -> {
-				JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+				JsonObject jo = AUtil.readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
 				String bundleId = null;
 				ClassLoader loader = o.getClass().getClassLoader();
 				if (loader instanceof EquinoxClassLoader) {
@@ -185,7 +186,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 		if (links != null)
 			links.forEach(o -> {
-				JsonObject jo = readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
+				JsonObject jo = AUtil.readJsonFrom(o.getClass(), o, assembly.getName(), true, true, true, convertor);
 				String bundleId = null;
 				ClassLoader loader = o.getClass().getClassLoader();
 				if (loader instanceof EquinoxClassLoader) {
@@ -202,7 +203,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 	public List<?> getGanntInputLink(BasicDBObject linkFilter) {
 		Method method;
-		method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value()).orElse(null);
+		method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value()).orElse(null);
 		if (method != null) {
 			Object[] args = new Object[method.getParameterCount()];
 			Parameter[] para = method.getParameters();
@@ -226,7 +227,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 	}
 
 	public List<?> getGanntInputData(BasicDBObject workFilter) {
-		Method method = getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] args = new Object[method.getParameterCount()];

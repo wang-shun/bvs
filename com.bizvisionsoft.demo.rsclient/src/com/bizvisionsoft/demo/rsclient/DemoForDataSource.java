@@ -3,7 +3,7 @@ package com.bizvisionsoft.demo.rsclient;
 import java.util.Arrays;
 import java.util.List;
 
-import com.bizvisionsoft.service.annotations.DataSet;
+import com.bizvisionsoft.annotations.md.service.DataSet;
 
 public class DemoForDataSource {
 	

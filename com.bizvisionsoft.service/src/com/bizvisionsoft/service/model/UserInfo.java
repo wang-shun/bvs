@@ -6,10 +6,10 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
-import com.bizvisionsoft.service.annotations.ReadValue;
-import com.bizvisionsoft.service.annotations.Structure;
 import com.bizvisionsoft.service.datatools.Query;
 
 @PersistenceCollection("account")

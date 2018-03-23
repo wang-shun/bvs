@@ -4,7 +4,7 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.swt.widgets.Shell;
 
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 
 public class UserSession implements IShellProvider {
 

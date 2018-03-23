@@ -11,8 +11,8 @@ import javax.ws.rs.Produces;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.service.annotations.DataSet;
-import com.bizvisionsoft.service.annotations.ServiceParam;
+import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Organization;
 import com.mongodb.BasicDBObject;
 

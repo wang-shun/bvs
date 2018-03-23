@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
@@ -36,7 +37,6 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
-import com.bizvisionsoft.bruiengine.BruiEngine;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
@@ -47,8 +47,8 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.ui.Editor;
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.mongodb.BasicDBObject;
 
 public class GridPart {
@@ -198,7 +198,7 @@ public class GridPart {
 		}
 		Composite queryPanel = new Composite(parent, SWT.NONE);
 
-		Assembly queryConfig = (Assembly) BruiEngine.simpleCopy(config, new Assembly());
+		Assembly queryConfig = (Assembly) AUtil.simpleCopy(config, new Assembly());
 		queryConfig.setType(Assembly.TYPE_EDITOR);
 		queryConfig.setTitle("查询");
 
@@ -499,7 +499,7 @@ public class GridPart {
 	}
 
 	public void replaceItem(Object elem, Object info) {
-		update(BruiEngine.simpleCopy(info, elem));
+		update(AUtil.simpleCopy(info, elem));
 	}
 
 	public void update(Object elem) {
@@ -527,7 +527,7 @@ public class GridPart {
 	 * 执行查询
 	 */
 	public void openQueryEditor() {
-		Assembly queryConfig = (Assembly) BruiEngine.simpleCopy(config, new Assembly());
+		Assembly queryConfig = (Assembly) AUtil.simpleCopy(config, new Assembly());
 		queryConfig.setType(Assembly.TYPE_EDITOR);
 		queryConfig.setTitle("查询");
 

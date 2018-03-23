@@ -1,4 +1,4 @@
-package com.bizvisionsoft.service.annotations;
+package com.bizvisionsoft.annotations.md.service;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

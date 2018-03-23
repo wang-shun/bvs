@@ -9,7 +9,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.bizvisionsoft.bruiengine.BruiEngine;
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.util.Util;
 
@@ -32,7 +32,7 @@ public class HtmlPageField extends EditorField {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 		createControl(container).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		setValue(BruiEngine.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
+		setValue(AUtil.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
 		container.addListener(SWT.Dispose, e -> dispose());
 		return container;
 	}

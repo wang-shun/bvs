@@ -7,8 +7,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.bizvisionsoft.service.annotations.DataSet;
-import com.bizvisionsoft.service.annotations.ServiceParam;
+import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.WorkLinkInfo;
 import com.mongodb.BasicDBObject;

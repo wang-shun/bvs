@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
-import com.bizvisionsoft.service.annotations.ReadValue;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 
 @PersistenceCollection(value = "organization")
 public class Organization {

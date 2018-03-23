@@ -4,8 +4,8 @@ import java.util.Date;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
-import com.bizvisionsoft.service.annotations.ReadValue;
-import com.bizvisionsoft.service.annotations.WriteValue;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 /**
  * <div class="doc" id="doc_content">

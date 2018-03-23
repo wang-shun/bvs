@@ -62,7 +62,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 

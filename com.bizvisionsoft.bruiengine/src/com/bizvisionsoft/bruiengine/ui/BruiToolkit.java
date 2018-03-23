@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.util;
+package com.bizvisionsoft.bruiengine.ui;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -18,6 +18,7 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiColors;
 import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.assembly.StickerTitlebar;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiToolkit {
 
