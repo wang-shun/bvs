@@ -2,8 +2,6 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -22,6 +20,7 @@ import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart {
@@ -51,9 +50,12 @@ public class GanttPart {
 
 		ganttConfig = Config.defaultConfig(config.isReadonly());
 
-		ganttConfig.columns = new ArrayList<>();
+		// 配置操作列
+		ganttConfig.brui_RowMenuEnable = !Util.isEmptyOrNull(config.getActions());
+		ganttConfig.brui_HeadMenuEnable = !Util.isEmptyOrNull(config.getHeadActions());
 
-		// 配置列
+		ganttConfig.columns = new ArrayList<>();
+		// 配置列和表格宽度
 		int gridWidth = 0;
 		config.getColumns();
 		for (int i = 0; i < config.getColumns().size(); i++) {
@@ -86,6 +88,9 @@ public class GanttPart {
 
 		if (config.isGanttGridWidthCalculate()) {
 			ganttConfig.grid_width = gridWidth - 8;//
+			if(ganttConfig.brui_RowMenuEnable || ganttConfig.brui_HeadMenuEnable) {
+				ganttConfig.grid_width += 34;
+			}
 		} else {
 			ganttConfig.grid_width = config.getGanttGridWidth();
 		}

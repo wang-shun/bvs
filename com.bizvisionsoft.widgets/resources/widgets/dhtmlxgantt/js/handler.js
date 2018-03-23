@@ -43,8 +43,8 @@
 				this.genericConfig(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
-				// 表格列和菜单配置
-				this.configGrid(this.config);
+				// 表格菜单配置
+				this.configGridMenu(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置刻度
@@ -93,47 +93,35 @@
 			gantt.config.links.finish_to_finish = "FF";
 		},
 
-		configGrid : function(config) {
-//			var remoteId = rap.getRemoteObject(this)._.id;
-//			var colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""
-//					+ remoteId + "\")'></div>";
-//			var colContent = function(task) {
-//				return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
-//						+ remoteId + "\"," + JSON.stringify(task) + ")'></div>");
-//			};
-//			gantt.config.columns = [ {
-//				name : "menu",
-//				label : colHeader,
-//				width : 34,
-//				align : "center",
-//				resize : false,
-//				template : colContent
-//			}, {
-//				name : "text",
-//				label : "工作",
-//				tree : true,
-//				width : 320,
-//				resize : true
-//			}, {
-//				name : "start_date",
-//				label : "开始",
-//				align : "center",
-//				width : 96,
-//				resize : true
-//			}, {
-//				name : "end_date",
-//				label : "完成",
-//				align : "center",
-//				width : 96,
-//				hide : true,
-//				resize : true
-//			}, {
-//				name : "duration",
-//				label : "工期",
-//				align : "right",
-//				width : 40,
-//				resize : true
-//			} ];
+		configGridMenu : function(config) {
+			if (config.brui_HeadMenuEnable || config.brui_RowMenuEnable) {
+				var remoteId = rap.getRemoteObject(this)._.id;
+				var colHeader;
+				var colContent;
+				if (config.brui_HeadMenuEnable) {
+					colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""
+							+ remoteId + "\")'></div>";
+				}else{
+					colHeader = "";
+				}
+	
+				if (config.brui_RowMenuEnable) {
+					colContent = function(task) {
+						return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
+								+ remoteId + "\"," + JSON.stringify(task) + ")'></div>");
+					};
+				} else {
+					colContent = function(task) {
+						return "";
+					};
+				}
+
+				config.columns.splice(0, 0, {
+					name : "menu", width : 34, align : "center",resize : false, 
+					label : colHeader, template : colContent
+				})
+
+			}
 		},
 
 		configScale : function(config) {
@@ -216,7 +204,9 @@
 		acceptServerConfig : function(config) {
 			if (config) {
 				for ( var attr in config) {
-					gantt.config[attr] = this.config[attr];
+					if (!attr.startsWith("brui_")) {
+						gantt.config[attr] = this.config[attr];
+					}
 				}
 			}
 		},

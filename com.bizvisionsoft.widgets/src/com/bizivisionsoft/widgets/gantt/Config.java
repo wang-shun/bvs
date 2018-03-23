@@ -792,6 +792,13 @@ public class Config {
 	 **/
 	public String xml_date;
 
+	/**
+	 * brui 扩展配置，是否显示操作菜单
+	 */
+	public boolean brui_HeadMenuEnable;
+
+	public boolean brui_RowMenuEnable;
+
 	public Config setReadonly(boolean b) {
 		readonly = b;
 		return this;

@@ -523,4 +523,15 @@ public class Assembly extends ModelObject {
 		return ganttGridWidth;
 	}
 	
+	// *******************************************************************************************
+	// action
+	private List<Action> headActions;
+
+	public List<Action> getHeadActions() {
+		return headActions;
+	}
+	
+	public void setHeadActions(List<Action> headActions) {
+		this.headActions = headActions;
+	}
 }

@@ -31,9 +31,9 @@ public class AssemblyGanttEditor extends ModelEditor {
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
 
 		createCheckboxField(parent, "根据列宽自动设置表格宽度：", inputData, "ganttGridWidthCalculate", SWT.CHECK);
-		
+
 		createIntegerField(parent, "手动设置表格宽度：", inputData, "ganttGridWidth", SWT.BORDER, 200, 4000);
-		
+
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);
@@ -53,11 +53,17 @@ public class AssemblyGanttEditor extends ModelEditor {
 			((Assembly) inputData).setColumns(cols = new ArrayList<Column>());
 		new GanttColumnsEditPane(parent, cols, this);
 
-		parent = createTabItemContent("操作");
+		parent = createTabItemContent("行操作");
 		List<Action> actions = ((Assembly) inputData).getActions();
 		if (actions == null)
 			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
+
+		parent = createTabItemContent("表头操作");
+		List<Action> headActions = ((Assembly) inputData).getHeadActions();
+		if (headActions == null)
+			((Assembly) inputData).setHeadActions(headActions = new ArrayList<Action>());
+		new ActionsEditPane(parent, headActions, true, this);
 
 		addPartNamePropertyChangeListener("name");
 
