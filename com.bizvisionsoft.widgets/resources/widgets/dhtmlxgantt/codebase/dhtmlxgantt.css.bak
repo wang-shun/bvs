@@ -1711,7 +1711,6 @@ div.dhx_modal_cover {
   left: -1000px;
   font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 14px;
-  z-index: 9999;
 }
 .gantt_drag_marker .gantt_tree_indent,
 .gantt_drag_marker .gantt_tree_icon.gantt_blank,
@@ -1722,16 +1721,13 @@ div.dhx_modal_cover {
 .gantt_drag_marker,
 .gantt_drag_marker .gantt_row.odd {
   background-color: #FFFFFF;
-  z-index: 9999;
 }
 .gantt_drag_marker .gantt_row {
   border-left: 1px solid #d2d2d2;
   border-top: 1px solid #d2d2d2;
-  z-index: 9999;
 }
 .gantt_drag_marker .gantt_cell {
   border-color: #d2d2d2;
-  z-index: 9999;
 }
 .gantt_row.gantt_over,
 .gantt_task_row.gantt_over {

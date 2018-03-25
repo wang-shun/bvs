@@ -91,8 +91,8 @@
 			gantt.config.links.start_to_finish = "SF";
 			gantt.config.links.finish_to_finish = "FF";
 			gantt.config.details_on_create = true;
-//			gantt.config.order_branch = true;
-//			gantt.config.order_branch_free = true;
+			gantt.config.order_branch = true;
+			gantt.config.order_branch_free = true;
 		},
 
 		configGridMenu : function(config) {

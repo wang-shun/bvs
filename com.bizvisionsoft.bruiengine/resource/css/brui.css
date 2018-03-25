@@ -1,8 +1,8 @@
 .gradient-indigo {
-	background: -webkit-linear-gradient(15deg, #5c6bc0, #1a237e);
-	background: -o-linear-gradient(15deg, #5c6bc0, #1a237e);
-	background: -moz-linear-gradient(15deg, #5c6bc0, #1a237e);
-	background: linear-gradient(15deg, #5c6bc0, #1a237e);
+	background: -webkit-linear-gradient(15deg, #5c6bc0, #1a237e) !important;
+	background: -o-linear-gradient(15deg, #5c6bc0, #1a237e) !important;
+	background: -moz-linear-gradient(15deg, #5c6bc0, #1a237e) !important;
+	background: linear-gradient(15deg, #5c6bc0, #1a237e) !important;
 }
 
 .brui_borderTop {

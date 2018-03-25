@@ -202,24 +202,24 @@ public class Config {
 	 **/
 	public Boolean drag_links;
 
-	/**
-	 * stores the types of available drag-and-drop modes
-	 * 
-	 * The property is readonly.
-	 * 
-	 * "resize" - the mode when the user drags a task bar to change its duration.
-	 * 
-	 * "progress" - the mode when the user drags the progress knob of a task bar.
-	 * 
-	 * "move" - the mode when the user drags a task bar to replace it.
-	 * 
-	 * "ignore" - the service mode which restricts the drag-and-drop action.
-	 * 
-	 * Default value: { "resize":"resize", "progress":"progress", "move":"move",
-	 * "ignore":"ignore" }
-	 * 
-	 **/
-	public final Object drag_mode = null;
+//	/**
+//	 * stores the types of available drag-and-drop modes
+//	 * 
+//	 * The property is readonly.
+//	 * 
+//	 * "resize" - the mode when the user drags a task bar to change its duration.
+//	 * 
+//	 * "progress" - the mode when the user drags the progress knob of a task bar.
+//	 * 
+//	 * "move" - the mode when the user drags a task bar to replace it.
+//	 * 
+//	 * "ignore" - the service mode which restricts the drag-and-drop action.
+//	 * 
+//	 * Default value: { "resize":"resize", "progress":"progress", "move":"move",
+//	 * "ignore":"ignore" }
+//	 * 
+//	 **/
+//	public final Object drag_mode = null;
 
 	/**
 	 * enables the possibility to move tasks by drag-and-drop
