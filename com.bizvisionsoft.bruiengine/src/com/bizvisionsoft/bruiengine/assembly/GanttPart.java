@@ -1,12 +1,10 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.rap.json.JsonObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -115,14 +113,18 @@ public class GanttPart {
 		if (dateRange != null && dateRange.length == 2) {
 			gantt.setInitDateRange(dateRange[0], dateRange[1]);
 		}
-
+		Calendar cal = Calendar.getInstance();
+		Date from = cal.getTime();
+		cal.add(Calendar.MONTH, 6);
+		Date to = cal.getTime();
+		gantt.setInitDateRange(from, to);
+		
 		// 查询数据
 		tasks = dataSetEngine.getGanntInputData(new BasicDBObject());
 		links = dataSetEngine.getGanntInputLink(new BasicDBObject());
 
 		// 设置为gantt输入
-		JsonObject input = dataSetEngine.transformToJsonInput(tasks, links);
-		gantt.setInputData(input);
+		gantt.setInputData(config.getName(), tasks, links);
 
 		// 设置事件侦听
 		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> showHeadMenu());
@@ -131,27 +133,6 @@ public class GanttPart {
 	}
 
 	private void showRowMenu(Event e) {
-		JsonObject jo = (JsonObject) e.data;
-		JsonObject classInfo = (JsonObject) jo.get("$classInfo");
-		String bundleId = Optional.ofNullable(classInfo.get("bundleId")).map(o -> o.asString()).orElse(null);
-		String className = Optional.ofNullable(classInfo.get("className")).map(o -> o.asString()).orElse(null);
-		if (!Util.isEmptyOrNull(className)) {
-			try {
-				Class<?> clazz;
-				if (!Util.isEmptyOrNull(bundleId)) {
-					clazz = Platform.getBundle(bundleId).loadClass(className);
-				} else {
-					// 不清楚包的情况下无法加载
-					clazz = getClass().getClassLoader().loadClass(className);
-				}
-				if (clazz != null) {
-				}
-
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-		}
-
 		List<Action> actions = config.getActions();
 		ActionMenu menu = new ActionMenu(actions);
 		menu.open();

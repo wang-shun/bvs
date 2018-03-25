@@ -1,15 +1,26 @@
 package com.bizivisionsoft.widgets.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.ClientFileLoader;
 import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
 import org.eclipse.rap.rwt.widgets.WidgetUtil;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
+
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 
 public class WidgetToolkit {
 
@@ -36,46 +47,44 @@ public class WidgetToolkit {
 	public static void requireWidgetHandlerJs(String widgetName) {
 		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
 		String uri = getSiteRoot();
-		jsLoader.requireJs(uri+"bvs/widgets/"+widgetName+"/js/handler.js");
-	}
-	
-	public static void requireWidgetJs(String widgetName,String path) {
-		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
-		String uri = getSiteRoot();
-		jsLoader.requireJs(uri+"bvs/widgets/"+widgetName+"/"+path);
-	}
-	
-	public static void requireWidgetCss(String widgetName,String path) {
-		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
-		String uri = getSiteRoot();
-		jsLoader.requireCss(uri+"bvs/widgets/"+widgetName+"/"+path);
+		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/js/handler.js");
 	}
 
+	public static void requireWidgetJs(String widgetName, String path) {
+		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
+		String uri = getSiteRoot();
+		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/" + path);
+	}
+
+	public static void requireWidgetCss(String widgetName, String path) {
+		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
+		String uri = getSiteRoot();
+		jsLoader.requireCss(uri + "bvs/widgets/" + widgetName + "/" + path);
+	}
 
 	public static String getSiteRoot() {
 		String uri = RWT.getRequest().getRequestURI();
-		if(uri.endsWith("/")) {
+		if (uri.endsWith("/")) {
 			return uri;
-		}else {
-			return uri.substring(0, uri.lastIndexOf("/"))+"/";
+		} else {
+			return uri.substring(0, uri.lastIndexOf("/")) + "/";
 		}
 	}
-
 
 	public static String getSiteHttpRoot() {
 		HttpServletRequest request = RWT.getRequest();
 		String root;
-		if(request.getRequestURL().toString().toLowerCase().startsWith("https://")) {
+		if (request.getRequestURL().toString().toLowerCase().startsWith("https://")) {
 			root = "https://";
-		}else {
+		} else {
 			root = "http://";
 		}
 		root += request.getLocalAddr();
-		root +=  ":"+request.getLocalPort();
+		root += ":" + request.getLocalPort();
 		root += getSiteRoot();
 		return root;
 	}
-	
+
 	public static String getRandomString(int length, boolean caseIgnore) {
 
 		Random randGen = null;
@@ -95,17 +104,160 @@ public class WidgetToolkit {
 					} else {
 						numbersAndLetters = ("0123456789abcdefghijklmnopqrstuvwxyz" //$NON-NLS-1$
 								+ "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ") //$NON-NLS-1$
-								.toCharArray();
+										.toCharArray();
 					}
 				}
 			}
 		}
 		char[] randBuffer = new char[length];
 		for (int i = 0; i < randBuffer.length; i++) {
-			randBuffer[i] = numbersAndLetters[randGen
-					.nextInt(numbersAndLetters.length - 1)];
+			randBuffer[i] = numbersAndLetters[randGen.nextInt(numbersAndLetters.length - 1)];
 		}
 		return new String(randBuffer);
+	}
+
+	/**
+	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
+	 * 
+	 * @param <R>
+	 * @param <T>
+	 * 
+	 * @param clazz,
+	 *            被读取对象的类（带有注解的），对象可继承于该类
+	 * @param element,被读取的对象
+	 * @param cName
+	 *            容器名称
+	 * @param ignoreEmptyCName
+	 *            是否忽略容器名，如果忽略容器名，所有ReadValue 空注解的都将被读取
+	 * @param ignoreEmptyFName
+	 *            是否忽略字段名，如果忽略字段名，将采用类的字段名称读取
+	 * @param valueConvertor
+	 *            数据转换函数
+	 * @return
+	 */
+	public static JsonObject readJsonFrom(Class<?> clazz, Object element, String cName, boolean ignoreEmptyCName,
+			boolean ignoreEmptyFName, boolean ignoreNull, BiFunction<String, Object, Object> valueConvertor) {
+
+		JsonObject result = new JsonObject();
+		// 检查
+		if (isEmptyOrNull(cName))
+			throw new IllegalArgumentException("容器名称为空");
+		if (element == null)
+			throw new IllegalArgumentException("目标对象为空");
+		if (!clazz.isAssignableFrom(element.getClass()))
+			throw new IllegalArgumentException("目标对象是指定类（或继承）的实例");
+		// 处理字段
+		Arrays.asList(clazz.getDeclaredFields()).stream().forEach(e -> {
+			String nName = e.getName();
+			ReadValue ano = e.getAnnotation(ReadValue.class);
+			String targetField = checkField(cName, ignoreEmptyCName, ignoreEmptyFName, nName, ano);
+			if (!isEmptyOrNull(targetField))
+				try {
+					e.setAccessible(true);
+					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.get(element));
+				} catch (IllegalArgumentException | IllegalAccessException e1) {
+				}
+		});
+		// 处理方法
+		Arrays.asList(clazz.getDeclaredMethods()).stream().forEach(e -> {
+			String nName = e.getName();
+			ReadValue ano = e.getAnnotation(ReadValue.class);
+			String targetField = checkField(cName, ignoreEmptyCName, ignoreEmptyFName, nName, ano);
+
+			if (!isEmptyOrNull(targetField))
+				try {
+					e.setAccessible(true);
+					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.invoke(element));
+				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
+				}
+		});
+		return result;
+	}
+
+	private static String checkField(String cName, boolean ignoreEmptyCName, boolean ignoreEmptyFName, String nName,
+			ReadValue ano) {
+		if (ano == null)
+			return null;
+		String[] v = ano.value();
+		if (v.length == 1 && v[0].equals("")) {// 没有写注解内容，使用的默认值
+			if (ignoreEmptyCName && ignoreEmptyFName) {// 如果忽略容器名和字段名
+				return nName;
+			} else {
+				return null;
+			}
+		} else {
+			for (int i = 0; i < v.length; i++) {
+				String[] loc = ((String[]) v)[i].split("#");
+				if (loc.length == 1 && ignoreEmptyCName) {// 注解的是fName// 如果忽略容器名
+					return loc[0].trim();
+				} else if (loc.length > 1 && cName.equals(loc[0].trim())) {// 容器名称匹配
+					return loc[1].trim();
+				}
+			}
+		}
+		return null;
+	}
+
+	private static void putJsonValue(Object element, boolean ignoreNull,
+			BiFunction<String, Object, Object> valueConvertor, JsonObject result, String targetField, Object value) {
+		if (valueConvertor != null)
+			value = valueConvertor.apply(targetField, value);
+		if (value == null && !ignoreNull) {
+			result.add(targetField, JsonValue.NULL);
+		} else if (value instanceof JsonValue) {
+			result.add(targetField, (JsonValue) value);
+		} else if (value instanceof String) {
+			result.add(targetField, (String) value);
+		} else if (value instanceof Integer) {
+			result.add(targetField, (Integer) value);
+		} else if (value instanceof Boolean) {
+			result.add(targetField, (Boolean) value);
+		} else if (value instanceof Double) {
+			result.add(targetField, (Double) value);
+		} else if (value instanceof Float) {
+			result.add(targetField, (Float) value);
+		} else if (value instanceof Long) {
+			result.add(targetField, (Long) value);
+		} else {
+			throw new IllegalArgumentException("不支持的类型");
+		}
+	}
+
+	public static JsonObject transformToJsonInput(String cName, List<?> data, List<?> links) {
+		// 准备数据转换函数
+		BiFunction<String, Object, Object> convertor = (n, v) -> {
+			if (v instanceof Date)
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+			return v;
+		};
+
+		// 处理模型
+		JsonArray _data = new JsonArray();
+		JsonArray _links = new JsonArray();
+
+		if (data != null)
+			data.forEach(o -> {
+				JsonObject jo = readJsonFrom(o.getClass(), o, cName, true, true, true, convertor);
+				jo.add("$hashCode", o.hashCode());
+				_data.add(jo);
+			});
+
+		if (links != null)
+			links.forEach(o -> {
+				JsonObject jo = readJsonFrom(o.getClass(), o, cName, true, true, true, convertor);
+				jo.add("$hashCode", o.hashCode());
+				_links.add(jo);
+			});
+
+		return new JsonObject().add("data", _data).add("links", _links);
+	}
+
+	public static boolean isEmptyOrNull(String s) {
+		return s == null || s.isEmpty();
+	}
+
+	public static boolean isEmptyOrNull(List<?> s) {
+		return s == null || s.isEmpty();
 	}
 
 }

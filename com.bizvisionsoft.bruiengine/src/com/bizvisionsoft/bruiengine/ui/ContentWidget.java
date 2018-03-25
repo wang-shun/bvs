@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.ContentArea;
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.BruiColors;
-import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.service.BruiService;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 
 public class ContentWidget {

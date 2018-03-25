@@ -86,11 +86,13 @@
 			gantt.config.grid_resize = true;
 			gantt.config.keep_grid_width = false;
 			gantt.config.start_on_monday = false;
-			gantt.config.details_on_create = true;
 			gantt.config.links.start_to_start = "SS";
 			gantt.config.links.finish_to_start = "FS";
 			gantt.config.links.start_to_finish = "SF";
 			gantt.config.links.finish_to_finish = "FF";
+			gantt.config.details_on_create = true;
+//			gantt.config.order_branch = true;
+//			gantt.config.order_branch_free = true;
 		},
 
 		configGridMenu : function(config) {

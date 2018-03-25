@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine;
+package com.bizvisionsoft.bruiengine.util;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.Color;

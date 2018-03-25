@@ -267,13 +267,13 @@ public class Config {
 	 **/
 	public String duration_unit;
 
-	/**
-	 * changes the name of a property that affects the editing ability of
-	 * tasks/links in the read-only Gantt chart
-	 * 
-	 * The default value of the option is "editable".
-	 **/
-	public String editable_property;
+//	/**
+//	 * changes the name of a property that affects the editing ability of
+//	 * tasks/links in the read-only Gantt chart
+//	 * 
+//	 * The default value of the option is "editable".
+//	 **/
+//	public String editable_property;
 
 	/**
 	 * sets the end value of the time scale
@@ -296,20 +296,20 @@ public class Config {
 	 **/
 	public Boolean grid_resize;
 
-	/**
-	 * sets the name of the attribute of the grid resizer's DOM element
-	 * 
-	 * Default value: "grid_resizer"
-	 **/
-	public String grid_resizer_attribute;
-
-	/**
-	 * sets the name of the attribute of the column resizer's DOM element. The
-	 * attribute presents the column's index
-	 * 
-	 * Default value: "column_index"
-	 **/
-	public String grid_resizer_column_attribute;
+//	/**
+//	 * sets the name of the attribute of the grid resizer's DOM element
+//	 * 
+//	 * Default value: "grid_resizer"
+//	 **/
+//	public String grid_resizer_attribute;
+//
+//	/**
+//	 * sets the name of the attribute of the column resizer's DOM element. The
+//	 * attribute presents the column's index
+//	 * 
+//	 * Default value: "column_index"
+//	 **/
+//	public String grid_resizer_column_attribute;
 
 	/**
 	 * sets the maximum width of the grid
@@ -404,13 +404,13 @@ public class Config {
 	 **/
 	public Integer link_arrow_size;
 
-	/**
-	 * sets the name of the attribute that will specify the id of the link's HTML
-	 * element
-	 * 
-	 * Default value: "link_id"
-	 **/
-	public String link_attribute;
+//	/**
+//	 * sets the name of the attribute that will specify the id of the link's HTML
+//	 * element
+//	 * 
+//	 * Default value: "link_id"
+//	 **/
+//	public String link_attribute;
 
 	/**
 	 * sets the width of dependency links in the timeline area
@@ -529,11 +529,11 @@ public class Config {
 	 **/
 	public Boolean readonly;
 
-	/**
-	 * changes the name of a property that affects the read-only behaviour of
-	 * tasks/links
-	 **/
-	public String readonly_property;
+//	/**
+//	 * changes the name of a property that affects the read-only behaviour of
+//	 * tasks/links
+//	 **/
+//	public String readonly_property;
 
 	/**
 	 * enables the Redo functionality for the gantt
@@ -770,13 +770,13 @@ public class Config {
 	 **/
 	public JsonObject undo_types;
 
-	/**
-	 * enables WAI-ARIA support to make the component recognizable for screen
-	 * readers
-	 * 
-	 * Default value: true
-	 **/
-	public Boolean wai_aria_attributes;
+//	/**
+//	 * enables WAI-ARIA support to make the component recognizable for screen
+//	 * readers
+//	 * 
+//	 * Default value: true
+//	 **/
+//	public Boolean wai_aria_attributes;
 	/**
 	 * enables calculating the duration of tasks in working time instead of calendar
 	 * time

@@ -5,6 +5,7 @@ import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
@@ -49,7 +50,8 @@ public class Gantt extends Composite {
 			if ("gridMenuClicked".equals(method)) {
 				eventType = EVENT_GRID_MENU;
 			} else if ("gridRowMenuClicked".equals(method)) {
-				event.data = parameters;
+				int hashcode = parameters.get("$hashCode").asInt();
+				event.data = findTask(hashcode);
 				eventType = EVENT_ROW_MENU;
 			} else {
 				return;
@@ -58,7 +60,12 @@ public class Gantt extends Composite {
 				Arrays.asList(getListeners(eventType)).forEach(l -> l.handleEvent(event));
 			});
 		}
+
 	};
+
+	private List<?> tasks;
+
+	private List<?> links;
 
 	public Gantt(Composite parent, Config config) {
 		super(parent, SWT.NONE);
@@ -126,6 +133,25 @@ public class Gantt extends Composite {
 		this.initTo = initTo;
 		remoteObject.set("initFrom", new SimpleDateFormat("yyyy/MM/dd").format(initFrom));
 		remoteObject.set("initTo", new SimpleDateFormat("yyyy/MM/dd").format(initTo));
+	}
+
+	public void setInputData(String cName, List<?> tasks, List<?> links) {
+		this.tasks = tasks;
+		this.links = links;
+		setInputData(WidgetToolkit.transformToJsonInput(cName, tasks, links));
+	}
+
+	Object findTask(int hashCode) {
+		return this.tasks.stream().filter(o -> {
+			return o.hashCode() == hashCode;
+		}).findFirst().orElse(null);
+	}
+
+	Object findLink(int hashCode) {
+		return this.links.stream().filter(o -> {
+			return o.hashCode() == hashCode;
+		}).findFirst().orElse(null);
+
 	}
 
 }

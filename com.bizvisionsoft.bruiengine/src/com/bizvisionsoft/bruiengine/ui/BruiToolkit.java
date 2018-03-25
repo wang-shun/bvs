@@ -15,8 +15,6 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.BruiColors;
-import com.bizvisionsoft.bruiengine.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.assembly.StickerTitlebar;
 import com.bizvisionsoft.bruiengine.util.Util;
 
@@ -103,7 +101,7 @@ public class BruiToolkit {
 
 	public Composite newContentPanel(Composite parent) {
 		Composite composite = newStyledControl(Composite.class, parent, SWT.BORDER, null);
-		composite.setBackground(BruiColors.getColor(BruiColor.Blue_Grey_100));
+		composite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		return composite;
 	}
 
