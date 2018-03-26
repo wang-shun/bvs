@@ -43,11 +43,6 @@ public class GanttDemo {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		gantt.addListener(Gantt.EVENT_GRID_MENU, e -> System.out.println("grid" + e));
-		gantt.addListener(Gantt.EVENT_ROW_MENU, e -> {
-			System.out.println("row" + e);
-			MessageDialog.openInformation(parent.getShell(), "¸ÊÌØÍ¼ÊÂ¼ş", "" + e.data);
-		});
 	}
 
 }

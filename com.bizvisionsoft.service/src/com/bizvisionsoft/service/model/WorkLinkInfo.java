@@ -65,7 +65,7 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
  * @author hua
  *
  */
-@PersistenceCollection("demolinks")
+@PersistenceCollection("demoWorkLinks")
 public class WorkLinkInfo {
 
 	@ReadValue

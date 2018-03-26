@@ -1,16 +1,13 @@
 package com.bizivisionsoft.widgets.util;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
@@ -171,6 +168,8 @@ public class WidgetToolkit {
 				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
 				}
 		});
+		
+		result.add("$hashCode", element.hashCode());
 		return result;
 	}
 
@@ -223,34 +222,6 @@ public class WidgetToolkit {
 		}
 	}
 
-	public static JsonObject transformToJsonInput(String cName, List<?> data, List<?> links) {
-		// 准备数据转换函数
-		BiFunction<String, Object, Object> convertor = (n, v) -> {
-			if (v instanceof Date)
-				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
-			return v;
-		};
-
-		// 处理模型
-		JsonArray _data = new JsonArray();
-		JsonArray _links = new JsonArray();
-
-		if (data != null)
-			data.forEach(o -> {
-				JsonObject jo = readJsonFrom(o.getClass(), o, cName, true, true, true, convertor);
-				jo.add("$hashCode", o.hashCode());
-				_data.add(jo);
-			});
-
-		if (links != null)
-			links.forEach(o -> {
-				JsonObject jo = readJsonFrom(o.getClass(), o, cName, true, true, true, convertor);
-				jo.add("$hashCode", o.hashCode());
-				_links.add(jo);
-			});
-
-		return new JsonObject().add("data", _data).add("links", _links);
-	}
 
 	public static boolean isEmptyOrNull(String s) {
 		return s == null || s.isEmpty();

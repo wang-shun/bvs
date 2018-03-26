@@ -9,7 +9,9 @@
 
 		destructor : "destroy",
 
-		properties : [ "config", "initFrom", "initTo", "inputData" ]
+		properties : [ "config", "initFrom", "initTo", "inputData" ],
+
+		methods : [ "addListener", "removeListener", "addTask" ]
 
 	});
 
@@ -19,7 +21,7 @@
 
 	bizvision.dhtmlxgantt = function(properties) {
 		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
-				"onGridMenuClick" ]);
+				"onGridMenuClick", "addTask" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -103,10 +105,10 @@
 				if (config.brui_HeadMenuEnable) {
 					colHeader = "<div class='gantt_grid_head_cell gantt_grid_head_add' onclick='bizvision.dhtmlxgantt.prototype.onGridMenuClick(\""
 							+ remoteId + "\")'></div>";
-				}else{
+				} else {
 					colHeader = "";
 				}
-	
+
 				if (config.brui_RowMenuEnable) {
 					colContent = function(task) {
 						return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
@@ -119,8 +121,12 @@
 				}
 
 				config.columns.splice(0, 0, {
-					name : "menu", width : 34, align : "center",resize : false, 
-					label : colHeader, template : colContent
+					name : "menu",
+					width : 34,
+					align : "center",
+					resize : false,
+					label : colHeader,
+					template : colContent
 				})
 
 			}
@@ -265,12 +271,15 @@
 
 		onGridMenuClick : function(id) {
 			var cObj = rap.getObject(id);
-			rap.getRemoteObject(cObj).call("gridMenuClicked", "");
+			rap.getRemoteObject(cObj).call("onGridHeaderMenuClick", {});
 		},
 
 		onGridRowMenuClick : function(id, task) {
 			var cObj = rap.getObject(id);
-			rap.getRemoteObject(cObj).call("gridRowMenuClicked", task);
+			rap.getRemoteObject(cObj).call("onGridRowMenuClick", {
+				"id" : task.id,
+				"task" : task
+			});
 		},
 
 		setConfig : function(config) {
@@ -306,6 +315,117 @@
 			this.element.style.width = area[2] + "px";
 			this.element.style.height = area[3] + "px";
 			gantt.setSizes();
+		},
+
+		addListener : function(event) {
+			var eventCode = event.name;
+			var ro = rap.getRemoteObject(this);
+			if (eventCode == "onAfterAutoSchedule") {
+				gantt.attachEvent(eventCode, function(taskId, updatedTasks) {
+					ro.call(eventCode, {
+						"taskId" : taskId,
+						"updatedTasks" : updatedTasks
+					});
+				});
+			} else if (eventCode == "onAfterLinkAdd"
+					|| eventCode == "onAfterLinkDelete"
+					|| eventCode == "onAfterLinkUpdate"
+					|| eventCode == "onAfterTaskAdd"
+					|| eventCode == "onAfterTaskDelete"
+					|| eventCode == "onAfterTaskUpdate") {
+				gantt.attachEvent(eventCode, function(id, item) {
+					ro.call(eventCode, {
+						"id" : id,
+						"item" : item
+					});
+				});
+			} else if (eventCode == "onAfterTaskAutoSchedule") {
+				gantt.attachEvent(eventCode, function(task, start, link,
+						predecessor) {
+					ro.call(eventCode, {
+						"task" : task,
+						"start" : start,
+						"link" : link,
+						"predecessor" : predecessor
+					});
+				});
+			} else if (eventCode == "onAutoScheduleCircularLink") {
+				gantt.attachEvent(eventCode, function(groups) {
+					ro.call(eventCode, {
+						"groups" : groups
+					});
+				});
+			} else if (eventCode == "onCircularLinkError") {
+				gantt.attachEvent(eventCode, function(link, group) {
+					ro.call(eventCode, {
+						"link" : link,
+						"group" : group
+					});
+				});
+			} else if (eventCode == "onEmptyClick"
+					|| eventCode == "onMultiSelect") {
+				gantt.attachEvent(eventCode, function(e) {
+					ro.call(eventCode, {
+						"e" : e
+					});
+				});
+			} else if (eventCode == "onError") {
+				gantt.attachEvent(eventCode, function(errorMessage) {
+					ro.call(eventCode, {
+						"errorMessage" : errorMessage
+					});
+				});
+			} else if (eventCode == "onLinkClick"
+					|| eventCode == "onLinkDblClick"
+					|| eventCode == "onTaskClick"
+					|| eventCode == "onTaskDblClick") {
+				gantt.attachEvent(eventCode, function(id, e) {
+					ro.call(eventCode, {
+						"id" : id,
+						"e" : e
+					});
+				});
+			} else if (eventCode == "onTaskSelected"
+					|| eventCode == "onTaskUnselected"
+					|| eventCode == "onTaskRowClick") {
+				gantt.attachEvent(eventCode, function(id) {
+					ro.call(eventCode, {
+						"id" : id
+					});
+				});
+			} else if (eventCode == "onLinkValidation") {
+				gantt.attachEvent(eventCode, function(link) {
+					ro.call(eventCode, {
+						"link" : link
+					});
+				});
+			} else if (eventCode == "onScaleClick") {
+				gantt.attachEvent(eventCode, function(e, date) {
+					ro.call(eventCode, {
+						"e" : e,
+						"date" : date
+					});
+				});
+			} else if (eventCode == "onTaskMultiSelect") {
+				gantt.attachEvent(eventCode, function(id, state, e) {
+					ro.call(eventCode, {
+						"id" : id,
+						"state" : state,
+						"e" : e
+					});
+				});
+			} else {
+				gantt.attachEvent(eventCode, function() {
+					ro.call(eventCode, {});
+				});
+			}
+		},
+
+		addTask : function(parameter) {
+			var task = parameter.task;
+			var parentId = parameter.parentId;
+			var index = parameter.index;
+			gantt.addTask(task, parentId, index);
 		}
 
 	};

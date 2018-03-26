@@ -10,10 +10,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.assembly.GanttPart;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.Util;
@@ -43,7 +45,7 @@ public class ActionMenu extends Part {
 
 	private List<Action> actions;
 	private List<List<Action>> pagedAction;
-	private BruiAssemblyContext context;
+	private IBruiContext context;
 	private IBruiService serive;
 	private int xUnit = 3;
 	private int yUnit = 3;
@@ -51,6 +53,7 @@ public class ActionMenu extends Part {
 	private int currentPage = 0;
 	private Composite parent;
 	private Composite page;
+	private Event e;
 
 	public ActionMenu(List<Action> actions) {
 		super(UserSession.current().getShell());
@@ -98,6 +101,11 @@ public class ActionMenu extends Part {
 				button.addListener(SWT.Selection, e -> nextPage());
 			} else if (a instanceof PreviousPageAction) {
 				button.addListener(SWT.Selection, e -> perviuosPage());
+			} else {
+				button.addListener(SWT.Selection, e -> {
+					GanttPart ganttPart = (GanttPart) context.getContent();
+					ganttPart.addTask();
+				});
 			}
 		});
 
@@ -124,13 +132,18 @@ public class ActionMenu extends Part {
 		super.configureShell(newShell);
 	}
 
-	public ActionMenu setContext(BruiAssemblyContext context) {
+	public ActionMenu setContext(IBruiContext context) {
 		this.context = context;
 		return this;
 	}
 
 	public ActionMenu setService(IBruiService service) {
 		this.serive = service;
+		return this;
+	}
+
+	public ActionMenu setEvent(Event e) {
+		this.e = e;
 		return this;
 	}
 

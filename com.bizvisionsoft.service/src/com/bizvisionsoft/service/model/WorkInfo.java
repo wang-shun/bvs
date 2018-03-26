@@ -125,16 +125,16 @@ gantt.<span class="me1">init</span><span class="br0">(</span><span class=
  * @author hua
  *
  */
-@PersistenceCollection("demotask")
+@PersistenceCollection("demoWork")
 public class WorkInfo {
 
 	@ReadValue
 	@WriteValue
-	private Integer id;
+	private String id;
 
 	@ReadValue
 	@WriteValue
-	private Integer parent;
+	private String parent;
 
 	@ReadValue
 	@WriteValue
@@ -180,6 +180,110 @@ public class WorkInfo {
 	@ReadValue
 	@WriteValue
 	private Boolean open;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public String getWbsCode() {
+		return wbsCode;
+	}
+
+	public void setWbsCode(String wbsCode) {
+		this.wbsCode = wbsCode;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
+	public Float getProgress() {
+		return progress;
+	}
+
+	public void setProgress(Float progress) {
+		this.progress = progress;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getBarstyle() {
+		return barstyle;
+	}
+
+	public void setBarstyle(String barstyle) {
+		this.barstyle = barstyle;
+	}
+
+	public Boolean getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(Boolean readonly) {
+		this.readonly = readonly;
+	}
+
+	public Boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
+	}
+
+	public Boolean getOpen() {
+		return open;
+	}
+
+	public void setOpen(Boolean open) {
+		this.open = open;
+	}
 
 	
 }

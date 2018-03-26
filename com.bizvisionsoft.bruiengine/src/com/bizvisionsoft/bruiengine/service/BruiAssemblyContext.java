@@ -93,8 +93,9 @@ public class BruiAssemblyContext implements IBruiContext {
 		return getContent("this");
 	}
 
-	public void setSelectionProvider(IPostSelectionProvider selectionProvider) {
+	public BruiAssemblyContext setSelectionProvider(IPostSelectionProvider selectionProvider) {
 		this.selectionProvider = selectionProvider;
+		return this;
 	}
 
 	public StructuredSelection getSelection() {
