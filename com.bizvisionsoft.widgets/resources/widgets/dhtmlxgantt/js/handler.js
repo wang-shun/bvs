@@ -92,7 +92,6 @@
 			gantt.config.links.finish_to_start = "FS";
 			gantt.config.links.start_to_finish = "SF";
 			gantt.config.links.finish_to_finish = "FF";
-			gantt.config.details_on_create = true;
 			gantt.config.order_branch = true;
 			gantt.config.order_branch_free = true;
 		},

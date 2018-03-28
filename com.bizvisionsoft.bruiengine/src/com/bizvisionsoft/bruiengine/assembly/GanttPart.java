@@ -132,24 +132,29 @@ public class GanttPart {
 		// 设置必须的事件侦听
 		gantt.addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
 		gantt.addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
-		
-		
-		//test
-		addGanttEventListener(GanttEventCode.onAfterTaskAdd.name(), e1 -> {
-			System.out.println(e1);
-		});
 
+		// test
+		addGanttEventListener(GanttEventCode.onAfterTaskAdd.name(), e1 -> testEvent(e1));
+
+		addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 -> testEvent(e1));
+
+		addGanttEventListener(GanttEventCode.onAfterTaskUpdate.name(), e1 -> testEvent(e1));
+
+		addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
+
+	}
+
+	private void testEvent(Event e1) {
+		System.out.println(e1.text + e1);
 	}
 
 	private void showRowMenu(Event e) {
-		new ActionMenu(config.getActions()).setContext(context).setService(bruiService).setEvent(e).open();
+		new ActionMenu(config.getActions()).setContext(context).setEvent(e).open();
 	}
 
 	private void showHeadMenu(Event e) {
-		new ActionMenu(config.getActions()).setContext(context).setService(bruiService).setEvent(e).open();
+		new ActionMenu(config.getHeadActions()).setContext(context).setEvent(e).open();
 	}
-	
-	
 
 	public void addGanttEventListener(String eventCode, Listener listener) {
 		gantt.addGanttEventListener(eventCode, listener);
@@ -165,6 +170,7 @@ public class GanttPart {
 		item.setDuration(10);
 		item.setStart_date(new Date());
 		item.setName("测试任务");
+		item.setType("task");//如果不设置会再触发一次更新
 		gantt.addTask(item, null, 1);
 	}
 

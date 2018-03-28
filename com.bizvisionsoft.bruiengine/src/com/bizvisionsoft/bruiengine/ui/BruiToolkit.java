@@ -208,20 +208,20 @@ public class BruiToolkit {
 		if (a.isForceText()) {
 			if (imageUrl != null) {
 				if ("block".equals(layoutStyle)) {// 块状布局
-					text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+					text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='display:inline-block;'>" + buttonText + "</div>";
 				}
 			} else {
 				if ("block".equals(layoutStyle)) {// 块状布局
-					text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+					text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='margin-left:4px;display:inline-block;'>" + buttonText + "</div>";
 				}
 			}
 		}else {
 			if ("block".equals(layoutStyle)) {// 块状布局
-				text += "<div style='font-size:18px;font-weight:bold;margin-top:8px;'>" + buttonText + "</div>";
+				text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 			} 
 		}
 

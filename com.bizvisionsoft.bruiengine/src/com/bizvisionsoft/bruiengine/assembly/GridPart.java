@@ -429,7 +429,7 @@ public class GridPart {
 			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
 		} else {
 			// œ‘ æ≤Àµ•
-			ActionMenu menu = new ActionMenu(action.getChildren()).setContext(context).setService(bruiService);
+			ActionMenu menu = new ActionMenu(action.getChildren()).setContext(context);
 			menu.open();
 		}
 	}

@@ -14,9 +14,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.assembly.GanttPart;
+import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
-import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.Util;
 
@@ -46,14 +45,13 @@ public class ActionMenu extends Part {
 	private List<Action> actions;
 	private List<List<Action>> pagedAction;
 	private IBruiContext context;
-	private IBruiService serive;
 	private int xUnit = 3;
 	private int yUnit = 3;
 	private int unitSize = 128;
 	private int currentPage = 0;
 	private Composite parent;
 	private Composite page;
-	private Event e;
+	private Event event;
 
 	public ActionMenu(List<Action> actions) {
 		super(UserSession.current().getShell());
@@ -103,8 +101,7 @@ public class ActionMenu extends Part {
 				button.addListener(SWT.Selection, e -> perviuosPage());
 			} else {
 				button.addListener(SWT.Selection, e -> {
-					GanttPart ganttPart = (GanttPart) context.getContent();
-					ganttPart.addTask();
+					BruiActionEngine.create(a, service).invokeExecute(event, context);
 				});
 			}
 		});
@@ -137,13 +134,8 @@ public class ActionMenu extends Part {
 		return this;
 	}
 
-	public ActionMenu setService(IBruiService service) {
-		this.serive = service;
-		return this;
-	}
-
-	public ActionMenu setEvent(Event e) {
-		this.e = e;
+	public ActionMenu setEvent(Event event) {
+		this.event = event;
 		return this;
 	}
 
