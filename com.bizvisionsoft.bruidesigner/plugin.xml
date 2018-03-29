@@ -155,12 +155,13 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:com.bizvisionsoft.bruidesigner.view.SiteView?after=additions">
+            locationURI="toolbar:main?after=additions">
          <command
                commandId="bruidesigner.save"
                icon="icons/upload.png"
                id="bruidesigner.save"
                label="提交修改"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -488,6 +489,16 @@
             id="bruidesigner.addAssemblyToFolder"
             name="添加组件到当前目录">
       </command>
+      <command
+            defaultHandler="com.bizvisionsoft.bruidesigner.command.Copy"
+            id="bruidesigner.copy"
+            name="复制">
+      </command>
+      <command
+            defaultHandler="com.bizvisionsoft.bruidesigner.command.Paste"
+            id="bruidesigner.paste"
+            name="粘贴">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -576,7 +587,7 @@
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyEditor"
             default="false"
-            icon="icons/package.png"
+            icon="icons/assembly.png"
             id="bruidesigner.assemblyEditor"
             name="组件">
       </editor>
@@ -604,28 +615,28 @@
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyStickerEditor"
             default="false"
-            icon="icons/package.png"
+            icon="icons/sticker.png"
             id="bruidesigner.assemblyStickerEditor"
             name="带标题栏的组件">
       </editor>
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyGridEditor"
             default="false"
-            icon="icons/package.png"
+            icon="icons/table.png"
             id="bruidesigner.assemblyGridEditor"
             name="表格组件">
       </editor>
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyEditorEditor"
             default="false"
-            icon="icons/package.png"
+            icon="icons/form.png"
             id="bruidesigner.assemblyEditorEditor"
             name="编辑器组件">
       </editor>
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyGanttEditor"
             default="false"
-            icon="icons/package.png"
+            icon="icons/gantt.png"
             id="bruidesigner.assemblyGanttEditor"
             name="甘特图组件">
       </editor>

@@ -8,7 +8,8 @@ import java.util.List;
 import org.bson.Document;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
@@ -48,7 +49,6 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.mongodb.BasicDBObject;
 
 public class GridPart {
@@ -98,6 +98,10 @@ public class GridPart {
 	private BasicDBObject filter;
 
 	private boolean queryOn;
+
+	private Column sortColumn;
+
+	private int sortSequance;
 
 	public GridPart(Assembly gridConfig) {
 		this.config = gridConfig;
@@ -212,7 +216,7 @@ public class GridPart {
 		}
 
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(queryConfig);
-		IBruiContext childContext = new BruiEditorContext().setEditable(true).setCompact(true).setInput(input)
+		IBruiContext childContext = new BruiEditorContext().setEditable(true).setEmbeded(true).setInput(input)
 				.setIgnoreNull(true).setParent(context).setAssembly(queryConfig).setEngine(brui);
 		context.add(childContext);
 
@@ -419,6 +423,16 @@ public class GridPart {
 		// 内容提供
 		viewer.setContentProvider(new GridPartContentProvider(config));
 
+		// 准备排序
+		if (sortColumn != null) {
+			viewer.setSorter(new ViewerSorter() {
+				@Override
+				public int compare(Viewer viewer, Object e1, Object e2) {
+					return sortSequance * renderEngine.compare(sortColumn, e1, e2);
+				}
+			});
+		}
+
 		context.setSelectionProvider(viewer);
 
 		return grid;
@@ -489,13 +503,24 @@ public class GridPart {
 
 		vcol.setLabelProvider(labelProvider);
 
+		if (c.getSort() != 0) {
+			this.sortColumn = c;
+			this.sortSequance = c.getSort();
+		}
+
 		return col;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void insert(Object item, int i) {
-		((List) viewer.getInput()).add(0, item);
-		viewer.insert(viewer.getInput(), item, 0);
+		((List) viewer.getInput()).add(i, item);
+		viewer.insert(viewer.getInput(), item, i);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void insert(Object item) {
+		((List) viewer.getInput()).add(item);
+		viewer.refresh();
 	}
 
 	public void replaceItem(Object elem, Object info) {
@@ -506,14 +531,18 @@ public class GridPart {
 		viewer.update(elem, null);
 	}
 
-	public List<Object> getSelectedItems() {
+	public void remove(Object elem) {
+		viewer.remove(elem);
+	}
+
+	public List<Object> getCheckedItems() {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked())
 				.forEach(c -> result.add(c.getData()));
 		return result;
 	}
 
-	public void removeSelectedItem() {
+	public void removeCheckedItem() {
 		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked()).forEach(c -> {
 			c.dispose();
 		});
@@ -540,10 +569,7 @@ public class GridPart {
 			input = new Document();
 		}
 
-		Editor editor = bruiService.createEditor(queryConfig, input, true, true, context);
-		if (Window.OK == editor.open()) {
-			doQuery((BasicDBObject) editor.getResult());
-		}
+		bruiService.createEditor(queryConfig, input, true, true, context).open((r, t) -> doQuery(r));
 	}
 
 	private void doQuery(BasicDBObject result) {

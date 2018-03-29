@@ -1,11 +1,17 @@
 package com.bizvisionsoft.bruiengine.service;
 
-public class BruiEditorContext extends BruiAssemblyContext implements IBruiEditorContext{
+public class BruiEditorContext extends BruiAssemblyContext implements IBruiEditorContext {
 
 	private boolean editable;
 	private Object input;
 	private boolean ignoreNull;
-	private boolean compact;
+	private boolean embedded;
+
+	public BruiEditorContext() {
+		super();
+		editable = true;
+		ignoreNull = true;
+	}
 
 	public BruiEditorContext setEditable(boolean editable) {
 		this.editable = editable;
@@ -16,11 +22,11 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 		this.input = input;
 		return this;
 	}
-	
+
 	public boolean isEditable() {
 		return editable;
 	}
-	
+
 	public Object getInput() {
 		return input;
 	}
@@ -29,18 +35,18 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 		this.ignoreNull = ignoreNull;
 		return this;
 	}
-	
+
 	public boolean isIgnoreNull() {
 		return ignoreNull;
 	}
 
-	public BruiEditorContext setCompact(boolean compact) {
-		this.compact = compact;
+	public BruiEditorContext setEmbeded(boolean compact) {
+		this.embedded = compact;
 		return this;
 	}
-	
+
 	public boolean isEmbedded() {
-		return compact;
+		return embedded;
 	}
 
 }

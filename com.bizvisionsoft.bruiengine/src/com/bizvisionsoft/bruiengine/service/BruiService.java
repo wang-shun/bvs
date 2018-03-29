@@ -59,18 +59,21 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchContentByName(String assemblyName, Object input) {
-		switchContent(Brui.site.getAssemblyByName(assemblyName), input);
+		switchContent(getEditor(assemblyName), input);
 	}
 
 	@Override
-	public Editor createEditor(Assembly assembly, Object input, boolean editable, boolean ignoreNull, IBruiContext context) {
-		return new Editor(assembly, context).setEditable(editable).setInput(input).setIgnoreNull(ignoreNull);
-	}
-
-	@Override
-	public Editor createEditorByName(String assemblyName, Object input, boolean editable, boolean ignoreNull,
+	@Deprecated
+	public <T> Editor<T> createEditor(Assembly assembly, T input, boolean editable, boolean ignoreNull,
 			IBruiContext context) {
-		return createEditor(Brui.site.getAssemblyByName(assemblyName), input, editable, ignoreNull, context);
+		return new Editor<T>(assembly, context).setEditable(editable).setInput(input).setIgnoreNull(ignoreNull);
+	}
+
+	@Override
+	@Deprecated
+	public <T> Editor<T> createEditorByName(String assemblyName, T input, boolean editable, boolean ignoreNull,
+			IBruiContext context) {
+		return createEditor(getEditor(assemblyName), input, editable, ignoreNull, context);
 	}
 
 }

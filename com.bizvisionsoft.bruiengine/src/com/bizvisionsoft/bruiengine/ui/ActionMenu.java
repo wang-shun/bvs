@@ -101,6 +101,7 @@ public class ActionMenu extends Part {
 				button.addListener(SWT.Selection, e -> perviuosPage());
 			} else {
 				button.addListener(SWT.Selection, e -> {
+					close();
 					BruiActionEngine.create(a, service).invokeExecute(event, context);
 				});
 			}

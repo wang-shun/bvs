@@ -93,8 +93,8 @@ public class Util {
 					}).orElse(value.toString());
 		} else if (value instanceof Boolean) {
 			text = (boolean) value ? "ÊÇ" : "·ñ";
-		} else if (value != null) {
-			text = value.toString();
+		} else if (value instanceof String) {
+			text = (String)value;
 		} else {
 			text = "";
 		}

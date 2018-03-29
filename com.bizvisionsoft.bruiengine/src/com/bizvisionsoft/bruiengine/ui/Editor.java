@@ -1,5 +1,8 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.function.BiConsumer;
+
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -8,8 +11,11 @@ import org.eclipse.swt.widgets.Display;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.mongodb.BasicDBObject;
 
-public class Editor extends Popup {
+public class Editor<T> extends Popup {
+
+	private T input;
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {
 		super(assembly, parentContext);
@@ -23,17 +29,18 @@ public class Editor extends Popup {
 		return new BruiEditorContext();
 	}
 
-	public Editor setEditable(boolean editable) {
+	public Editor<T> setEditable(boolean editable) {
 		getContext().setEditable(editable);
 		return this;
 	}
-	
-	public Editor setIgnoreNull(boolean ignoreNull) {
+
+	public Editor<T> setIgnoreNull(boolean ignoreNull) {
 		getContext().setIgnoreNull(ignoreNull);
 		return this;
 	}
-	
-	public Editor setInput(Object input) {
+
+	public Editor<T> setInput(T input) {
+		this.input = input;
 		getContext().setInput(input);
 		return this;
 	}
@@ -81,5 +88,11 @@ public class Editor extends Popup {
 		return brui.getReturnObject();
 	}
 
+	public Editor<T> open(BiConsumer<BasicDBObject,T> doit) {
+		if (Window.OK == open()) {
+			doit.accept((BasicDBObject) getResult(),input);
+		}
+		return this;
+	}
 
 }

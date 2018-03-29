@@ -32,7 +32,7 @@ public class GridPartDefaultRender {
 
 	public void renderCell(ViewerCell cell, Column column, Object value) {
 		String format = column.getFormat();
-		String text = Util.getFormatText(value, format,locale);
+		String text = Util.getFormatText(value, format, locale);
 		cell.setText(text);
 		// 默认不处理以下的配置
 		// cell.setBackground(getBackground(element));
@@ -43,7 +43,6 @@ public class GridPartDefaultRender {
 		// gridItem.setColumnSpan(cell.getColumnIndex(), colSpan);
 	}
 
-
 	public void renderColumnHeader(GridColumn col, Column column) {
 		col.setText(column.getText());
 	}
@@ -51,6 +50,14 @@ public class GridPartDefaultRender {
 	public void renderColumnFooter(GridColumn col, Column column) {
 		// col.setFooterText(column.getFootText());
 		// TODO 根据配置直接显示
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public int compare(Column col, Object e1, Object e2) {
+		if (e1 instanceof Comparable<?> && e2 instanceof Comparable<?>) {
+			return ((Comparable) e1).compareTo((Comparable) e2);
+		}
+		return 0;
 	}
 
 }

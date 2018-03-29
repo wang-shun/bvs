@@ -254,9 +254,9 @@ public class GridColumnsEditPane extends Composite {
 			editor.createTextField(parent, "唯一标识符:", element, "id", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "列名称:", element, "name", SWT.BORDER);
-			
+
 			editor.createTextField(parent, "列头显示文本:", element, "text", SWT.BORDER);
-			
+
 			editor.createCheckboxField(parent, "列头使用超文本：", element, "markupEnabled", SWT.CHECK);
 
 			editor.createTextField(parent, "描述:", element, "description", SWT.BORDER);
@@ -274,16 +274,17 @@ public class GridColumnsEditPane extends Composite {
 			editor.createCheckboxField(parent, "支持改变列宽：", element, "resizeable", SWT.CHECK);
 
 			editor.createCheckboxField(parent, "列组展开时是否显示：", element, "detail", SWT.CHECK);
-			
+
 			editor.createCheckboxField(parent, "列组收起时是否显示：", element, "summary", SWT.CHECK);
-			
+
 			editor.createCheckboxField(parent, "是否展开（仅适用于列组）：", element, "expanded", SWT.CHECK);
-			
+
 			editor.createTextField(parent, "默认的单元格数据显示格式:", element, "format", SWT.BORDER);
 
-			
+			editor.createIntegerField(parent, "表格按本列排序（-1逆序，0不排序，1顺序）：", element, "sort", SWT.BORDER, -1, 1);
+
 			element.addPropertyChangeListener("name", listener);
-			
+
 			element.addPropertyChangeListener("text", listener);
 
 		}

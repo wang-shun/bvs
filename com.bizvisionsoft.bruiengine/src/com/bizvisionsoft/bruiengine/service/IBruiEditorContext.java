@@ -14,7 +14,7 @@ public interface IBruiEditorContext extends IBruiContext{
 
 	IBruiEditorContext setIgnoreNull(boolean ignoreNull);
 
-	IBruiEditorContext setCompact(boolean compact);
+	IBruiEditorContext setEmbeded(boolean compact);
 
 	boolean isEmbedded();
 

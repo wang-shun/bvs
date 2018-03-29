@@ -142,7 +142,7 @@ public class ModelToolkit {
 			return Activator.getImageDescriptor("icons/assembly.png");
 		}
 		if (model instanceof AssemblyLink)
-			return Activator.getImageDescriptor("icons/assembly.png");
+			return getImageDescriptor(SiteLoader.site.getAssembly(((AssemblyLink) model).getId()));
 		if (model instanceof Site)
 			return Activator.getImageDescriptor("icons/root.png");
 		if (model instanceof Page)
@@ -162,7 +162,7 @@ public class ModelToolkit {
 		if (model instanceof Layout)
 			return Activator.getImageDescriptor("icons/layout.png");
 		if (model instanceof AssemblyLayouted)
-			return Activator.getImageDescriptor("icons/assembly.png");
+			return getImageDescriptor(SiteLoader.site.getAssembly(((AssemblyLayouted) model).getId()));
 		if (model instanceof DataSource)
 			return Activator.getImageDescriptor("icons/database.png");
 		if (model instanceof Column)

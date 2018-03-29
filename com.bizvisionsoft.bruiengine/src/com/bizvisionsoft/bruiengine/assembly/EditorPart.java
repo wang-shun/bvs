@@ -368,7 +368,7 @@ public class EditorPart {
 
 		if (field instanceof MultiSelectionField) {
 			grid.addToolItem(new ToolItemDescriptor("È·¶¨", BruiToolkit.CSS_NORMAL, e -> {
-				if (field.setSelection(grid.getSelectedItems()))
+				if (field.setSelection(grid.getCheckedItems()))
 					closeContainer();
 			}));
 		}

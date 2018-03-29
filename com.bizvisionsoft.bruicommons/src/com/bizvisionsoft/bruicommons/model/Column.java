@@ -33,6 +33,8 @@ public class Column extends ModelObject {
 	private boolean markupEnabled;
 
 	private String format;
+	
+	private int sort;
 
 	public List<Column> getColumns() {
 		return columns;
@@ -191,6 +193,14 @@ public class Column extends ModelObject {
 
 	public void setHide(boolean hide) {
 		this.hide = hide;
+	}
+	
+	public int getSort() {
+		return sort;
+	}
+	
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 	
 }

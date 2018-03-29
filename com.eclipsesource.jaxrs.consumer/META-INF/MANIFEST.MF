@@ -3,7 +3,7 @@ Export-Package: com.eclipsesource.jaxrs.consumer;version="5.3.1"
 Built-By: holger
 Bundle-Name: JAX-RS Consumer
 Created-By: Apache Maven 3.3.3
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: EclipseSource
 Build-Jdk: 1.7.0_79
 Bundle-Version: 5.3.1.201602281253

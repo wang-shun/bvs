@@ -2,7 +2,6 @@ package com.bizvisionsoft.pms.action;
 
 import java.util.Optional;
 
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -11,7 +10,6 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.UserInfo;
@@ -29,17 +27,15 @@ public class EditUser {
 		context.ifFristElementSelected(elem -> {
 			UserService service = Services.get(UserService.class);
 			Optional.ofNullable(service.get(((UserInfo) elem).getUserId())).ifPresent(user -> {
-				Editor editor = bruiService.createEditorByName("用户编辑器", user, true,false, context);
-				if (Window.OK == editor.open()) {
+				bruiService.createEditorByName("用户编辑器", user, true, false, context).open((r, t) -> {
 					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-							.filter(new BasicDBObject("userId", user.getUserId())).set(editor.getResult());
-					long cnt = service.update(filterAndUpdate.bson());
-					if (cnt == 1) {
+							.filter(new BasicDBObject("userId", user.getUserId())).set(r);
+					if (service.update(filterAndUpdate.bson()) == 1) {
 						UserInfo info = service.info(user.getUserId());
 						GridPart grid = (GridPart) context.getContent();
 						grid.replaceItem(elem, info);
 					}
-				}
+				});
 			});
 
 		});

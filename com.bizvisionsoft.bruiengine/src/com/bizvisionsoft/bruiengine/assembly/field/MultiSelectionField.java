@@ -45,8 +45,8 @@ public class MultiSelectionField extends SelectionField {
 					})).addToolItem(new ToolItemDescriptor("É¾³ý", "inbox", e -> {
 						if (value == null)
 							return;
-						value.removeAll(grid.getSelectedItems());
-						grid.removeSelectedItem();
+						value.removeAll(grid.getCheckedItems());
+						grid.removeCheckedItem();
 					})).addToolItem(new ToolItemDescriptor("Çå¿Õ", "inbox", e -> {
 						value.clear();
 						grid.removeAllItem();

@@ -219,10 +219,10 @@ public class BruiToolkit {
 					text += "<div style='margin-left:4px;display:inline-block;'>" + buttonText + "</div>";
 				}
 			}
-		}else {
+		} else {
 			if ("block".equals(layoutStyle)) {// ¿é×´²¼¾Ö
 				text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
-			} 
+			}
 		}
 
 		btn.setText(text);

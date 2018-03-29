@@ -13,17 +13,12 @@ import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.model.UserInfo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.UpdateOptions;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BasicServiceImpl implements UserService {
 
 	@Override
 	public long update(BasicDBObject fu) {
-		BasicDBObject filter = (BasicDBObject) fu.get("filter");
-		BasicDBObject update = (BasicDBObject) fu.get("update");
-		UpdateOptions option = new UpdateOptions();
-		option.upsert(false);
-		return Service.col(User.class).updateOne(filter, update, option).getModifiedCount();
+		return update(fu, User.class);
 	}
 
 	@Override
@@ -51,8 +46,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User insert(User user) {
-		Service.col(User.class).insertOne(user);
-		return user;
+		return insert(user, User.class);
 	}
 
 	@Override
@@ -101,9 +95,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public long count(BasicDBObject filter) {
-		if (filter != null)
-			return Service.col(UserInfo.class).count(filter);
-		return Service.col(UserInfo.class).count();
+		return count(filter, User.class);
 	}
 
 }

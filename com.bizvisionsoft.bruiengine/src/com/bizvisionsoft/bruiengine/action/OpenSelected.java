@@ -1,7 +1,5 @@
 package com.bizvisionsoft.bruiengine.action;
 
-import org.eclipse.jface.window.Window;
-
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -10,7 +8,6 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 
 public class OpenSelected {
 
@@ -29,10 +26,8 @@ public class OpenSelected {
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.ifFristElementSelected(elem -> {
 			Object info = AUtil.deepCopy(elem);
-			Editor editor = bruiService.createEditor(assembly, info, editable, false, context);
-			if (Window.OK == editor.open()) {
-				((GridPart) context.getContent()).replaceItem(elem, info);
-			}
+			bruiService.createEditor(assembly, info, editable, false, context)
+					.open((r, t) -> ((GridPart) context.getContent()).replaceItem(elem, info));
 		});
 	}
 

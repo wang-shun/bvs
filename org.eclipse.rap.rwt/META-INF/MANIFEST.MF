@@ -3,7 +3,7 @@ Bundle-SymbolicName: org.eclipse.rap.rwt
 Archiver-Version: Plexus Archiver
 Built-By: genie.rap
 Bundle-ManifestVersion: 2
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/rap/or
  g.eclipse.rap.git;path="bundles/org.eclipse.rap.rwt";commitId=c84c96f
  c1c7def522bc1b018cb04b4d10b282cc6

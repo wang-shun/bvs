@@ -8,6 +8,7 @@ import org.osgi.framework.Bundle;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnFooter;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHeader;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderCompare;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderConfig;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderInput;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderUpdateCell;
@@ -101,6 +102,15 @@ public class BruiGridRenderEngine extends BruiEngine {
 
 	private Object getColumnValue(Object element, Column column) {
 		return AUtil.readValue(element, config.getName(), column.getName(), element);
+	}
+
+	public int compare(Column column, Object e1, Object e2) {
+		if (defaultRender != null) {
+			return defaultRender.compare(column,e1, e2);
+		} else {
+			return (int) invokeMethodInjectParams(GridRenderCompare.class, new Object[] { e1, e2 },
+					new String[] { GridRenderCompare.PARAM_ELEMENT1, GridRenderCompare.PARAM_ELEMENT2 }, null);
+		}
 	}
 
 }

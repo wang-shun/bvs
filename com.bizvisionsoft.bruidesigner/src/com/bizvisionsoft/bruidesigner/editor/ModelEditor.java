@@ -229,8 +229,17 @@ public abstract class ModelEditor extends EditorPart {
 	private Assembly setTextByAssemblyId(Text text, String value) {
 		Assembly assembly = ModelToolkit.getAssembly(value);
 		if (assembly != null) {
-			text.setText(assembly.getName() + "[" + assembly.getId() + "]\n插件:" + assembly.getBundleId() + "\n类路径:"
-					+ assembly.getClassName());
+			String id = assembly.getId();
+			String bundleId = assembly.getBundleId();
+			String className = assembly.getClassName();
+			String str = assembly.getName() + "[" + id + "]";
+			if (bundleId != null) {
+				str += "\n插件:" + bundleId;
+			}
+			if (className != null) {
+				str += "\n类路径:" + className;
+			}
+			text.setText(str);
 		}
 		return assembly;
 	}

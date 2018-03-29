@@ -2,6 +2,10 @@ package com.bizvisionsoft.bruidesigner;
 
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarContributionItem;
+import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -65,8 +69,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	}
 
 	protected void fillCoolBar(ICoolBarManager coolBar) {
-//		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-//		coolBar.add(new ToolBarContributionItem(toolbar, "main"));
+		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+		coolBar.add(new ToolBarContributionItem(toolbar, "main"));
 //		toolbar.add(openViewAction);
 //		toolbar.add(messagePopupAction);
 	}
