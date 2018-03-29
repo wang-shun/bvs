@@ -24,6 +24,7 @@ import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruicommons.model.ContentArea;
 import com.bizvisionsoft.bruicommons.model.DataSource;
+import com.bizvisionsoft.bruicommons.model.Folder;
 import com.bizvisionsoft.bruicommons.model.Footbar;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.Formatter;
@@ -84,12 +85,18 @@ public class ModelToolkit {
 			return ((Page) model).getName();
 		if (model instanceof Template)
 			return ((Template) model).getName();
+		if (model instanceof Folder)
+			return ((Folder) model).getName();
 		if (model instanceof Layout)
 			return ((Layout) model).getName();
 		if (model instanceof Column)
-			return ((Column) model).getName() +(((Column) model).getText()==null?"":(" £¨"+((Column) model).getText()+"£©"));
+			return ((Column) model).getName()
+					+ (((Column) model).getText() == null ? "" : (" £¨" + ((Column) model).getText() + "£©"));
 		if (model instanceof FormField) {
-			return "["+((FormField) model).getType() +"] "+((FormField) model).getName();
+			if (FormField.TYPE_INLINE.equals(((FormField) model).getType())) {
+				return "[" + ((FormField) model).getType() + "]";
+			}
+			return "[" + ((FormField) model).getType() + "] " + ((FormField) model).getName();
 		}
 		return "";
 	}
@@ -123,8 +130,17 @@ public class ModelToolkit {
 	public static ImageDescriptor getImageDescriptor(Object model) {
 		if (model instanceof Action)
 			return Activator.getImageDescriptor("icons/action.png");
-		if (model instanceof Assembly)
+		if (model instanceof Assembly) {
+			if (Assembly.TYPE_EDITOR.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/form.png");
+			if (Assembly.TYPE_GANTT.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/gantt.png");
+			if (Assembly.TYPE_GRID.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/table.png");
+			if (Assembly.TYPE_STICKER.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/sticker.png");
 			return Activator.getImageDescriptor("icons/assembly.png");
+		}
 		if (model instanceof AssemblyLink)
 			return Activator.getImageDescriptor("icons/assembly.png");
 		if (model instanceof Site)
@@ -141,6 +157,8 @@ public class ModelToolkit {
 			return Activator.getImageDescriptor("icons/content.png");
 		if (model instanceof Template)
 			return Activator.getImageDescriptor("icons/template.png");
+		if (model instanceof Folder)
+			return Activator.getImageDescriptor("icons/folder.png");
 		if (model instanceof Layout)
 			return Activator.getImageDescriptor("icons/layout.png");
 		if (model instanceof AssemblyLayouted)
@@ -218,7 +236,7 @@ public class ModelToolkit {
 		return site;
 	}
 
-	public static Assembly createAssembly(String type) {
+	public static Assembly createAssembly(String type, String folderId) {
 		Assembly assy = new Assembly();
 		assy.setId(generateId());
 		if (Assembly.TYPE_STICKER.equals(type)) {
@@ -234,6 +252,7 @@ public class ModelToolkit {
 		}
 		assy.setLayout(new ArrayList<Layout>());
 		assy.setType(type);
+		assy.setFolderId(folderId);
 		SiteLoader.site.getAssyLib().getAssys().add(assy);
 		return assy;
 	}
@@ -417,6 +436,20 @@ public class ModelToolkit {
 		field.setFormFields(new ArrayList<FormField>());
 		field.setType(FormField.TYPE_INLINE);
 		return field;
+	}
+
+	public static Folder createFolder(Folder parent) {
+		Folder folder = new Folder();
+		folder.setId(generateId());
+		if (parent == null) {
+			folder.setName("Õ¾µã");
+		} else {
+			folder.setName(generateName("Ä¿Â¼"));
+		}
+		folder.setChildren(new ArrayList<Folder>());
+		if (parent != null)
+			parent.getChildren().add(folder);
+		return folder;
 	}
 
 }

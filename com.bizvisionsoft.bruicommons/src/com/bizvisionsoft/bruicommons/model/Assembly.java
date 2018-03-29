@@ -30,12 +30,22 @@ public class Assembly extends ModelObject {
 
 	private String stickerTitle;
 
+	private String folderId;
+
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getFolderId() {
+		return folderId;
+	}
+
+	public void setFolderId(String folderId) {
+		this.folderId = folderId;
 	}
 
 	public String getName() {
@@ -518,11 +528,11 @@ public class Assembly extends ModelObject {
 	public void setGanttGridWidth(int ganttGridWidth) {
 		this.ganttGridWidth = ganttGridWidth;
 	}
-	
+
 	public int getGanttGridWidth() {
 		return ganttGridWidth;
 	}
-	
+
 	// *******************************************************************************************
 	// action
 	private List<Action> headActions;
@@ -530,8 +540,9 @@ public class Assembly extends ModelObject {
 	public List<Action> getHeadActions() {
 		return headActions;
 	}
-	
+
 	public void setHeadActions(List<Action> headActions) {
 		this.headActions = headActions;
 	}
+
 }

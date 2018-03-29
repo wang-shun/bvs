@@ -22,6 +22,8 @@ public class View extends Part {
 	
 	private ContentWidget contentWidget;
 
+	private BruiAssemblyContext context;
+
 	public static View create(Page page) {
 		return new View(page);
 	}
@@ -29,8 +31,11 @@ public class View extends Part {
 	public View(Page page) {
 		super(UserSession.current().getShell());
 		this.page = page;
-		sidebarWidget = new SidebarWidget(page.getSidebar(),service);
-		contentWidget = new ContentWidget(page.getContentArea(),service);
+		this.context = new BruiAssemblyContext();
+		
+		
+		sidebarWidget = new SidebarWidget(page.getSidebar(),service,context);
+		contentWidget = new ContentWidget(page.getContentArea(),service,context);
 
 	}
 

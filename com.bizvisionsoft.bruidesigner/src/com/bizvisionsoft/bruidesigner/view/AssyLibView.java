@@ -37,12 +37,6 @@ public class AssyLibView extends ViewPart implements PropertyChangeListener {
 		viewer.getControl().setFocus();
 	}
 
-	public void createAssembly(String type) {
-		Assembly assy = ModelToolkit.createAssembly(type);
-		assy.addPropertyChangeListener("name", this);
-		viewer.add(assy);
-	}
-
 	public void removeAssembly(Assembly assy) {
 		assy.removePropertyChangeListener("name", this);
 		ModelToolkit.deleteAssembly(assy);

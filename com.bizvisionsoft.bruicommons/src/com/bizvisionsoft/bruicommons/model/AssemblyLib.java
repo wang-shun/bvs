@@ -13,5 +13,5 @@ public class AssemblyLib extends ModelObject{
 	public void setAssys(List<Assembly> assys) {
 		this.assys = assys;
 	}
-	
+
 }

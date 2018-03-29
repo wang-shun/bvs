@@ -25,11 +25,14 @@ public class ContentWidget {
 
 	private Composite contentContainer;
 
+	private BruiAssemblyContext context;
+
 	// private BruiEngine brui;
 
-	public ContentWidget(ContentArea contentArea, BruiService service) {
+	public ContentWidget(ContentArea contentArea, BruiService service,BruiAssemblyContext parentContext) {
 		this.contentArea = contentArea;
 		this.service = service;
+		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
 		service.setContentWidget(this);
 	}
 
@@ -49,7 +52,7 @@ public class ContentWidget {
 		Arrays.asList(contentContainer.getChildren()).stream().filter(c -> !c.isDisposed())
 				.forEach(ctl -> ctl.dispose());
 
-		assemblyContainer = new AssemblyContainer(contentContainer,new BruiAssemblyContext());
+		assemblyContainer = new AssemblyContainer(contentContainer,context);
 		assemblyContainer.setAssembly(assembly).setServices(service).create();
 		contentContainer.layout(true, true);
 	}
@@ -57,4 +60,5 @@ public class ContentWidget {
 	public Composite getControl() {
 		return contentContainer;
 	}
+
 }

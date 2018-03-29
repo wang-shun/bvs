@@ -50,10 +50,10 @@
             restorable="false">
       </view>
       <view
-            class="com.bizvisionsoft.bruidesigner.view.TemplateView"
+            class="com.bizvisionsoft.bruidesigner.view.FolderView"
             icon="icons/folder.png"
-            id="com.bizvisionsoft.bruidesigner.view.TemplateView"
-            name="模板"
+            id="com.bizvisionsoft.bruidesigner.view.FolderView"
+            name="组件库"
             restorable="true">
       </view>
       <view
@@ -166,24 +166,6 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:com.bizvisionsoft.bruidesigner.view.TemplateView?after=additions">
-         <command
-               commandId="bruidesigner.createTemplate"
-               icon="icons/add.png"
-               id="bruidesigner.createTemplate"
-               label="创建模板"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.deleteTemplate"
-               icon="icons/delete.gif"
-               id="bruidesigner.deleteTemplate"
-               label="删除模板"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
             locationURI="toolbar:com.bizvisionsoft.bruidesigner.view.DataSourcesView?after=additions">
          <command
                commandId="bruidesigner.createDataSource"
@@ -246,6 +228,191 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:bruidesigner.folder">
+         <command
+               commandId="bruidesigner.createFolder"
+               id="bruidesigner.createFolder"
+               label="创建目录"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.deleteFolder"
+               id="bruidesigner.deleteFolder"
+               label="删除目录"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="com.bizvisionsoft.bruidesigner.separator0"
+               visible="true">
+         </separator>
+         <command
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/add.png"
+               id="bruidesigner.addAssemblyToLib"
+               label="创建自定义组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.addStickerAssemblyToLib"
+               id="bruidesigner.addStickerAssemblyToLib"
+               label="创建带有标题栏的容器组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.addGridAssemblyToLib"
+               id="bruidesigner.addGridAssemblyToLib"
+               label="创建表格组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.addEditorAssemblyToLib"
+               id="bruidesigner.addEditorAssemblyToLib"
+               label="创建编辑器组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.addGanttAssemblyToLib"
+               id="bruidesigner.addGanttAssemblyToLib"
+               label="创建甘特图组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="com.bizvisionsoft.bruidesigner.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="bruidesigner.deleteAssemblyFromLib"
+               icon="icons/delete.gif"
+               id="bruidesigner.deleteAssemblyFromLib"
+               label="删除组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Assembly">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="bruidesigner.addAssemblyToFolder"
+               id="bruidesigner.addAssemblyToFolder"
+               label="添加组件到当前目录"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -280,12 +447,12 @@
             name="移除组件">
       </command>
       <command
-            id="bruidesigner.createTemplate"
-            name="创建模板">
+            id="bruidesigner.createFolder"
+            name="创建目录">
       </command>
       <command
-            id="bruidesigner.deleteTemplate"
-            name="删除模板">
+            id="bruidesigner.deleteFolder"
+            name="删除目录">
       </command>
       <command
             defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateDataSource"
@@ -316,23 +483,17 @@
             id="bruidesigner.addGanttAssemblyToLib"
             name="创建甘特图组件">
       </command>
+      <command
+            defaultHandler="com.bizvisionsoft.bruidesigner.command.AddAssemblyToFolder"
+            id="bruidesigner.addAssemblyToFolder"
+            name="添加组件到当前目录">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="com.bizvisionsoft.bruidesigner.command.DeleteAssembly"
             commandId="bruidesigner.deleteAssemblyFromLib">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <instanceof
-                        value="com.bizvisionsoft.bruicommons.model.Assembly">
-                  </instanceof>
-               </iterate>
-            </with></enabledWhen>
       </handler>
       <handler
             class="com.bizvisionsoft.bruidesigner.command.AddPage"
@@ -351,24 +512,12 @@
             commandId="bruidesigner.removeAssembly">
       </handler>
       <handler
-            class="com.bizvisionsoft.bruidesigner.command.CreateTemplate"
-            commandId="bruidesigner.createTemplate">
+            class="com.bizvisionsoft.bruidesigner.command.CreateFolder"
+            commandId="bruidesigner.createFolder">
       </handler>
       <handler
-            class="com.bizvisionsoft.bruidesigner.command.DeleteTemplate"
-            commandId="bruidesigner.deleteTemplate">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <instanceof
-                        value="java.io.File">
-                  </instanceof>
-               </iterate>
-            </with>
-         </enabledWhen>
+            class="com.bizvisionsoft.bruidesigner.command.DeleteFolder"
+            commandId="bruidesigner.deleteFolder">
       </handler>
       <handler
             class="com.bizvisionsoft.bruidesigner.command.DeleteDataSource"

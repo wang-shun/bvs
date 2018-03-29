@@ -6,18 +6,16 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Folder;
 import com.bizvisionsoft.bruidesigner.view.FolderView;
 
-public class CreateGridAssembly extends AbstractHandler {
+public class DeleteFolder extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		FolderView part = (FolderView) HandlerUtil.getActivePart(event);
-		IStructuredSelection sel = ((IStructuredSelection)HandlerUtil.getCurrentSelection(event));
-		Folder folder = (Folder) sel.getFirstElement();
-		part.createAssembly(Assembly.TYPE_GRID,folder);	
+		Folder folder = (Folder) ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).getFirstElement();
+		part.deleteFolder(folder);
 		return null;
 	}
 

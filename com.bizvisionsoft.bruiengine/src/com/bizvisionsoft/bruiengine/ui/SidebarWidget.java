@@ -25,6 +25,7 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
+import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
@@ -78,10 +79,12 @@ public class SidebarWidget {
 
 	private BruiToolkit bruiToolkit;
 
-	public SidebarWidget(Sidebar sidebar, BruiService service) {
+	private BruiAssemblyContext context;
+
+	public SidebarWidget(Sidebar sidebar, BruiService service, BruiAssemblyContext parentContext) {
 		this.sidebar = sidebar;
 		this.service = service;
-
+		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
 		bruiToolkit = UserSession.bruiToolkit();
 
 		// 1. 创建实例,注入并初始化
@@ -159,7 +162,7 @@ public class SidebarWidget {
 	}
 
 	private void run(Action action, Event e) {
-		BruiActionEngine.create(action, service).invokeExecute(e, null);
+		BruiActionEngine.create(action, service).invokeExecute(e, context);
 	}
 
 	private Control createHeader(Composite parent) {
@@ -219,6 +222,11 @@ public class SidebarWidget {
 
 		});
 		return viewer.getControl();
+	}
+
+	public SidebarWidget setContext(BruiAssemblyContext context) {
+		this.context = context;
+		return this;
 	}
 
 }

@@ -86,7 +86,7 @@ public class SiteView extends ViewPart implements PropertyChangeListener {
 	 * This is a callback that will allow us to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL| SWT.FULL_SELECTION);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(ModelToolkit.createLabelProvider());
 		viewer.setAutoExpandLevel(3);

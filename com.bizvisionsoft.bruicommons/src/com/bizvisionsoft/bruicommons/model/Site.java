@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruicommons.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,10 @@ public class Site extends ModelObject {
 	private String login;
 
 	private List<DataSource> dataSources;
-	
+
 	private Formatter formatter;
+
+	private Folder rootFolder;
 
 	public void setPages(List<Page> pages) {
 		this.pages = pages;
@@ -197,6 +200,12 @@ public class Site extends ModelObject {
 		return getAssyLib().getAssys().stream().filter(a -> a.getName().equals(assemblyName)).findFirst().orElse(null);
 	}
 
+	public List<Assembly> getAssysByFolder(String id) {
+		ArrayList<Assembly> result = new ArrayList<Assembly>();
+		getAssyLib().getAssys().stream().filter(a->id.equals(a.getFolderId())).forEach(i->result.add(i));
+		return result;
+	}
+
 	public TemplateLib getTemplateLib() {
 		return templateLib;
 	}
@@ -212,15 +221,23 @@ public class Site extends ModelObject {
 	public void setDataSources(List<DataSource> dataSources) {
 		this.dataSources = dataSources;
 	}
-	
+
 	public Formatter getFormatter() {
 		return formatter;
 	}
-	
+
 	public void setFormatter(Formatter formatter) {
 		Object old = this.formatter;
 		this.formatter = formatter;
 		firePropertyChange("formatter", old, this.formatter);
+	}
+
+	public Folder getRootFolder() {
+		return rootFolder;
+	}
+
+	public void setRootFolder(Folder rootFolder) {
+		this.rootFolder = rootFolder;
 	}
 
 }
