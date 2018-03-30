@@ -12,24 +12,23 @@ import javax.ws.rs.Produces;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
-import com.bizvisionsoft.service.model.Project;
-import com.bizvisionsoft.service.model.ProjectInfo;
+import com.bizvisionsoft.service.model.ProjectSet;
 import com.mongodb.BasicDBObject;
 
-@Path("/proj")
-public interface ProjectService {
+@Path("/projset")
+public interface ProjectSetService {
 	
 	@POST
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Project insert(Project project);
+	public ProjectSet insert(ProjectSet project);
 
 	@GET
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Project get(@PathParam("_id") ObjectId _id);
+	public ProjectSet get(@PathParam("_id") ObjectId _id);
 	
 	@POST
 	@Path("/count/")
@@ -41,5 +40,5 @@ public interface ProjectService {
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<ProjectInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+	public List<ProjectSet> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 }

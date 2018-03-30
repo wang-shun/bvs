@@ -58,7 +58,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				return new BruiGridDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
 			}
 		}
-		throw new RuntimeException();
+		throw new RuntimeException(grid.getName() + "缺少数据源定义。请在BruiDesigner组件页面中定义基于插件的数据源或直接指定服务。");
 	}
 
 	private BruiGridDataSetEngine setAssembly(Assembly assembly) {
@@ -100,7 +100,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		}
-		throw new RuntimeException("没有注解" + DataSet.class + " 值为 list的方法。");
+		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 list的方法。");
 	}
 
 	public long count(BasicDBObject filter) {
@@ -125,7 +125,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		}
-		throw new RuntimeException("没有注解" + DataSet.class + " 值为 count的方法。");
+		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 count的方法。");
 	}
 
 	public Object query() {
@@ -141,7 +141,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			}
 		}
-		throw new RuntimeException("没有注解" + DataSet.class + " 值为" + paramValue + "的无参方法。");
+		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为" + paramValue + "的无参方法。");
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		} else {
-			throw new RuntimeException("没有注解" + DataSet.class + " 值为 data的方法。");
+			throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 data的方法。");
 		}
 		return null;
 	}

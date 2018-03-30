@@ -1,38 +1,34 @@
 package com.bizvisionsoft.service.model;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
-import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
-import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.ServicesLoader;
 
 /**
- * 项目基本模型，用于创建和编辑
+ * 项目信息模型，用于查询或表格中显示
  * 
  * @author hua
  *
  */
 @Strict
 @PersistenceCollection("project")
-public class Project {
+public class ProjectInfo {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 标识属性
 	/**
 	 * _id
 	 */
+	@ReadValue
 	@SetValue
 	private ObjectId _id;
 
@@ -40,42 +36,38 @@ public class Project {
 	 * 编号
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String id;
 
 	/**
 	 * 工作令号
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String workOrder;
 
 	/**
 	 * 项目集Id
 	 */
-	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private ObjectId projectSet_id;
 
 	/**
 	 * 父项目Id
 	 */
-	@Persistence
+	@SetValue
 	private ObjectId parentProject_id;
 
 	/**
 	 * WBS上级Id
 	 */
-	@Persistence
+	@SetValue
 	private ObjectId wbsParent_id;
 
 	/**
 	 * EPS节点Id
 	 */
-	@Persistence
+	@SetValue
 	private ObjectId eps_id;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,40 +76,35 @@ public class Project {
 	 * 名称
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String name;
 
 	/**
 	 * 描述
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String description;
 
 	/**
 	 * 类别：预研、科研(下级：新研、改性、适应性改造)、CBB
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String catalog;
 
 	/**
 	 * 项目等级 A, B, C
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String classfication;
 
 	/**
 	 * 密级
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String securityLevel;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,72 +113,126 @@ public class Project {
 	 * 计划开始
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Date planStart;
 	/**
 	 * 计划完成
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Date planFinish;
 
 	/**
 	 * 计划工期
 	 **/
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Integer planDuration;
 
 	/**
 	 * 计划工时
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Integer planWorks;
 
 	/**
 	 * 实际开始
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Date actualStart;
 
 	/**
 	 * 实际完成
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Date actualFinish;
 
 	/**
 	 * 计划工期 ///TODO
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Integer actualDuration;
 
 	/**
 	 * 计划工时 //TODO
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Integer actualWorks;
 	/**
 	 * 完工期限
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private Date deadline;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 指标
+	/**
+	 * 工作量完成率
+	 **/
+	@ReadValue
+	@SetValue
+	private Float war;
+
+	/** 资金完成率（%） **/
+	@ReadValue
+	@SetValue
+	private Float car;
+
+	/** 当前状态 **/
+	@ReadValue
+	@SetValue
+	private String status;
+
+	/** 当前阶段 **/
+	@ReadValue
+	@SetValue
+	private ObjectId stage_id;
+
+	/** 进度状态 **/
+	@ReadValue
+	@SetValue
+	private String scheduleStatus;
+
+	/** 项目总成本 **/
+	@ReadValue
+	@SetValue
+	private Float cost;
+
+	/** 项目总利润 **/
+	@ReadValue
+	@SetValue
+	private Float profit;
+
+	/** 项目总预算 **/
+	@ReadValue
+	@SetValue
+	private Float budget;
+
+	/** 费用状态 **/
+	@ReadValue
+	@SetValue
+	private String costStatus;
+
+	/** 盈亏金额 **/
+	@ReadValue
+	@SetValue
+	private Float profitLost;
+
+	/** 进度完成率 **/
+	@ReadValue
+	@SetValue
+	private Float sar;
+
+	/** 预算偏差率 **/
+	@ReadValue
+	@SetValue
+	private Float bdr;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 客户化基本属性
@@ -199,32 +240,28 @@ public class Project {
 	 * 分为：纵向、横向、争取、自主
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String type1;
 
 	/**
 	 * 分为：独立、联合、部分委托，其它
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private String type2;
 
 	/**
 	 * 军兵种
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private List<String> arms;
 
 	/**
 	 * 战区
 	 */
 	@ReadValue
-	@WriteValue
-	@Persistence
+	@SetValue
 	private List<String> area;
 
 	public ObjectId get_id() {
@@ -235,25 +272,28 @@ public class Project {
 		this._id = _id;
 	}
 
-	@WriteValue("eps_id")
-	public void setEPS(EPS eps) {
-		this.eps_id = Optional.ofNullable(eps).map(e -> e.get_id()).orElse(null);
-	}
-
-	@ReadValue("eps_id")
+	@ReadValue("EPS")
 	public EPS getEPS() {
 		return Optional.ofNullable(eps_id).map(eps_id -> ServicesLoader.get(EPSService.class).get(eps_id)).orElse(null);
 	}
 
-	@ReadOptions("catalog")
-	public Map<String, Object> getCatalogOptions() {
-		LinkedHashMap<String, Object> options = new LinkedHashMap<String, Object>();
-		options.put("预研", "预研");
-		options.put("科研-新研", "科研-新研");
-		options.put("科研-改性", "科研-改性");
-		options.put("科研-适应性改造", "科研-适应性改造");
-		options.put("CBB", "CBB");
-		return options;
+	@ReadValue("WBSParent")
+	public Work getWBSParent() {
+		return null;// TODO
 	}
 
+	@ReadValue("parentProject")
+	public Project getParentProject() {
+		return null;// TODO
+	}
+
+	@ReadValue("projectSet")
+	public ProjectSet getProjectSet() {
+		return null;// TODO
+	}
+
+	@ReadValue("epsType")
+	public String getEPSNodeType() {
+		return "项目";
+	}
 }

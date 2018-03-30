@@ -2,8 +2,6 @@ package com.bizvisionsoft.serviceimpl;
 
 import java.util.Optional;
 
-import javax.ws.rs.NotFoundException;
-
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
@@ -26,7 +24,7 @@ public class BasicServiceImpl {
 
 	protected <T> T get(ObjectId _id, Class<T> clazz) {
 		T obj = Service.col(clazz).find(new BasicDBObject("_id", _id)).first();
-		return Optional.ofNullable(obj).orElseThrow(NotFoundException::new);
+		return Optional.ofNullable(obj).orElse(null);
 	}
 	
 

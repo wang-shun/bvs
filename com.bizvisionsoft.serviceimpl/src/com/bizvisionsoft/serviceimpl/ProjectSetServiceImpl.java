@@ -6,39 +6,37 @@ import java.util.List;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import com.bizvisionsoft.service.ProjectService;
-import com.bizvisionsoft.service.model.Project;
-import com.bizvisionsoft.service.model.ProjectInfo;
+import com.bizvisionsoft.service.ProjectSetService;
+import com.bizvisionsoft.service.model.ProjectSet;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
 
-public class ProjectServiceImpl extends BasicServiceImpl implements ProjectService {
+public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSetService {
 
 	@Override
-	public Project insert(Project project) {
-		return insert(project, Project.class);
+	public ProjectSet insert(ProjectSet project) {
+		return insert(project, ProjectSet.class);
 	}
 
 	@Override
-	public Project get(ObjectId _id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ProjectSet get(ObjectId _id) {
+		return get(_id, ProjectSet.class);
 	}
 
 	@Override
 	public long count(BasicDBObject filter) {
-		return count(filter, Project.class);
+		return count(filter, ProjectSet.class);
 	}
-
+	
 	@Override
-	public List<ProjectInfo> createDataSet(BasicDBObject condition) {
+	public List<ProjectSet> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");
 		BasicDBObject filter = (BasicDBObject) condition.get("filter");
 		return query(skip, limit, filter);
 	}
 
-	private List<ProjectInfo> query(Integer skip, Integer limit, BasicDBObject filter) {
+	private List<ProjectSet> query(Integer skip, Integer limit, BasicDBObject filter) {
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
 		if (filter != null)
@@ -52,8 +50,8 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 		//TODO
 
-		List<ProjectInfo> result = new ArrayList<ProjectInfo>();
-		Service.col(ProjectInfo.class).aggregate(pipeline).into(result);
+		List<ProjectSet> result = new ArrayList<ProjectSet>();
+		Service.col(ProjectSet.class).aggregate(pipeline).into(result);
 		return result;
 		
 	}

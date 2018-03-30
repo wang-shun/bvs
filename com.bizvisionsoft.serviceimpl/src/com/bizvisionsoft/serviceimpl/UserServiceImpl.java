@@ -25,7 +25,10 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	public User check(String userId, String password) {
 		User user = Service.col(User.class).find(new BasicDBObject("userId", userId).append("password", password))
 				.first();
-		return Optional.ofNullable(user).orElseThrow(NotFoundException::new);
+		if (user != null) {
+			return user;
+		}
+		throw new ServiceException("账户无法通过验证");
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		List<UserInfo> ds = createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
 				new BasicDBObject("userId", userId)));
 		if (ds.size() == 0) {
-			throw new NotFoundException();
+			throw new ServiceException("没有用户Id为" + userId + "的用户。");
 		}
 		return ds.get(0);
 	}

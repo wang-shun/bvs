@@ -37,14 +37,14 @@ public interface EPSService {
 	@Path("/eps")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("EPSĿ¼  # list")
+	@DataSet("list")
 	public List<EPS> getRootEPS();
 
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("EPSĿ¼ # count")
+	@DataSet("count")
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
 
 	@POST

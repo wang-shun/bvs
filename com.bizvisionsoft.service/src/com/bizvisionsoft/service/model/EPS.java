@@ -10,7 +10,11 @@ import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
+import com.bizvisionsoft.service.ProjectService;
+import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.datatools.Query;
+import com.mongodb.BasicDBObject;
 
 @PersistenceCollection("eps")
 public class EPS implements Comparable<EPS> {
@@ -51,7 +55,7 @@ public class EPS implements Comparable<EPS> {
 	@ReadValue
 	@WriteValue
 	private String description;
-	
+
 	public ObjectId get_id() {
 		return _id;
 	}
@@ -70,32 +74,49 @@ public class EPS implements Comparable<EPS> {
 		return id.compareTo(o.id);
 	}
 
-	@Structure("list")
-	public List<Object> getChildren() {
-		EPSService service = ServicesLoader.get(EPSService.class);
+	@Structure("EPS目录#list")
+	public List<EPS> getSubEPS() {
+		return ServicesLoader.get(EPSService.class).getSubEPS(_id);
+	}
 
-		List<Object> result = new ArrayList<Object>();
-		// 取下级EPS
-		List<EPS> subEPSNodes = service.getSubEPS(_id);
-		result.addAll(subEPSNodes);
-		// 取下级项目集
+	@Structure("EPS目录#count")
+	public long countSubEPS() {
+		return ServicesLoader.get(EPSService.class).countSubEPS(_id);
+	}
 
-		// 取下级项目
+	@Structure("EPS浏览 #list")
+	public List<Object> getSubNodes() {
+		ArrayList<Object> result = new ArrayList<Object>();
+		
+		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
+
+		result.addAll(ServicesLoader.get(ProjectService.class)
+				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
+		
+		result.addAll(ServicesLoader.get(ProjectSetService.class)
+				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
+		
 		return result;
 	}
 
-	@Structure("count")
-	public long countChildren() {
-		long cnt = 0;
-		EPSService service = ServicesLoader.get(EPSService.class);
-		cnt += service.countSubEPS(_id);
-
+	@Structure("EPS浏览#count")
+	public long countSubNodes() {
+		// 查下级
+		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
+		cnt += ServicesLoader.get(ProjectService.class).count(new BasicDBObject("eps_id", _id));
+		cnt += ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("eps_id", _id));
 		return cnt;
 	}
-	
-	@ReadValue("EPSNodeType")
+
+	@ReadValue("epsType")
 	public String getEPSNodeType() {
 		return "EPS";
+	}
+
+	@Override
+	@ReadValue(ReadValue.LABEL)
+	public String toString() {
+		return name + " [" + id + "]";
 	}
 
 }

@@ -6,7 +6,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * 用于标识字段或方法
+ * 用于标识字段或方法 对象-->BSON
  * 
  * 标识字段时，该字段的值可被作为数据库记录对应name字段的值
  * 
