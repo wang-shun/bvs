@@ -22,7 +22,7 @@ public class EditEPSNode {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.ifFristElementSelected(elem->{
+		context.selected(elem->{
 			if (elem instanceof EPS) {
 				EPSService service = Services.get(EPSService.class);
 				EPS eps = service.get(((EPS) elem).get_id());

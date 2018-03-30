@@ -24,7 +24,7 @@ public class OpenSelected {
 
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.ifFristElementSelected(elem -> {
+		context.selected(elem -> {
 			Object info = AUtil.deepCopy(elem);
 			bruiService.createEditor(assembly, info, editable, false, context)
 					.open((r, t) -> ((GridPart) context.getContent()).replaceItem(elem, info));

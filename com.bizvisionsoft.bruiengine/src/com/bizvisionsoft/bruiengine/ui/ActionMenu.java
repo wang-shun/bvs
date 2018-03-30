@@ -47,7 +47,7 @@ public class ActionMenu extends Part {
 	private IBruiContext context;
 	private int xUnit = 3;
 	private int yUnit = 3;
-	private int unitSize = 128;
+	private int unitSize = 96;
 	private int currentPage = 0;
 	private Composite parent;
 	private Composite page;

@@ -43,6 +43,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
+
 import org.glassfish.jersey.media.multipart.BodyPart;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -97,6 +98,7 @@ public class ResourceInvocationHandler implements InvocationHandler {
 		return result;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object getResponseReturn(Response response, Method method) {
 		Type type = method.getGenericReturnType();
 		Class<?> clas = method.getReturnType();

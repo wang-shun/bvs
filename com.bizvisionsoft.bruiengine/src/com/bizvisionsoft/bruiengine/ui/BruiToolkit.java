@@ -199,7 +199,7 @@ public class BruiToolkit {
 		if (imageUrl != null) {
 			if ("block".equals(layoutStyle)) {// 块状布局
 				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
-						+ "' style='cursor:pointer;' width='32px' height='32px'></img>";
+						+ "' style='cursor:pointer;' width='24px' height='24px'></img>";
 			} else {// 行状布局
 				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
 						+ "' style='cursor:pointer;' width='20px' height='20px'></img>";
@@ -208,20 +208,20 @@ public class BruiToolkit {
 		if (a.isForceText()) {
 			if (imageUrl != null) {
 				if ("block".equals(layoutStyle)) {// 块状布局
-					text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+					text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='display:inline-block;'>" + buttonText + "</div>";
 				}
 			} else {
 				if ("block".equals(layoutStyle)) {// 块状布局
-					text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+					text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='margin-left:4px;display:inline-block;'>" + buttonText + "</div>";
 				}
 			}
 		} else {
 			if ("block".equals(layoutStyle)) {// 块状布局
-				text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+				text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
 			}
 		}
 

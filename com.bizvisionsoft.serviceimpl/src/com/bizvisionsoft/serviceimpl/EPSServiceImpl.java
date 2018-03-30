@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.model.EPS;
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
 
 public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 
@@ -28,22 +27,8 @@ public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 	}
 
 	@Override
-	public List<EPS> createDataSet(BasicDBObject condition) {
-		Integer skip = (Integer) condition.get("skip");
-		Integer limit = (Integer) condition.get("limit");
-		BasicDBObject filter = (BasicDBObject) condition.get("filter");
-		return query(skip, limit, filter);
-	}
-
-	public List<EPS> query(Integer skip, Integer limit, BasicDBObject filter) {
-		ArrayList<EPS> result = new ArrayList<EPS>();
-		FindIterable<EPS> c = Service.col(EPS.class).find(new BasicDBObject("parent_id", null));
-		if (skip != null)
-			c.skip(skip.intValue());
-		if (limit != null)
-			c.limit(limit.intValue());
-		c.into(result);
-		return result;
+	public List<EPS> getRootEPS() {
+		return getSubEPS(null);
 	}
 
 	@Override
@@ -53,8 +38,26 @@ public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 
 	@Override
 	public long delete(ObjectId _id) {
-		return delete(_id,EPS.class);
+		// 检查有没有下级的EPS节点
+		long cnt = Service.col(EPS.class).count(new BasicDBObject("parent_id", _id));
+		if (cnt > 0) {
+			throw new ServiceException("不允许删除有下级节点的EPS记录");
+		}
+		// 检查有没有下级的项目集节点
+		// 检查有没有下级的项目节点
+		return delete(_id, EPS.class);
 	}
 
+	@Override
+	public List<EPS> getSubEPS(ObjectId parent_id) {
+		ArrayList<EPS> result = new ArrayList<EPS>();
+		Service.col(EPS.class).find(new BasicDBObject("parent_id", parent_id)).into(result);
+		return result;
+	}
+
+	@Override
+	public long countSubEPS(ObjectId _id) {
+		return Service.col(EPS.class).count(new BasicDBObject("parent_id", _id));
+	}
 
 }

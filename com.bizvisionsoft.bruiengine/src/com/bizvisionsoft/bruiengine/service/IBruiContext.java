@@ -22,7 +22,7 @@ public interface IBruiContext extends IServiceWithId{
 
 	Object getFristElement();
 
-	void ifFristElementSelected(Consumer<? super Object> consumer);
+	void selected(Consumer<? super Object> consumer);
 
 	IBruiContext getParentContext();
 

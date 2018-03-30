@@ -10,10 +10,8 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.EPSService;
-import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.EPS;
 import com.bizvisionsoft.serviceconsumer.Services;
-import com.mongodb.BasicDBObject;
 
 public class AddEPSNode {
 
@@ -23,16 +21,13 @@ public class AddEPSNode {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.ifFristElementSelected(elem -> {
+		context.selected(elem -> {
 			if (elem instanceof EPS) {
-				EPSService service = Services.get(EPSService.class);
-				EPS eps = service.get(((EPS) elem).get_id());
-				new Editor<EPS>(bruiService.getEditor("EPS±à¼­Æ÷"), context).setInput(eps).open((r,t) -> {
-					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-							.filter(new BasicDBObject("_id", ((EPS) elem).get_id())).set(r);
-					Services.get(EPSService.class).update(filterAndUpdate.bson());
+				EPS eps = new EPS().setParent_id(((EPS) elem).get_id());
+				new Editor<EPS>(bruiService.getEditor("EPS±à¼­Æ÷"), context).setInput(eps).open((r, t) -> {
+					EPS item = Services.get(EPSService.class).insert(t);
 					GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS±í¸ñ").getContent();
-					grid.replaceItem(elem, eps);
+					grid.add(elem, item);
 				});
 			}
 		});

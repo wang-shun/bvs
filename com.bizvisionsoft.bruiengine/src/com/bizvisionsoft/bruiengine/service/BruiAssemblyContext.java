@@ -107,7 +107,7 @@ public class BruiAssemblyContext implements IBruiContext {
 		return getSelection().getFirstElement();
 	}
 
-	public void ifFristElementSelected(Consumer<? super Object> consumer) {
+	public void selected(Consumer<? super Object> consumer) {
 		Optional.ofNullable(selectionProvider).map(sp -> (StructuredSelection) sp.getSelection())
 				.map(sel -> sel.getFirstElement()).ifPresent(consumer);
 	}

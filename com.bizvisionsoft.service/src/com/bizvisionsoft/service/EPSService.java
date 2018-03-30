@@ -20,33 +20,26 @@ import com.mongodb.BasicDBObject;
 
 @Path("/eps")
 public interface EPSService {
-	
-	
-	@PUT
-	@Path("/")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	public long update(BasicDBObject filterAndUpdate);
-	
-	@POST
-	@Path("/")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	public EPS insert(EPS eps);
 
 	@GET
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public EPS get(@PathParam("_id") ObjectId _id);
-	
-	@POST
-	@Path("/ds/")
+
+	@GET
+	@Path("/_id/{_id}/eps")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<EPS> getSubEPS(@PathParam("_id") ObjectId _id);
+
+	@GET
+	@Path("/eps")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("EPS表格 # list")
-	public List<EPS> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
-	
+	public List<EPS> getRootEPS();
+
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
@@ -54,9 +47,28 @@ public interface EPSService {
 	@DataSet("EPS表格 # count")
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
 
+	@POST
+	@Path("/_id/{_id}/count/eps")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countSubEPS(@PathParam("_id") ObjectId _id);
+
 	@DELETE
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")	
-	public long delete(@PathParam("_id") ObjectId get_id);
+	@Produces("application/json; charset=UTF-8")
+	public long delete(@PathParam("_id") ObjectId get_id) ;
+
+	@PUT
+	@Path("/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long update(BasicDBObject filterAndUpdate);
+
+	@POST
+	@Path("/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public EPS insert(EPS eps);
+
 }

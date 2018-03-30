@@ -24,7 +24,7 @@ public class EditUser {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		context.ifFristElementSelected(elem -> {
+		context.selected(elem -> {
 			UserService service = Services.get(UserService.class);
 			Optional.ofNullable(service.get(((UserInfo) elem).getUserId())).ifPresent(user -> {
 				bruiService.createEditorByName("ÓÃ»§±à¼­Æ÷", user, true, false, context).open((r, t) -> {

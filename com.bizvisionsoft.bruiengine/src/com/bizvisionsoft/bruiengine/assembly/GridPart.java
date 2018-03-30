@@ -517,6 +517,11 @@ public class GridPart {
 		viewer.insert(viewer.getInput(), item, i);
 	}
 
+	public void add(Object parent, Object item) {
+		viewer.add(parent, item);
+		viewer.expandToLevel(parent, 1);
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void insert(Object item) {
 		((List) viewer.getInput()).add(item);

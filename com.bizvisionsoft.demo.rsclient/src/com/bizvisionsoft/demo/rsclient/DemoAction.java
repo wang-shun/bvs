@@ -22,7 +22,7 @@ public class DemoAction {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.ifFristElementSelected(elem -> {
+		context.selected(elem -> {
 			String userId = ((UserInfo) elem).getUserId();
 			InputDialog id = new InputDialog(bruiService.getCurrentShell(), "菜单项编辑用户", "输入用户姓名", "username", null);
 			if (InputDialog.OK == id.open()) {

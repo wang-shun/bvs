@@ -30,16 +30,17 @@ public class RequestError {
   }
 
   public String getMessage() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append( "Failed to send " + method + " request to: " + requestUrl );
-    stringBuilder.append( "\n" );
-    stringBuilder.append( "Received Status: " + response.getStatus() );
-    if( entity != null ) {
-      stringBuilder.append( "\nReceived Body: " );
-      stringBuilder.append( entity );
-    }
-    stringBuilder.append( "\n" );
-    return stringBuilder.toString();
+	  return entity.toString();
+//    StringBuilder stringBuilder = new StringBuilder();
+//    stringBuilder.append( "Failed to send " + method + " request to: " + requestUrl );
+//    stringBuilder.append( "\n" );
+//    stringBuilder.append( "Received Status: " + response.getStatus() );
+//    if( entity != null ) {
+//      stringBuilder.append( "\nReceived Body: " );
+//      stringBuilder.append( entity );
+//    }
+//    stringBuilder.append( "\n" );
+//    return stringBuilder.toString();
   }
   
   public String getEntity() {

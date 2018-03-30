@@ -22,12 +22,16 @@ public class DeleteEPSNode {
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
 
-		context.ifFristElementSelected(elem -> {
+		context.selected(elem -> {
 			if (elem instanceof EPS) {
-				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确认要删除当前的选择吗？")) {
-					Services.get(EPSService.class).delete(((EPS) elem).get_id());
-					GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS表格").getContent();
-					grid.remove(elem);
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确定要删除选中的EPS节点吗？")) {
+					try {
+						Services.get(EPSService.class).delete(((EPS) elem).get_id());
+						GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS表格").getContent();
+						grid.remove(elem);
+					} catch (Exception e) {
+						MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
+					}
 				}
 			}
 		});
