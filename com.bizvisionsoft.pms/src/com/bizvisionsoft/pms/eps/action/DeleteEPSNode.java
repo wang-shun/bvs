@@ -27,7 +27,7 @@ public class DeleteEPSNode {
 				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确定要删除选中的EPS节点吗？")) {
 					try {
 						Services.get(EPSService.class).delete(((EPS) elem).get_id());
-						GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS表格").getContent();
+						GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS目录").getContent();
 						grid.remove(elem);
 					} catch (Exception e) {
 						MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());

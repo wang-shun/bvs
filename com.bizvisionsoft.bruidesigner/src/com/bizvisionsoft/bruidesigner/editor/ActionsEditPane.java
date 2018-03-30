@@ -118,7 +118,12 @@ public class ActionsEditPane extends SashForm {
 		Button remove = new Button(toolbar, SWT.PUSH);
 		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
 		remove.addListener(SWT.Selection, e -> {
-			actions.remove(current);
+			Action parent = getParentAction(current);
+			if(parent==null) {
+				actions.remove(current);
+			}else {
+				parent.getChildren().remove(current);
+			}
 			viewer.refresh();
 		});
 

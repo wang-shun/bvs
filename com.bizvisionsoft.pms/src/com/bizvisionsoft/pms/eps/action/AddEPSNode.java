@@ -23,12 +23,17 @@ public class AddEPSNode {
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(elem -> {
 			if (elem instanceof EPS) {
-				EPS eps = new EPS().setParent_id(((EPS) elem).get_id());
-				new Editor<EPS>(bruiService.getEditor("EPS±à¼­Æ÷"), context).setInput(eps).open((r, t) -> {
-					EPS item = Services.get(EPSService.class).insert(t);
-					GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS±í¸ñ").getContent();
-					grid.add(elem, item);
-				});
+
+				new Editor<EPS>(bruiService.getEditor("EPS±à¼­Æ÷"), context)
+
+						.setInput(new EPS().setParent_id(((EPS) elem).get_id()))
+
+						.open((r, t) -> {
+							EPS item = Services.get(EPSService.class).insert(t);
+							GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPSÄ¿Â¼").getContent();
+							grid.add(elem, item);
+						});
+
 			}
 		});
 	}

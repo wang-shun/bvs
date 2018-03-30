@@ -165,22 +165,22 @@ public class GridPart {
 			queryPanel.setLayoutData(fd);
 			fd.top = new FormAttachment();
 			fd.left = new FormAttachment();
-			fd.right = new FormAttachment(100);
-			fd.height = 220;
+			fd.width = 320;
+			fd.bottom = new FormAttachment(100);
 
-			sep = new Label(parent, SWT.HORIZONTAL | SWT.SEPARATOR);
+			sep = new Label(parent, SWT.VERTICAL | SWT.SEPARATOR);
 			fd = new FormData();
 			sep.setLayoutData(fd);
-			fd.top = new FormAttachment(queryPanel);
-			fd.left = new FormAttachment();
-			fd.right = new FormAttachment(100);
-			fd.height = 1;
+			fd.top = new FormAttachment();
+			fd.left = new FormAttachment(queryPanel);
+			fd.bottom = new FormAttachment(100);
+			fd.width = 1;
 		}
 
 		FormData fd = new FormData();
 		grid.setLayoutData(fd);
-		fd.top = new FormAttachment(sep);
-		fd.left = new FormAttachment();
+		fd.top = new FormAttachment();
+		fd.left = new FormAttachment(sep);
 		fd.right = new FormAttachment(100);
 
 		if (pagec != null) {
@@ -188,7 +188,7 @@ public class GridPart {
 			fd = new FormData();
 			pagec.setLayoutData(fd);
 			fd.height = 48;
-			fd.left = new FormAttachment();
+			fd.left = new FormAttachment(sep);
 			fd.right = new FormAttachment(100);
 		}
 		fd.bottom = new FormAttachment(100);

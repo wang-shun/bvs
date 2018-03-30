@@ -38,6 +38,8 @@ public abstract class EditorField {
 
 	private boolean editorIsEditable;
 
+	private boolean compact;
+
 	public EditorField setFieldConfig(FormField fieldConfig) {
 		this.fieldConfig = fieldConfig;
 		return this;
@@ -62,7 +64,7 @@ public abstract class EditorField {
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 16;
+		layout.horizontalSpacing = compact ? 8 : 16;
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -114,7 +116,7 @@ public abstract class EditorField {
 
 	protected Object getLabelLayoutData() {
 		GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
-		gd.widthHint = 100;
+		gd.widthHint = compact ? 60 : 100;
 		gd.verticalIndent = 8;
 		return gd;
 	}
@@ -153,8 +155,13 @@ public abstract class EditorField {
 		this.editorIsEditable = editorIsEditable;
 		return this;
 	}
-	
+
 	public Composite getContainer() {
 		return container;
+	}
+
+	public EditorField setCompact(boolean compact) {
+		this.compact = compact;
+		return this;
 	}
 }

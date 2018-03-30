@@ -214,9 +214,10 @@ public class EditorPart {
 			btn.addListener(SWT.Selection, desc.listener);
 			FormData fd = new FormData();
 			btn.setLayoutData(fd);
-			fd.top = new FormAttachment();
 			fd.bottom = new FormAttachment(100);
 			fd.right = right == null ? new FormAttachment(100) : new FormAttachment(right, -16);
+			fd.height = 28;
+			fd.width = 64;
 			right = btn;
 		}
 
@@ -300,7 +301,8 @@ public class EditorPart {
 		} else {
 			fieldPart = new TextField();
 		}
-		fields.put(f, fieldPart.setEditable(editable).setEditorConfig(config).setFieldConfig(f).setInput(input));
+		fields.put(f, fieldPart.setCompact(context.isEmbedded()).setEditable(editable).setEditorConfig(config)
+				.setFieldConfig(f).setInput(input));
 		fieldPart.setEditor(this).createUI(parent)// 创建UI
 				.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
 		return fieldPart.getContainer();
@@ -313,13 +315,25 @@ public class EditorPart {
 		Composite content = new Composite(sc, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
-		layout.marginBottom = 32;
-		layout.marginTop = 32;
-		layout.marginLeft = 32;
-		layout.marginRight = 32;
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		layout.verticalSpacing = 16;
+		if (context.isEmbedded()) {
+			layout.marginBottom = 8;
+			layout.marginTop = 8;
+			layout.marginLeft = 4;
+			layout.marginRight = 4;
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			layout.verticalSpacing = 8;
+			layout.horizontalSpacing = 0;
+		} else {
+			layout.marginBottom = 32;
+			layout.marginTop = 32;
+			layout.marginLeft = 32;
+			layout.marginRight = 32;
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			layout.verticalSpacing = 16;
+			layout.horizontalSpacing = 0;
+		}
 		content.setLayout(layout);
 
 		sc.setExpandVertical(true);

@@ -51,7 +51,7 @@ public class EPS implements Comparable<EPS> {
 	@ReadValue
 	@WriteValue
 	private String description;
-
+	
 	public ObjectId get_id() {
 		return _id;
 	}
@@ -91,6 +91,11 @@ public class EPS implements Comparable<EPS> {
 		cnt += service.countSubEPS(_id);
 
 		return cnt;
+	}
+	
+	@ReadValue("EPSNodeType")
+	public String getEPSNodeType() {
+		return "EPS";
 	}
 
 }

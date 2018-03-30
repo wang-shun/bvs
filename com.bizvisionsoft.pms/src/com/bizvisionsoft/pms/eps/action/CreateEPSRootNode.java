@@ -23,7 +23,7 @@ public class CreateEPSRootNode {
 		
 		bruiService.createEditorByName("EPS±à¼­Æ÷", new EPS(), true,false, context).open((r,i)->{
 			EPS item = Services.get(EPSService.class).insert(i);
-			GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS±í¸ñ").getContent();
+			GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPSÄ¿Â¼").getContent();
 			grid.insert(item);
 		});
 		

@@ -1,6 +1,5 @@
 package com.bizvisionsoft.bruiengine.service;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
