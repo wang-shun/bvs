@@ -18,7 +18,7 @@ public class QueryEPS {
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
 		//»ñµÃ
-		GridPart content = (GridPart) context.getChildContextByName("demo").getContent();
+		GridPart content = (GridPart) context.getChildContextByName("eps_grid").getContent();
 		content.openQueryEditor();
 	}
 

@@ -324,7 +324,7 @@ public class GridPart {
 		viewer.setUseHashlookup(true);
 
 		if (itemSelector != null || config.isGridMarkupEnabled()
-				|| (config.getActions() != null && !config.getActions().isEmpty()))
+				|| (config.getRowActions() != null && !config.getRowActions().isEmpty()))
 			UserSession.bruiToolkit().enableMarkup(grid);
 
 		if (config.getGridFix() > 0)
@@ -343,7 +343,7 @@ public class GridPart {
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 创建操作列
 		//
-		final List<Action> actions = config.getActions();
+		final List<Action> actions = config.getRowActions();
 
 		// 如果作为选择器，无需创建操作
 		if (itemSelector == null && actions != null && actions.size() > 0) {

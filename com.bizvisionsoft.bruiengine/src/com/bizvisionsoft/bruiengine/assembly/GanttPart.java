@@ -62,7 +62,7 @@ public class GanttPart {
 		ganttConfig = Config.defaultConfig(config.isReadonly());
 
 		// ÅäÖÃ²Ù×÷ÁÐ
-		ganttConfig.brui_RowMenuEnable = !Util.isEmptyOrNull(config.getActions());
+		ganttConfig.brui_RowMenuEnable = !Util.isEmptyOrNull(config.getRowActions());
 		ganttConfig.brui_HeadMenuEnable = !Util.isEmptyOrNull(config.getHeadActions());
 
 		ganttConfig.columns = new ArrayList<>();
@@ -149,7 +149,7 @@ public class GanttPart {
 	}
 
 	private void showRowMenu(Event e) {
-		new ActionMenu(config.getActions()).setContext(context).setEvent(e).open();
+		new ActionMenu(config.getRowActions()).setContext(context).setEvent(e).open();
 	}
 
 	private void showHeadMenu(Event e) {

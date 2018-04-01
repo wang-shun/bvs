@@ -54,9 +54,9 @@ public class AssemblyGanttEditor extends ModelEditor {
 		new GanttColumnsEditPane(parent, cols, this);
 
 		parent = createTabItemContent("行操作");
-		List<Action> actions = ((Assembly) inputData).getActions();
+		List<Action> actions = ((Assembly) inputData).getRowActions();
 		if (actions == null)
-			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
+			((Assembly) inputData).setRowActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
 
 		parent = createTabItemContent("表头操作");

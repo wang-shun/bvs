@@ -430,6 +430,16 @@ public class Assembly extends ModelObject {
 		this.actions = actions;
 	}
 
+	private List<Action> rowActions;
+
+	public List<Action> getRowActions() {
+		return rowActions;
+	}
+	
+	public void setRowActions(List<Action> rowActions) {
+		this.rowActions = rowActions;
+	}
+	
 	// *******************************************************************************************
 	// form field
 
