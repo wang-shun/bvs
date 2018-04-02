@@ -25,12 +25,10 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "唯一标识符：", inputData, "id", SWT.READ_ONLY);
 
 		createTextField(parent, "组件名称：", inputData, "name", SWT.BORDER);
-
-		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
-
+		
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
-		createCheckboxField(parent, "显示边框：", inputData, "gridHasBorder", SWT.CHECK);
+		createCheckboxField(parent, "显示表格边框：", inputData, "gridHasBorder", SWT.CHECK);
 
 		createCheckboxField(parent, "显示横向滚动条：", inputData, "gridHasHScroll", SWT.CHECK);
 
@@ -92,6 +90,20 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "查询构造模型（Bundle Id）:", inputData, "queryBuilderBundle", SWT.BORDER);
 
 		createTextField(parent, "查询构造模型完整的类名:", inputData, "queryBuilderClass", SWT.BORDER);
+		
+		parent = createTabItemContent("容器设置");
+		
+		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
+
+		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
+		
+		createCheckboxField(parent, "容器上边框：", inputData, "borderTop", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器右边框：", inputData, "borderRight", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器下边框：", inputData, "borderBottom", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器左边框：", inputData, "borderLeft", SWT.CHECK);
 
 		parent = createTabItemContent("表格列");
 		List<Column> cols = ((Assembly) inputData).getColumns();
@@ -104,6 +116,12 @@ public class AssemblyGridEditor extends ModelEditor {
 		if (actions == null)
 			((Assembly) inputData).setRowActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
+		
+		parent = createTabItemContent("工具栏操作");
+		List<Action> toolbarActions = ((Assembly) inputData).getActions();
+		if (toolbarActions == null)
+			((Assembly) inputData).setActions(toolbarActions = new ArrayList<Action>());
+		new ActionsEditPane(parent, toolbarActions, true, this);
 
 		parent = createTabItemContent("查询字段");
 		List<FormField> fields = ((Assembly) inputData).getFields();

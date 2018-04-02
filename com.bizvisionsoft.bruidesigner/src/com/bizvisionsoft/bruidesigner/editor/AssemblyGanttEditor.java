@@ -24,6 +24,8 @@ public class AssemblyGanttEditor extends ModelEditor {
 
 		createTextField(parent, "组件名称：", inputData, "name", SWT.BORDER);
 
+		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
+
 		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
@@ -46,6 +48,22 @@ public class AssemblyGanttEditor extends ModelEditor {
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：com.bizvisionsoft.service.UserService");
+		
+		
+		parent = createTabItemContent("容器设置");
+		
+		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
+
+		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
+		
+		createCheckboxField(parent, "容器上边框：", inputData, "borderTop", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器右边框：", inputData, "borderRight", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器下边框：", inputData, "borderBottom", SWT.CHECK);
+		
+		createCheckboxField(parent, "容器左边框：", inputData, "borderLeft", SWT.CHECK);
+		
 
 		parent = createTabItemContent("表格列");
 		List<Column> cols = ((Assembly) inputData).getColumns();
@@ -64,6 +82,12 @@ public class AssemblyGanttEditor extends ModelEditor {
 		if (headActions == null)
 			((Assembly) inputData).setHeadActions(headActions = new ArrayList<Action>());
 		new ActionsEditPane(parent, headActions, true, this);
+
+		parent = createTabItemContent("工具栏操作");
+		List<Action> toolbarActions = ((Assembly) inputData).getActions();
+		if (toolbarActions == null)
+			((Assembly) inputData).setActions(toolbarActions = new ArrayList<Action>());
+		new ActionsEditPane(parent, toolbarActions, true, this);
 
 		addPartNamePropertyChangeListener("name");
 

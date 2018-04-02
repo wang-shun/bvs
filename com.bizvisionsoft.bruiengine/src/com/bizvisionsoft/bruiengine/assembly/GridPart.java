@@ -154,10 +154,16 @@ public class GridPart {
 
 	@CreateUI
 	public void createUI(Composite parent) {
-		parent.setLayout(new FormLayout());
-		Control queryPanel = createQueryPanel(parent);
-		Control grid = createGrid(parent);
-		Control pagec = createToolbar(parent);
+		Composite panel;
+		if(config.isHasTitlebar()) {
+			panel = createSticker(parent);
+		}else {
+			panel = parent;
+		}
+		panel.setLayout(new FormLayout());
+		Control queryPanel = createQueryPanel(panel);
+		Control grid = createGrid(panel);
+		Control pagec = createToolbar(panel);
 
 		Label sep = null;
 		if (queryPanel != null) {
@@ -168,7 +174,7 @@ public class GridPart {
 			fd.width = 320;
 			fd.bottom = new FormAttachment(100);
 
-			sep = new Label(parent, SWT.VERTICAL | SWT.SEPARATOR);
+			sep = new Label(panel, SWT.VERTICAL | SWT.SEPARATOR);
 			fd = new FormData();
 			sep.setLayoutData(fd);
 			fd.top = new FormAttachment();
@@ -194,6 +200,14 @@ public class GridPart {
 		fd.bottom = new FormAttachment(100);
 
 		setInput();
+	}
+
+	private Composite createSticker(Composite parent) {
+		StickerPart sticker = new StickerPart(config);
+		sticker.context = context;
+		sticker.service = bruiService;
+		sticker.createUI(parent);
+		return sticker.content;
 	}
 
 	private Control createQueryPanel(Composite parent) {
@@ -237,7 +251,7 @@ public class GridPart {
 	}
 
 	private Control createToolbar(Composite parent) {
-		if (toolitems.isEmpty() && (!config.isGridPageControl() || forceDisablePagination)) {
+		if (toolitems.isEmpty() && !pageEnabled()) {
 			return null;
 		}
 
@@ -264,7 +278,7 @@ public class GridPart {
 			left = btn;
 		}
 
-		if (config.isGridPageControl() && !forceDisablePagination) {
+		if (pageEnabled()) {
 			// 求出有多少记录
 			createPageControl();
 
@@ -276,6 +290,10 @@ public class GridPart {
 			fd.right = new FormAttachment(100, -8);
 		}
 		return toolbar;
+	}
+
+	private boolean pageEnabled() {
+		return config.isGridPageControl() && !forceDisablePagination;
 	}
 
 	private Control createPageControl() {
@@ -579,10 +597,12 @@ public class GridPart {
 
 	private void doQuery(BasicDBObject result) {
 		filter = result;
-		currentPage = 0;
-		skip = 0;
-		count = dataSetEngine.count(filter);
-		page.setCount(count);
+		if (pageEnabled()) {
+			currentPage = 0;
+			skip = 0;
+			count = dataSetEngine.count(filter);
+			page.setCount(count);
+		}
 		setInput();
 
 	}

@@ -554,5 +554,17 @@ public class Assembly extends ModelObject {
 	public void setHeadActions(List<Action> headActions) {
 		this.headActions = headActions;
 	}
+	
+	//ºÏ²¢sticker
+	private boolean hasTitlebar;
+	
+	public boolean isHasTitlebar() {
+		return hasTitlebar;
+	}
+	
+	public void setHasTitlebar(boolean hasTitlebar) {
+		this.hasTitlebar = hasTitlebar;
+	}
+	
 
 }

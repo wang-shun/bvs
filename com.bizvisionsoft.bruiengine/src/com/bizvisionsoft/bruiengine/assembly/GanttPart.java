@@ -107,11 +107,26 @@ public class GanttPart {
 		}
 
 	}
+	
+	private Composite createSticker(Composite parent) {
+		StickerPart sticker = new StickerPart(config);
+		sticker.context = context;
+		sticker.service = bruiService;
+		sticker.createUI(parent);
+		return sticker.content;
+	}
 
 	@CreateUI
 	public void createUI(Composite parent) {
-		parent.setLayout(new FillLayout());
-		gantt = new Gantt(parent, ganttConfig).setContainer(config.getName());
+		Composite panel;
+		if(config.isHasTitlebar()) {
+			panel = createSticker(parent);
+		}else {
+			panel = parent;
+		}
+		
+		panel.setLayout(new FillLayout());
+		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
 		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
 		if (dateRange != null && dateRange.length == 2) {
 			gantt.setInitDateRange(dateRange[0], dateRange[1]);

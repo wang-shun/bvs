@@ -30,7 +30,7 @@ public class EditEPSNode {
 					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
 							.filter(new BasicDBObject("_id", ((EPS) elem).get_id())).set(r);
 					Services.get(EPSService.class).update(filterAndUpdate.bson());
-					GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPSÄ¿Â¼").getContent();
+					GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPS¹ÜÀí").getContent();
 					grid.replaceItem(elem, eps);
 				});
 			}

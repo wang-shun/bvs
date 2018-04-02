@@ -19,15 +19,15 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 public class StickerPart {
 
 	@Inject
-	private IBruiService service;
+	IBruiService service;
 
 	private Assembly assembly;
 
 	@GetContainer
-	private Composite content;
+	Composite content;
 
 	@Inject
-	private IBruiContext context;
+	IBruiContext context;
 
 	public StickerPart(Assembly assembly) {
 		this.assembly = assembly;
@@ -75,4 +75,5 @@ public class StickerPart {
 			BruiActionEngine.create(action, service).invokeExecute(e, context);
 		});
 	}
+	
 }

@@ -50,7 +50,7 @@ public class StickerTitlebar extends Composite {
 	}
 
 	public StickerTitlebar setText(String text) {
-		label.setText(text);
+		label.setText(Optional.ofNullable(text).orElse(""));
 		return this;
 	}
 
@@ -64,6 +64,5 @@ public class StickerTitlebar extends Composite {
 		}));
 		return this;
 	}
-
 
 }
