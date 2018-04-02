@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.model.EPS;
+import com.bizvisionsoft.service.model.Project;
+import com.bizvisionsoft.service.model.ProjectSet;
 import com.mongodb.BasicDBObject;
 
 public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
@@ -39,12 +41,19 @@ public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 	@Override
 	public long delete(ObjectId _id) {
 		// 检查有没有下级的EPS节点
-		long cnt = Service.col(EPS.class).count(new BasicDBObject("parent_id", _id));
-		if (cnt > 0) {
+		if (Service.col(EPS.class).count(new BasicDBObject("parent_id", _id)) > 0) {
 			throw new ServiceException("不允许删除有下级节点的EPS记录");
 		}
 		// 检查有没有下级的项目集节点
+		if (Service.col(ProjectSet.class).count(new BasicDBObject("eps_id", _id)) > 0) {
+			throw new ServiceException("不允许删除有下级节点的EPS记录");
+		}
+		
 		// 检查有没有下级的项目节点
+		if (Service.col(Project.class).count(new BasicDBObject("eps_id", _id)) > 0) {
+			throw new ServiceException("不允许删除有下级节点的EPS记录");
+		}
+		
 		return delete(_id, EPS.class);
 	}
 

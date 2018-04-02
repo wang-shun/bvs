@@ -30,7 +30,7 @@ public class AddEPSNode {
 
 						.open((r, t) -> {
 							EPS item = Services.get(EPSService.class).insert(t);
-							GridPart grid = (GridPart) context.getChildContextByAssemblyName("EPSπ‹¿Ì").getContent();
+							GridPart grid = (GridPart) context.getContent();
 							grid.add(elem, item);
 						});
 

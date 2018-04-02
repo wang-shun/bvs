@@ -25,6 +25,12 @@ public class Editor<T> extends Popup {
 	}
 
 	@Override
+	public Editor<T> setTitle(String title) {
+		super.setTitle(title);
+		return this;
+	}
+
+	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
 		return new BruiEditorContext();
 	}
@@ -88,9 +94,9 @@ public class Editor<T> extends Popup {
 		return brui.getReturnObject();
 	}
 
-	public Editor<T> open(BiConsumer<BasicDBObject,T> doit) {
+	public Editor<T> open(BiConsumer<BasicDBObject, T> doit) {
 		if (Window.OK == open()) {
-			doit.accept((BasicDBObject) getResult(),input);
+			doit.accept((BasicDBObject) getResult(), input);
 		}
 		return this;
 	}

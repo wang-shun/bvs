@@ -74,12 +74,12 @@ public class EPS implements Comparable<EPS> {
 		return id.compareTo(o.id);
 	}
 
-	@Structure("EPS目录#list")
+	@Structure("EPS管理#list")
 	public List<EPS> getSubEPS() {
 		return ServicesLoader.get(EPSService.class).getSubEPS(_id);
 	}
 
-	@Structure("EPS目录#count")
+	@Structure("EPS管理#count")
 	public long countSubEPS() {
 		return ServicesLoader.get(EPSService.class).countSubEPS(_id);
 	}

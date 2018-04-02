@@ -20,7 +20,7 @@ import com.eclipsesource.jaxrs.consumer.ConsumerPublisher;
 
 public class Activator implements BundleActivator {
 
-  private ServiceRegistration registration;
+  private ServiceRegistration<?> registration;
   private ConsumerPublisherImpl publisher;
 
   @Override

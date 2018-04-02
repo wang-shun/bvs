@@ -28,10 +28,10 @@ import com.eclipsesource.jaxrs.consumer.ConsumerPublisher;
 public class ConsumerPublisherImpl implements ConsumerPublisher {
 
   private final BundleContext context;
-  private final List<ServiceRegistration> registrations;
+  private final List<ServiceRegistration<?>> registrations;
 
   public ConsumerPublisherImpl( BundleContext context ) {
-    this.registrations = new ArrayList<ServiceRegistration>();
+    this.registrations = new ArrayList<ServiceRegistration<?>>();
     this.context = context;
   }
 
@@ -43,7 +43,7 @@ public class ConsumerPublisherImpl implements ConsumerPublisher {
       Object resource = ConsumerFactory.createConsumer( baseUrl, config, type );
       Dictionary<String, Object> properties = new Hashtable<String, Object>();
       properties.put( "com.eclipsesource.jaxrs.publish", "false" );
-      ServiceRegistration registration = context.registerService( type.getName(), resource, properties );
+      ServiceRegistration<?> registration = context.registerService( type.getName(), resource, properties );
       registrations.add( registration );
     }
   }
@@ -57,7 +57,7 @@ public class ConsumerPublisherImpl implements ConsumerPublisher {
   }
 
   public void unregister() {
-    for( ServiceRegistration registration : registrations ) {
+    for( ServiceRegistration<?> registration : registrations ) {
       registration.unregister();
     }
   }

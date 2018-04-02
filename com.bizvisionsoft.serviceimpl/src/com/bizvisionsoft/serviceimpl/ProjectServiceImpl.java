@@ -21,8 +21,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 	@Override
 	public Project get(ObjectId _id) {
-		// TODO Auto-generated method stub
-		return null;
+		return get(_id, Project.class);
 	}
 
 	@Override

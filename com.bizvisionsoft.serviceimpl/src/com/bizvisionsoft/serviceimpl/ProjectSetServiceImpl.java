@@ -7,6 +7,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.ProjectSetService;
+import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectSet;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
@@ -14,8 +15,8 @@ import com.mongodb.client.model.Aggregates;
 public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSetService {
 
 	@Override
-	public ProjectSet insert(ProjectSet project) {
-		return insert(project, ProjectSet.class);
+	public ProjectSet insert(ProjectSet projectSet) {
+		return insert(projectSet, ProjectSet.class);
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSe
 	public long count(BasicDBObject filter) {
 		return count(filter, ProjectSet.class);
 	}
-	
+
 	@Override
 	public List<ProjectSet> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
@@ -48,12 +49,30 @@ public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSe
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		//TODO
+		// TODO
 
 		List<ProjectSet> result = new ArrayList<ProjectSet>();
 		Service.col(ProjectSet.class).aggregate(pipeline).into(result);
 		return result;
-		
+
+	}
+
+	@Override
+	public long delete(ObjectId _id) {
+		// 如果有下级项目集不可被删除
+		if (Service.col(ProjectSet.class).count(new BasicDBObject("parent_id", _id)) > 0)
+			throw new ServiceException("不允许删除有下级项目集的项目集记录");
+
+		// 如果有项目引用了该项目集，不可删除
+		if (Service.col(Project.class).count(new BasicDBObject("projectSet_id", _id)) > 0)
+			throw new ServiceException("不允许删除有下级项目的项目集记录");
+
+		return delete(_id, ProjectSet.class);
+	}
+
+	@Override
+	public long update(BasicDBObject filterAndUpdate) {
+		return update(filterAndUpdate, ProjectSet.class);
 	}
 
 }

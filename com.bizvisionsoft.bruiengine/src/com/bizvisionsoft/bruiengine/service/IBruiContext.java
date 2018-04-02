@@ -17,7 +17,7 @@ public interface IBruiContext extends IServiceWithId{
 	IBruiContext getChildContextByAssemblyName(String name);
 
 	Object getContent();
-
+	
 	StructuredSelection getSelection();
 
 	Object getFristElement();

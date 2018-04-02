@@ -44,6 +44,8 @@ public class Site extends ModelObject {
 
 	private Folder rootFolder;
 
+//	private List<String> extLibPath;
+
 	public void setPages(List<Page> pages) {
 		this.pages = pages;
 	}
@@ -186,7 +188,7 @@ public class Site extends ModelObject {
 
 	public List<Assembly> getAssysByFolder(String id) {
 		ArrayList<Assembly> result = new ArrayList<Assembly>();
-		getAssyLib().getAssys().stream().filter(a->id.equals(a.getFolderId())).forEach(i->result.add(i));
+		getAssyLib().getAssys().stream().filter(a -> id.equals(a.getFolderId())).forEach(i -> result.add(i));
 		return result;
 	}
 
@@ -222,4 +224,11 @@ public class Site extends ModelObject {
 		this.rootFolder = rootFolder;
 	}
 
+//	public void setExtLibPath(List<String> extLibPath) {
+//		this.extLibPath = extLibPath;
+//	}
+//
+//	public List<String> getExtLibPath() {
+//		return extLibPath;
+//	}
 }
