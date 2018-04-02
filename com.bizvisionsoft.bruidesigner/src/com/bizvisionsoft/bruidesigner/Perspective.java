@@ -4,7 +4,6 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import com.bizvisionsoft.bruidesigner.view.AssyLibView;
 import com.bizvisionsoft.bruidesigner.view.FolderView;
 import com.bizvisionsoft.bruidesigner.view.SiteView;
 
@@ -23,7 +22,7 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, 0.4f, editorArea);
 
 		folder.addView(SiteView.ID);
-		folder.addView(AssyLibView.ID);
+//		folder.addView(AssyLibView.ID);
 		folder.addView(FolderView.ID);
 //		folder.addView(DataSourcesView.ID);
 
