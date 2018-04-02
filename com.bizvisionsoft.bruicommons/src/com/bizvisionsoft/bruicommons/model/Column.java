@@ -67,9 +67,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public int getAlignment() {
@@ -77,9 +75,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setAlignment(int alignment) {
-		Object old = this.alignment;
 		this.alignment = alignment;
-		firePropertyChange("alignment", old, this.alignment);
 	}
 
 	public int getWidth() {
@@ -87,9 +83,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setWidth(int width) {
-		Object old = this.width;
 		this.width = width;
-		firePropertyChange("width", old, this.width);
 	}
 
 	public int getMinimumWidth() {
@@ -97,9 +91,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setMinimumWidth(int minimumWidth) {
-		Object old = this.minimumWidth;
 		this.minimumWidth = minimumWidth;
-		firePropertyChange("minimumWidth", old, this.minimumWidth);
 	}
 
 	public boolean isMoveable() {
@@ -107,9 +99,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setMoveable(boolean moveable) {
-		Object old = this.moveable;
 		this.moveable = moveable;
-		firePropertyChange("moveable", old, this.moveable);
 	}
 
 	public boolean isResizeable() {
@@ -117,9 +107,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setResizeable(boolean resizeable) {
-		Object old = this.resizeable;
 		this.resizeable = resizeable;
-		firePropertyChange("resizeable", old, this.resizeable);
 	}
 
 	public String getText() {
@@ -141,15 +129,11 @@ public class Column extends ModelObject {
 	}
 
 	public void setDetail(boolean detail) {
-		Object old = this.detail;
 		this.detail = detail;
-		firePropertyChange("detail", old, this.detail);
 	}
 
 	public void setSummary(boolean summary) {
-		Object old = this.summary;
 		this.summary = summary;
-		firePropertyChange("summary", old, this.summary);
 	}
 
 	public boolean isExpanded() {
@@ -157,9 +141,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setExpanded(boolean expanded) {
-		Object old = this.expanded;
 		this.expanded = expanded;
-		firePropertyChange("expanded", old, this.expanded);
 	}
 
 	public boolean isMarkupEnabled() {
@@ -167,9 +149,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setMarkupEnabled(boolean markupEnabled) {
-		Object old = this.markupEnabled;
 		this.markupEnabled = markupEnabled;
-		firePropertyChange("markupEnabled", old, this.markupEnabled);
 	}
 
 	public String getFormat() {
@@ -177,9 +157,7 @@ public class Column extends ModelObject {
 	}
 
 	public void setFormat(String format) {
-		Object old = this.format;
 		this.format = format;
-		firePropertyChange("format", old, this.format);
 	}
 
 	/**

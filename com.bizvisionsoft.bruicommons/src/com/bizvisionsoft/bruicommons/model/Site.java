@@ -83,9 +83,7 @@ public class Site extends ModelObject {
 	}
 
 	public void setPath(String path) {
-		Object old = this.path;
 		this.path = path;
-		firePropertyChange("path", old, this.path);
 	}
 
 	public String getTitle() {
@@ -107,15 +105,11 @@ public class Site extends ModelObject {
 	}
 
 	public void setBodyHtml(String bodyHtml) {
-		Object old = this.bodyHtml;
 		this.bodyHtml = bodyHtml;
-		firePropertyChange("bodyHtml", old, this.bodyHtml);
 	}
 
 	public void setHeadHtml(String headHtml) {
-		Object old = this.headHtml;
 		this.headHtml = headHtml;
-		firePropertyChange("headHtml", old, this.headHtml);
 	}
 
 	public String getPageOverflow() {
@@ -123,9 +117,7 @@ public class Site extends ModelObject {
 	}
 
 	public void setPageOverflow(String pageOverflow) {
-		Object old = this.pageOverflow;
 		this.pageOverflow = pageOverflow;
-		firePropertyChange("pageOverflow", old, this.pageOverflow);
 	}
 
 	public String getFavIcon() {
@@ -133,15 +125,11 @@ public class Site extends ModelObject {
 	}
 
 	public void setFavIcon(String favIcon) {
-		Object old = this.favIcon;
 		this.favIcon = favIcon;
-		firePropertyChange("favIcon", old, this.favIcon);
 	}
 
 	public void setAliasOfResFolder(String aliasOfResFolder) {
-		Object old = this.aliasOfResFolder;
 		this.aliasOfResFolder = aliasOfResFolder;
-		firePropertyChange("aliasOfResFolder", old, this.aliasOfResFolder);
 	}
 
 	public String getAliasOfResFolder() {
@@ -153,9 +141,7 @@ public class Site extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public String getLogin() {
@@ -163,9 +149,7 @@ public class Site extends ModelObject {
 	}
 
 	public void setLogin(String login) {
-		Object old = this.login;
 		this.login = login;
-		firePropertyChange("login", old, this.login);
 	}
 
 	/**
@@ -227,9 +211,7 @@ public class Site extends ModelObject {
 	}
 
 	public void setFormatter(Formatter formatter) {
-		Object old = this.formatter;
 		this.formatter = formatter;
-		firePropertyChange("formatter", old, this.formatter);
 	}
 
 	public Folder getRootFolder() {

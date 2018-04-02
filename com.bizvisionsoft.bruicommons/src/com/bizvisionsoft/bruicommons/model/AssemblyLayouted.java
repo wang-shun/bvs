@@ -45,9 +45,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setHorizontalAlignment(int horizontalAlignment) {
-		Object old = this.horizontalAlignment;
 		this.horizontalAlignment = horizontalAlignment;
-		firePropertyChange("horizontalAlignment", old, this.horizontalAlignment);
 	}
 
 	public int getVerticalAlignment() {
@@ -55,9 +53,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setVerticalAlignment(int verticalAlignment) {
-		Object old = this.verticalAlignment;
 		this.verticalAlignment = verticalAlignment;
-		firePropertyChange("verticalAlignment", old, this.verticalAlignment);
 	}
 
 	public boolean isGrabExcessHorizontalSpace() {
@@ -65,9 +61,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setGrabExcessHorizontalSpace(boolean grabExcessHorizontalSpace) {
-		Object old = this.grabExcessHorizontalSpace;
 		this.grabExcessHorizontalSpace = grabExcessHorizontalSpace;
-		firePropertyChange("grabExcessHorizontalSpace", old, this.grabExcessHorizontalSpace);
 	}
 
 	public boolean isGrabExcessVerticalSpace() {
@@ -75,9 +69,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setGrabExcessVerticalSpace(boolean grabExcessVerticalSpace) {
-		Object old = this.grabExcessVerticalSpace;
 		this.grabExcessVerticalSpace = grabExcessVerticalSpace;
-		firePropertyChange("grabExcessVerticalSpace", old, this.grabExcessVerticalSpace);
 	}
 
 	public int getVerticalSpan() {
@@ -85,9 +77,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setVerticalSpan(int verticalSpan) {
-		Object old = this.verticalSpan;
 		this.verticalSpan = verticalSpan;
-		firePropertyChange("verticalSpan", old, this.verticalSpan);
 	}
 
 	public int getHorizontalSpan() {
@@ -95,9 +85,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setHorizontalSpan(int horizontalSpan) {
-		Object old = this.horizontalSpan;
 		this.horizontalSpan = horizontalSpan;
-		firePropertyChange("horizontalSpan", old, this.horizontalSpan);
 	}
 
 	public int getWidthHint() {
@@ -105,9 +93,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setWidthHint(int widthHint) {
-		Object old = this.widthHint;
 		this.widthHint = widthHint;
-		firePropertyChange("widthHint", old, this.widthHint);
 	}
 
 	public int getHeightHint() {
@@ -115,9 +101,7 @@ public class AssemblyLayouted extends ModelObject {
 	}
 
 	public void setHeightHint(int heightHint) {
-		Object old = this.heightHint;
 		this.heightHint = heightHint;
-		firePropertyChange("heightHint", old, this.heightHint);
 	}
 
 }

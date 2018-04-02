@@ -25,9 +25,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setDateFormat(String dateFormat) {
-		Object old = this.dateFormat;
 		this.dateFormat = dateFormat;
-		firePropertyChange("dateFormat", old, this.dateFormat);
 	}
 
 	public String getCurrencyFormat() {
@@ -35,9 +33,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setCurrencyFormat(String currencyFormat) {
-		Object old = this.currencyFormat;
 		this.currencyFormat = currencyFormat;
-		firePropertyChange("currencyFormat", old, this.currencyFormat);
 	}
 
 	public String getIntegerFormat() {
@@ -45,9 +41,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setIntegerFormat(String integerFormat) {
-		Object old = this.integerFormat;
 		this.integerFormat = integerFormat;
-		firePropertyChange("integerFormat", old, this.integerFormat);
 	}
 
 	public String getFloatFormat() {
@@ -55,9 +49,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setFloatFormat(String floatFormat) {
-		Object old = this.floatFormat;
 		this.floatFormat = floatFormat;
-		firePropertyChange("floatFormat", old, this.floatFormat);
 	}
 
 	public String getPercentageFormat() {
@@ -65,9 +57,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setPercentageFormat(String percentageFormat) {
-		Object old = this.percentageFormat;
 		this.percentageFormat = percentageFormat;
-		firePropertyChange("percentageFormat", old, this.percentageFormat);
 	}
 
 	public String getShortDateFormat() {
@@ -75,9 +65,7 @@ public class Formatter extends ModelObject {
 	}
 
 	public void setShortDateFormat(String shortDateFormat) {
-		Object old = this.shortDateFormat;
 		this.shortDateFormat = shortDateFormat;
-		firePropertyChange("shortDateFormat", old, this.shortDateFormat);
 	}
 
 }

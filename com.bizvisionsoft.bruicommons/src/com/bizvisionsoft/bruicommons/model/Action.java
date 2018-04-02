@@ -59,9 +59,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public String getImage() {
@@ -77,21 +75,15 @@ public class Action extends ModelObject {
 	}
 
 	public void setTooltips(String tooltips) {
-		Object old = this.tooltips;
 		this.tooltips = tooltips;
-		firePropertyChange("tooltips", old, this.tooltips);
 	}
 
 	public void setImage(String image) {
-		Object old = this.image;
 		this.image = image;
-		firePropertyChange("image", old, this.image);
 	}
 
 	public void setImageDisabled(String imageDisabled) {
-		Object old = this.imageDisabled;
 		this.imageDisabled = imageDisabled;
-		firePropertyChange("imageDisabled", old, this.imageDisabled);
 	}
 
 	public List<Action> getChildren() {
@@ -121,16 +113,11 @@ public class Action extends ModelObject {
 	}
 
 	public void setBundleId(String bundleId) {
-		Object old = this.bundleId;
 		this.bundleId = bundleId;
-		firePropertyChange("bundleId", old, this.bundleId);
 	}
 
 	public void setClassName(String className) {
-		Object old = this.className;
 		this.className = className;
-		firePropertyChange("className", old, this.className);
-
 	}
 
 	public String getSwitchContentToAssemblyId() {
@@ -138,9 +125,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setSwitchContentToAssemblyId(String switchContentToAssemblyId) {
-		Object old = this.className;
 		this.switchContentToAssemblyId = switchContentToAssemblyId;
-		firePropertyChange("switchContentToAssemblyId", old, this.switchContentToAssemblyId);
 	}
 
 	public boolean isRunnable() {
@@ -153,9 +138,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setPropagate(boolean propagate) {
-		Object old = this.propagate;
 		this.propagate = propagate;
-		firePropertyChange("propagate", old, this.propagate);
 	}
 
 	public boolean isPropagate() {
@@ -163,9 +146,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setForceText(boolean forceText) {
-		Object old = this.forceText;
 		this.forceText = forceText;
-		firePropertyChange("forceText", old, this.forceText);
 	}
 
 	public boolean isForceText() {
@@ -177,9 +158,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setStyle(String style) {
-		Object old = this.style;
 		this.style = style;
-		firePropertyChange("style", old, this.style);
 	}
 
 	public String getEditorAssemblyId() {
@@ -187,9 +166,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setEditorAssemblyId(String editorAssemblyId) {
-		Object old = this.editorAssemblyId;
 		this.editorAssemblyId = editorAssemblyId;
-		firePropertyChange("editorAssemblyId", old, this.editorAssemblyId);
 	}
 
 	public boolean isEditorAssemblyEditable() {
@@ -197,9 +174,7 @@ public class Action extends ModelObject {
 	}
 
 	public void setEditorAssemblyEditable(boolean editorAssemblyEditable) {
-		Object old = this.editorAssemblyEditable;
 		this.editorAssemblyEditable = editorAssemblyEditable;
-		firePropertyChange("editorAssemblyEditable", old, this.editorAssemblyEditable);
 	}
 
 	

@@ -43,9 +43,7 @@ public class Sidebar extends ModelObject {
 	}
 
 	public void setHeader(String header) {
-		Object old = this.header;
 		this.header = header;
-		firePropertyChange("header", old, this.header);
 	}
 
 	public String getHeader() {
@@ -57,9 +55,7 @@ public class Sidebar extends ModelObject {
 	}
 
 	public void setWidth(Integer width) {
-		Object old = this.width;
 		this.width = width;
-		firePropertyChange("width", old, this.width);
 	}
 
 }

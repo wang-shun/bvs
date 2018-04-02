@@ -37,9 +37,7 @@ public class DataSource extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public String getClassName() {
@@ -47,9 +45,7 @@ public class DataSource extends ModelObject {
 	}
 
 	public void setClassName(String className) {
-		Object old = this.className;
 		this.className = className;
-		firePropertyChange("className", old, this.className);
 	}
 
 	public String getServiceName() {
@@ -57,9 +53,7 @@ public class DataSource extends ModelObject {
 	}
 
 	public void setServiceName(String serviceName) {
-		Object old = this.serviceName;
 		this.serviceName = serviceName;
-		firePropertyChange("serviceName", old, this.serviceName);
 	}
 	
 	public boolean isList() {

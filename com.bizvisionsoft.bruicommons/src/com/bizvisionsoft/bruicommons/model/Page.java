@@ -89,9 +89,7 @@ public class Page extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public boolean isHome() {
@@ -113,15 +111,11 @@ public class Page extends ModelObject {
 	}
 
 	public void setCheckLogin(boolean checkLogin) {
-		Object old = this.checkLogin;
 		this.checkLogin = checkLogin;
-		firePropertyChange("checkLogin", old, this.checkLogin);
 	}
 
 	public void setForceCheckLogin(boolean forceCheckLogin) {
-		Object old = this.forceCheckLogin;
 		this.forceCheckLogin = forceCheckLogin;
-		firePropertyChange("forceCheckLogin", old, this.forceCheckLogin);
 	}
 
 }

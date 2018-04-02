@@ -20,9 +20,7 @@ public class Headbar extends ModelObject {
 	}
 
 	public void setHeight(Integer height) {
-		Object old = this.height;
 		this.height = height;
-		firePropertyChange("height", old, this.height);
 	}
 
 }

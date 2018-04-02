@@ -35,9 +35,7 @@ public class Template extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 	
 	public String getBundleId() {
@@ -49,15 +47,11 @@ public class Template extends ModelObject {
 	}
 	
 	public void setBundleId(String bundleId) {
-		Object old = this.bundleId;
 		this.bundleId = bundleId;
-		firePropertyChange("bundleId", old, this.bundleId);
 	}
 	
 	public void setClassName(String className) {
-		Object old = this.className;
 		this.className = className;
-		firePropertyChange("className", old, this.className);
 
 	}
 

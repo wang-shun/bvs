@@ -68,9 +68,7 @@ public class Layout extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public int getMinimalDeviceWidth() {
@@ -78,9 +76,7 @@ public class Layout extends ModelObject {
 	}
 
 	public void setMinimalDeviceWidth(int minimalDeviceWidth) {
-		Object old = this.minimalDeviceWidth;
 		this.minimalDeviceWidth = minimalDeviceWidth;
-		firePropertyChange("minimalDeviceWidth", old, this.minimalDeviceWidth);
 	}
 
 	public int getMaximalDeviceWidth() {
@@ -88,9 +84,7 @@ public class Layout extends ModelObject {
 	}
 
 	public void setMaximalDeviceWidth(int maximalDeviceWidth) {
-		Object old = this.maximalDeviceWidth;
 		this.maximalDeviceWidth = maximalDeviceWidth;
-		firePropertyChange("maximalDeviceWidth", old, this.maximalDeviceWidth);
 	}
 
 	public int getColumnCount() {
@@ -98,9 +92,7 @@ public class Layout extends ModelObject {
 	}
 
 	public void setColumnCount(int columnCount) {
-		Object old = this.columnCount;
 		this.columnCount = columnCount;
-		firePropertyChange("columnCount", old, this.columnCount);
 	}
 
 	public List<AssemblyLayouted> getAssemblys() {
@@ -156,69 +148,47 @@ public class Layout extends ModelObject {
 	}
 	
 	public void setExtendHorizontalSpace(boolean extendHorizontalSpace) {
-		Object old = this.extendHorizontalSpace;
 		this.extendHorizontalSpace = extendHorizontalSpace;
-		firePropertyChange("extendHorizontalSpace", old, this.extendHorizontalSpace);
 	}
 	
 	public void setExtendVerticalSpace(boolean extendVerticalSpace) {
-		Object old = this.extendVerticalSpace;
 		this.extendVerticalSpace = extendVerticalSpace;
-		firePropertyChange("extendVerticalSpace", old, this.extendVerticalSpace);
 	}
 	
 	public void setMakeColumnsEqualWidth(boolean makeColumnsEqualWidth) {
-		Object old = this.makeColumnsEqualWidth;
 		this.makeColumnsEqualWidth = makeColumnsEqualWidth;
-		firePropertyChange("makeColumnsEqualWidth", old, this.makeColumnsEqualWidth);
 	}
 
 	public void setHorizontalSpacing(int horizontalSpacing) {
-		Object old = this.horizontalSpacing;
 		this.horizontalSpacing = horizontalSpacing;
-		firePropertyChange("horizontalSpacing", old, this.horizontalSpacing);
 	}
 
 	public void setMarginBottom(int marginBottom) {
-		Object old = this.marginBottom;
 		this.marginBottom = marginBottom;
-		firePropertyChange("marginBottom", old, this.marginBottom);
 	}
 
 	public void setMarginHeight(int marginHeight) {
-		Object old = this.marginHeight;
 		this.marginHeight = marginHeight;
-		firePropertyChange("marginHeight", old, this.marginHeight);
 	}
 
 	public void setMarginLeft(int marginLeft) {
-		Object old = this.marginLeft;
 		this.marginLeft = marginLeft;
-		firePropertyChange("marginLeft", old, this.marginLeft);
 	}
 
 	public void setMarginRight(int marginRight) {
-		Object old = this.marginRight;
 		this.marginRight = marginRight;
-		firePropertyChange("marginRight", old, this.marginRight);
 	}
 
 	public void setMarginTop(int marginTop) {
-		Object old = this.marginTop;
 		this.marginTop = marginTop;
-		firePropertyChange("marginTop", old, this.marginTop);
 	}
 
 	public void setMarginWidth(int marginWidth) {
-		Object old = this.marginWidth;
 		this.marginWidth = marginWidth;
-		firePropertyChange("marginWidth", old, this.marginWidth);
 	}
 
 	public void setVerticalSpacing(int verticalSpacing) {
-		Object old = this.verticalSpacing;
 		this.verticalSpacing = verticalSpacing;
-		firePropertyChange("verticalSpacing", old, this.verticalSpacing);
 	}
 	
 	public String getCss() {
@@ -226,9 +196,7 @@ public class Layout extends ModelObject {
 	}
 	
 	public void setCss(String css) {
-		Object old = this.css;
 		this.css = css;
-		firePropertyChange("css", old, this.css);
 	}
 	
 	public String getRwtCss() {
@@ -236,8 +204,6 @@ public class Layout extends ModelObject {
 	}
 	
 	public void setRwtCss(String rwtCss) {
-		Object old = this.rwtCss;
 		this.rwtCss = rwtCss;
-		firePropertyChange("rwtCss", old, this.rwtCss);
 	}
 }

@@ -73,9 +73,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setDescription(String description) {
-		Object old = this.description;
 		this.description = description;
-		firePropertyChange("description", old, this.description);
 	}
 
 	public String getBundleId() {
@@ -87,15 +85,11 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setBundleId(String bundleId) {
-		Object old = this.bundleId;
 		this.bundleId = bundleId;
-		firePropertyChange("bundleId", old, this.bundleId);
 	}
 
 	public void setClassName(String className) {
-		Object old = this.className;
 		this.className = className;
-		firePropertyChange("className", old, this.className);
 
 	}
 
@@ -120,9 +114,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setType(String type) {
-		Object old = this.type;
 		this.type = type;
-		firePropertyChange("type", old, this.type);
 	}
 
 	public String getStickerTitle() {
@@ -130,9 +122,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setStickerTitle(String stickerTitle) {
-		Object old = this.stickerTitle;
 		this.stickerTitle = stickerTitle;
-		firePropertyChange("stickerTitle", old, this.stickerTitle);
 	}
 
 	// *******************************************************************************************
@@ -192,15 +182,11 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridRenderBundleId(String gridRenderBundleId) {
-		Object old = this.gridRenderBundleId;
 		this.gridRenderBundleId = gridRenderBundleId;
-		firePropertyChange("gridRenderBundleId", old, this.gridRenderBundleId);
 	}
 
 	public void setGridRenderClassName(String gridRenderClassName) {
-		Object old = this.gridRenderClassName;
 		this.gridRenderClassName = gridRenderClassName;
-		firePropertyChange("gridRenderClassName", old, this.gridRenderClassName);
 	}
 
 	public int getGridAutoExpandLevel() {
@@ -251,21 +237,15 @@ public class Assembly extends ModelObject {
 	// }
 
 	public void setGridAutoExpandLevel(int gridAutoExpandLevel) {
-		Object old = this.gridAutoExpandLevel;
 		this.gridAutoExpandLevel = gridAutoExpandLevel;
-		firePropertyChange("gridAutoExpandLevel", old, this.gridAutoExpandLevel);
 	}
 
 	public void setGridCustomItemHeight(int gridCustomItemHeight) {
-		Object old = this.gridCustomItemHeight;
 		this.gridCustomItemHeight = gridCustomItemHeight;
-		firePropertyChange("gridCustomItemHeight", old, this.gridCustomItemHeight);
 	}
 
 	public void setGridMarkupEnabled(boolean gridMarkupEnabled) {
-		Object old = this.gridMarkupEnabled;
 		this.gridMarkupEnabled = gridMarkupEnabled;
-		firePropertyChange("gridMarkupEnabled", old, this.gridMarkupEnabled);
 	}
 
 	// public void setGridUseHashlookup(boolean gridUseHashlookup) {
@@ -275,33 +255,23 @@ public class Assembly extends ModelObject {
 	// }
 
 	public void setGridLineVisiable(boolean gridLineVisiable) {
-		Object old = this.gridLineVisiable;
 		this.gridLineVisiable = gridLineVisiable;
-		firePropertyChange("gridLineVisiable", old, this.gridLineVisiable);
 	}
 
 	public void setGridMultiSelection(boolean gridMultiSelection) {
-		Object old = this.gridMultiSelection;
 		this.gridMultiSelection = gridMultiSelection;
-		firePropertyChange("gridMultiSelection", old, this.gridMultiSelection);
 	}
 
 	public void setGridHeaderVisiable(boolean gridHeaderVisiable) {
-		Object old = this.gridHeaderVisiable;
 		this.gridHeaderVisiable = gridHeaderVisiable;
-		firePropertyChange("gridHeaderVisiable", old, this.gridHeaderVisiable);
 	}
 
 	public void setGridFooterVisiable(boolean gridFooterVisiable) {
-		Object old = this.gridFooterVisiable;
 		this.gridFooterVisiable = gridFooterVisiable;
-		firePropertyChange("gridFooterVisiable", old, this.gridFooterVisiable);
 	}
 
 	public void setGridHasBorder(boolean gridHasBorder) {
-		Object old = this.gridHasBorder;
 		this.gridHasBorder = gridHasBorder;
-		firePropertyChange("gridHasBorder", old, this.gridHasBorder);
 	}
 
 	// public void setGridVirtual(boolean gridVirtual) {
@@ -311,9 +281,7 @@ public class Assembly extends ModelObject {
 	// }
 
 	public void setGridFix(int gridFix) {
-		Object old = this.gridFix;
 		this.gridFix = gridFix;
-		firePropertyChange("gridFix", old, this.gridFix);
 	}
 
 	// public void setGridPreload(int gridPreload) {
@@ -335,9 +303,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridPageControl(boolean gridPageControl) {
-		Object old = this.gridPageControl;
 		this.gridPageControl = gridPageControl;
-		firePropertyChange("gridPageControl", old, this.gridPageControl);
 	}
 
 	public boolean isGridHasHScroll() {
@@ -349,15 +315,11 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridHasHScroll(boolean gridHasHScroll) {
-		Object old = this.gridHasHScroll;
 		this.gridHasHScroll = gridHasHScroll;
-		firePropertyChange("gridHasHScroll", old, this.gridHasHScroll);
 	}
 
 	public void setGridHasVScroll(boolean gridHasVScroll) {
-		Object old = this.gridHasVScroll;
 		this.gridHasVScroll = gridHasVScroll;
-		firePropertyChange("gridHasVScroll", old, this.gridHasVScroll);
 	}
 
 	public boolean isGridHideIndentionImage() {
@@ -365,9 +327,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridHideIndentionImage(boolean gridHideIndentionImage) {
-		Object old = this.gridHideIndentionImage;
 		this.gridHideIndentionImage = gridHideIndentionImage;
-		firePropertyChange("gridHideIndentionImage", old, this.gridHideIndentionImage);
 	}
 
 	public boolean isGridAutoHeight() {
@@ -375,9 +335,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridAutoHeight(boolean gridAutoHeight) {
-		Object old = this.gridAutoHeight;
 		this.gridAutoHeight = gridAutoHeight;
-		firePropertyChange("gridAutoHeight", old, this.gridAutoHeight);
 	}
 
 	public String getGridDataSetService() {
@@ -385,9 +343,7 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridDataSetService(String gridDataSetService) {
-		Object old = this.gridDataSetService;
 		this.gridDataSetService = gridDataSetService;
-		firePropertyChange("gridDataSetService", old, this.gridDataSetService);
 	}
 
 	public String getGridDataSetBundleId() {
@@ -399,15 +355,11 @@ public class Assembly extends ModelObject {
 	}
 
 	public void setGridDataSetBundleId(String gridDataSetBundleId) {
-		Object old = this.gridDataSetBundleId;
 		this.gridDataSetBundleId = gridDataSetBundleId;
-		firePropertyChange("gridDataSetBundleId", old, this.gridDataSetBundleId);
 	}
 
 	public void setGridDataSetClassName(String gridDataSetClassName) {
-		Object old = this.gridDataSetClassName;
 		this.gridDataSetClassName = gridDataSetClassName;
-		firePropertyChange("gridDataSetClassName", old, this.gridDataSetClassName);
 	}
 
 	public boolean isGridAutoColumnWidth() {
