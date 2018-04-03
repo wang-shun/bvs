@@ -13,7 +13,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.session.UserSession;
@@ -52,12 +55,44 @@ public class ActionMenu extends Part {
 	private Composite parent;
 	private Composite page;
 	private Event event;
+	private Object input;
+	private Assembly assembly;
 
-	public ActionMenu(List<Action> actions) {
+	public ActionMenu() {
 		super(UserSession.current().getShell());
-		this.actions = actions;
-		arrangeActions();
 		setShellStyle(SWT.ON_TOP);
+	}
+
+	public ActionMenu setInput(Object input) {
+		this.input = input;
+		return this;
+	}
+
+	public ActionMenu setAssembly(Assembly assembly) {
+		this.assembly = assembly;
+		return this;
+	}
+
+	public ActionMenu setActions(List<Action> actions) {
+		this.actions = getActions(actions);
+		arrangeActions();
+		return this;
+	}
+
+	private List<Action> getActions(List<Action> actions) {
+		ArrayList<Action> result = new ArrayList<Action>();
+		for (int i = 0; i < actions.size(); i++) {
+			Action action = actions.get(i);
+			if (action.isObjectBehavier() && input != null && assembly != null) {
+				Object value = AUtil.read(input.getClass(), Behavior.class, input, assembly.getName(), action.getName(),
+						false, a -> a.value());
+				if (Boolean.TRUE.equals(value)) {
+					result.add(action);
+				}
+			}
+			result.add(action);
+		}
+		return result;
 	}
 
 	private void arrangeActions() {

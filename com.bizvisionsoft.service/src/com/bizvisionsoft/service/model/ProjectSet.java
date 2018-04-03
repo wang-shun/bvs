@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -80,31 +81,31 @@ public class ProjectSet {
 	public String getEPSNodeType() {
 		return "项目集";
 	}
-	
+
 	public ProjectSet setEps_id(ObjectId eps_id) {
 		this.eps_id = eps_id;
 		return this;
 	}
-	
+
 	public ProjectSet setParent_id(ObjectId parent_id) {
 		this.parent_id = parent_id;
 		return this;
 	}
-	
+
 	public ObjectId get_id() {
 		return _id;
 	}
-	
+
 	@Structure("EPS浏览 #list")
 	public List<Object> getSubNodes() {
 		ArrayList<Object> result = new ArrayList<Object>();
-		
+
 		result.addAll(ServicesLoader.get(ProjectService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("projectSet_id", _id)).bson()));
-		
+
 		result.addAll(ServicesLoader.get(ProjectSetService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("parent_id", _id)).bson()));
-		
+
 		return result;
 	}
 
@@ -115,4 +116,26 @@ public class ProjectSet {
 		cnt += ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("parent_id", _id));
 		return cnt;
 	}
+
+	@Behavior("EPS浏览#编辑项目集") // 控制action
+	private boolean enableEdit() {
+		return true;// 考虑权限 TODO
+	}
+
+	@Behavior("EPS浏览#创建项目集") // 控制action
+	private boolean enableAdd() {
+		return true;// 考虑权限 TODO
+	}
+	
+	@Behavior("EPS浏览#删除项目集") // 控制action
+	private boolean enableDelete() {
+		return true;// 考虑权限 TODO
+	}
+	
+	@Behavior("EPS浏览#打开") // 控制action
+	private boolean enableOpen() {
+		return true;// 考虑权限 TODO
+	}
+	
+
 }

@@ -35,6 +35,8 @@ public class Action extends ModelObject {
 	private String editorAssemblyId;
 
 	private boolean editorAssemblyEditable;
+	
+	private boolean objectBehavier;
 
 	public String getId() {
 		return id;
@@ -175,6 +177,14 @@ public class Action extends ModelObject {
 
 	public void setEditorAssemblyEditable(boolean editorAssemblyEditable) {
 		this.editorAssemblyEditable = editorAssemblyEditable;
+	}
+	
+	public boolean isObjectBehavier() {
+		return objectBehavier;
+	}
+	
+	public void setObjectBehavier(boolean objectBehavier) {
+		this.objectBehavier = objectBehavier;
 	}
 
 	

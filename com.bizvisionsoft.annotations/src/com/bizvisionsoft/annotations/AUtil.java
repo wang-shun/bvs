@@ -321,7 +321,28 @@ public class AUtil {
 		return new GsonBuilder().create().fromJson(json, elem.getClass());
 	}
 
-
-	
+	public static <T extends Annotation> Object getValue(Class<?> clazz,Class<T> annoClass,Object target) {
+		try {
+			Field field = AUtil.getField(clazz, annoClass).orElse(null);
+			if (field != null) {
+				field.setAccessible(true);
+				return field.get(target);
+			}
+			Method method = AUtil.getMethod(clazz, annoClass).orElse(null);
+			if (method != null) {
+				method.setAccessible(true);
+				return method.invoke(target);
+			} else {
+				// throw new BruiEngineError("没有注解为" + annoClass + "的字段或方法。");
+				return null;
+			}
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
+		} catch (IllegalArgumentException e1) {
+			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
+		} catch (InvocationTargetException e2) {
+			throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e2);
+		}
+	}
 
 }

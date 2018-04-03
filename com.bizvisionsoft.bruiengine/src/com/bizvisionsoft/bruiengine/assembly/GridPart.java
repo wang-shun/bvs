@@ -155,9 +155,9 @@ public class GridPart {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
-		if(config.isHasTitlebar()) {
+		if (config.isHasTitlebar()) {
 			panel = createSticker(parent);
-		}else {
+		} else {
 			panel = parent;
 		}
 		panel.setLayout(new FormLayout());
@@ -389,12 +389,12 @@ public class GridPart {
 			col.setData("fixedRight", true);
 
 			GridViewerColumn vcol = new GridViewerColumn(viewer, col);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(actions));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, actions));
 			grid.addListener(SWT.Selection, e -> {
 				actions.stream().filter(a -> a.getId().equals(e.text)).findFirst().ifPresent(action -> {
 					Object elem = e.item.getData();
 					viewer.setSelection(new StructuredSelection(elem));
-					invoveAction(e, action);
+					invoveAction(e, elem, action);
 				});
 			});
 		} else if (itemSelector != null) {
@@ -411,7 +411,7 @@ public class GridPart {
 			a.setText(itemSelector.label);
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(Arrays.asList(new Action[] { a })));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a })));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}
@@ -456,13 +456,13 @@ public class GridPart {
 		return grid;
 	}
 
-	private void invoveAction(Event e, Action action) {
+	private void invoveAction(Event e, Object elem, Action action) {
 		if (action.getChildren() == null || action.getChildren().isEmpty()) {
 			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
 		} else {
 			// œ‘ æ≤Àµ•
-			ActionMenu menu = new ActionMenu(action.getChildren()).setContext(context);
-			menu.open();
+			new ActionMenu().setAssembly(config).setInput(elem).setContext(context).setActions(action.getChildren())
+					.setEvent(e).open();
 		}
 	}
 

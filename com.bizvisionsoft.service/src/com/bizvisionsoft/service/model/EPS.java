@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -56,6 +58,11 @@ public class EPS implements Comparable<EPS> {
 	@WriteValue
 	private String description;
 
+	@Behavior("EPS浏览#创建项目集") //控制action
+	@Exclude // 不用持久化
+	private boolean enableAddProjectSet = true;
+	
+
 	public ObjectId get_id() {
 		return _id;
 	}
@@ -87,15 +94,15 @@ public class EPS implements Comparable<EPS> {
 	@Structure("EPS浏览 #list")
 	public List<Object> getSubNodes() {
 		ArrayList<Object> result = new ArrayList<Object>();
-		
+
 		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
 
 		result.addAll(ServicesLoader.get(ProjectService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
-		
+
 		result.addAll(ServicesLoader.get(ProjectSetService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
-		
+
 		return result;
 	}
 

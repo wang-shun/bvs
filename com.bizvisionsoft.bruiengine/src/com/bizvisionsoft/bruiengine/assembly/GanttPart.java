@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Listener;
 import com.bizivisionsoft.widgets.gantt.ColumnConfig;
 import com.bizivisionsoft.widgets.gantt.Config;
 import com.bizivisionsoft.widgets.gantt.Gantt;
+import com.bizivisionsoft.widgets.gantt.GanttEvent;
 import com.bizivisionsoft.widgets.gantt.GanttEventCode;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
@@ -107,7 +108,7 @@ public class GanttPart {
 		}
 
 	}
-	
+
 	private Composite createSticker(Composite parent) {
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
@@ -119,12 +120,12 @@ public class GanttPart {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
-		if(config.isHasTitlebar()) {
+		if (config.isHasTitlebar()) {
 			panel = createSticker(parent);
-		}else {
+		} else {
 			panel = parent;
 		}
-		
+
 		panel.setLayout(new FillLayout());
 		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
 		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
@@ -164,11 +165,12 @@ public class GanttPart {
 	}
 
 	private void showRowMenu(Event e) {
-		new ActionMenu(config.getRowActions()).setContext(context).setEvent(e).open();
+		new ActionMenu().setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
+				.setActions(config.getRowActions()).setEvent(e).open();
 	}
 
 	private void showHeadMenu(Event e) {
-		new ActionMenu(config.getHeadActions()).setContext(context).setEvent(e).open();
+		new ActionMenu().setAssembly(config).setContext(context).setActions(config.getHeadActions()).setEvent(e).open();
 	}
 
 	public void addGanttEventListener(String eventCode, Listener listener) {
@@ -185,7 +187,7 @@ public class GanttPart {
 		item.setDuration(10);
 		item.setStart_date(new Date());
 		item.setName("测试任务");
-		item.setType("task");//如果不设置会再触发一次更新
+		item.setType("task");// 如果不设置会再触发一次更新
 		gantt.addTask(item, null, 1);
 	}
 

@@ -258,6 +258,9 @@ public class ActionsEditPane extends SashForm {
 
 			// editor.createCheckboxField(parent, "是否向所在组件的下层传递事件:", action, "propagate",
 			// SWT.CHECK);
+			
+			editor.createCheckboxField(parent, "由对象行为控制有效性:", action, "objectBehavier", SWT.CHECK);
+
 
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
