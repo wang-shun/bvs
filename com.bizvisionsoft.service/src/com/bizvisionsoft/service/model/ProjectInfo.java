@@ -303,4 +303,10 @@ public class ProjectInfo {
 		System.out.println();
 		return true;// ¿¼ÂÇÈ¨ÏÞ TODO
 	}
+	
+	@Override
+	@ReadValue(ReadValue.LABEL)
+	public String toString() {
+		return name + " [" + id + "]";
+	}
 }

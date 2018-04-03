@@ -89,8 +89,9 @@ public class ActionMenu extends Part {
 				if (Boolean.TRUE.equals(value)) {
 					result.add(action);
 				}
+			}else {
+				result.add(action);
 			}
-			result.add(action);
 		}
 		return result;
 	}

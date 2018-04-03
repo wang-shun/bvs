@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
@@ -16,6 +15,7 @@ import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
+import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ServicesLoader;
 
 /**
@@ -192,7 +192,6 @@ public class Project {
 	@Persistence
 	private Date deadline;
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 客户化基本属性
 	/**
@@ -235,14 +234,21 @@ public class Project {
 		this._id = _id;
 	}
 
-	@WriteValue("eps_id")
-	public void setEPS(EPS eps) {
-		this.eps_id = Optional.ofNullable(eps).map(e -> e.get_id()).orElse(null);
+	@WriteValue("eps_or_projectset_id")
+	public void setEPSorProjectSet(Object element) {
+		if (element instanceof EPS)
+			this.eps_id = ((EPS) element).get_id();
+		if (element instanceof ProjectSet)
+			this.projectSet_id = ((ProjectSet) element).get_id();
 	}
 
-	@ReadValue("eps_id")
-	public EPS getEPS() {
-		return Optional.ofNullable(eps_id).map(eps_id -> ServicesLoader.get(EPSService.class).get(eps_id)).orElse(null);
+	@ReadValue("eps_or_projectset_id")
+	public Object getEPSOrProjectSet() {
+		if (eps_id != null)
+			return ServicesLoader.get(EPSService.class).get(eps_id);
+		if (projectSet_id != null)
+			return ServicesLoader.get(ProjectSetService.class).get(projectSet_id);
+		return null;
 	}
 
 	@ReadOptions("catalog")
@@ -255,8 +261,5 @@ public class Project {
 		options.put("CBB", "CBB");
 		return options;
 	}
-	
-	
-
 
 }

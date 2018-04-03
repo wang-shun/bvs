@@ -58,10 +58,9 @@ public class EPS implements Comparable<EPS> {
 	@WriteValue
 	private String description;
 
-	@Behavior("EPS浏览#创建项目集") //控制action
+	@Behavior("EPS浏览#创建项目集") // 控制action
 	@Exclude // 不用持久化
 	private boolean enableAddProjectSet = true;
-	
 
 	public ObjectId get_id() {
 		return _id;
@@ -97,10 +96,10 @@ public class EPS implements Comparable<EPS> {
 
 		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
 
-		result.addAll(ServicesLoader.get(ProjectService.class)
+		result.addAll(ServicesLoader.get(ProjectSetService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
 
-		result.addAll(ServicesLoader.get(ProjectSetService.class)
+		result.addAll(ServicesLoader.get(ProjectService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
 
 		return result;
@@ -111,6 +110,27 @@ public class EPS implements Comparable<EPS> {
 		// 查下级
 		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
 		cnt += ServicesLoader.get(ProjectService.class).count(new BasicDBObject("eps_id", _id));
+		cnt += ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("eps_id", _id));
+		return cnt;
+	}
+
+	@Structure("EPS和项目集选择 #list")
+	public List<Object> getSubEPSAndProjectSets() {
+		ArrayList<Object> result = new ArrayList<Object>();
+
+		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
+
+		result.addAll(ServicesLoader.get(ProjectSetService.class)
+				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
+
+		return result;
+
+	}
+
+	@Structure("EPS和项目集选择#count")
+	public long countSubEPSAndProjectSets() {
+		// 查下级
+		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
 		cnt += ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("eps_id", _id));
 		return cnt;
 	}
