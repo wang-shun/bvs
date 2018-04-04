@@ -40,7 +40,7 @@ public class BruiActionEngine extends BruiEngine {
 		try {
 			return new BruiActionEngine(bundle.loadClass(className));
 		} catch (Exception e) {
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

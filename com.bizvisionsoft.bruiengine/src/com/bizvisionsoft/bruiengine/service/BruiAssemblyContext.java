@@ -25,6 +25,8 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private String name;
 
+	private Object input;
+
 	public BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
@@ -129,6 +131,15 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	public String getName() {
 		return name;
+	}
+
+	public IBruiContext setInput(Object input) {
+		this.input = input;
+		return this;
+	}
+	
+	public Object getInput() {
+		return input;
 	}
 
 

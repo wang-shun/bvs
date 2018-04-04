@@ -25,14 +25,18 @@ public class View extends Part {
 	private BruiAssemblyContext context;
 
 	public static View create(Page page) {
-		return new View(page);
+		return create(page,null);
 	}
 
-	public View(Page page) {
+	public static View create(Page page,Object input) {
+		return new View(page,input);
+	}
+
+	public View(Page page,Object input) {
 		super(UserSession.current().getShell());
 		this.page = page;
 		this.context = new BruiAssemblyContext();
-		
+		this.context.setInput(input);
 		
 		sidebarWidget = new SidebarWidget(page.getSidebar(),service,context);
 		contentWidget = new ContentWidget(page.getContentArea(),service,context);

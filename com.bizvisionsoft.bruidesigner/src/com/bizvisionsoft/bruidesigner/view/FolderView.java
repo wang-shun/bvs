@@ -162,7 +162,7 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 		Assembly assy = ModelToolkit.createAssembly(type, folder.getId());
 		assy.addPropertyChangeListener("name", this);
 		viewer.refresh(folder);
-		viewer.expandToLevel(folder, TreeViewer.ALL_LEVELS);
+		viewer.expandToLevel(folder, 1);
 	}
 
 	public void removeAssembly(Assembly assy) {

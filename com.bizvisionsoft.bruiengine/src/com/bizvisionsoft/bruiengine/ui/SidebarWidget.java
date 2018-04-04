@@ -88,7 +88,7 @@ public class SidebarWidget {
 		bruiToolkit = UserSession.bruiToolkit();
 
 		// 1. 创建实例,注入并初始化
-		brui = BruiAssemblyEngine.create(sidebar.getHeader(), service);
+		brui = BruiAssemblyEngine.create(sidebar.getHeader(), service,context);
 	}
 
 	public SidebarWidget createUI(Composite parent) {

@@ -32,4 +32,8 @@ public interface IBruiContext extends IServiceWithId{
 
 	IBruiContext getChildContextByName(String name);
 
+	IBruiContext setInput(Object input);
+
+	Object getInput();
+
 }

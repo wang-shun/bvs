@@ -44,7 +44,7 @@ public class Site extends ModelObject {
 
 	private Folder rootFolder;
 
-//	private List<String> extLibPath;
+	// private List<String> extLibPath;
 
 	public void setPages(List<Page> pages) {
 		this.pages = pages;
@@ -224,11 +224,15 @@ public class Site extends ModelObject {
 		this.rootFolder = rootFolder;
 	}
 
-//	public void setExtLibPath(List<String> extLibPath) {
-//		this.extLibPath = extLibPath;
-//	}
-//
-//	public List<String> getExtLibPath() {
-//		return extLibPath;
-//	}
+	public Page getPage(String pageName) {
+		return pages.stream().filter(p -> pageName.equals(p.getName())).findFirst().orElse(null);
+	}
+
+	// public void setExtLibPath(List<String> extLibPath) {
+	// this.extLibPath = extLibPath;
+	// }
+	//
+	// public List<String> getExtLibPath() {
+	// return extLibPath;
+	// }
 }

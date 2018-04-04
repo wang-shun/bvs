@@ -36,8 +36,8 @@ public class ProjectInfo {
 	/**
 	 * ±àºÅ
 	 */
-	@ReadValue
 	@SetValue
+	@ReadValue({"id",ReadValue.ID_LABEL})
 	private String id;
 
 	/**
@@ -76,7 +76,7 @@ public class ProjectInfo {
 	/**
 	 * Ãû³Æ
 	 */
-	@ReadValue
+	@ReadValue({"name",ReadValue.NAME_LABEL})
 	@SetValue
 	private String name;
 

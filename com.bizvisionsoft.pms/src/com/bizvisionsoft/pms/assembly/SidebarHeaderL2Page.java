@@ -1,7 +1,5 @@
 package com.bizvisionsoft.pms.assembly;
 
-import java.util.Optional;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -9,16 +7,22 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 
-public class SidebarHeader {
+public class SidebarHeaderL2Page {
 
 	@Inject
 	private IBruiService bruiService;
+
+	@Inject
+	private BruiAssemblyContext context;
 
 	@CreateUI
 	public void createUI(Composite parent) {
@@ -41,11 +45,17 @@ public class SidebarHeader {
 		fd.right = new FormAttachment(100);
 
 		// 获得当前进程用户信息中的头像
-		String url = Optional.ofNullable(bruiService.getCurrentUserInfo().getHeadpicURL())
-				.orElse(bruiService.getResourceURL("/img/user_g_60x60.png"));
-		pic.setText("<img alt='headpic' src='" + url + "' width=" + size + "px height=" + size + "px/>");
-		title.setText(
-				"<div style='color:white;margin-left:8px;margin-top:4px'><div style='font-size:16px;'>项目管理系统</div><div style='font-size:14px;'>BizVision PMS 2018</div></div>");
+		String url = bruiService.getResourceURL("/img/left_w.svg");
+		pic.setText("<img alt='headpic' style='cursor:pointer;margin-top:8px;' src='" + url + "' width=" + 32
+				+ "px height=" + 32 + "px/>");
 
+		Object input = context.getParentContext().getInput();
+		Object name = AUtil.readValue(input, null, ReadValue.NAME_LABEL, "");
+		Object id = AUtil.readValue(input, null, ReadValue.ID_LABEL, "");
+		title.setText("<div style='color:white;margin-left:2px;margin-top:4px;width:180px;'><div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + name
+				+ "</div><div style='font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + id + "</div></div>");
+		pic.addListener(SWT.MouseDown, e -> {
+			System.out.println("back");
+		});
 	}
 }
