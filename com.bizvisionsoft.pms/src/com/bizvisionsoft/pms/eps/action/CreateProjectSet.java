@@ -1,4 +1,4 @@
-package com.bizvisionsoft.pms.project.action;
+package com.bizvisionsoft.pms.eps.action;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;

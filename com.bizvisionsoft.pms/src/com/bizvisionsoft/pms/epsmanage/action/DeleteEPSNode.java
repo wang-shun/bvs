@@ -1,5 +1,6 @@
-package com.bizvisionsoft.pms.eps.action;
+package com.bizvisionsoft.pms.epsmanage.action;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -9,12 +10,10 @@ import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.EPSService;
-import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.EPS;
 import com.bizvisionsoft.serviceconsumer.Services;
-import com.mongodb.BasicDBObject;
 
-public class EditEPSNode {
+public class DeleteEPSNode {
 
 	@Inject
 	private IBruiService bruiService;
@@ -22,23 +21,20 @@ public class EditEPSNode {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.selected(elem->{
-			if (elem instanceof EPS) {
-				EPSService service = Services.get(EPSService.class);
-				EPS eps = service.get(((EPS) elem).get_id());
-				bruiService.createEditorByName("EPS编辑器", eps, true, false, context).open((r,t) -> {
-					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-							.filter(new BasicDBObject("_id", ((EPS) elem).get_id())).set(r);
-					Services.get(EPSService.class).update(filterAndUpdate.bson());
-					GridPart grid = (GridPart) context.getContent();
-					grid.replaceItem(elem, eps);
-				});
-			}
-			
-		});
-		
-		
 
+		context.selected(elem -> {
+			if (elem instanceof EPS) {
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确定要删除选中的EPS节点吗？")) {
+					try {
+						Services.get(EPSService.class).delete(((EPS) elem).get_id());
+						GridPart grid = (GridPart) context.getContent();
+						grid.remove(elem);
+					} catch (Exception e) {
+						MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
+					}
+				}
+			}
+		});
 	}
 
 }
