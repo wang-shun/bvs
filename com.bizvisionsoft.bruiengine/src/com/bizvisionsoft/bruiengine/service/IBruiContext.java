@@ -36,4 +36,8 @@ public interface IBruiContext extends IServiceWithId{
 
 	Object getInput();
 
+	IBruiContext getRoot();
+	
+	Object getRootInput();
+
 }

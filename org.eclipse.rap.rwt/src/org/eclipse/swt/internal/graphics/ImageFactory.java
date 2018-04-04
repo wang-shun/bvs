@@ -86,7 +86,7 @@ public class ImageFactory {
   }
 
   static Image createImageInstance( Device device, InternalImage internalImage ) {
-    Class[] paramTypes = new Class[] { Device.class, InternalImage.class };
+    Class<?>[] paramTypes = new Class[] { Device.class, InternalImage.class };
     Object[] paramValues = new Object[] { device, internalImage };
     return ClassUtil.newInstance( Image.class, paramTypes, paramValues );
   }

@@ -232,11 +232,16 @@
 			function setTaskType(id) {
 				id = id.id ? id.id : id;
 				var task = gantt.getTask(id);
-				var type = gantt.hasChild(task.id) ? gantt.config.types.project
-						: gantt.config.types.task;
-				if (type != task.type) {
-					task.type = type;
-					gantt.updateTask(id);
+				if(gantt.hasChild(task.id)){
+					if(gantt.config.types.project!=task.type){
+						task.type = gantt.config.types.project;
+						gantt.updateTask(id);
+					}
+				}else{
+					if(gantt.config.types.task!=task.type && gantt.config.types.milestone !=task.type){
+						task.type = gantt.config.types.task;
+						gantt.updateTask(id);
+					}
 				}
 			}
 

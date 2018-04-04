@@ -18,7 +18,7 @@ import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
 
-  private ServiceRegistration registration;
+  private ServiceRegistration<?> registration;
 
   @Override
   public void start( BundleContext bundleContext ) throws Exception {

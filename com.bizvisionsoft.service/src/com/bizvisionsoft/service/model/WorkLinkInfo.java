@@ -1,5 +1,7 @@
 package com.bizvisionsoft.service.model;
 
+import org.bson.types.ObjectId;
+
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -65,20 +67,14 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
  * @author hua
  *
  */
-@PersistenceCollection("demoWorkLinks")
+@PersistenceCollection("worklinks")
 public class WorkLinkInfo {
 
-	@ReadValue
-	@WriteValue
-	private Integer id;
+	private ObjectId _id;
 
-	@ReadValue
-	@WriteValue
-	private Integer source;
+	private ObjectId source_id;
 
-	@ReadValue
-	@WriteValue
-	private Integer target;
+	private ObjectId target_id;
 
 	@ReadValue
 	@WriteValue
@@ -96,5 +92,34 @@ public class WorkLinkInfo {
 	@WriteValue
 	private Boolean editable;
 
+	@ReadValue("id")
+	public String getId() {
+		return _id.toHexString();
+	}
+
+	@WriteValue("id")
+	public void setId(String id) {
+		this._id = new ObjectId(id);
+	}
+
+	@ReadValue("source")
+	public String getSource() {
+		return source_id == null ? null : source_id.toHexString();
+	}
+
+	@WriteValue("source")
+	public void setParent(String source_id) {
+		this.source_id = source_id == null ? null : new ObjectId(source_id);
+	}
+	
+	@ReadValue("target")
+	public String getTarget() {
+		return target_id == null ? null : target_id.toHexString();
+	}
+
+	@WriteValue("target")
+	public void setTaget(String target_id) {
+		this.target_id = target_id == null ? null : new ObjectId(target_id);
+	}
 
 }

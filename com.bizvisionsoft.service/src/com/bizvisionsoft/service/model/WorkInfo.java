@@ -2,10 +2,14 @@ package com.bizvisionsoft.service.model;
 
 import java.util.Date;
 
-import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
+import org.bson.types.ObjectId;
+
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.WorkService;
+import com.mongodb.BasicDBObject;
 
 /**
  * <div class="doc" id="doc_content">
@@ -125,33 +129,35 @@ gantt.<span class="me1">init</span><span class="br0">(</span><span class=
  * @author hua
  *
  */
-@PersistenceCollection("demoWork")
+@PersistenceCollection("work")
 public class WorkInfo {
 
-	@ReadValue
-	@WriteValue
-	private String id;
+	private ObjectId _id;
 
-	@ReadValue
-	@WriteValue
-	private String parent;
+	private ObjectId parent_id;
+
+	private ObjectId project_id;
+
+	@ReadValue("项目甘特图#index")
+	@WriteValue("项目甘特图#index")
+	private int index;
 
 	@ReadValue
 	@WriteValue
 	private String wbsCode;
 
-	@Persistence("text")
-	@ReadValue("text")
-	@WriteValue("text")
-	private String name;
-
 	@ReadValue
 	@WriteValue
+	private String text;
+
+	@ReadValue
 	private Date start_date;
 
 	@ReadValue
-	@WriteValue
 	private Date end_date;
+
+	@ReadValue
+	private Date deadline;
 
 	@ReadValue
 	@WriteValue
@@ -160,14 +166,6 @@ public class WorkInfo {
 	@ReadValue
 	@WriteValue
 	private Float progress;
-
-	@ReadValue
-	@WriteValue
-	private String type;
-
-	@ReadValue
-	@WriteValue
-	private String barstyle;
 
 	@ReadValue
 	@WriteValue
@@ -181,109 +179,166 @@ public class WorkInfo {
 	@WriteValue
 	private Boolean open;
 
+	@ReadValue
+	@WriteValue
+	private String barstyle;
+
+	@ReadValue
+	@WriteValue
+	private Boolean milestone;
+
+	@ReadValue("id")
 	public String getId() {
-		return id;
+		return _id == null ? null : _id.toHexString();
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	@WriteValue("id")
+	public WorkInfo setId(String id) {
+		this._id = id == null ? null : new ObjectId(id);
+		return this;
 	}
 
+	public WorkInfo set_id(ObjectId _id) {
+		this._id = _id;
+		return this;
+	}
+
+	public ObjectId get_id() {
+		return _id;
+	}
+
+	@ReadValue("parent")
 	public String getParent() {
-		return parent;
+		return parent_id == null ? null : parent_id.toHexString();
 	}
 
-	public void setParent(String parent) {
-		this.parent = parent;
+	@WriteValue("parent")
+	public WorkInfo setParent(String parent) {
+		this.parent_id = parent == null ? null : new ObjectId(parent);
+		return this;
 	}
 
-	public String getWbsCode() {
-		return wbsCode;
+	@ReadValue("project")
+	public String getProject() {
+		return project_id == null ? null : project_id.toHexString();
 	}
 
-	public void setWbsCode(String wbsCode) {
-		this.wbsCode = wbsCode;
+	@WriteValue("project")
+	public WorkInfo setProject(String project_id) {
+		this.project_id = project_id == null ? null : new ObjectId(project_id);
+		return this;
 	}
 
-	public String getName() {
-		return name;
+	public WorkInfo setProject_id(ObjectId project_id) {
+		this.project_id = project_id;
+		return this;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public WorkInfo setParent_id(ObjectId parent_id) {
+		this.parent_id = parent_id;
+		return this;
 	}
 
-	public Date getStart_date() {
-		return start_date;
+	public ObjectId getProject_id() {
+		return project_id;
 	}
 
+	public ObjectId getParent_id() {
+		return parent_id;
+	}
+
+	@ReadValue("type")
+	public String getType() {
+		if (Boolean.TRUE.equals(milestone))
+			return "milestone";
+		else
+			return "task";
+	}
+
+	@WriteValue("type")
+	public WorkInfo setType(String type) {
+		milestone = "milestone".equals(type);
+		return this;
+	}
+
+	@ReadValue("创建甘特图工作编辑器#index")
+	public String getIndex() {
+		return "" + index;
+	}
+
+	public int index() {
+		return index;
+	}
+
+	@WriteValue("创建甘特图工作编辑器#index")
+	public WorkInfo setIndex(String index) {
+		this.index = Integer.parseInt(index);
+		return this;
+	}
+
+	public WorkInfo setEditable(Boolean editable) {
+		this.editable = editable;
+		return this;
+	}
+
+	public WorkInfo setOpen(Boolean open) {
+		this.open = open;
+		return this;
+	}
+
+	public static WorkInfo newInstance(ObjectId project_id) {
+		return newInstance(project_id, null);
+	}
+
+	/**
+	 * 生成本层的顺序号
+	 * 
+	 * @param projectId
+	 * @param parentId
+	 * @return
+	 */
+	private WorkInfo generateIndex() {
+		index = ServicesLoader.get(WorkService.class)
+				.nextWBSIndex(new BasicDBObject("project_id", project_id).append("parent_id", parent_id));
+		return this;
+	}
+
+	public static WorkInfo newInstance(ObjectId project_id, ObjectId parent_id) {
+		return new WorkInfo().set_id(new ObjectId()).setProject_id(project_id).setParent_id(parent_id).setEditable(true)
+				.setOpen(true).generateIndex();
+	}
+
+	@WriteValue("start_date")
 	public void setStart_date(Date start_date) {
+		checkDate(start_date, this.end_date, this.deadline);
 		this.start_date = start_date;
 	}
 
-	public Date getEnd_date() {
-		return end_date;
-	}
-
+	@WriteValue("end_date")
 	public void setEnd_date(Date end_date) {
+		checkDate(this.start_date, end_date, this.deadline);
 		this.end_date = end_date;
 	}
 
-	public Integer getDuration() {
-		return duration;
+	@WriteValue("deadline")
+	public void setDeadline(Date deadline) {
+		checkDate(this.start_date, this.end_date, deadline);
+		this.deadline = deadline;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	private void checkDate(Date start_date, Date end_date, Date deadline) {
+		if (start_date != null && end_date != null && start_date.after(end_date)) {
+			throw new RuntimeException("开始日期不得晚于完成日期");
+		}
+
+		if (start_date != null && deadline != null && start_date.after(deadline)) {
+			throw new RuntimeException("如果设定了期限，开始日期不得晚于期限日期");
+		}
+
+		if (end_date != null && deadline != null && end_date.after(deadline)) {
+			throw new RuntimeException("如果设定了期限，完成日期不得晚于期限日期");
+		}
+
 	}
 
-	public Float getProgress() {
-		return progress;
-	}
-
-	public void setProgress(Float progress) {
-		this.progress = progress;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getBarstyle() {
-		return barstyle;
-	}
-
-	public void setBarstyle(String barstyle) {
-		this.barstyle = barstyle;
-	}
-
-	public Boolean getReadonly() {
-		return readonly;
-	}
-
-	public void setReadonly(Boolean readonly) {
-		this.readonly = readonly;
-	}
-
-	public Boolean getEditable() {
-		return editable;
-	}
-
-	public void setEditable(Boolean editable) {
-		this.editable = editable;
-	}
-
-	public Boolean getOpen() {
-		return open;
-	}
-
-	public void setOpen(Boolean open) {
-		this.open = open;
-	}
-
-	
 }

@@ -1,6 +1,7 @@
 package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.conversions.Bson;
@@ -49,12 +50,22 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		//TODO
+		// TODO
 
 		List<ProjectInfo> result = new ArrayList<ProjectInfo>();
 		Service.col(ProjectInfo.class).aggregate(pipeline).into(result);
 		return result;
-		
+
+	}
+
+	@Override
+	public List<Date> getPlanDateRange(ObjectId _id) {
+		Project data = Service.col(Project.class).find(new BasicDBObject("_id", _id))
+				.projection(new BasicDBObject().append("planStart", 1).append("planFinish", 1)).first();
+		ArrayList<Date> result = new ArrayList<Date>();
+		result.add(data.getPlanStart());
+		result.add(data.getPlanFinish());
+		return result;
 	}
 
 }

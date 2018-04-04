@@ -74,7 +74,7 @@ public class BruiAssemblyContext implements IBruiContext {
 		}
 		return null;
 	}
-	
+
 	public IBruiContext getChildContextByName(String name) {
 		if (name == null) {
 			return null;
@@ -89,7 +89,6 @@ public class BruiAssemblyContext implements IBruiContext {
 		}
 		return null;
 	}
-	
 
 	public Object getContent() {
 		return getContent("this");
@@ -137,10 +136,18 @@ public class BruiAssemblyContext implements IBruiContext {
 		this.input = input;
 		return this;
 	}
-	
+
 	public Object getInput() {
 		return input;
 	}
 
+	public IBruiContext getRoot() {
+		return Optional.ofNullable(parentContext).map(p -> p.getRoot()).orElse(this);
+	}
+
+	@Override
+	public Object getRootInput() {
+		return getRoot().getInput();
+	}
 
 }

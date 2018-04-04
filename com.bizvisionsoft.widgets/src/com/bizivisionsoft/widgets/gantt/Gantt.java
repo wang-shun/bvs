@@ -246,6 +246,12 @@ public class Gantt extends Composite {
 		parameter.add("task", task).add("parentId", parentId).add("index", index);
 		remoteObject.call("addTask", parameter);
 	}
+	public void addTask(Object item, String parentId) {
+		JsonObject task = WidgetToolkit.readJsonFrom(item.getClass(), item, containerName, true, true, true, convertor);
+		JsonObject parameter = new JsonObject();
+		parameter.add("task", task).add("parentId", parentId);
+		remoteObject.call("addTask", parameter);
+	}
 
 	private Event createEvent(String eventCode, JsonObject jo) {
 		GanttEvent event = new GanttEvent();

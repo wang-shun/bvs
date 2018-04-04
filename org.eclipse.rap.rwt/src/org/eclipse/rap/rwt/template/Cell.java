@@ -32,7 +32,7 @@ import org.eclipse.swt.graphics.Font;
  *
  * @since 2.2
  */
-public abstract class Cell<T extends Cell> implements Serializable  {
+public abstract class Cell<T extends Cell<?>> implements Serializable  {
 
   private static final String PROPERTY_TYPE = "type";
   private static final String PROPERTY_LEFT = "left";

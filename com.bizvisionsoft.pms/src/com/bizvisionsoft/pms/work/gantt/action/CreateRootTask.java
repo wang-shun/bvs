@@ -8,17 +8,25 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.Editor;
+import com.bizvisionsoft.service.model.Project;
+import com.bizvisionsoft.service.model.WorkInfo;
 
 public class CreateRootTask {
-	
+
 	@Inject
 	private IBruiService bruiService;
-	
+
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		GanttPart content = (GanttPart) context.getContent();
-		System.out.println();
+		Project project = (Project) context.getRootInput();
+		// 显示编辑器
+		new Editor<WorkInfo>(bruiService.getEditor("创建甘特图工作编辑器"), context).setInput(WorkInfo.newInstance(project.get_id()))
+				.open((r, wi) -> {
+					GanttPart content = (GanttPart) context.getContent();
+					content.addTask(wi, null, wi.index());
+				});
 	}
 
 }

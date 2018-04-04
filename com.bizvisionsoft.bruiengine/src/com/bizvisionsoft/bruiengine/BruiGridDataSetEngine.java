@@ -3,14 +3,17 @@ package com.bizvisionsoft.bruiengine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -204,6 +207,28 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 data的方法。");
 		}
 		return null;
+	}
+
+	public void attachListener(BiConsumer<String,Method> con) {
+		Arrays.asList(clazz.getDeclaredMethods()).stream().forEach(m -> {
+			Listener anno = m.getAnnotation(Listener.class);
+			if (anno != null) {
+				String[] values = anno.value();
+				for (int i = 0; i < values.length; i++) {
+					String listenerName = null;
+					String[] loc = values[i].split("#");
+					if (loc.length == 1) {
+						listenerName = loc[0].trim();
+					} else if (loc.length > 1 && assembly.getName().equals(loc[0].trim())) {
+						listenerName = loc[1].trim();
+					}
+					if (listenerName != null) {
+						con.accept(listenerName,m);
+					}
+				}
+
+			}
+		});
 	}
 
 }

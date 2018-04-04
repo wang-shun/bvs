@@ -1,11 +1,11 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +28,6 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.service.model.WorkInfo;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart {
@@ -58,7 +57,7 @@ public class GanttPart {
 
 	@Init
 	private void init() {
-		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService);
+		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
 
 		ganttConfig = Config.defaultConfig(config.isReadonly());
 
@@ -148,21 +147,30 @@ public class GanttPart {
 		// 设置必须的事件侦听
 		gantt.addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
 		gantt.addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
+		
+		dataSetEngine.attachListener((eventCode,m)->{
+			addGanttEventListener(eventCode, e1 -> {
+				try {
+					m.invoke(dataSetEngine.getTarget(), e1);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
+					e2.printStackTrace();
+				}
+			});
+		});
 
-		// test
-		addGanttEventListener(GanttEventCode.onAfterTaskAdd.name(), e1 -> testEvent(e1));
-
-		addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 -> testEvent(e1));
-
-		addGanttEventListener(GanttEventCode.onAfterTaskUpdate.name(), e1 -> testEvent(e1));
-
-		addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
+//		addGanttEventListener(GanttEventCode.onAfterTaskAdd.name(), e1 -> testEvent(e1));
+//
+//		addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 -> testEvent(e1));
+//
+//		addGanttEventListener(GanttEventCode.onAfterTaskUpdate.name(), e1 -> testEvent(e1));
+//
+//		addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
 
 	}
 
-	private void testEvent(Event e1) {
-		System.out.println(e1.text + e1);
-	}
+//	private void testEvent(Event e1) {
+//		System.out.println(e1.text + e1);
+//	}
 
 	private void showRowMenu(Event e) {
 		new ActionMenu().setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
@@ -181,14 +189,8 @@ public class GanttPart {
 		gantt.removeGanttListener(eventCode, listener);
 	}
 
-	public void addTask() {
-		WorkInfo item = new WorkInfo();
-		item.setId(new ObjectId().toString());
-		item.setDuration(10);
-		item.setStart_date(new Date());
-		item.setName("测试任务");
-		item.setType("task");// 如果不设置会再触发一次更新
-		gantt.addTask(item, null, 1);
+	public void addTask(Object item, String parentId, int index) {
+		gantt.addTask(item, parentId, index);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.bizvisionsoft.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -44,4 +45,10 @@ public interface ProjectService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public List<ProjectInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+
+	@GET
+	@Path("/_id/{_id}/daterange")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Date> getPlanDateRange(@PathParam("_id") ObjectId _id);
 }

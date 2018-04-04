@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.osgi.framework.BundleActivator;
@@ -134,6 +135,10 @@ public class Service implements BundleActivator {
 
 	public static <T> MongoCollection<T> col(Class<T> clazz) {
 		return database.getCollection(clazz.getAnnotation(PersistenceCollection.class).value(), clazz);
+	}
+	
+	public static MongoCollection<Document> col(String name) {
+		return database.getCollection(name);
 	}
 
 }

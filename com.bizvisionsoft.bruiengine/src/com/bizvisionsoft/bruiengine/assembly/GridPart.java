@@ -114,7 +114,7 @@ public class GridPart {
 
 		// 注册数据集引擎
 		if (!disableDateSetEngine)
-			dataSetEngine = BruiGridDataSetEngine.create(config, bruiService);
+			dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
 	}
 
 	public GridPart addItemSelector(ToolItemDescriptor listener) {

@@ -77,7 +77,8 @@ public class WidgetTreeUtil {
     }
   }
 
-  private static void handleItems( Widget root, WidgetTreeVisitor visitor ) {
+  @SuppressWarnings("unchecked")
+private static void handleItems( Widget root, WidgetTreeVisitor visitor ) {
     ItemProvider itemProvider = root.getAdapter( ItemProvider.class );
     if( itemProvider != null ) {
       itemProvider.provideItems( visitor );

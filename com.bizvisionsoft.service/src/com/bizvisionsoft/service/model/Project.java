@@ -267,5 +267,13 @@ public class Project {
 	public String toString() {
 		return name + " [" + id + "]";
 	}
+	
+	public Date getPlanStart() {
+		return planStart;
+	}
+	
+	public Date getPlanFinish() {
+		return planFinish;
+	}
 
 }

@@ -84,7 +84,8 @@ public class MenuItem extends Item {
    * @see Widget#checkSubclass
    * @see Widget#getStyle
    */
-  public MenuItem( Menu parent, int style ) {
+  @SuppressWarnings("unchecked")
+public MenuItem( Menu parent, int style ) {
     super( parent, checkStyle( style ) );
     this.parent = parent;
     parent.getAdapter( IItemHolderAdapter.class ).add( this );
@@ -126,7 +127,8 @@ public class MenuItem extends Item {
    * @see Widget#checkSubclass
    * @see Widget#getStyle
    */
-  public MenuItem( Menu parent, int style, int index ) {
+  @SuppressWarnings("unchecked")
+public MenuItem( Menu parent, int style, int index ) {
     super( parent, checkStyle( style ) );
     this.parent = parent;
     parent.getAdapter( IItemHolderAdapter.class ).insert( this, index );
@@ -637,7 +639,8 @@ public class MenuItem extends Item {
     }
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+@Override
   final void releaseParent() {
     super.releaseParent();
     parent.getAdapter( IItemHolderAdapter.class ).remove( this );

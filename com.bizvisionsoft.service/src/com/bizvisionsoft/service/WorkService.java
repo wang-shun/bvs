@@ -20,7 +20,7 @@ public interface WorkService {
 	@Path("/gantt/data")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("甘特图组件演示 # data")
+	@DataSet("data")
 	public List<WorkInfo> createGanttDataSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
 
 	
@@ -28,7 +28,17 @@ public interface WorkService {
 	@Path("/gantt/links")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("甘特图组件演示 # links")
+	@DataSet("links")
 	public List<WorkLinkInfo> createGanttLinkSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
+
+
+	@POST
+	@Path("/nextwbsidx")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public int nextWBSIndex(BasicDBObject condition);
+	
+	
+
 
 }

@@ -124,7 +124,7 @@ public class AUtil {
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e);
+				throw new RuntimeException(e.getTargetException().getMessage());
 			}
 	}
 
