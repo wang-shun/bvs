@@ -5,11 +5,8 @@ import org.eclipse.swt.widgets.Event;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruicommons.model.Page;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.ProjectInfo;
 import com.bizvisionsoft.service.model.ProjectSet;
 
@@ -25,8 +22,7 @@ public class OpenProjectOrProjectSet {
 			if (em instanceof ProjectSet) {
 				
 			}else if(em instanceof ProjectInfo) {
-				Page page = Brui.site.getPage("项目首页");
-				View.create(page,em).open();
+				bruiService.switchPage("项目首页", ((ProjectInfo) em).get_id().toHexString());
 			}
 		});
 

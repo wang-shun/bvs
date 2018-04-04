@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.service;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.model.User;
@@ -29,7 +30,11 @@ public interface IBruiService extends IServiceWithId {
 
 	public void switchContent(Assembly assembly, Object input);
 
-	public void switchContentByName(String assemblyName, Object input);
+	public void switchContent(String assemblyName, Object input);
+
+	public void switchPage(String pageName, String inputUid);
+
+	public void switchPage(Page page, String inputUid);
 
 	public <T> Editor<T> createEditor(Assembly assembly, T input, boolean editable, boolean ignoreNull,
 			IBruiContext context);

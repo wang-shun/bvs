@@ -3,7 +3,9 @@ package com.bizvisionsoft.bruiengine.service;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ContentWidget;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.ui.Part;
@@ -58,8 +60,19 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void switchContentByName(String assemblyName, Object input) {
+	public void switchContent(String assemblyName, Object input) {
 		switchContent(getEditor(assemblyName), input);
+	}
+
+	@Override
+	public void switchPage(String pageName, String inputUid) {
+		Page page = Brui.site.getPageByName(pageName);
+		switchPage(page, inputUid);
+	}
+
+	@Override
+	public void switchPage(Page page, String inputUid) {
+		UserSession.current().getEntryPoint().switchPage(page, inputUid, true);
 	}
 
 	@Override

@@ -9,13 +9,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.EntryPoint;
+import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.StartupParameters;
 import org.eclipse.rap.rwt.internal.lifecycle.RWTLifeCycle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
@@ -24,6 +28,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 	private Display display;
 	private Shell shell;
+	private View currentView;
 
 	@Override
 	public int createUI() {
@@ -37,7 +42,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		display = new Display();
 		shell = new Shell(display, SWT.NO_TRIM);
 		setBackground();
-		UserSession.current().setShell(shell);
+		UserSession.current().setEntryPoint(this).setShell(shell);
 
 		shell.setMaximized(true);
 		shell.layout();
@@ -83,8 +88,50 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 	}
 
 	protected void start() {
-		Page page = Brui.site.getHomePage();
-		View.create(page).open();
+		BrowserNavigation service = RWT.getClient().getService(BrowserNavigation.class);
+		service.addBrowserNavigationListener(event -> {
+			String state = event.getState();
+			if (state.isEmpty()) {
+				switchPage(Brui.site.getHomePage(), null, false);
+			} else {
+				int idx = state.indexOf("/");
+				String pageId, inputUid = null;
+				if (idx != -1) {
+					pageId = state.substring(0, idx);
+					inputUid = state.substring(idx + 1);
+				} else {
+					pageId = state;
+				}
+				Page toPage = Brui.site.getPageById(pageId);
+				switchPage(toPage, inputUid, true);
+			}
+		});
+		switchPage(Brui.site.getHomePage(), null, true);
+	}
+
+	public void switchPage(Page page, String inputUid, boolean addHistory) {
+		String name = page.getName();
+		View view;
+		String uid = "";
+		if (inputUid != null) {
+			Object input = BruiPageInputDataSetEngine.create(page).getInput(inputUid);
+			view = View.create(page, input);
+			name += " - " + AUtil.readValue(input, null, ReadValue.LABEL, "");
+			uid = "/" + inputUid;
+		} else {
+			view = View.create(page, null);
+		}
+
+		if (currentView != null && !currentView.isDisposed()) {
+			currentView.dispose();
+		}
+		currentView = view;
+		view.open();
+
+		if (addHistory) {
+			BrowserNavigation service = RWT.getClient().getService(BrowserNavigation.class);
+			service.pushState(page.getId() + uid, name);
+		}
 	}
 
 }

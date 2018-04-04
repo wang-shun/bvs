@@ -12,5 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.bizvisionsoft.service,
  com.bizvisionsoft.serviceconsumer,
  com.bizvisionsoft.bruiengine,
- com.bizvisionsoft.annotations;bundle-version="1.0.0"
+ com.bizvisionsoft.annotations;bundle-version="1.0.0",
+ org.mongodb.mongo-java-driver;bundle-version="3.6.0",
+ com.bizvisionsoft.widgets
 Import-Package: com.mongodb

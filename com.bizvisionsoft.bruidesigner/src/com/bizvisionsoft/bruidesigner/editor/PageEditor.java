@@ -27,6 +27,13 @@ public class PageEditor extends ModelEditor {
 		
 		createCheckboxField(parent, "无论是否登录都需强制验证用户:", inputData, "forceCheckLogin", SWT.CHECK);
 		
+		createTextField(parent, "页面输入取数插件唯一标识符（Bundle Id）:", inputData, "inputDataSetBundleId", SWT.BORDER);
+
+		createTextField(parent, "页面输入取数完整的类名:", inputData, "inputDataSetClassName", SWT.BORDER);
+
+		createTextField(parent, "页面输入取数服务名称:", inputData, "inputDataSetService", SWT.BORDER)
+				.setMessage("例如：UserService.list");
+		
 		addPartNamePropertyChangeListener("name");
 	}
 

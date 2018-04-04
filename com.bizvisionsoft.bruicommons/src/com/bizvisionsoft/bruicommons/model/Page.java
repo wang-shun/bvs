@@ -23,6 +23,12 @@ public class Page extends ModelObject {
 	private boolean checkLogin;
 
 	private boolean forceCheckLogin;
+	
+	private String inputDataSetService;
+
+	private String inputDataSetBundleId;
+
+	private String inputDataSetClassName;
 
 	public Headbar getHeadbar() {
 		return headbar;
@@ -116,6 +122,30 @@ public class Page extends ModelObject {
 
 	public void setForceCheckLogin(boolean forceCheckLogin) {
 		this.forceCheckLogin = forceCheckLogin;
+	}
+	
+	public void setInputDataSetBundleId(String inputDataSetBundleId) {
+		this.inputDataSetBundleId = inputDataSetBundleId;
+	}
+	
+	public void setInputDataSetClassName(String inputDataSetClassName) {
+		this.inputDataSetClassName = inputDataSetClassName;
+	}
+	
+	public void setInputDataSetService(String inputDataSetService) {
+		this.inputDataSetService = inputDataSetService;
+	}
+	
+	public String getInputDataSetBundleId() {
+		return inputDataSetBundleId;
+	}
+	
+	public String getInputDataSetClassName() {
+		return inputDataSetClassName;
+	}
+	
+	public String getInputDataSetService() {
+		return inputDataSetService;
 	}
 
 }

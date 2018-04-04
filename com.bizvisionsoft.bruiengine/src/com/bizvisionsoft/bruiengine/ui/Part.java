@@ -99,8 +99,8 @@ public abstract class Part implements Serializable {
 		} else {
 			centerPoint = Geometry.centerPoint(monitorBounds);
 		}
-		
-		return new Point(centerPoint.x - initialSize.x / 2,centerPoint.y - initialSize.y / 2);
+
+		return new Point(centerPoint.x - initialSize.x / 2, centerPoint.y - initialSize.y / 2);
 	}
 
 	protected Point getInitialSize() {
@@ -304,6 +304,14 @@ public abstract class Part implements Serializable {
 	 */
 	protected void setShellStyle(int newShellStyle) {
 		shellStyle = newShellStyle;
+	}
+
+	public boolean isDisposed() {
+		return shell.isDisposed();
+	}
+
+	public void dispose() {
+		shell.dispose();
 	}
 
 }

@@ -39,7 +39,7 @@ public class Project {
 	/**
 	 * 编号
 	 */
-	@ReadValue
+	@ReadValue({"id",ReadValue.ID_LABEL})
 	@WriteValue
 	@Persistence
 	private String id;
@@ -83,7 +83,7 @@ public class Project {
 	/**
 	 * 名称
 	 */
-	@ReadValue
+	@ReadValue({"name",ReadValue.NAME_LABEL})
 	@WriteValue
 	@Persistence
 	private String name;
@@ -260,6 +260,12 @@ public class Project {
 		options.put("科研-适应性改造", "科研-适应性改造");
 		options.put("CBB", "CBB");
 		return options;
+	}
+	
+	@Override
+	@ReadValue(ReadValue.LABEL)
+	public String toString() {
+		return name + " [" + id + "]";
 	}
 
 }

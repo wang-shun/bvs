@@ -22,6 +22,7 @@ public @interface DataSet {
 
 	public static final String COUNT = "count";
 
+	public static final String INPUT = "input";
 
 	/**
 	 * @author hua

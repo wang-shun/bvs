@@ -224,8 +224,12 @@ public class Site extends ModelObject {
 		this.rootFolder = rootFolder;
 	}
 
-	public Page getPage(String pageName) {
+	public Page getPageByName(String pageName) {
 		return pages.stream().filter(p -> pageName.equals(p.getName())).findFirst().orElse(null);
+	}
+
+	public Page getPageById(String pageId) {
+		return pages.stream().filter(p -> pageId.equals(p.getId())).findFirst().orElse(null);
 	}
 
 	// public void setExtLibPath(List<String> extLibPath) {

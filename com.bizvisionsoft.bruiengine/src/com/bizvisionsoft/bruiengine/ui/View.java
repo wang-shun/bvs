@@ -24,10 +24,6 @@ public class View extends Part {
 
 	private BruiAssemblyContext context;
 
-	public static View create(Page page) {
-		return create(page,null);
-	}
-
 	public static View create(Page page,Object input) {
 		return new View(page,input);
 	}
@@ -135,5 +131,6 @@ public class View extends Part {
 	private Composite createSidebar(Composite parent) {
 		return sidebarWidget.createUI(parent).getControl();
 	}
+
 
 }
