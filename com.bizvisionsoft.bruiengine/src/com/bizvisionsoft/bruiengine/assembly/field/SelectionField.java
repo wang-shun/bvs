@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.ReadValue;
 
 public class SelectionField extends EditorField {
 
@@ -96,8 +95,7 @@ public class SelectionField extends EditorField {
 	}
 
 	protected void presentation() {
-		Object label = Optional.ofNullable(value)
-				.map(v -> AUtil.readValue(v, assemblyConfig.getName(), ReadValue.LABEL,null)).orElse("");
+		Object label = Optional.ofNullable(value).map(v -> AUtil.readLabel(v, null)).orElse("");
 		text.setText("" + label);
 	}
 

@@ -6,9 +6,9 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
@@ -50,8 +50,8 @@ public class SidebarHeaderL2Page {
 				+ "px height=" + 32 + "px/>");
 
 		Object input = context.getParentContext().getInput();
-		Object name = AUtil.readValue(input, null, ReadValue.NAME_LABEL, "");
-		Object id = AUtil.readValue(input, null, ReadValue.ID_LABEL, "");
+		Object name = AUtil.readLabel(input,com.bizvisionsoft.annotations.md.service.Label.NAME_LABEL );
+		Object id = AUtil.readLabel(input, com.bizvisionsoft.annotations.md.service.Label.ID_LABEL);
 		title.setText("<div style='color:white;margin-left:2px;margin-top:4px;width:180px;'><div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + name
 				+ "</div><div style='font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + id + "</div></div>");
 		pic.addListener(SWT.MouseDown, e -> {

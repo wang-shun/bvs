@@ -221,4 +221,8 @@ public class GanttPart {
 		gantt.updateLink(link);
 	}
 
+	public void updateTask(Object task) {
+		gantt.updateTask(task);
+	}
+
 }

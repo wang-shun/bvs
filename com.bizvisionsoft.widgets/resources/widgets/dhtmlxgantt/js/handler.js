@@ -11,7 +11,8 @@
 
 		properties : [ "config", "initFrom", "initTo", "inputData" ],
 
-		methods : [ "addListener", "removeListener", "addTask", "addLink", "updateLink" ]
+		methods : [ "addListener", "removeListener", "addTask", "addLink",
+				"updateTask", "updateLink" ]
 
 	});
 
@@ -233,19 +234,31 @@
 			var ro = rap.getRemoteObject(this);
 
 			gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
-				ro.call("taskUpdated", {"id":id,"task":task});
+				ro.call("taskUpdated", {
+					"id" : id,
+					"task" : task
+				});
 			});
 
 			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
-				ro.call("taskDeleted", {"id":id,"task":task});
+				ro.call("taskDeleted", {
+					"id" : id,
+					"task" : task
+				});
 			});
 
 			gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
-				ro.call("linkUpdated", {"id":id,"link":link});
+				ro.call("linkUpdated", {
+					"id" : id,
+					"link" : link
+				});
 			});
 
 			gantt.attachEvent("onAfterLinkDelete", function(id, link) {
-				ro.call("linkDeleted", {"id":id,"link":link});
+				ro.call("linkDeleted", {
+					"id" : id,
+					"link" : link
+				});
 			});
 
 			var checkProject = this.checkProject;
@@ -413,9 +426,7 @@
 			} else if (eventCode == "onEmptyClick"
 					|| eventCode == "onMultiSelect") {
 				gantt.attachEvent(eventCode, function(e) {
-					ro.call(eventCode, {
-						"e" : e
-					});
+					ro.call(eventCode, {});
 				});
 			} else if (eventCode == "onError") {
 				gantt.attachEvent(eventCode, function(errorMessage) {
@@ -426,20 +437,15 @@
 			} else if (eventCode == "onLinkClick"
 					|| eventCode == "onLinkDblClick"
 					|| eventCode == "onTaskClick"
-					|| eventCode == "onTaskDblClick") {
-				gantt.attachEvent(eventCode, function(id, e) {
-					ro.call(eventCode, {
-						"id" : id,
-						"e" : e
-					});
-				});
-			} else if (eventCode == "onTaskSelected"
+					|| eventCode == "onTaskDblClick"
+					|| eventCode == "onTaskSelected"
 					|| eventCode == "onTaskUnselected"
 					|| eventCode == "onTaskRowClick") {
-				gantt.attachEvent(eventCode, function(id) {
+				gantt.attachEvent(eventCode, function(id, e) {
 					ro.call(eventCode, {
 						"id" : id
 					});
+					return true;
 				});
 			} else if (eventCode == "onLinkValidation") {
 				gantt.attachEvent(eventCode, function(link) {
@@ -450,7 +456,6 @@
 			} else if (eventCode == "onScaleClick") {
 				gantt.attachEvent(eventCode, function(e, date) {
 					ro.call(eventCode, {
-						"e" : e,
 						"date" : date
 					});
 				});
@@ -458,8 +463,7 @@
 				gantt.attachEvent(eventCode, function(id, state, e) {
 					ro.call(eventCode, {
 						"id" : id,
-						"state" : state,
-						"e" : e
+						"state" : state
 					});
 				});
 			} else if (eventCode == "onTaskLinkBefore") {// 自定义的事件
@@ -481,6 +485,19 @@
 
 		addLink : function(link) {
 			gantt.addLink(link);
+		},
+
+		updateTask : function(task) {
+			var clientTask = gantt.getTask(task.id);
+			for ( var attr in task) {
+				if(task[attr].type=="Date"){
+					var formatFunc  = gantt.date.str_to_date(task[attr].format);
+					clientTask[attr] = formatFunc(task[attr].value);
+				}else{
+					clientTask[attr] = task[attr];
+				}
+			}
+			gantt.updateTask(task.id);
 		},
 
 		updateLink : function(link) {

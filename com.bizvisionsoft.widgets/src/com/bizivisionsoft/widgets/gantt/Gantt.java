@@ -71,8 +71,9 @@ public class Gantt extends Composite {
 					return;
 				} else {
 					Event event = createEvent(eventCode, jo);
-					Optional.ofNullable(listenerMap.get(eventCode))
-							.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
+					if (event.doit)
+						Optional.ofNullable(listenerMap.get(eventCode))
+								.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
 				}
 			});
 		}
@@ -88,6 +89,15 @@ public class Gantt extends Composite {
 	private BiFunction<String, Object, Object> convertor = (n, v) -> {
 		if (v instanceof Date)
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+		return v;
+	};
+	
+	private BiFunction<String, Object, Object> convertor4Update = (n, v) -> {
+		if (v instanceof Date) {
+			String format = "%Y-%m-%d %H:%i:%s";
+			String value =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+			return new JsonObject().add("type", "Date").add("format", format).add("value", value);
+		}
 		return v;
 	};
 
@@ -176,7 +186,7 @@ public class Gantt extends Composite {
 
 		this.links = new ArrayList<Object>();
 		this.links.addAll(links);
-		
+
 		setInputData(transformToJsonInput(containerName, tasks, links, convertor));
 	}
 
@@ -268,10 +278,16 @@ public class Gantt extends Composite {
 		remoteObject.call("updateLink", link);
 	}
 
+	public void updateTask(Object item) {
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor4Update);
+		remoteObject.call("updateTask", task);
+	}
+
 	private Event createEvent(String eventCode, JsonObject jo) {
 		GanttEvent event = new GanttEvent();
 		event.text = eventCode;
 		event.data = jo;
+		JsonValue id = jo.get("id");
 
 		if (GanttEventCode.onGridHeaderMenuClick.name().equals(eventCode)) {
 
@@ -279,28 +295,41 @@ public class Gantt extends Composite {
 			event.linkSource = findTask(jo.get("source").asString());
 			event.linkTarget = findTask(jo.get("target").asString());
 			event.linkType = jo.get("type").asString();
+			event.doit = event.linkSource != null && event.linkTarget != null && event.linkType != null;
 		} else if (GanttEventCode.onGridRowMenuClick.name().equals(eventCode)) {
-			event.taskId = jo.get("id").asString();
-			event.task = findTask(event.taskId);
-
+			if (id.isString()) {
+				event.taskId = id.asString();
+				event.task = findTask(event.taskId);
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onAfterAutoSchedule.name().equals(eventCode)) {
 			event.taskId = jo.get("taskId").asString();
 			ArrayList<String> data = new ArrayList<>();
 			jo.get("e").asArray().forEach(v -> data.add(v.asString()));
 			event.updatedTasks = data;
-
+			// TODO
 		} else if (GanttEventCode.onAfterLinkAdd.name().equals(eventCode)
 				|| GanttEventCode.onAfterLinkDelete.name().equals(eventCode)
 				|| GanttEventCode.onAfterLinkUpdate.name().equals(eventCode)) {
-			event.id = jo.get("id").asString();
-			event.link = findLink(event.taskId);
-
+			if (id.isString()) {
+				event.id = id.asString();
+				event.link = findLink(event.id);
+				event.doit = event.link != null;
+			} else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onAfterTaskAdd.name().equals(eventCode)
 				|| GanttEventCode.onAfterTaskDelete.name().equals(eventCode)
 				|| GanttEventCode.onAfterTaskUpdate.name().equals(eventCode)) {
-			event.id = jo.get("id").asString();
-			event.task = findTask(event.id);
-
+			if (id.isString()) {
+				event.id = id.asString();
+				event.task = findTask(event.id);
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onAfterTaskAutoSchedule.name().equals(eventCode)) {
 			event.task = findTask(jo.get("task").asObject().get("id").asString());
 			event.link = findLink(jo.get("link").asObject().get("id").asString());
@@ -324,27 +353,45 @@ public class Gantt extends Composite {
 
 		} else if (GanttEventCode.onLinkClick.name().equals(eventCode)
 				|| GanttEventCode.onLinkDblClick.name().equals(eventCode)) {
-			event.id = jo.get("id").asString();
-			event.link = findLink(event.id);
-			event.clientType = "link";
+			if (id.isString()) {
+				event.id = id.asString();
+				event.link = findLink(event.id);
+				event.clientType = "link";
+				event.doit = event.link != null;
+			}else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onTaskClick.name().equals(eventCode)
 				|| GanttEventCode.onTaskDblClick.name().equals(eventCode)) {
-			event.id = jo.get("id").asString();
-			event.clientType = "task";
+			if (id.isString()) {
+				event.id = id.asString();
+				event.task = findTask(event.id);
+				event.clientType = "task";
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onTaskSelected.name().equals(eventCode)
 				|| GanttEventCode.onTaskUnselected.name().equals(eventCode)
 				|| GanttEventCode.onTaskRowClick.name().equals(eventCode)) {
-			event.id = jo.get("id").asString();
-
+			if (id.isString()) {
+				event.id = id.asString();
+				event.task = findTask(event.id);
+				event.clientType = "task";
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
 		} else if (GanttEventCode.onLinkValidation.name().equals(eventCode)) {
 			event.link = findLink(jo.get("link").asObject().get("id").asString());
-
+			//TODO
 		} else if (GanttEventCode.onScaleClick.name().equals(eventCode)) {
 			event.date = jo.get("date").asString();
 
 		} else if (GanttEventCode.onTaskMultiSelect.name().equals(eventCode)) {
 			event.id = jo.get("id").asString();
 			event.state = jo.get("state").asBoolean();
+			//TODO
 
 		} else {
 		}

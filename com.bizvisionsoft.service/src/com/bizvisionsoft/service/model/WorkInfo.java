@@ -5,6 +5,7 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.ServicesLoader;
@@ -342,7 +343,7 @@ public class WorkInfo {
 	}
 	
 	@Override
-	@ReadValue(ReadValue.LABEL)
+	@Label
 	public String toString() {
 		return text;
 	}

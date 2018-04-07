@@ -18,9 +18,14 @@ public class Editor<T> extends Popup {
 
 	private T input;
 
-	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input, BiConsumer<BasicDBObject, M> doit) {
+	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input,
+			BiConsumer<BasicDBObject, M> doit) {
+		return create(name, parentContext, input).open(doit);
+	}
+
+	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input) {
 		Assembly editorConfig = Brui.site.getAssemblyByName(name);
-		return new Editor<M>(editorConfig, parentContext).setInput(input).open(doit);
+		return new Editor<M>(editorConfig, parentContext).setInput(input);
 	}
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {

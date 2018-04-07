@@ -11,6 +11,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -39,7 +40,8 @@ public class Project {
 	/**
 	 * ±àºÅ
 	 */
-	@ReadValue({"id",ReadValue.ID_LABEL})
+	@ReadValue
+	@Label(Label.ID_LABEL)
 	@WriteValue
 	@Persistence
 	private String id;
@@ -83,9 +85,10 @@ public class Project {
 	/**
 	 * Ãû³Æ
 	 */
-	@ReadValue({"name",ReadValue.NAME_LABEL})
+	@ReadValue
 	@WriteValue
 	@Persistence
+	@Label(Label.NAME_LABEL)
 	private String name;
 
 	/**
@@ -263,7 +266,7 @@ public class Project {
 	}
 	
 	@Override
-	@ReadValue(ReadValue.LABEL)
+	@Label
 	public String toString() {
 		return name + " [" + id + "]";
 	}

@@ -17,15 +17,28 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD })
-public @interface ReadValue {
+public @interface Label {
 
+	/**
+	 * 默认用于注解对象的通用标签
+	 */
+
+	/**
+	 * 用于注解对象名称的通用标签
+	 */
+	public static final String NAME_LABEL = "namelabel";
+
+	/**
+	 * 用于注解对象id的通用标签
+	 */
+	public static final String ID_LABEL = "idlabel";
+	
 	
 	/**
-	 * 空格不是必须的，只是为了好看，解释的时候会自动去掉前后多余的空格，如果该属性被多个表格或列使用时，可标记为数组
 	 * 
 	 * @author hua
 	 *
 	 */
-	String[] value() default "";
+	String value() default "";
 
 }

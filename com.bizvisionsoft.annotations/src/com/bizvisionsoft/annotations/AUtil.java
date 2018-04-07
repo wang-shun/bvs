@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -108,9 +109,11 @@ public class AUtil {
 				f.set(element, value);
 				return;
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("容器："+cName+"，字段："+fName+"，注解：" + annoClass.getSimpleName() + "，的字段无法访问。", e);
+				throw new RuntimeException(
+						"容器：" + cName + "，字段：" + fName + "，注解：" + annoClass.getSimpleName() + "，的字段无法访问。", e);
 			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("容器："+cName+"，字段："+fName+"，注解：" + annoClass.getSimpleName() + "，的字段参数错误。", e);
+				throw new RuntimeException(
+						"容器：" + cName + "，字段：" + fName + "，注解：" + annoClass.getSimpleName() + "，的字段参数错误。", e);
 			}
 
 		Method m = getContainerMethod(c, annoClass, cName, fName, func).orElse(null);
@@ -321,14 +324,14 @@ public class AUtil {
 		return new GsonBuilder().create().fromJson(json, elem.getClass());
 	}
 
-	public static <T extends Annotation> Object getValue(Class<?> clazz,Class<T> annoClass,Object target) {
+	public static <T extends Annotation> Object getValue(Class<?> clazz, Class<T> annoClass, Object target) {
 		try {
-			Field field = AUtil.getField(clazz, annoClass).orElse(null);
+			Field field = getField(clazz, annoClass).orElse(null);
 			if (field != null) {
 				field.setAccessible(true);
 				return field.get(target);
 			}
-			Method method = AUtil.getMethod(clazz, annoClass).orElse(null);
+			Method method = getMethod(clazz, annoClass).orElse(null);
 			if (method != null) {
 				method.setAccessible(true);
 				return method.invoke(target);
@@ -343,6 +346,27 @@ public class AUtil {
 		} catch (InvocationTargetException e2) {
 			throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e2);
 		}
+	}
+
+	public static String readLabel(Object target, String labelType) {
+		try {
+			Field field = getField(target.getClass(), Label.class, labelType == null ? "" : labelType, f -> f.value())
+					.orElse(null);
+			if (field != null) {
+				field.setAccessible(true);
+				return (String) field.get(target);
+			}
+
+			Method method = getMethod(target.getClass(), Label.class, labelType == null ? "" : labelType,
+					f -> f.value()).orElse(null);
+			if (method != null) {
+				method.setAccessible(true);
+				return (String) method.invoke(target);
+			}
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+			//TODO
+		}
+		return null;
 	}
 
 }

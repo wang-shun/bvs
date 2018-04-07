@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
@@ -116,7 +115,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		if (inputUid != null) {
 			Object input = BruiPageInputDataSetEngine.create(page).getInput(inputUid);
 			view = View.create(page, input);
-			name += " - " + AUtil.readValue(input, null, ReadValue.LABEL, "");
+			name += " - " + AUtil.readLabel(input, null);
 			uid = "/" + inputUid;
 		} else {
 			view = View.create(page, null);

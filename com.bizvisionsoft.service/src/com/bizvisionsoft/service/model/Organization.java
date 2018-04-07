@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 
 @PersistenceCollection(value = "organization")
@@ -36,7 +37,8 @@ public class Organization {
 	 * È«³Æ
 	 */
 	@Persistence
-	@ReadValue({ "fullName", ReadValue.LABEL })
+	@ReadValue
+	@Label
 	private String fullName;
 
 	/**
