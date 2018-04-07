@@ -28,11 +28,7 @@ import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.service.ProjectSetService;
-import com.bizvisionsoft.service.model.ProjectSet;
-import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart {
@@ -156,7 +152,8 @@ public class GanttPart {
 		// 设置必须的事件侦听
 		addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
 		addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
-//		addGanttEventListener(GanttEventCode.onTaskLinkBefore.name(), e -> showLinkCreateEditor(e));
+		// addGanttEventListener(GanttEventCode.onTaskLinkBefore.name(), e ->
+		// showLinkCreateEditor(e));
 
 		dataSetEngine.attachListener((eventCode, m) -> {
 			addGanttEventListener(eventCode, e1 -> {
@@ -179,7 +176,7 @@ public class GanttPart {
 				});
 			});
 		}
-		
+
 		//
 		// addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 ->
 		// testEvent(e1));
@@ -212,8 +209,16 @@ public class GanttPart {
 		gantt.removeGanttListener(eventCode, listener);
 	}
 
-	public void addTask(Object item, int index) {
-		gantt.addTask(item, index);
+	public void addTask(Object task, int index) {
+		gantt.addTask(task, index);
+	}
+
+	public void addLink(Object link) {
+		gantt.addLink(link);
+	}
+
+	public void updateLink(Object link) {
+		gantt.updateLink(link);
 	}
 
 }

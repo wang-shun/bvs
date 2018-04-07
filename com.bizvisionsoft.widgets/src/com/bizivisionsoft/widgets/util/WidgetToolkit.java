@@ -112,12 +112,13 @@ public class WidgetToolkit {
 		}
 		return new String(randBuffer);
 	}
-	
+
 	public static <T> T write(T element, JsonObject jo, String containerName, boolean b, boolean c, boolean d,
 			BiFunction<String, Object, Object> convertor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 	/**
 	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
@@ -174,8 +175,7 @@ public class WidgetToolkit {
 				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
 				}
 		});
-		
-		result.add("$hashCode", element.hashCode());
+
 		return result;
 	}
 
@@ -227,7 +227,6 @@ public class WidgetToolkit {
 			throw new IllegalArgumentException("不支持的类型");
 		}
 	}
-
 
 	public static boolean isEmptyOrNull(String s) {
 		return s == null || s.isEmpty();

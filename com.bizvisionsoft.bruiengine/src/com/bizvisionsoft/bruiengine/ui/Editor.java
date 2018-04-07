@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.mongodb.BasicDBObject;
@@ -16,6 +17,11 @@ import com.mongodb.BasicDBObject;
 public class Editor<T> extends Popup {
 
 	private T input;
+
+	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input, BiConsumer<BasicDBObject, M> doit) {
+		Assembly editorConfig = Brui.site.getAssemblyByName(name);
+		return new Editor<M>(editorConfig, parentContext).setInput(input).open(doit);
+	}
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {
 		super(assembly, parentContext);

@@ -29,17 +29,23 @@ public class EventHandler {
 
 	@Listener("项目甘特图#onTaskLinkBefore")
 	public void onTaskLinkBefore(GanttEvent event) {
-
 		WorkLinkInfo input = WorkLinkInfo.newInstance(project.get_id()).setSource((WorkInfo) event.linkSource)
 				.setTarget((WorkInfo) event.linkTarget).setType(event.linkType);
-
-		// 显示编辑器
-		new Editor<WorkLinkInfo>(bruiService.getEditor("工作搭接关系编辑器（1对1）"), context).setInput(input).open((r, wi) -> {
+		
+		Editor.open("工作搭接关系编辑器（1对1）", context, input, (r, wi) -> {
 			GanttPart content = (GanttPart) context.getContent();
-			System.out.println(content);
-			// content.addTask(wi, wi.index());
+			content.addLink(wi);
 		});
 
+	}
+
+	@Listener("项目甘特图#onLinkDblClick")
+	public void onLinkDblClick(GanttEvent event) {
+		
+		Editor.open("工作搭接关系编辑器（1对1）", context, event.link, (r, wi) -> {
+			GanttPart content = (GanttPart) context.getContent();
+			content.updateLink(wi);
+		});
 	}
 
 }

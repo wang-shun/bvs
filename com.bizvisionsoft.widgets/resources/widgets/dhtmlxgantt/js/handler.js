@@ -11,7 +11,7 @@
 
 		properties : [ "config", "initFrom", "initTo", "inputData" ],
 
-		methods : [ "addListener", "removeListener", "addTask" ]
+		methods : [ "addListener", "removeListener", "addTask", "addLink", "updateLink" ]
 
 	});
 
@@ -21,7 +21,7 @@
 
 	bizvision.dhtmlxgantt = function(properties) {
 		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
-				"onGridMenuClick", "addTask" ]);
+				"onGridMenuClick" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -232,34 +232,26 @@
 		handleTaskModify : function() {
 			var ro = rap.getRemoteObject(this);
 
-			gantt.attachEvent("onAfterTaskUpdate", function onAfterTaskDelete(
-					id, task) {
-				ro.call("taskUpdated", task);
+			gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
+				ro.call("taskUpdated", {"id":id,"task":task});
 			});
 
-			gantt.attachEvent("onAfterTaskDelete", function onAfterTaskDelete(
-					id, task) {
-				ro.call("taskDeleted", task);
+			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
+				ro.call("taskDeleted", {"id":id,"task":task});
 			});
 
-			gantt.attachEvent("onAfterLinkUpdate", function onAfterTaskDelete(
-					id, link) {
-				ro.call("linkUpdated", link);
+			gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
+				ro.call("linkUpdated", {"id":id,"link":link});
 			});
 
-			gantt.attachEvent("onAfterLinkDelete", function onAfterTaskDelete(
-					id, link) {
-				ro.call("linkDeleted", link);
+			gantt.attachEvent("onAfterLinkDelete", function(id, link) {
+				ro.call("linkDeleted", {"id":id,"link":link});
 			});
 
-			var serverCreateLink = this.serverCreateLink;
+			var checkProject = this.checkProject;
 			gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
-				if (serverCreateLink && !(link.serverCreated)) {
-					ro.call("onTaskLinkBefore", {
-						"source":gantt.getTask(link.source),
-						"target":gantt.getTask(link.target),
-						"type":link.type
-					});
+				if (checkProject && !(link.project)) {
+					ro.call("onTaskLinkBefore", link);
 					return false;
 				} else {
 					return true;
@@ -471,7 +463,7 @@
 					});
 				});
 			} else if (eventCode == "onTaskLinkBefore") {// 自定义的事件
-				this.serverCreateLink = true;
+				this.checkProject = true;
 			} else if (eventCode == "onGridRowMenuClick") {// 自定义的事件
 
 			} else if (eventCode == "onGridHeaderMenuClick") {// 自定义的事件
@@ -484,10 +476,19 @@
 		},
 
 		addTask : function(parameter) {
-			var task = parameter.task;
-			var parentId = parameter.parentId;
-			var index = parameter.index;
-			gantt.addTask(task, parentId, index);
+			gantt.addTask(parameter.task, parameter.parentId, parameter.index);
+		},
+
+		addLink : function(link) {
+			gantt.addLink(link);
+		},
+
+		updateLink : function(link) {
+			var clientLink = gantt.getLink(link.id);
+			for ( var attr in link) {
+				clientLink[attr] = link[attr];
+			}
+			gantt.updateLink(link.id);
 		}
 
 	};

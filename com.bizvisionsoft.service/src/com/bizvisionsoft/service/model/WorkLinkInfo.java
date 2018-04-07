@@ -70,14 +70,6 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 @PersistenceCollection("worklinks")
 public class WorkLinkInfo {
 
-	private ObjectId _id;
-	
-	private ObjectId project_id;
-
-	private WorkInfo source;
-
-	private WorkInfo target;
-
 	@ReadValue
 	@WriteValue
 	private String type;
@@ -105,7 +97,58 @@ public class WorkLinkInfo {
 	@WriteValue
 	private Boolean editable;
 	
+	@ReadValue("项目甘特图#id")
+	public String getId() {
+		return _id.toHexString();
+	}
 
+	@WriteValue("项目甘特图#id")
+	public WorkLinkInfo setId(String id) {
+		this._id = new ObjectId(id);
+		return this;
+	}
+
+	@ReadValue("项目甘特图#source")
+	public String getSource() {
+		return source == null ? null : source.get_id().toHexString();
+	}
+
+	@ReadValue("项目甘特图#target")
+	public String getTarget() {
+		return target == null ? null : target.get_id().toHexString();
+	}
+
+	@ReadValue("项目甘特图#project")
+	public String getProject() {
+		return project_id == null ? null : project_id.toHexString();
+	}
+
+	@WriteValue("项目甘特图#project")
+	public WorkLinkInfo setProject(String project_id) {
+		this.project_id = project_id == null ? null : new ObjectId(project_id);
+		return this;
+	}
+	
+	
+	@ReadValue("工作搭接关系编辑器（1对1）#sourceTask")
+	public String getSourceTaskLabel() {
+		return source.toString();
+	}
+	
+	@ReadValue("工作搭接关系编辑器（1对1）#targetTask")
+	public String getTargetTaskLabel() {
+		return target.toString();
+	}
+	
+	
+	private ObjectId _id;
+	
+	private ObjectId project_id;
+
+	private WorkInfo source;
+
+	private WorkInfo target;
+	
 	public WorkLinkInfo set_id(ObjectId _id) {
 		this._id = _id;
 		return this;
@@ -113,38 +156,6 @@ public class WorkLinkInfo {
 
 	public ObjectId get_id() {
 		return _id;
-	}
-
-	@ReadValue("id")
-	public String getId() {
-		return _id.toHexString();
-	}
-
-	@WriteValue("id")
-	public WorkLinkInfo setId(String id) {
-		this._id = new ObjectId(id);
-		return this;
-	}
-
-	@ReadValue("source")
-	public String getSource() {
-		return source == null ? null : source.get_id().toHexString();
-	}
-
-	@ReadValue("target")
-	public String getTarget() {
-		return target == null ? null : target.get_id().toHexString();
-	}
-
-	@ReadValue("project")
-	public String getProject() {
-		return project_id == null ? null : project_id.toHexString();
-	}
-
-	@WriteValue("project")
-	public WorkLinkInfo setProject(String project_id) {
-		this.project_id = project_id == null ? null : new ObjectId(project_id);
-		return this;
 	}
 	
 	public WorkLinkInfo setEditable(Boolean editable) {
@@ -155,16 +166,6 @@ public class WorkLinkInfo {
 
 	public static WorkLinkInfo newInstance(ObjectId project_id) {
 		return new WorkLinkInfo().set_id(new ObjectId()).setEditable(true).setProject_id(project_id);
-	}
-	
-	@ReadValue("工作搭接关系编辑器（1对1）#sourceTask")
-	public String getSourceTaskLabel() {
-		return source.toString();
-	}
-	
-	@ReadValue("工作搭接关系编辑器（1对1）#targetTask")
-	public String getTargetTaskLabel() {
-		return target.toString();
 	}
 	
 	public WorkLinkInfo setSource(WorkInfo source) {
