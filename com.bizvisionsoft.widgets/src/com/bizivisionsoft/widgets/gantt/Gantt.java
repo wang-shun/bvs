@@ -4,7 +4,6 @@ import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,27 +53,11 @@ public class Gantt extends Composite {
 		public void handleCall(String eventCode, JsonObject jo) {
 
 			Display.getCurrent().asyncExec(() -> {
-				if ("taskUpdated".equals(eventCode)) {
-					taskUpdated(jo);
-					return;
-				} else if ("taskDeleted".equals(eventCode)) {
-					taskDeleted(jo);
-					return;
-				} else if ("linkUpdated".equals(eventCode)) {
-					linkUpdated(jo);
-					return;
-				} else if ("linkDeleted".equals(eventCode)) {
-					linkDeleted(jo);
-					return;
-				} else if ("createLink".equals(eventCode)) {
-					linkDeleted(jo);
-					return;
-				} else {
-					Event event = createEvent(eventCode, jo);
-					if (event.doit)
-						Optional.ofNullable(listenerMap.get(eventCode))
-								.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
-				}
+				Event event = createEvent(eventCode, jo);
+				if (event.doit)
+					Optional.ofNullable(listenerMap.get(eventCode))
+							.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
+
 			});
 		}
 
@@ -91,11 +74,11 @@ public class Gantt extends Composite {
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
 		return v;
 	};
-	
-	private BiFunction<String, Object, Object> convertor4Update = (n, v) -> {
+
+	private BiFunction<String, Object, Object> convertor4UpdateGantt = (n, v) -> {
 		if (v instanceof Date) {
 			String format = "%Y-%m-%d %H:%i:%s";
-			String value =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
+			String value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
 			return new JsonObject().add("type", "Date").add("format", format).add("value", value);
 		}
 		return v;
@@ -279,7 +262,8 @@ public class Gantt extends Composite {
 	}
 
 	public void updateTask(Object item) {
-		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor4Update);
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
+				convertor4UpdateGantt);
 		remoteObject.call("updateTask", task);
 	}
 
@@ -310,9 +294,7 @@ public class Gantt extends Composite {
 			jo.get("e").asArray().forEach(v -> data.add(v.asString()));
 			event.updatedTasks = data;
 			// TODO
-		} else if (GanttEventCode.onAfterLinkAdd.name().equals(eventCode)
-				|| GanttEventCode.onAfterLinkDelete.name().equals(eventCode)
-				|| GanttEventCode.onAfterLinkUpdate.name().equals(eventCode)) {
+		} else if (GanttEventCode.onAfterLinkAdd.name().equals(eventCode)) {
 			if (id.isString()) {
 				event.id = id.asString();
 				event.link = findLink(event.id);
@@ -320,12 +302,52 @@ public class Gantt extends Composite {
 			} else {
 				event.doit = false;
 			}
-		} else if (GanttEventCode.onAfterTaskAdd.name().equals(eventCode)
-				|| GanttEventCode.onAfterTaskDelete.name().equals(eventCode)
-				|| GanttEventCode.onAfterTaskUpdate.name().equals(eventCode)) {
+		} else if (GanttEventCode.onAfterLinkDelete.name().equals(eventCode)) {
+			if (id.isString()) {
+				event.id = id.asString();
+				event.link = findLink(event.id);
+				links.remove(event.link);
+				event.doit = event.link != null;
+			} else {
+				event.doit = false;
+			}
+		} else if (GanttEventCode.onAfterLinkUpdate.name().equals(eventCode)) {
+			if (id.isString()) {
+				event.id = id.asString();
+				Object link = findLink(event.id);
+				if (link != null) {
+					WidgetToolkit.write(link, jo.get("link").asObject(), containerName);
+					event.link = link;
+				}
+				event.doit = event.link != null;
+			} else {
+				event.doit = false;
+			}
+		} else if (GanttEventCode.onAfterTaskAdd.name().equals(eventCode)) {
 			if (id.isString()) {
 				event.id = id.asString();
 				event.task = findTask(event.id);
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
+		} else if (GanttEventCode.onAfterTaskDelete.name().equals(eventCode)) {
+			if (id.isString()) {
+				event.id = id.asString();
+				event.task = findTask(event.id);
+				tasks.remove(event.task);
+				event.doit = event.task != null;
+			} else {
+				event.doit = false;
+			}
+		} else if (GanttEventCode.onAfterTaskUpdate.name().equals(eventCode)) {
+			if (id.isString()) {
+				event.id = id.asString();
+				Object task = findTask(event.id);
+				if (task != null) {
+					WidgetToolkit.write(task, jo.get("task").asObject(), containerName);
+					event.task = task;
+				}
 				event.doit = event.task != null;
 			} else {
 				event.doit = false;
@@ -358,7 +380,7 @@ public class Gantt extends Composite {
 				event.link = findLink(event.id);
 				event.clientType = "link";
 				event.doit = event.link != null;
-			}else {
+			} else {
 				event.doit = false;
 			}
 		} else if (GanttEventCode.onTaskClick.name().equals(eventCode)
@@ -384,61 +406,19 @@ public class Gantt extends Composite {
 			}
 		} else if (GanttEventCode.onLinkValidation.name().equals(eventCode)) {
 			event.link = findLink(jo.get("link").asObject().get("id").asString());
-			//TODO
+			// TODO
 		} else if (GanttEventCode.onScaleClick.name().equals(eventCode)) {
 			event.date = jo.get("date").asString();
 
 		} else if (GanttEventCode.onTaskMultiSelect.name().equals(eventCode)) {
 			event.id = jo.get("id").asString();
 			event.state = jo.get("state").asBoolean();
-			//TODO
+			// TODO
 
 		} else {
 		}
 
 		return event;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// 同步客户端的变化
-
-	private void linkDeleted(JsonObject jo) {
-		Event event = new Event();
-		event.text = "linkDeleted";
-		event.data = findLink(jo.get("id").asString());
-		links.remove(event.data);
-		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
-	}
-
-	private void linkUpdated(JsonObject jo) {
-		Event event = new Event();
-		event.text = "linkUpdated";
-		Object link = findLink(jo.get("id").asString());
-		if (link != null) {
-			WidgetToolkit.write(link, jo.get("link").asObject(), containerName, true, true, true, convertor);
-			event.data = link;
-		}
-		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
-	}
-
-	private void taskDeleted(JsonObject jo) {
-		Event event = new Event();
-		event.text = "taskDeleted";
-		event.data = findTask(jo.get("id").asString());
-		tasks.remove(event.data);
-		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
-	}
-
-	private void taskUpdated(JsonObject jo) {
-		Event event = new Event();
-		event.text = "taskUpdated";
-		Object task = findTask(jo.get("id").asString());
-		if (task != null) {
-			WidgetToolkit.write(task, jo, containerName, true, true, true, convertor);
-			event.data = task;
-		}
-		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
-
 	}
 
 }

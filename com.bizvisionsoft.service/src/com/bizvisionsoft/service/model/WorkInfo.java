@@ -4,12 +4,17 @@ import java.util.Date;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.GetValue;
+import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.mongocodex.Strict;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
 
 /**
@@ -131,62 +136,13 @@ gantt.<span class="me1">init</span><span class="br0">(</span><span class=
  *
  */
 @PersistenceCollection("work")
+@Strict
 public class WorkInfo {
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// id, 在gantt图中 使用String 类型传递，因此 ReadValue和WriteValue需要用方法重写
+	@Persistence
 	private ObjectId _id;
-
-	private ObjectId parent_id;
-
-	private ObjectId project_id;
-
-	@ReadValue("项目甘特图#index")
-	@WriteValue("项目甘特图#index")
-	private int index;
-
-	@ReadValue
-	@WriteValue
-	private String wbsCode;
-
-	@ReadValue
-	@WriteValue
-	private String text;
-
-	@ReadValue
-	private Date start_date;
-
-	@ReadValue
-	private Date end_date;
-
-	@ReadValue
-	private Date deadline;
-
-	@ReadValue
-	@WriteValue
-	private Integer duration;
-
-	@ReadValue
-	@WriteValue
-	private Float progress;
-
-	@ReadValue
-	@WriteValue
-	private Boolean readonly;
-
-	@ReadValue
-	@WriteValue
-	private Boolean editable;
-
-	@ReadValue
-	@WriteValue
-	private Boolean open;
-
-	@ReadValue
-	@WriteValue
-	private String barstyle;
-
-	@ReadValue
-	@WriteValue
-	private Boolean milestone;
 
 	@ReadValue("id")
 	public String getId() {
@@ -198,15 +154,12 @@ public class WorkInfo {
 		this._id = id == null ? null : new ObjectId(id);
 		return this;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public WorkInfo set_id(ObjectId _id) {
-		this._id = _id;
-		return this;
-	}
-
-	public ObjectId get_id() {
-		return _id;
-	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// parent_id, 在gantt图中 使用的字段为parent, String 类型传递，因此 ReadValue和WriteValue需要用方法重写
+	@Persistence
+	private ObjectId parent_id;
 
 	@ReadValue("parent")
 	public String getParent() {
@@ -214,10 +167,23 @@ public class WorkInfo {
 	}
 
 	@WriteValue("parent")
-	public WorkInfo setParent(String parent) {
-		this.parent_id = parent == null ? null : new ObjectId(parent);
+	public WorkInfo setParent(Object parent) {
+		if (parent instanceof String) {
+			this.parent_id = parent == null ? null : new ObjectId((String) parent);
+		} else {
+			this.parent_id = null;
+		}
 		return this;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// project_id, 在gantt图中 使用的字段为project, String 类型传递，
+	// 因此 ReadValue和WriteValue需要用方法重写
+	// 甘特图组件（是指GanttPart, 并非Gantt）要求任务和关联关系必须带有project属性。
+	// 如果不带有该属性，表示这些对象可能是客户端创建的
+	@Persistence
+	private ObjectId project_id;
 
 	@ReadValue("project")
 	public String getProject() {
@@ -229,6 +195,211 @@ public class WorkInfo {
 		this.project_id = project_id == null ? null : new ObjectId(project_id);
 		return this;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// index, 在gantt图中用于排序
+	@ReadValue("项目甘特图#index")
+	@WriteValue("项目甘特图#index")
+	@Persistence
+	private int index;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// WBS代码 TODO
+	@WriteValue
+	@ReadValue
+	@Persistence
+	private String wbsCode;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// text, 在gantt图text字段，数据库中为name字段
+	@ReadValue
+	@WriteValue
+	@Persistence("name")
+	private String text;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// fullName, 在gantt图，编辑器中，数据库中均使用
+	@WriteValue
+	@SetValue
+	private String fullName;
+
+	@ReadValue("fullName")
+	@GetValue("fullName")
+	private String getFullName() {
+		if (fullName == null || fullName.trim().isEmpty()) {
+			fullName = text;
+		}
+		return fullName;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 计划开始日期, 编辑器保存时需要校验
+	@ReadValue
+	@Persistence("planStart")
+	private Date start_date;
+
+	@WriteValue("创建甘特图工作编辑器#start_date")
+	public void setStart_date(Date start_date) {
+		checkDate(start_date, this.end_date, this.deadline);
+		this.start_date = start_date;
+	}
+
+	@WriteValue("项目甘特图#start_date")
+	public void setStart_date(String start_date) {
+		this.start_date = Util.str_date(start_date);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 计划完成日期, 编辑器保存时需要校验
+	@ReadValue
+	@Persistence("planFinish")
+	private Date end_date;
+
+	@WriteValue("创建甘特图工作编辑器#end_date")
+	public void setEnd_date(Date end_date) {
+		checkDate(this.start_date, end_date, this.deadline);
+		this.end_date = end_date;
+	}
+
+	@WriteValue("项目甘特图#end_date")
+	public void setEnd_date(String end_date) {
+		this.end_date = Util.str_date(end_date);
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 期限, 编辑器保存时需要校验
+	@ReadValue
+	@Persistence
+	private Date deadline;
+
+	@WriteValue("deadline")
+	public void setDeadline(Date deadline) {
+		checkDate(this.start_date, this.end_date, deadline);
+		this.deadline = deadline;
+	}
+
+	@WriteValue("项目甘特图#deadline")
+	public void setDeadline(String deadline) {
+		this.deadline = Util.str_date(deadline);
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 工期, 需要保存，但无需传递到gantt和编辑器
+	@GetValue("planDuration")
+	public int getDuration() {
+		if (end_date != null && start_date != null) {
+			return (int) (end_date.getTime() - start_date.getTime()) / (1000 * 3600 * 24);
+		} else {
+			return 0;
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 完成百分比
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private Float progress;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 如果是里程碑，gantt的type为milestone，否则为task。
+	// 如果在gantt中更新了task,使得他有子工作，gantt将type改为project
+	@Persistence
+	private boolean milestone;
+
+	@Persistence
+	private boolean summary;
+
+	@ReadValue("type")
+	public String getType() {
+		if (milestone)
+			return "milestone";
+		else if (summary)
+			return "project";
+		else
+			return "task";
+	}
+
+	@WriteValue("type")
+	public WorkInfo setType(String type) {
+		milestone = "milestone".equals(type);
+		summary = "project".equals(type);
+		return this;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 存储在数据库中的是管理级别。表现在Gantt中的是barstyle,样式
+	@ReadValue
+	@WriteValue
+	private String barstyle;
+
+	@GetValue("manageLevel")
+	private String getManagerLevel() {
+		if ("level1_task".equals(barstyle)) {
+			return "1";
+		} else if ("level2_task".equals(barstyle)) {
+			return "2";
+		} else if ("level3_task".equals(barstyle)) {
+			return "3";
+		} else {
+			return null;
+		}
+
+	}
+
+	@SetValue("manageLevel")
+	private void setManageLevel(String level) {
+		if ("1".equals(level)) {
+			barstyle = "level1_task";
+		} else if ("2".equals(level)) {
+			barstyle = "level2_task";
+		} else if ("3".equals(level)) {
+			barstyle = "level3_task";
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 以下是控制gantt的客户端的属性
+	@ReadValue("editable")
+	public Boolean getEditable() {
+		return true;
+	}
+
+	@ReadValue("open")
+	public Boolean getOpen() {
+		return true;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 工作的标签文本
+	@Label
+	public String toString() {
+		return text;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public WorkInfo set_id(ObjectId _id) {
+		this._id = _id;
+		return this;
+	}
+
+	public ObjectId get_id() {
+		return _id;
+	}
 
 	public WorkInfo setProject_id(ObjectId project_id) {
 		this.project_id = project_id;
@@ -238,7 +409,7 @@ public class WorkInfo {
 	public ObjectId getProject_id() {
 		return project_id;
 	}
-	
+
 	public WorkInfo setParent_id(ObjectId parent_id) {
 		this.parent_id = parent_id;
 		return this;
@@ -248,43 +419,8 @@ public class WorkInfo {
 		return parent_id;
 	}
 
-	@ReadValue("type")
-	public String getType() {
-		if (Boolean.TRUE.equals(milestone))
-			return "milestone";
-		else
-			return "task";
-	}
-
-	@WriteValue("type")
-	public WorkInfo setType(String type) {
-		milestone = "milestone".equals(type);
-		return this;
-	}
-
-	@ReadValue("创建甘特图工作编辑器#index")
-	public String getIndex() {
-		return "" + index;
-	}
-
 	public int index() {
 		return index;
-	}
-
-	@WriteValue("创建甘特图工作编辑器#index")
-	public WorkInfo setIndex(String index) {
-		this.index = Integer.parseInt(index);
-		return this;
-	}
-
-	public WorkInfo setEditable(Boolean editable) {
-		this.editable = editable;
-		return this;
-	}
-
-	public WorkInfo setOpen(Boolean open) {
-		this.open = open;
-		return this;
 	}
 
 	public static WorkInfo newInstance(ObjectId project_id) {
@@ -305,26 +441,7 @@ public class WorkInfo {
 	}
 
 	public static WorkInfo newInstance(ObjectId project_id, ObjectId parent_id) {
-		return new WorkInfo().set_id(new ObjectId()).setProject_id(project_id).setParent_id(parent_id).setEditable(true)
-				.setOpen(true).generateIndex();
-	}
-
-	@WriteValue("start_date")
-	public void setStart_date(Date start_date) {
-		checkDate(start_date, this.end_date, this.deadline);
-		this.start_date = start_date;
-	}
-
-	@WriteValue("end_date")
-	public void setEnd_date(Date end_date) {
-		checkDate(this.start_date, end_date, this.deadline);
-		this.end_date = end_date;
-	}
-
-	@WriteValue("deadline")
-	public void setDeadline(Date deadline) {
-		checkDate(this.start_date, this.end_date, deadline);
-		this.deadline = deadline;
+		return new WorkInfo().set_id(new ObjectId()).setProject_id(project_id).setParent_id(parent_id).generateIndex();
 	}
 
 	private void checkDate(Date start_date, Date end_date, Date deadline) {
@@ -340,12 +457,6 @@ public class WorkInfo {
 			throw new RuntimeException("如果设定了期限，完成日期不得晚于期限日期");
 		}
 
-	}
-	
-	@Override
-	@Label
-	public String toString() {
-		return text;
 	}
 
 }

@@ -230,32 +230,47 @@
 			}
 		},
 
+		// 处理同步
 		handleTaskModify : function() {
 			var ro = rap.getRemoteObject(this);
 
+			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
+				ro.call("onAfterTaskAdd", {
+					"id" : id,
+					"task" : task
+				});
+			});
+
 			gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
-				ro.call("taskUpdated", {
+				ro.call("onAfterTaskUpdate", {
 					"id" : id,
 					"task" : task
 				});
 			});
 
 			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
-				ro.call("taskDeleted", {
+				ro.call("onAfterTaskDelete", {
 					"id" : id,
 					"task" : task
 				});
 			});
 
+			gantt.attachEvent("onAfterLinkAdd", function(id, link) {
+				ro.call("onAfterLinkAdd", {
+					"id" : id,
+					"link" : link
+				});
+			});
+
 			gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
-				ro.call("linkUpdated", {
+				ro.call("onAfterLinkUpdate", {
 					"id" : id,
 					"link" : link
 				});
 			});
 
 			gantt.attachEvent("onAfterLinkDelete", function(id, link) {
-				ro.call("linkDeleted", {
+				ro.call("onAfterLinkDelete", {
 					"id" : id,
 					"link" : link
 				});
@@ -394,12 +409,7 @@
 					|| eventCode == "onAfterTaskAdd"
 					|| eventCode == "onAfterTaskDelete"
 					|| eventCode == "onAfterTaskUpdate") {
-				gantt.attachEvent(eventCode, function(id, item) {
-					ro.call(eventCode, {
-						"id" : id,
-						"item" : item
-					});
-				});
+				// 统一处理同步
 			} else if (eventCode == "onAfterTaskAutoSchedule") {
 				gantt.attachEvent(eventCode, function(task, start, link,
 						predecessor) {
@@ -490,10 +500,10 @@
 		updateTask : function(task) {
 			var clientTask = gantt.getTask(task.id);
 			for ( var attr in task) {
-				if(task[attr].type=="Date"){
-					var formatFunc  = gantt.date.str_to_date(task[attr].format);
+				if (task[attr].type == "Date") {
+					var formatFunc = gantt.date.str_to_date(task[attr].format);
 					clientTask[attr] = formatFunc(task[attr].value);
-				}else{
+				} else {
 					clientTask[attr] = task[attr];
 				}
 			}

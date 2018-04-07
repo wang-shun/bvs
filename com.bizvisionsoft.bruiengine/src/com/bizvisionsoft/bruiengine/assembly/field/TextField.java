@@ -92,7 +92,7 @@ public class TextField extends EditorField {
 					+ "		event.widget.setToolTipText(\"必须输入整数或小数\");" + "	}" + "};";
 			return new ClientListener(js);
 		} else if (FormField.TEXT_RESTRICT_INT.equals(restrict)) {
-			reg = "/^-?[1-9]\\d*$/";
+			reg = "/^-?[0-9]\\d*$/";
 			String js = "var handleEvent = function(event) {" + "	var reg = " + reg + ";"
 					+ "	if (reg.test(event.widget.getText())) {" + "		event.widget.setBackground(null);"
 					+ "		event.widget.setToolTipText(null);" + "	} else {"

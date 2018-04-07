@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class WidgetToolkit {
 
@@ -113,12 +114,46 @@ public class WidgetToolkit {
 		return new String(randBuffer);
 	}
 
-	public static <T> T write(T element, JsonObject jo, String containerName, boolean b, boolean c, boolean d,
-			BiFunction<String, Object, Object> convertor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public static <T> void write(T element, JsonObject jo, String cName) {
+		// 处理字段
+		Arrays.asList(element.getClass().getDeclaredFields()).stream().forEach(e -> {
+			String nName = e.getName();
+			WriteValue ano = e.getAnnotation(WriteValue.class);
+			String targetField = checkField(cName, true, true, nName, ano);
+			if (!isEmptyOrNull(targetField)) {
+				try {
+					JsonValue jv = jo.get(targetField);
+					if (jv != null) {
+						Object value = getValueFromJson(element,  jv, targetField, e.getType());
+						e.setAccessible(true);
+						e.set(element, value);
+					}
+				} catch (IllegalArgumentException | IllegalAccessException e1) {
+				}
+			}
+		});
+		// 处理方法
+		Arrays.asList(element.getClass().getDeclaredMethods()).stream().forEach(e -> {
+			String nName = e.getName();
+			WriteValue ano = e.getAnnotation(WriteValue.class);
+			String targetField = checkField(cName,  true, true, nName, ano);
 
+			if (!isEmptyOrNull(targetField)) {
+				try {
+					JsonValue jv = jo.get(targetField);
+					if (jv != null) {
+						// 简化处理，仅一个参数
+						Object value = getValueFromJson(element,  jv, targetField,
+								e.getParameters()[0].getType());
+						e.setAccessible(true);
+						e.invoke(element, value);
+					}
+				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
+				}
+			}
+		});
+
+	}
 
 	/**
 	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
@@ -149,7 +184,7 @@ public class WidgetToolkit {
 		if (element == null)
 			throw new IllegalArgumentException("目标对象为空");
 		if (!clazz.isAssignableFrom(element.getClass()))
-			throw new IllegalArgumentException("目标对象是指定类（或继承）的实例");
+			throw new IllegalArgumentException("目标对象必须是指定类（或继承）的实例");
 		// 处理字段
 		Arrays.asList(clazz.getDeclaredFields()).stream().forEach(e -> {
 			String nName = e.getName();
@@ -203,6 +238,30 @@ public class WidgetToolkit {
 		return null;
 	}
 
+	private static String checkField(String cName, boolean ignoreEmptyCName, boolean ignoreEmptyFName, String nName,
+			WriteValue ano) {
+		if (ano == null)
+			return null;
+		String[] v = ano.value();
+		if (v.length == 1 && v[0].equals("")) {// 没有写注解内容，使用的默认值
+			if (ignoreEmptyCName && ignoreEmptyFName) {// 如果忽略容器名和字段名
+				return nName;
+			} else {
+				return null;
+			}
+		} else {
+			for (int i = 0; i < v.length; i++) {
+				String[] loc = ((String[]) v)[i].split("#");
+				if (loc.length == 1 && ignoreEmptyCName) {// 注解的是fName// 如果忽略容器名
+					return loc[0].trim();
+				} else if (loc.length > 1 && cName.equals(loc[0].trim())) {// 容器名称匹配
+					return loc[1].trim();
+				}
+			}
+		}
+		return null;
+	}
+
 	private static void putJsonValue(Object element, boolean ignoreNull,
 			BiFunction<String, Object, Object> valueConvertor, JsonObject result, String targetField, Object value) {
 		if (valueConvertor != null)
@@ -228,6 +287,33 @@ public class WidgetToolkit {
 		}
 	}
 
+	private static Object getValueFromJson(Object element, JsonValue jv, String targetField, Class<?> type) {
+		if (jv.isNull()) {
+			return null;
+		}
+
+		String typeName = type.getName();
+
+		if (("java.lang.Object".equals(typeName) || "java.lang.String".equals(typeName)) && jv.isString())
+			return jv.asString();
+		if (("java.lang.Object".equals(typeName) || "java.lang.Boolean".equals(typeName) || "boolean".equals(typeName))
+				&& jv.isBoolean())
+			return jv.asBoolean();
+		if (("java.lang.Object".equals(typeName) || "java.lang.Integer".equals(typeName) || "int".equals(typeName))
+				&& jv.isNumber())
+			return jv.asInt();
+		if (("java.lang.Object".equals(typeName) || "java.lang.Long".equals(typeName) || "long".equals(typeName))
+				&& jv.isNumber())
+			return jv.asLong();
+		if (("java.lang.Object".equals(typeName) || "java.lang.Float".equals(typeName) || "float".equals(typeName))
+				&& jv.isNumber())
+			return jv.asFloat();
+		if (("java.lang.Object".equals(typeName) || "java.lang.Double".equals(typeName) || "double".equals(typeName))
+				&& jv.isNumber())
+			return jv.asDouble();
+		throw new IllegalArgumentException(targetField + "不支持的类型" + typeName + ", value:" + jv);
+	}
+
 	public static boolean isEmptyOrNull(String s) {
 		return s == null || s.isEmpty();
 	}
@@ -235,6 +321,5 @@ public class WidgetToolkit {
 	public static boolean isEmptyOrNull(List<?> s) {
 		return s == null || s.isEmpty();
 	}
-
 
 }

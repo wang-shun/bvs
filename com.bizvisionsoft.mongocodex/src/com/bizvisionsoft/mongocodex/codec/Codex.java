@@ -132,7 +132,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 			}
 		});
 
-		Arrays.asList(clazz.getMethods()).forEach(m -> {
+		Arrays.asList(clazz.getDeclaredMethods()).forEach(m -> {
 			Optional.ofNullable(m.getAnnotation(SetValue.class)).map(a -> a.value()).ifPresent(n -> {
 				setMethods.put(n, m);
 				m.setAccessible(true);

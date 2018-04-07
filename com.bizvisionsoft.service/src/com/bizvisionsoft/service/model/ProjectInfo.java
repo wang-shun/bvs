@@ -303,7 +303,6 @@ public class ProjectInfo {
 
 	@Behavior("EPS浏览#打开") // 控制action
 	private boolean enableOpen() {
-		System.out.println();
 		return true;// 考虑权限 TODO
 	}
 

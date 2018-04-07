@@ -165,6 +165,7 @@ public class GanttPart {
 			});
 		});
 
+		//处理客户端事件侦听
 		if (eventEngine != null) {
 			eventEngine.attachListener((eventCode, m) -> {
 				addGanttEventListener(eventCode, e1 -> {
