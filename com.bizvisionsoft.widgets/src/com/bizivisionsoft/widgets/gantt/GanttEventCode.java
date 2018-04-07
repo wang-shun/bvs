@@ -195,6 +195,9 @@ public enum GanttEventCode {
 	/**
 	 * fires when the dhtmlxGantt templates are initialized 当dhtmlxgantt模板初始化
 	 **/
-	onGridRowMenuClick,
+	onGridRowMenuClick, 
+	
+	
+	onTaskLinkBefore,
 
 }

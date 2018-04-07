@@ -108,9 +108,9 @@ public class AUtil {
 				f.set(element, value);
 				return;
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("注解为" + annoClass + "的字段无法访问。", e);
+				throw new RuntimeException("容器："+cName+"，字段："+fName+"，注解：" + annoClass.getSimpleName() + "，的字段无法访问。", e);
 			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("注解为" + annoClass + "的字段参数错误。", e);
+				throw new RuntimeException("容器："+cName+"，字段："+fName+"，注解：" + annoClass.getSimpleName() + "，的字段参数错误。", e);
 			}
 
 		Method m = getContainerMethod(c, annoClass, cName, fName, func).orElse(null);

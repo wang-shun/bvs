@@ -23,11 +23,16 @@ import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
+import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.ProjectSetService;
+import com.bizvisionsoft.service.model.ProjectSet;
+import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart {
@@ -51,6 +56,8 @@ public class GanttPart {
 
 	private List<?> links;
 
+	private BruiEventEngine eventEngine;
+
 	public GanttPart(Assembly config) {
 		this.config = config;
 	}
@@ -58,6 +65,8 @@ public class GanttPart {
 	@Init
 	private void init() {
 		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
+
+		eventEngine = BruiEventEngine.create(config, bruiService, context);
 
 		ganttConfig = Config.defaultConfig(config.isReadonly());
 
@@ -145,10 +154,11 @@ public class GanttPart {
 		gantt.setInputData(tasks, links);
 
 		// 设置必须的事件侦听
-		gantt.addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
-		gantt.addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
-		
-		dataSetEngine.attachListener((eventCode,m)->{
+		addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
+		addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
+//		addGanttEventListener(GanttEventCode.onTaskLinkBefore.name(), e -> showLinkCreateEditor(e));
+
+		dataSetEngine.attachListener((eventCode, m) -> {
 			addGanttEventListener(eventCode, e1 -> {
 				try {
 					m.invoke(dataSetEngine.getTarget(), e1);
@@ -158,19 +168,32 @@ public class GanttPart {
 			});
 		});
 
-//		addGanttEventListener(GanttEventCode.onAfterTaskAdd.name(), e1 -> testEvent(e1));
-//
-//		addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 -> testEvent(e1));
-//
-//		addGanttEventListener(GanttEventCode.onAfterTaskUpdate.name(), e1 -> testEvent(e1));
-//
-//		addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
+		if (eventEngine != null) {
+			eventEngine.attachListener((eventCode, m) -> {
+				addGanttEventListener(eventCode, e1 -> {
+					try {
+						m.invoke(eventEngine.getTarget(), e1);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
+						e2.printStackTrace();
+					}
+				});
+			});
+		}
+		
+		//
+		// addGanttEventListener(GanttEventCode.onAfterTaskDelete.name(), e1 ->
+		// testEvent(e1));
+		//
+		// addGanttEventListener(GanttEventCode.onAfterTaskUpdate.name(), e1 ->
+		// testEvent(e1));
+		//
+		// addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
 
 	}
 
-//	private void testEvent(Event e1) {
-//		System.out.println(e1.text + e1);
-//	}
+	// private void testEvent(Event e1) {
+	// System.out.println(e1.text + e1);
+	// }
 
 	private void showRowMenu(Event e) {
 		new ActionMenu().setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
@@ -189,8 +212,8 @@ public class GanttPart {
 		gantt.removeGanttListener(eventCode, listener);
 	}
 
-	public void addTask(Object item, String parentId, int index) {
-		gantt.addTask(item, parentId, index);
+	public void addTask(Object item, int index) {
+		gantt.addTask(item, index);
 	}
 
 }

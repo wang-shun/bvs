@@ -487,12 +487,33 @@ public class Assembly extends ModelObject {
 
 	private int ganttGridWidth;
 
+
 	public void setGanttGridWidth(int ganttGridWidth) {
 		this.ganttGridWidth = ganttGridWidth;
 	}
 
 	public int getGanttGridWidth() {
 		return ganttGridWidth;
+	}
+	
+	private String eventHandlerBundleId;
+	
+	private String eventHandlerClassName;
+	
+	public String getEventHandlerBundleId() {
+		return eventHandlerBundleId;
+	}
+	
+	public String getEventHandlerClassName() {
+		return eventHandlerClassName;
+	}
+	
+	public void setEventHandlerBundleId(String eventHandlerBundleId) {
+		this.eventHandlerBundleId = eventHandlerBundleId;
+	}
+	
+	public void setEventHandlerClassName(String eventHandlerClassName) {
+		this.eventHandlerClassName = eventHandlerClassName;
 	}
 
 	// *******************************************************************************************

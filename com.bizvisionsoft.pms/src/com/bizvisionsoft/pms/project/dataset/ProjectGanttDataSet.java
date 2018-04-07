@@ -51,12 +51,12 @@ public class ProjectGanttDataSet {
 
 	@Listener("项目甘特图#onAfterTaskAdd")
 	public void onAfterTaskAddEvent(GanttEvent event) {
-		System.out.println(event.data);
+		System.out.println(event.text+event.data);
 	}
 
 	@Listener("项目甘特图#onAfterTaskUpdate")
 	public void onAfterTaskUpdateEvent(GanttEvent event) {
-		System.out.println(event.data);
+		System.out.println(event.text+event.data);
 	}
 
 }

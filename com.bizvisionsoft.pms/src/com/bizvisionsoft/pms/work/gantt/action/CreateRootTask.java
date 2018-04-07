@@ -25,7 +25,7 @@ public class CreateRootTask {
 		new Editor<WorkInfo>(bruiService.getEditor("创建甘特图工作编辑器"), context).setInput(WorkInfo.newInstance(project.get_id()))
 				.open((r, wi) -> {
 					GanttPart content = (GanttPart) context.getContent();
-					content.addTask(wi, null, wi.index());
+					content.addTask(wi,  wi.index());
 				});
 	}
 

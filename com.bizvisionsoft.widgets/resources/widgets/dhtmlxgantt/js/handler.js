@@ -77,23 +77,34 @@
 				gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
 
 				// ////////////////////////////////////////////////////////////////////////////////
+				// 处理服务端与客户端的同步
+				this.handleTaskModify();
+
+				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始化并加载数据
 				gantt.init(this.element, this.initFrom, this.initTo);
 				gantt.parse(this.inputData);
+
 			}
 		},
 
 		genericConfig : function(config) {
+			gantt.config.auto_scheduling = true;
+			gantt.config.auto_scheduling_strict = true;
+			gantt.config.work_time = true;
+
+			// gantt.config.order_branch = true;
+			// gantt.config.order_branch_free = true;
+
 			gantt.config.touch = "force";
 			gantt.config.grid_resize = true;
 			gantt.config.keep_grid_width = false;
 			gantt.config.start_on_monday = false;
+
 			gantt.config.links.start_to_start = "SS";
 			gantt.config.links.finish_to_start = "FS";
 			gantt.config.links.start_to_finish = "SF";
 			gantt.config.links.finish_to_finish = "FF";
-			gantt.config.order_branch = true;
-			gantt.config.order_branch_free = true;
 		},
 
 		configGridMenu : function(config) {
@@ -218,6 +229,45 @@
 			}
 		},
 
+		handleTaskModify : function() {
+			var ro = rap.getRemoteObject(this);
+
+			gantt.attachEvent("onAfterTaskUpdate", function onAfterTaskDelete(
+					id, task) {
+				ro.call("taskUpdated", task);
+			});
+
+			gantt.attachEvent("onAfterTaskDelete", function onAfterTaskDelete(
+					id, task) {
+				ro.call("taskDeleted", task);
+			});
+
+			gantt.attachEvent("onAfterLinkUpdate", function onAfterTaskDelete(
+					id, link) {
+				ro.call("linkUpdated", link);
+			});
+
+			gantt.attachEvent("onAfterLinkDelete", function onAfterTaskDelete(
+					id, link) {
+				ro.call("linkDeleted", link);
+			});
+
+			var serverCreateLink = this.serverCreateLink;
+			gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
+				if (serverCreateLink && !(link.serverCreated)) {
+					ro.call("onTaskLinkBefore", {
+						"source":gantt.getTask(link.source),
+						"target":gantt.getTask(link.target),
+						"type":link.type
+					});
+					return false;
+				} else {
+					return true;
+				}
+			});
+
+		},
+
 		handleTaskType : function() {
 			var delTaskParent;
 
@@ -232,13 +282,15 @@
 			function setTaskType(id) {
 				id = id.id ? id.id : id;
 				var task = gantt.getTask(id);
-				if(gantt.hasChild(task.id)){
-					if(gantt.config.types.project!=task.type){
+				if (gantt.hasChild(task.id)) {
+					if (gantt.config.types.project != task.type) {
 						task.type = gantt.config.types.project;
 						gantt.updateTask(id);
+						gantt.open(id);
 					}
-				}else{
-					if(gantt.config.types.task!=task.type && gantt.config.types.milestone !=task.type){
+				} else {
+					if (gantt.config.types.task != task.type
+							&& gantt.config.types.milestone != task.type) {
 						task.type = gantt.config.types.task;
 						gantt.updateTask(id);
 					}
@@ -418,6 +470,12 @@
 						"e" : e
 					});
 				});
+			} else if (eventCode == "onTaskLinkBefore") {// 自定义的事件
+				this.serverCreateLink = true;
+			} else if (eventCode == "onGridRowMenuClick") {// 自定义的事件
+
+			} else if (eventCode == "onGridHeaderMenuClick") {// 自定义的事件
+
 			} else {
 				gantt.attachEvent(eventCode, function() {
 					ro.call(eventCode, {});

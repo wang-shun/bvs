@@ -234,13 +234,13 @@ public class WorkInfo {
 		return this;
 	}
 
+	public ObjectId getProject_id() {
+		return project_id;
+	}
+	
 	public WorkInfo setParent_id(ObjectId parent_id) {
 		this.parent_id = parent_id;
 		return this;
-	}
-
-	public ObjectId getProject_id() {
-		return project_id;
 	}
 
 	public ObjectId getParent_id() {
@@ -339,6 +339,12 @@ public class WorkInfo {
 			throw new RuntimeException("如果设定了期限，完成日期不得晚于期限日期");
 		}
 
+	}
+	
+	@Override
+	@ReadValue(ReadValue.LABEL)
+	public String toString() {
+		return text;
 	}
 
 }

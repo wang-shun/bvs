@@ -112,6 +112,12 @@ public class WidgetToolkit {
 		}
 		return new String(randBuffer);
 	}
+	
+	public static <T> T write(T element, JsonObject jo, String containerName, boolean b, boolean c, boolean d,
+			BiFunction<String, Object, Object> convertor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * 容器名称,根据容器名称读取Json字符串 不支持数组类型！！！
@@ -132,7 +138,7 @@ public class WidgetToolkit {
 	 *            数据转换函数
 	 * @return
 	 */
-	public static JsonObject readJsonFrom(Class<?> clazz, Object element, String cName, boolean ignoreEmptyCName,
+	public static JsonObject read(Class<?> clazz, Object element, String cName, boolean ignoreEmptyCName,
 			boolean ignoreEmptyFName, boolean ignoreNull, BiFunction<String, Object, Object> valueConvertor) {
 
 		JsonObject result = new JsonObject();
@@ -230,5 +236,6 @@ public class WidgetToolkit {
 	public static boolean isEmptyOrNull(List<?> s) {
 		return s == null || s.isEmpty();
 	}
+
 
 }

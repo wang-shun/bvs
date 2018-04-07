@@ -32,4 +32,10 @@ public class GanttEvent extends Event {
 
 	public String date;
 
+	public Object linkSource;
+
+	public Object linkTarget;
+
+	public String linkType;
+	
 }

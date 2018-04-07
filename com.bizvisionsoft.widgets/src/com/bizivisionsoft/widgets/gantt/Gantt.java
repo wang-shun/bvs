@@ -4,6 +4,7 @@ import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.Listener;
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
 import com.google.gson.GsonBuilder;
 
-public class Gantt extends Composite {
+public class Gantt<T, L> extends Composite {
 
 	private static final String REMOTE_TYPE = "bizvision.dhtmlxgantt";
 
@@ -49,36 +50,43 @@ public class Gantt extends Composite {
 	private final OperationHandler operationHandler = new AbstractOperationHandler() {
 
 		@Override
-		public void handleCall(String eventCode, JsonObject parameters) {
-
-			//
-			// if ("onGridHeaderMenuClick".equals(eventCode) && headerMenuListener != null)
-			// {
-			// GanttEvent event = new
-			// GanttEvent(GanttEventCode.onGridHeaderMenuClick.name());
-			// headerMenuListener.accept(event);
-			// return;
-			// }
-			//
-			// if ("onGridRowMenuClick".equals(eventCode) && rowMenuListener != null) {
-			// int hashcode = parameters.get("$hashCode").asInt();
-			// GanttEvent event = new
-			// GanttEvent(GanttEventCode.onGridRowMenuClick.name()).setData(findTask(hashcode));
-			// rowMenuListener.accept(event);
-			// return;
-			// }
+		public void handleCall(String eventCode, JsonObject jo) {
 
 			Display.getCurrent().asyncExec(() -> {
-				Event event = createEvent(eventCode, parameters);
-				Optional.ofNullable(listenerMap.get(eventCode)).ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
+				if ("taskAdded".equals(eventCode)) {
+					taskAdded(jo);
+					return;
+				} else if ("taskUpdated".equals(eventCode)) {
+					taskUpdated(jo);
+					return;
+				} else if ("taskDeleted".equals(eventCode)) {
+					taskDeleted(jo);
+					return;
+				} else if ("linkAdded".equals(eventCode)) {
+					linkAdded(jo);
+					return;
+				} else if ("linkUpdated".equals(eventCode)) {
+					linkUpdated(jo);
+					return;
+				} else if ("linkDeleted".equals(eventCode)) {
+					linkDeleted(jo);
+					return;
+				} else if ("createLink".equals(eventCode)) {
+					linkDeleted(jo);
+					return;
+				} else {
+					Event event = createEvent(eventCode, jo);
+					Optional.ofNullable(listenerMap.get(eventCode))
+							.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
+				}
 			});
 		}
 
 	};
 
-	private List<?> tasks;
+	List<T> tasks;
 
-	private List<?> links;
+	List<L> links;
 
 	private String containerName;
 
@@ -87,6 +95,10 @@ public class Gantt extends Composite {
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(v);
 		return v;
 	};
+
+	private Class<T> taskClass;
+
+	private Class<L> linkClass;
 
 	public Gantt(Composite parent, Config config) {
 		super(parent, SWT.NONE);
@@ -110,11 +122,13 @@ public class Gantt extends Composite {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载插件
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_auto_scheduling.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_critical_path.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_grouping.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_marker.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
-		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_smart_rendering.js");
+		// WidgetToolkit.requireWidgetJs(widgetName,
+		// "codebase/ext/dhtmlxgantt_smart_rendering.js");
 		// WidgetToolkit.requireWidgetJs(widgetName,
 		// "codebase/ext/dhtmlxgantt_tooltip.js");
 
@@ -165,31 +179,32 @@ public class Gantt extends Composite {
 		remoteObject.set("initTo", new SimpleDateFormat("yyyy/MM/dd").format(initTo));
 	}
 
-	public void setInputData(List<?> tasks, List<?> links) {
+	public void setInputData(List<T> tasks, List<L> links) {
+
 		this.tasks = tasks;
 		this.links = links;
 		setInputData(transformToJsonInput(containerName, tasks, links, convertor));
 	}
 
-	Object findTask(int hashCode) {
+	T findTask(int hashCode) {
 		return this.tasks.stream().filter(o -> {
 			return o.hashCode() == hashCode;
 		}).findFirst().orElse(null);
 	}
 
-	Object findLink(int hashCode) {
+	L findLink(int hashCode) {
 		return this.links.stream().filter(o -> {
 			return o.hashCode() == hashCode;
 		}).findFirst().orElse(null);
 
 	}
 
-	public Gantt setContainer(String containerName) {
+	public Gantt<T, L> setContainer(String containerName) {
 		this.containerName = containerName;
 		return this;
 	}
 
-	private static JsonObject transformToJsonInput(String cName, List<?> data, List<?> links,
+	private JsonObject transformToJsonInput(String cName, List<?> data, List<?> links,
 			BiFunction<String, Object, Object> c) {
 		// 处理模型
 		JsonArray _data = new JsonArray();
@@ -197,13 +212,13 @@ public class Gantt extends Composite {
 
 		if (data != null)
 			data.forEach(o -> {
-				JsonObject jo = WidgetToolkit.readJsonFrom(o.getClass(), o, cName, true, true, true, c);
+				JsonObject jo = WidgetToolkit.read(o.getClass(), o, cName, true, true, true, c);
 				_data.add(jo);
 			});
 
 		if (links != null)
 			links.forEach(o -> {
-				JsonObject jo = WidgetToolkit.readJsonFrom(o.getClass(), o, cName, true, true, true, c);
+				JsonObject jo = WidgetToolkit.read(o.getClass(), o, cName, true, true, true, c);
 				_links.add(jo);
 			});
 
@@ -240,16 +255,11 @@ public class Gantt extends Composite {
 		}
 	}
 
-	public void addTask(Object item, String parentId, int index) {
-		JsonObject task = WidgetToolkit.readJsonFrom(item.getClass(), item, containerName, true, true, true, convertor);
+	public void addTask(T item, int index) {
+		tasks.add(item);
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
 		JsonObject parameter = new JsonObject();
-		parameter.add("task", task).add("parentId", parentId).add("index", index);
-		remoteObject.call("addTask", parameter);
-	}
-	public void addTask(Object item, String parentId) {
-		JsonObject task = WidgetToolkit.readJsonFrom(item.getClass(), item, containerName, true, true, true, convertor);
-		JsonObject parameter = new JsonObject();
-		parameter.add("task", task).add("parentId", parentId);
+		parameter.add("task", task).add("index", index);
 		remoteObject.call("addTask", parameter);
 	}
 
@@ -260,6 +270,10 @@ public class Gantt extends Composite {
 
 		if (GanttEventCode.onGridHeaderMenuClick.name().equals(eventCode)) {
 
+		} else if (GanttEventCode.onTaskLinkBefore.name().equals(eventCode)) {
+			event.linkSource = findTask(jo.get("source").asObject().get("$hashCode").asInt());
+			event.linkTarget = findTask(jo.get("target").asObject().get("$hashCode").asInt());
+			event.linkType = jo.get("type").asString();
 		} else if (GanttEventCode.onGridRowMenuClick.name().equals(eventCode)) {
 			event.taskId = jo.get("id").asString();
 			event.task = findTask(jo.get("task").asObject().get("$hashCode").asInt());
@@ -330,6 +344,91 @@ public class Gantt extends Composite {
 		}
 
 		return event;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// 同步客户端的变化
+
+	public void setTaskType(Class<T> taskClass) {
+		this.taskClass = taskClass;
+	}
+
+	public void setLinkType(Class<L> linkClass) {
+		this.linkClass = linkClass;
+	}
+
+	private void taskAdded(JsonObject jo) {
+		Event event = new Event();
+		event.text = "taskAdded";
+		event.data = findTask(jo.get("$hashCode").asInt());
+		if (event.data == null && taskClass != null) {
+			try {
+				T task = taskClass.newInstance();
+				WidgetToolkit.write(task, jo, containerName, true, true, true, convertor);
+				event.data = task;
+				tasks.add(task);
+			} catch (InstantiationException | IllegalAccessException e) {
+			}
+		}
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+	}
+
+	private void linkDeleted(JsonObject jo) {
+		Event event = new Event();
+		event.text = "linkDeleted";
+		event.data = findLink(jo.get("$hashCode").asInt());
+		links.remove(event.data);
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+	}
+
+	private void linkUpdated(JsonObject jo) {
+		Event event = new Event();
+		event.text = "linkUpdated";
+		L link = findLink(jo.get("$hashCode").asInt());
+		if (link != null) {
+			WidgetToolkit.write(link, jo, containerName, true, true, true, convertor);
+			event.data = link;
+		}
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+	}
+
+	private void linkAdded(JsonObject jo) {
+		Event event = new Event();
+		event.text = "linkAdded";
+		JsonValue jsonValue = jo.get("$hashCode");
+		if (jsonValue != null) {
+			event.data = findLink(jsonValue.asInt());
+			if (event.data == null && linkClass != null) {
+				try {
+					L link = linkClass.newInstance();
+					WidgetToolkit.write(link, jo, containerName, true, true, true, convertor);
+					event.data = link;
+					links.add(link);
+				} catch (InstantiationException | IllegalAccessException e) {
+				}
+			}
+		}
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+	}
+
+	private void taskDeleted(JsonObject jo) {
+		Event event = new Event();
+		event.text = "taskDeleted";
+		event.data = findLink(jo.get("$hashCode").asInt());
+		tasks.remove(event.data);
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+	}
+
+	private void taskUpdated(JsonObject jo) {
+		Event event = new Event();
+		event.text = "taskUpdated";
+		T task = findTask(jo.get("$hashCode").asInt());
+		if (task != null) {
+			WidgetToolkit.write(task, jo, containerName, true, true, true, convertor);
+			event.data = task;
+		}
+		Arrays.asList(getListeners(SWT.Modify)).forEach(l -> l.handleEvent(event));
+
 	}
 
 }
