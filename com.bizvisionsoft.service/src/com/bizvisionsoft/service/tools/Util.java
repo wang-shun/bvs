@@ -17,5 +17,9 @@ public class Util {
 			return null;
 		}
 	}
+	
+	public static boolean equals(Object v1, Object v2) {
+		return v1 != null && v1.equals(v2) || v1 == null && v2 == null;
+	}
 
 }

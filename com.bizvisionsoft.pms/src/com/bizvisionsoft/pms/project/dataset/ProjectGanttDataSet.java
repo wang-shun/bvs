@@ -32,64 +32,65 @@ public class ProjectGanttDataSet {
 
 	private Project project;
 
+	private WorkService workService;
+
 	@Init
 	private void init() {
 		project = (Project) context.getRootInput();
+		workService = Services.get(WorkService.class);
 	}
 
 	@DataSet("项目甘特图#data")
 	public List<WorkInfo> data() {
-		return Services.get(WorkService.class).createGanttDataSet(new BasicDBObject("project_id", project.get_id()));
+		return workService.createGanttDataSet(new BasicDBObject("project_id", project.get_id()));
 	}
 
 	@DataSet("项目甘特图#links")
 	public List<WorkLinkInfo> links() {
-		return Services.get(WorkService.class).createGanttLinkSet(new BasicDBObject("project_id", project.get_id()));
+		return workService.createGanttLinkSet(new BasicDBObject("project_id", project.get_id()));
 	}
 
 	@DataSet("项目甘特图#initDateRange")
 	public Date[] initDateRange() {
-		List<Date> result = Services.get(ProjectService.class).getPlanDateRange(project.get_id());
-		return result.toArray(new Date[0]);
+		return Services.get(ProjectService.class).getPlanDateRange(project.get_id()).toArray(new Date[0]);
 	}
 
 	@Listener("项目甘特图#onAfterTaskAdd")
-	public void onAfterTaskAdd(GanttEvent event) {
-		WorkInfo wi = (WorkInfo) event.task;
-		Services.get(WorkService.class).insertWork(wi);
+	public void onAfterTaskAdd(GanttEvent e) {
+		workService.insertWork((WorkInfo) e.task);
+		System.out.println(e.text);
 	}
 
 	@Listener("项目甘特图#onAfterTaskUpdate")
-	public void onAfterTaskUpdate(GanttEvent event) {
-		WorkInfo wi = (WorkInfo) event.task;
-		BasicDBObject result = Util.getBson(wi, true);
-		result.removeField("_id");
-		Services.get(WorkService.class)
-				.updateWork(new FilterAndUpdate().filter(new BasicDBObject("_id", wi.get_id())).set(result).bson());
+	public void onAfterTaskUpdate(GanttEvent e) {
+		workService.updateWork(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
+				.set(Util.getBson(e.task, true, "_id")).bson());
+		System.out.println(e.text);
 	}
 
 	@Listener("项目甘特图#onAfterTaskDelete")
-	public void onAfterTaskDelete(GanttEvent event) {
-		Services.get(WorkService.class).deleteWork(new ObjectId(event.id));
+	public void onAfterTaskDelete(GanttEvent e) {
+		workService.deleteWork(new ObjectId(e.id));
+		System.out.println(e.text);
 	}
 
 	@Listener("项目甘特图#onAfterLinkAdd")
-	public void onAfterLinkAdd(GanttEvent event) {
-		Services.get(WorkService.class).insertLink((WorkLinkInfo) event.link);
+	public void onAfterLinkAdd(GanttEvent e) {
+		workService.insertLink((WorkLinkInfo) e.link);
+		System.out.println(e.text);
 	}
 
 	@Listener("项目甘特图#onAfterLinkUpdate")
-	public void onAfterLinkUpdate(GanttEvent event) {
-		WorkLinkInfo wi = (WorkLinkInfo) event.link;
-		BasicDBObject result = Util.getBson(wi, true);
-		result.removeField("_id");
-		Services.get(WorkService.class)
-				.updateLink(new FilterAndUpdate().filter(new BasicDBObject("_id", wi.get_id())).set(result).bson());
+	public void onAfterLinkUpdate(GanttEvent e) {
+		workService.updateLink(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
+				.set(Util.getBson(e.link, true, "_id")).bson());
+		System.out.println(e.text);
 	}
 
 	@Listener("项目甘特图#onAfterLinkDelete")
-	public void onAfterLinkDelete(GanttEvent event) {
-		Services.get(WorkService.class).deleteLink(new ObjectId(event.id));
+	public void onAfterLinkDelete(GanttEvent e) {
+		workService.deleteLink(new ObjectId(e.id));
+		System.out.println(e.text);
 	}
 
 }

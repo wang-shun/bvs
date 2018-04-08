@@ -28,9 +28,11 @@
 		this.element.style.width = "100%";
 		this.element.style.height = "100%";
 		this.parent.append(this.element);
-
+		
 		this.parent.addListener("Dispose", this.destroy);
 		this.parent.addListener("Resize", this.layout);
+
+		this.gantt = Gantt.getGanttInstance();
 
 		rap.on("render", this.onRender);
 	};
@@ -75,7 +77,7 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置日期数据格式
-				gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
+				this.gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 处理服务端与客户端的同步
@@ -83,29 +85,30 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始化并加载数据
-				gantt.init(this.element, this.initFrom, this.initTo);
-				gantt.parse(this.inputData);
+				this.gantt.init(this.element, this.initFrom, this.initTo);
+				this.gantt.parse(this.inputData);
 
 			}
 		},
 
 		genericConfig : function(config) {
-			gantt.config.auto_scheduling = true;
-			gantt.config.auto_scheduling_strict = true;
-			gantt.config.work_time = true;
+			this.gantt.config.auto_scheduling = true;
+			this.gantt.config.auto_scheduling_strict = true;
+			this.gantt.config.work_time = true;
+			this.gantt.config.correct_work_time = true;
 
 			// gantt.config.order_branch = true;
 			// gantt.config.order_branch_free = true;
 
-			gantt.config.touch = "force";
-			gantt.config.grid_resize = true;
-			gantt.config.keep_grid_width = false;
-			gantt.config.start_on_monday = false;
+			this.gantt.config.touch = "force";
+			this.gantt.config.grid_resize = true;
+			this.gantt.config.keep_grid_width = false;
+			this.gantt.config.start_on_monday = false;
 
-			gantt.config.links.start_to_start = "SS";
-			gantt.config.links.finish_to_start = "FS";
-			gantt.config.links.start_to_finish = "SF";
-			gantt.config.links.finish_to_finish = "FF";
+			this.gantt.config.links.start_to_start = "SS";
+			this.gantt.config.links.finish_to_start = "FS";
+			this.gantt.config.links.start_to_finish = "SF";
+			this.gantt.config.links.finish_to_finish = "FF";
 		},
 
 		configGridMenu : function(config) {
@@ -144,6 +147,8 @@
 		},
 
 		configScale : function(config) {
+			var gantt = this.gantt;
+
 			gantt.config.scale_unit = "month";
 			gantt.config.step = 1;
 			gantt.config.date_scale = "%Y年%n月";
@@ -167,7 +172,7 @@
 		},
 
 		configLayout : function(config) {
-			gantt.config.layout = {
+			this.gantt.config.layout = {
 				cols : [ {
 					width : config.grid_width,
 					min_width : 320,
@@ -202,8 +207,8 @@
 		},
 
 		configTaskStyle : function(config) {
-			gantt.config.task_height = 20;
-			gantt.templates.task_class = function(start, end, task) {
+			this.gantt.config.task_height = 20;
+			this.gantt.templates.task_class = function(start, end, task) {
 				if (task.barstyle) {
 					return task.barstyle;
 				}
@@ -212,6 +217,7 @@
 		},
 
 		configHolidays : function(config) {
+			var gantt = this.gantt;
 			gantt.templates.task_cell_class = function(task, date) {
 				if (!gantt.isWorkTime(date))
 					return "week_end";
@@ -224,7 +230,7 @@
 			if (config) {
 				for ( var attr in config) {
 					if (!attr.startsWith("brui_")) {
-						gantt.config[attr] = this.config[attr];
+						this.gantt.config[attr] = this.config[attr];
 					}
 				}
 			}
@@ -234,42 +240,42 @@
 		handleTaskModify : function() {
 			var ro = rap.getRemoteObject(this);
 
-			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
+			this.gantt.attachEvent("onAfterTaskAdd", function(id, task) {
 				ro.call("onAfterTaskAdd", {
 					"id" : id,
 					"task" : task
 				});
 			});
 
-			gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
+			this.gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
 				ro.call("onAfterTaskUpdate", {
 					"id" : id,
 					"task" : task
 				});
 			});
 
-			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
+			this.gantt.attachEvent("onAfterTaskDelete", function(id, task) {
 				ro.call("onAfterTaskDelete", {
 					"id" : id,
 					"task" : task
 				});
 			});
 
-			gantt.attachEvent("onAfterLinkAdd", function(id, link) {
+			this.gantt.attachEvent("onAfterLinkAdd", function(id, link) {
 				ro.call("onAfterLinkAdd", {
 					"id" : id,
 					"link" : link
 				});
 			});
 
-			gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
+			this.gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
 				ro.call("onAfterLinkUpdate", {
 					"id" : id,
 					"link" : link
 				});
 			});
 
-			gantt.attachEvent("onAfterLinkDelete", function(id, link) {
+			this.gantt.attachEvent("onAfterLinkDelete", function(id, link) {
 				ro.call("onAfterLinkDelete", {
 					"id" : id,
 					"link" : link
@@ -277,7 +283,7 @@
 			});
 
 			var checkProject = this.checkProject;
-			gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
+			this.gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
 				if (checkProject && !(link.project)) {
 					ro.call("onTaskLinkBefore", link);
 					return false;
@@ -290,6 +296,8 @@
 
 		handleTaskType : function() {
 			var delTaskParent;
+			var gantt = this.gantt;
+
 
 			function checkParents(id) {
 				setTaskType(id);
@@ -397,7 +405,7 @@
 			var eventCode = event.name;
 			var ro = rap.getRemoteObject(this);
 			if (eventCode == "onAfterAutoSchedule") {
-				gantt.attachEvent(eventCode, function(taskId, updatedTasks) {
+				this.gantt.attachEvent(eventCode, function(taskId, updatedTasks) {
 					ro.call(eventCode, {
 						"taskId" : taskId,
 						"updatedTasks" : updatedTasks
@@ -409,9 +417,10 @@
 					|| eventCode == "onAfterTaskAdd"
 					|| eventCode == "onAfterTaskDelete"
 					|| eventCode == "onAfterTaskUpdate") {
-				// 统一处理同步
+				// ////////////////////////////////////////////////////////////////////////
+				// 统一处理同步,不能单独添加，否者可能在未更新模型前触发侦听程序，导致不一致的数据
 			} else if (eventCode == "onAfterTaskAutoSchedule") {
-				gantt.attachEvent(eventCode, function(task, start, link,
+				this.gantt.attachEvent(eventCode, function(task, start, link,
 						predecessor) {
 					ro.call(eventCode, {
 						"task" : task,
@@ -421,13 +430,13 @@
 					});
 				});
 			} else if (eventCode == "onAutoScheduleCircularLink") {
-				gantt.attachEvent(eventCode, function(groups) {
+				this.gantt.attachEvent(eventCode, function(groups) {
 					ro.call(eventCode, {
 						"groups" : groups
 					});
 				});
 			} else if (eventCode == "onCircularLinkError") {
-				gantt.attachEvent(eventCode, function(link, group) {
+				this.gantt.attachEvent(eventCode, function(link, group) {
 					ro.call(eventCode, {
 						"link" : link,
 						"group" : group
@@ -435,11 +444,11 @@
 				});
 			} else if (eventCode == "onEmptyClick"
 					|| eventCode == "onMultiSelect") {
-				gantt.attachEvent(eventCode, function(e) {
+				this.gantt.attachEvent(eventCode, function(e) {
 					ro.call(eventCode, {});
 				});
 			} else if (eventCode == "onError") {
-				gantt.attachEvent(eventCode, function(errorMessage) {
+				this.gantt.attachEvent(eventCode, function(errorMessage) {
 					ro.call(eventCode, {
 						"errorMessage" : errorMessage
 					});
@@ -451,71 +460,74 @@
 					|| eventCode == "onTaskSelected"
 					|| eventCode == "onTaskUnselected"
 					|| eventCode == "onTaskRowClick") {
-				gantt.attachEvent(eventCode, function(id, e) {
+				this.gantt.attachEvent(eventCode, function(id, e) {
 					ro.call(eventCode, {
 						"id" : id
 					});
 					return true;
 				});
 			} else if (eventCode == "onLinkValidation") {
-				gantt.attachEvent(eventCode, function(link) {
+				this.gantt.attachEvent(eventCode, function(link) {
 					ro.call(eventCode, {
 						"link" : link
 					});
 				});
 			} else if (eventCode == "onScaleClick") {
-				gantt.attachEvent(eventCode, function(e, date) {
+				this.gantt.attachEvent(eventCode, function(e, date) {
 					ro.call(eventCode, {
 						"date" : date
 					});
 				});
 			} else if (eventCode == "onTaskMultiSelect") {
-				gantt.attachEvent(eventCode, function(id, state, e) {
+				this.gantt.attachEvent(eventCode, function(id, state, e) {
 					ro.call(eventCode, {
 						"id" : id,
 						"state" : state
 					});
 				});
-			} else if (eventCode == "onTaskLinkBefore") {// 自定义的事件
+			} else if (eventCode == "onTaskLinkBefore") {
+				// ////////////////////////////////////////////////////////////////////////
+				// 自定义的事件，如果设置了本侦听器，那么系统认为添加link将被服务端接管。
+				// 服务端接管情况下，要求必须检查link是否具有项目属性
 				this.checkProject = true;
 			} else if (eventCode == "onGridRowMenuClick") {// 自定义的事件
 
 			} else if (eventCode == "onGridHeaderMenuClick") {// 自定义的事件
 
 			} else {
-				gantt.attachEvent(eventCode, function() {
+				this.gantt.attachEvent(eventCode, function() {
 					ro.call(eventCode, {});
 				});
 			}
 		},
 
 		addTask : function(parameter) {
-			gantt.addTask(parameter.task, parameter.parentId, parameter.index);
+			this.gantt.addTask(parameter.task, parameter.parentId, parameter.index);
 		},
 
 		addLink : function(link) {
-			gantt.addLink(link);
+			this.gantt.addLink(link);
 		},
 
 		updateTask : function(task) {
 			var clientTask = gantt.getTask(task.id);
 			for ( var attr in task) {
 				if (task[attr].type == "Date") {
-					var formatFunc = gantt.date.str_to_date(task[attr].format);
+					var formatFunc = this.gantt.date.str_to_date(task[attr].format);
 					clientTask[attr] = formatFunc(task[attr].value);
 				} else {
 					clientTask[attr] = task[attr];
 				}
 			}
-			gantt.updateTask(task.id);
+			this.gantt.updateTask(task.id);
 		},
 
 		updateLink : function(link) {
-			var clientLink = gantt.getLink(link.id);
+			var clientLink = this.gantt.getLink(link.id);
 			for ( var attr in link) {
 				clientLink[attr] = link[attr];
 			}
-			gantt.updateLink(link.id);
+			this.gantt.updateLink(link.id);
 		}
 
 	};

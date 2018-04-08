@@ -315,8 +315,8 @@ public class Gantt extends Composite {
 			if (id.isString()) {
 				event.id = id.asString();
 				Object link = findLink(event.id);
-				if (link != null) {
-					WidgetToolkit.write(link, jo.get("link").asObject(), containerName);
+				if (link != null
+						&& !WidgetToolkit.write(link, jo.get("link").asObject(), containerName, "id").isEmpty()) {
 					event.link = link;
 				}
 				event.doit = event.link != null;
@@ -344,8 +344,8 @@ public class Gantt extends Composite {
 			if (id.isString()) {
 				event.id = id.asString();
 				Object task = findTask(event.id);
-				if (task != null) {
-					WidgetToolkit.write(task, jo.get("task").asObject(), containerName);
+				if (task != null
+						&& !WidgetToolkit.write(task, jo.get("task").asObject(), containerName, "id").isEmpty()) {
 					event.task = task;
 				}
 				event.doit = event.task != null;

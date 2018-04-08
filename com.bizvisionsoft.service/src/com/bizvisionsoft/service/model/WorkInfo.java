@@ -158,6 +158,7 @@ public class WorkInfo {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// parent_id, 在gantt图中 使用的字段为parent, String 类型传递，因此 ReadValue和WriteValue需要用方法重写
+	// 写入parent时请注意，返回值表示了该parent值是否被更改。如果没有变化，返回false。告知调用者
 	@Persistence
 	private ObjectId parent_id;
 
@@ -167,13 +168,19 @@ public class WorkInfo {
 	}
 
 	@WriteValue("parent")
-	public WorkInfo setParent(Object parent) {
+	public boolean setParent(Object parent) {
+		ObjectId newParent_id;
 		if (parent instanceof String) {
-			this.parent_id = parent == null ? null : new ObjectId((String) parent);
+			newParent_id = new ObjectId((String) parent);
 		} else {
-			this.parent_id = null;
+			newParent_id = null;
 		}
-		return this;
+		if (!Util.equals(newParent_id, this.parent_id)) {
+			this.parent_id = newParent_id;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,6 +189,7 @@ public class WorkInfo {
 	// 因此 ReadValue和WriteValue需要用方法重写
 	// 甘特图组件（是指GanttPart, 并非Gantt）要求任务和关联关系必须带有project属性。
 	// 如果不带有该属性，表示这些对象可能是客户端创建的
+	// 写入时请注意，返回值表示了该parent值是否被更改。如果没有变化，返回false。告知调用者
 	@Persistence
 	private ObjectId project_id;
 
@@ -191,9 +199,19 @@ public class WorkInfo {
 	}
 
 	@WriteValue("project")
-	public WorkInfo setProject(String project_id) {
-		this.project_id = project_id == null ? null : new ObjectId(project_id);
-		return this;
+	public boolean setProject(String project_id) {
+		ObjectId newId;
+		if (project_id instanceof String) {
+			newId = new ObjectId((String) project_id);
+		} else {
+			newId = null;
+		}
+		if (!Util.equals(newId, this.project_id)) {
+			this.project_id = newId;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -250,8 +268,14 @@ public class WorkInfo {
 	}
 
 	@WriteValue("项目甘特图#start_date")
-	public void setStart_date(String start_date) {
-		this.start_date = Util.str_date(start_date);
+	public boolean setStart_date(String start_date) {
+		Date newDate = Util.str_date(start_date);
+		if (!Util.equals(newDate, this.start_date)) {
+			this.start_date = newDate;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,8 +293,14 @@ public class WorkInfo {
 	}
 
 	@WriteValue("项目甘特图#end_date")
-	public void setEnd_date(String end_date) {
-		this.end_date = Util.str_date(end_date);
+	public boolean setEnd_date(String end_date) {
+		Date newDate = Util.str_date(end_date);
+		if (!Util.equals(newDate, this.end_date)) {
+			this.end_date = newDate;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -287,8 +317,14 @@ public class WorkInfo {
 	}
 
 	@WriteValue("项目甘特图#deadline")
-	public void setDeadline(String deadline) {
-		this.deadline = Util.str_date(deadline);
+	public boolean setDeadline(String deadline) {
+		Date newDate = Util.str_date(deadline);
+		if (!Util.equals(newDate, this.deadline)) {
+			this.deadline = newDate;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -332,10 +368,15 @@ public class WorkInfo {
 	}
 
 	@WriteValue("type")
-	public WorkInfo setType(String type) {
-		milestone = "milestone".equals(type);
-		summary = "project".equals(type);
-		return this;
+	public boolean setType(String type) {
+		boolean milestone = "milestone".equals(type);
+		boolean summary = "project".equals(type);
+		if (this.milestone != milestone || this.summary != summary) {
+			this.milestone = milestone;
+			this.summary = summary;
+			return true;
+		}
+		return false;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

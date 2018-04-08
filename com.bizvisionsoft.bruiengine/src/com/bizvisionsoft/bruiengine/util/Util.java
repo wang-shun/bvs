@@ -94,7 +94,7 @@ public class Util {
 		} else if (value instanceof Boolean) {
 			text = (boolean) value ? "ÊÇ" : "·ñ";
 		} else if (value instanceof String) {
-			text = (String)value;
+			text = (String) value;
 		} else {
 			text = "";
 		}
@@ -102,7 +102,7 @@ public class Util {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static BasicDBObject getBson(Object input, boolean ignoreNull) {
+	public static BasicDBObject getBson(Object input, boolean ignoreNull, String... ignoreFields) {
 		Codec codec = CodexProvider.getRegistry().get(input.getClass());
 		StringWriter sw = new StringWriter();
 		codec.encode(new JsonWriter(sw), input, EncoderContext.builder().build());
@@ -113,6 +113,9 @@ public class Util {
 		Iterator<String> iter = result.keySet().iterator();
 		while (iter.hasNext()) {
 			String k = iter.next();
+			if (ignoreFields != null && Arrays.asList(ignoreFields).contains(k)) {
+				continue;
+			}
 			Object v = result.get(k);
 			if (ignoreNull && v == null) {
 				continue;

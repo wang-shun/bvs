@@ -2,7 +2,10 @@ package com.bizivisionsoft.widgets.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -114,19 +117,24 @@ public class WidgetToolkit {
 		return new String(randBuffer);
 	}
 
-	public static <T> void write(T element, JsonObject jo, String cName) {
+	public static <T> Map<String, Object> write(T element, JsonObject jo, String cName, String... ignoreFields) {
+		final Map<String, Object> result = new HashMap<String, Object>();
 		// 处理字段
 		Arrays.asList(element.getClass().getDeclaredFields()).stream().forEach(e -> {
 			String nName = e.getName();
 			WriteValue ano = e.getAnnotation(WriteValue.class);
 			String targetField = checkField(cName, true, true, nName, ano);
-			if (!isEmptyOrNull(targetField)) {
+			if (!isEmptyOrNull(targetField) && !inArray(targetField, ignoreFields)) {
 				try {
 					JsonValue jv = jo.get(targetField);
 					if (jv != null) {
-						Object value = getValueFromJson(element,  jv, targetField, e.getType());
+						Object value = getValueFromJson(element, jv, targetField, e.getType());
 						e.setAccessible(true);
-						e.set(element, value);
+						Object oldValue = e.get(element);
+						if (!equals(value, oldValue)) {
+							e.set(element, value);
+							result.put(targetField, value);
+						}
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e1) {
 				}
@@ -136,23 +144,33 @@ public class WidgetToolkit {
 		Arrays.asList(element.getClass().getDeclaredMethods()).stream().forEach(e -> {
 			String nName = e.getName();
 			WriteValue ano = e.getAnnotation(WriteValue.class);
-			String targetField = checkField(cName,  true, true, nName, ano);
+			String targetField = checkField(cName, true, true, nName, ano);
 
-			if (!isEmptyOrNull(targetField)) {
+			if (!isEmptyOrNull(targetField) && !inArray(targetField, ignoreFields)) {
 				try {
 					JsonValue jv = jo.get(targetField);
 					if (jv != null) {
-						// 简化处理，仅一个参数
-						Object value = getValueFromJson(element,  jv, targetField,
-								e.getParameters()[0].getType());
+						// 简化处理，仅一个参数,根据该方法的返回判断是否更改了
+						Object value = getValueFromJson(element, jv, targetField, e.getParameters()[0].getType());
 						e.setAccessible(true);
-						e.invoke(element, value);
+						Object res = e.invoke(element, value);
+						if (!Boolean.FALSE.equals(res)) {
+							result.put(targetField, value);
+						}
 					}
 				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
 				}
 			}
 		});
+		return result;
+	}
 
+	private static boolean inArray(Object elem, Object[] arr) {
+		return Optional.ofNullable(arr).map(i -> Arrays.asList(i)).map(a -> a.contains(elem)).orElse(false);
+	}
+
+	private static boolean equals(Object v1, Object v2) {
+		return v1 != null && v1.equals(v2) || v1 == null && v2 == null;
 	}
 
 	/**
