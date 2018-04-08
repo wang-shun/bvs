@@ -91,12 +91,11 @@ public class Codex<T> implements CollectibleCodec<T> {
 
 		Arrays.asList(clazz.getDeclaredFields()).forEach(m -> {
 
-			Boolean tst = Optional.ofNullable(m.getAnnotation(Exclude.class)).map(a -> a.value()).orElse(false);
-			if (tst) {
+			if (Optional.ofNullable(m.getAnnotation(Exclude.class)).map(a -> a.value()).orElse(false)) {
 				return;
 			}
 
-			Boolean setted = Optional.ofNullable(m.getAnnotation(SetValue.class)).map(a -> a.value()).map(n -> {
+			boolean hasSetValue = Optional.ofNullable(m.getAnnotation(SetValue.class)).map(a -> a.value()).map(n -> {
 				if (Persistence.DEFAULT.equals(n)) {
 					n = m.getName();
 				}
@@ -105,7 +104,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 				return true;
 			}).orElse(false);
 
-			setted = setted || Optional.ofNullable(m.getAnnotation(GetValue.class)).map(a -> a.value()).map(n -> {
+			boolean hasGetValue = Optional.ofNullable(m.getAnnotation(GetValue.class)).map(a -> a.value()).map(n -> {
 				if (Persistence.DEFAULT.equals(n)) {
 					n = m.getName();
 				}
@@ -114,7 +113,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 				return true;
 			}).orElse(false);
 
-			setted = setted || Optional.ofNullable(m.getAnnotation(Persistence.class)).map(a -> a.value()).map(n -> {
+			boolean hasPersis = Optional.ofNullable(m.getAnnotation(Persistence.class)).map(a -> a.value()).map(n -> {
 				if (Persistence.DEFAULT.equals(n)) {
 					n = m.getName();
 				}
@@ -124,7 +123,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 				return true;
 			}).orElse(false);
 
-			if (autoCoding && !setted) {
+			if (autoCoding && !hasSetValue && !hasGetValue && !hasPersis) {
 				String n = m.getName();
 				getFields.put(n, m);
 				setFields.put(n, m);

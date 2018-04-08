@@ -242,31 +242,6 @@ public class Gantt extends Composite {
 		}
 	}
 
-	public void addTask(Object item, int index) {
-		tasks.add(item);
-		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
-		JsonObject parameter = new JsonObject();
-		parameter.add("task", task).add("index", index);
-		remoteObject.call("addTask", parameter);
-	}
-
-	public void addLink(Object item) {
-		links.add(item);
-		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
-		remoteObject.call("addLink", link);
-	}
-
-	public void updateLink(Object item) {
-		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
-		remoteObject.call("updateLink", link);
-	}
-
-	public void updateTask(Object item) {
-		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
-				convertor4UpdateGantt);
-		remoteObject.call("updateTask", task);
-	}
-
 	private Event createEvent(String eventCode, JsonObject jo) {
 		GanttEvent event = new GanttEvent();
 		event.text = eventCode;
@@ -419,6 +394,54 @@ public class Gantt extends Composite {
 		}
 
 		return event;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/// 对Gantt的客户端操作
+	/**
+	 * 
+	 * @param item
+	 * @param index
+	 */
+	public void addTask(Object item, int index) {
+		tasks.add(item);
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
+		JsonObject parameter = new JsonObject();
+		parameter.add("task", task).add("index", index);
+		remoteObject.call("addTask", parameter);
+	}
+
+	public void addLink(Object item) {
+		links.add(item);
+		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
+		remoteObject.call("addLink", link);
+	}
+
+	public void deleteTask(String id) {
+		remoteObject.call("deleteTask", new JsonObject().add("id", id));
+	}
+
+	public void deleteLink(String id) {
+		remoteObject.call("deleteLink", new JsonObject().add("id", id));
+	}
+
+	public void updateLink(Object item) {
+		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
+		remoteObject.call("updateLink", link);
+	}
+
+	public void updateTask(Object item) {
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
+				convertor4UpdateGantt);
+		remoteObject.call("updateTask", task);
+	}
+
+	public void autoSchedule() {
+		remoteObject.call("autoSchedule", new JsonObject());
+	}
+
+	public void highlightCriticalPath(boolean display) {
+		remoteObject.call("highlightCriticalPath", new JsonObject().add("display", display));
 	}
 
 }

@@ -54,6 +54,8 @@ public class GanttPart {
 
 	private BruiEventEngine eventEngine;
 
+	private boolean highlightCriticalPath;
+
 	public GanttPart(Assembly config) {
 		this.config = config;
 	}
@@ -165,7 +167,7 @@ public class GanttPart {
 			});
 		});
 
-		//处理客户端事件侦听
+		// 处理客户端事件侦听
 		if (eventEngine != null) {
 			eventEngine.attachListener((eventCode, m) -> {
 				addGanttEventListener(eventCode, e1 -> {
@@ -213,9 +215,17 @@ public class GanttPart {
 	public void addTask(Object task, int index) {
 		gantt.addTask(task, index);
 	}
+	
+	public void deleteTask(String taskId) {
+		gantt.deleteTask(taskId);
+	}
 
 	public void addLink(Object link) {
 		gantt.addLink(link);
+	}
+	
+	public void deleteLink(String linkId) {
+		gantt.deleteLink(linkId);
 	}
 
 	public void updateLink(Object link) {
@@ -224,6 +234,19 @@ public class GanttPart {
 
 	public void updateTask(Object task) {
 		gantt.updateTask(task);
+	}
+
+	public void reschedule() {
+		gantt.autoSchedule();
+	}
+
+	public void highlightCriticalPath(boolean highlightCriticalPath) {
+		this.highlightCriticalPath = highlightCriticalPath;
+		gantt.highlightCriticalPath(highlightCriticalPath);
+	}
+
+	public void switchCriticalPathHighLight() {
+		highlightCriticalPath(!this.highlightCriticalPath);
 	}
 
 }

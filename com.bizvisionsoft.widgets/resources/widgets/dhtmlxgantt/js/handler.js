@@ -12,7 +12,8 @@
 		properties : [ "config", "initFrom", "initTo", "inputData" ],
 
 		methods : [ "addListener", "removeListener", "addTask", "addLink",
-				"updateTask", "updateLink" ]
+				"updateTask", "updateLink", "deleteTask", "deleteLink",
+				"autoSchedule", "highlightCriticalPath" ]
 
 	});
 
@@ -28,7 +29,7 @@
 		this.element.style.width = "100%";
 		this.element.style.height = "100%";
 		this.parent.append(this.element);
-		
+
 		this.parent.addListener("Dispose", this.destroy);
 		this.parent.addListener("Resize", this.layout);
 
@@ -94,11 +95,17 @@
 		genericConfig : function(config) {
 			this.gantt.config.auto_scheduling = true;
 			this.gantt.config.auto_scheduling_strict = true;
+			this.gantt.config.auto_scheduling_move_projects = false;
+			this.gantt.config.auto_scheduling_initial = false;
+
 			this.gantt.config.work_time = true;
 			this.gantt.config.correct_work_time = true;
 
-			// gantt.config.order_branch = true;
-			// gantt.config.order_branch_free = true;
+			this.gantt.config.fit_tasks = true;
+			this.gantt.config.drag_project = true;
+
+			this.gantt.config.order_branch = true;
+			// this.gantt.config.order_branch_free = true;//禁止在整个项目中拖拽任务
 
 			this.gantt.config.touch = "force";
 			this.gantt.config.grid_resize = true;
@@ -298,7 +305,6 @@
 			var delTaskParent;
 			var gantt = this.gantt;
 
-
 			function checkParents(id) {
 				setTaskType(id);
 				var parent = gantt.getParent(id);
@@ -405,12 +411,13 @@
 			var eventCode = event.name;
 			var ro = rap.getRemoteObject(this);
 			if (eventCode == "onAfterAutoSchedule") {
-				this.gantt.attachEvent(eventCode, function(taskId, updatedTasks) {
-					ro.call(eventCode, {
-						"taskId" : taskId,
-						"updatedTasks" : updatedTasks
-					});
-				});
+				this.gantt.attachEvent(eventCode,
+						function(taskId, updatedTasks) {
+							ro.call(eventCode, {
+								"taskId" : taskId,
+								"updatedTasks" : updatedTasks
+							});
+						});
 			} else if (eventCode == "onAfterLinkAdd"
 					|| eventCode == "onAfterLinkDelete"
 					|| eventCode == "onAfterLinkUpdate"
@@ -502,7 +509,8 @@
 		},
 
 		addTask : function(parameter) {
-			this.gantt.addTask(parameter.task, parameter.parentId, parameter.index);
+			this.gantt.addTask(parameter.task, parameter.parentId,
+					parameter.index);
 		},
 
 		addLink : function(link) {
@@ -513,7 +521,8 @@
 			var clientTask = gantt.getTask(task.id);
 			for ( var attr in task) {
 				if (task[attr].type == "Date") {
-					var formatFunc = this.gantt.date.str_to_date(task[attr].format);
+					var formatFunc = this.gantt.date
+							.str_to_date(task[attr].format);
 					clientTask[attr] = formatFunc(task[attr].value);
 				} else {
 					clientTask[attr] = task[attr];
@@ -528,6 +537,23 @@
 				clientLink[attr] = link[attr];
 			}
 			this.gantt.updateLink(link.id);
+		},
+
+		deleteTask : function(param) {
+			this.gantt.deleteTask(param.id);
+		},
+
+		deleteLink : function(param) {
+			this.gantt.deleteLink(param.id);
+		},
+
+		autoSchedule : function() {
+			this.gantt.autoSchedule();
+		},
+
+		highlightCriticalPath : function(param) {
+			this.gantt.config.highlight_critical_path = param.display;
+			this.gantt.render();
 		}
 
 	};

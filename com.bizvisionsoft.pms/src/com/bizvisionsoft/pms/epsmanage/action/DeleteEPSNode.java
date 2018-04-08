@@ -24,7 +24,7 @@ public class DeleteEPSNode {
 
 		context.selected(elem -> {
 			if (elem instanceof EPS) {
-				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确定要删除选中的EPS节点吗？")) {
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要删除选择的EPS节点。")) {
 					try {
 						Services.get(EPSService.class).delete(((EPS) elem).get_id());
 						GridPart grid = (GridPart) context.getContent();

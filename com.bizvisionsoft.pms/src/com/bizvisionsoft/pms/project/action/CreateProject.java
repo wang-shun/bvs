@@ -28,8 +28,8 @@ public class CreateProject {
 				.open((r, proj) -> {
 					Project pj = Services.get(ProjectService.class).insert(proj);
 					if (pj != null) {
-						if (MessageDialog.openQuestion(bruiService.getCurrentShell(), "项目创建成功", "您是否打开项目主页？")) {
-							// TODO 跳转到项目主页
+						if (MessageDialog.openQuestion(bruiService.getCurrentShell(), "创建项目", "项目创建成功，是否进入项目主页？")) {
+							bruiService.switchPage("项目首页",pj.get_id().toHexString());
 						}
 
 					}

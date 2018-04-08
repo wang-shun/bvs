@@ -23,7 +23,7 @@ public class DeleteProjectSet {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(em -> {
 			if (em instanceof ProjectSet) {
-				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "您确定要删除选中的项目集吗？"))
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要删除选择的项目集。"))
 					try {
 						if (Services.get(ProjectSetService.class).delete(((ProjectSet) em).get_id()) == 1)
 							((GridPart) context.getContent()).remove(em);
