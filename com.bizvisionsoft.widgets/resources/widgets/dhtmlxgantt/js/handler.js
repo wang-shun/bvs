@@ -104,10 +104,11 @@
 			this.gantt.config.fit_tasks = true;
 			this.gantt.config.drag_project = true;
 
-			this.gantt.config.order_branch = true;
-			// this.gantt.config.order_branch_free = true;//禁止在整个项目中拖拽任务
+			this.gantt.config.order_branch = false;
+			this.gantt.config.order_branch_free = false;//禁止在整个项目中拖拽任务
 
 			this.gantt.config.touch = "force";
+			this.gantt.config.open_tree_initially = true;
 			this.gantt.config.grid_resize = true;
 			this.gantt.config.keep_grid_width = false;
 			this.gantt.config.start_on_monday = false;
@@ -518,7 +519,7 @@
 		},
 
 		updateTask : function(task) {
-			var clientTask = gantt.getTask(task.id);
+			var clientTask = this.gantt.getTask(task.id);
 			for ( var attr in task) {
 				if (task[attr].type == "Date") {
 					var formatFunc = this.gantt.date
