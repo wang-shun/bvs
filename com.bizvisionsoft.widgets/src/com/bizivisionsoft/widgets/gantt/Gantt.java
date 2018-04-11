@@ -113,8 +113,7 @@ public class Gantt extends Composite {
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
 		// WidgetToolkit.requireWidgetJs(widgetName,
 		// "codebase/ext/dhtmlxgantt_smart_rendering.js");
-		// WidgetToolkit.requireWidgetJs(widgetName,
-		// "codebase/ext/dhtmlxgantt_tooltip.js");
+//		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_tooltip.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale
@@ -442,6 +441,10 @@ public class Gantt extends Composite {
 
 	public void highlightCriticalPath(boolean display) {
 		remoteObject.call("highlightCriticalPath", new JsonObject().add("display", display));
+	}
+
+	public void setScaleType(String type) {
+		remoteObject.call("setScaleType", new JsonObject().add("type", type));
 	}
 
 }

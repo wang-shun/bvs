@@ -57,23 +57,23 @@ public class DemoAssemblyInvokeRS {
 			// System.out.println(cnt);
 		});
 
-		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
-		button.setText("创建根组织");
-		button.addListener(SWT.Selection, e -> {
-			Organization orgInfo = new Organization().setFullName("武汉优先商用软件有限公司").setName("优先商软").setNumber("BIZV")
-					.setType("公司");
-			orgInfo = Services.get(OrganizationService.class).insert(orgInfo);
-			System.out.println(orgInfo);
-		});
+//		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
+//		button.setText("创建根组织");
+//		button.addListener(SWT.Selection, e -> {
+//			Organization orgInfo = new Organization().setFullName("武汉优先商用软件有限公司").setName("优先商软").setNumber("BIZV")
+//					.setType("公司");
+//			orgInfo = Services.get(OrganizationService.class).insert(orgInfo);
+//			System.out.println(orgInfo);
+//		});
 
-		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
-		button.setText("创建下级组织");
-		button.addListener(SWT.Selection, e -> {
-			Organization orgInfo = new Organization().setFullName("优先商软测试部").setName("测试部").setNumber("RTD")
-					.setType("部门").setParentId(new ObjectId("5a98b5de89db0071a0f77269"));
-			orgInfo = Services.get(OrganizationService.class).insert(orgInfo);
-			System.out.println(orgInfo);
-		});
+//		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
+//		button.setText("创建下级组织");
+//		button.addListener(SWT.Selection, e -> {
+//			Organization orgInfo = new Organization().setFullName("优先商软测试部").setName("测试部").setNumber("RTD")
+//					.setType("部门").setParentId(new ObjectId("5a98b5de89db0071a0f77269"));
+//			orgInfo = Services.get(OrganizationService.class).insert(orgInfo);
+//			System.out.println(orgInfo);
+//		});
 
 		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
 		button.setText("创建一批测试用户");

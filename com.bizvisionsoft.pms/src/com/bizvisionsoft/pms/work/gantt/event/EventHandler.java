@@ -48,7 +48,13 @@ public class EventHandler {
 
 	@Listener("项目甘特图#onTaskDblClick")
 	public void onTaskDblClick(GanttEvent event) {
-		Editor.create("创建甘特图工作编辑器", context, event.task).setTitle("编辑工作").open((r, wi) -> {
+		String editor ;
+		if(((WorkInfo)event.task).isSummary()) {
+			editor = "甘特图总成工作编辑器";
+		}else {
+			editor = "甘特图工作编辑器";
+		}
+		Editor.create(editor, context, event.task).setTitle("编辑工作").open((r, wi) -> {
 			GanttPart content = (GanttPart) context.getContent();
 			content.updateTask(wi);
 		});

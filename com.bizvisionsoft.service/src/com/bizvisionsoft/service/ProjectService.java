@@ -18,7 +18,7 @@ import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectInfo;
 import com.mongodb.BasicDBObject;
 
-@Path("/proj")
+@Path("/project")
 public interface ProjectService {
 
 	@POST

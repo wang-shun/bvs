@@ -15,6 +15,7 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
+import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.datatools.Query;
 import com.mongodb.BasicDBObject;
@@ -62,6 +63,10 @@ public class EPS implements Comparable<EPS> {
 	@Behavior("EPS浏览#创建项目集") // 控制action
 	@Exclude // 不用持久化
 	private boolean enableAddProjectSet = true;
+
+	@Behavior("项目模板管理#创建项目模板") // 控制action
+	@Exclude // 不用持久化
+	private boolean enableAddProjectTemplate = true;
 
 	public ObjectId get_id() {
 		return _id;
@@ -112,6 +117,26 @@ public class EPS implements Comparable<EPS> {
 		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
 		cnt += ServicesLoader.get(ProjectService.class).count(new BasicDBObject("eps_id", _id));
 		cnt += ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("eps_id", _id));
+		return cnt;
+	}
+
+	@Structure("项目模板管理 #list")
+	public List<Object> getSubNodesForProjectTemplate() {
+		ArrayList<Object> result = new ArrayList<Object>();
+
+		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
+
+		result.addAll(ServicesLoader.get(ProjectTemplateService.class)
+				.createDataSet(new Query().filter(new BasicDBObject("eps_id", _id)).bson()));
+
+		return result;
+	}
+
+	@Structure("项目模板管理#count")
+	public long countSubNodesForProjectTemplate() {
+		// 查下级
+		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
+		cnt += ServicesLoader.get(ProjectTemplateService.class).count(new BasicDBObject("eps_id", _id));
 		return cnt;
 	}
 

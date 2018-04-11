@@ -60,7 +60,7 @@ public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 	@Override
 	public List<EPS> getSubEPS(ObjectId parent_id) {
 		ArrayList<EPS> result = new ArrayList<EPS>();
-		Service.col(EPS.class).find(new BasicDBObject("parent_id", parent_id)).into(result);
+		Service.col(EPS.class).find(new BasicDBObject("parent_id", parent_id)).sort(new BasicDBObject("id",1)).into(result);
 		return result;
 	}
 

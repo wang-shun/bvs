@@ -13,7 +13,7 @@
 
 		methods : [ "addListener", "removeListener", "addTask", "addLink",
 				"updateTask", "updateLink", "deleteTask", "deleteLink",
-				"autoSchedule", "highlightCriticalPath" ]
+				"autoSchedule", "highlightCriticalPath", "setScaleType" ]
 
 	});
 
@@ -23,7 +23,11 @@
 
 	bizvision.dhtmlxgantt = function(properties) {
 		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
-				"onGridMenuClick" ]);
+				"genericConfig", "configGridMenu", "configScale_0",
+				"configScale_1", "configScale_2", "configScale_3",
+				"configLayout", "configTaskStyle", "configHolidays",
+				"acceptServerConfig", "onGridMenuClick", "onGridRowMenuClick",
+				"_getHolidayStyle", "handleTaskModify", "handleTaskType" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -54,7 +58,7 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置刻度
-				this.configScale(this.config);
+				this.configScale_0(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置布局
@@ -103,9 +107,11 @@
 
 			this.gantt.config.fit_tasks = true;
 			this.gantt.config.drag_project = true;
+			this.gantt.config.autoscroll = true;
+			this.gantt.config.autoscroll_speed = 50;
 
 			this.gantt.config.order_branch = false;
-			this.gantt.config.order_branch_free = false;//禁止在整个项目中拖拽任务
+			this.gantt.config.order_branch_free = false;// 禁止在整个项目中拖拽任务
 
 			this.gantt.config.touch = "force";
 			this.gantt.config.open_tree_initially = true;
@@ -154,7 +160,9 @@
 			}
 		},
 
-		configScale : function(config) {
+		// 月周日
+		configScale_0 : function(config) {
+			this.dateCell = true;
 			var gantt = this.gantt;
 
 			gantt.config.scale_unit = "month";
@@ -176,6 +184,64 @@
 				unit : "day",
 				step : 1,
 				date : "%j"
+			} ];
+		},
+
+		configScale_1 : function(config) {
+			this.dateCell = false;
+			var gantt = this.gantt;
+
+			gantt.config.scale_unit = "year";
+			gantt.config.step = 1;
+			gantt.config.date_scale = "%Y年";
+			gantt.config.min_column_width = 40;
+			gantt.config.scale_height = 90;
+			gantt.config.subscales = [ {
+				unit : "month",
+				step : 1,
+				date : "%n月"
+			}, {
+				unit : "week",
+				step : 1,
+				date : "%W周"
+			} ];
+		},
+
+		configScale_2 : function(config) {
+			this.dateCell = false;
+			var gantt = this.gantt;
+
+			gantt.config.scale_unit = "year";
+			gantt.config.step = 1;
+			gantt.config.date_scale = "%Y年";
+			gantt.config.min_column_width = 40;
+			gantt.config.scale_height = 90;
+			gantt.config.subscales = [ {
+				unit : "month",
+				step : 1,
+				date : "%n月"
+			} ];
+		},
+
+		configScale_3 : function(config) {
+			this.dateCell = false;
+			var gantt = this.gantt;
+
+			gantt.config.scale_unit = "month";
+			gantt.config.step = 1;
+			gantt.config.date_scale = "%Y年%n月";
+			gantt.config.min_column_width = 40;
+			gantt.config.scale_height = 90;
+			var weekScaleTemplate = function(date) {
+				var dateToStr = gantt.date.date_to_str("%n月%j日");
+				var endDate = gantt.date.add(gantt.date.add(date, 1, "week"),
+						-1, "day");
+				return dateToStr(date) + " - " + dateToStr(endDate);
+			};
+			gantt.config.subscales = [ {
+				unit : "week",
+				step : 1,
+				template : weekScaleTemplate
 			} ];
 		},
 
@@ -225,13 +291,14 @@
 		},
 
 		configHolidays : function(config) {
-			var gantt = this.gantt;
-			gantt.templates.task_cell_class = function(task, date) {
-				if (!gantt.isWorkTime(date))
-					return "week_end";
-				return "";
-			};
-			gantt.config.work_time = true;
+			this.gantt.templates.task_cell_class = this._getHolidayStyle;
+			this.gantt.config.work_time = true;
+		},
+
+		_getHolidayStyle : function(task, date) {
+			if (this.dateCell && !this.gantt.isWorkTime(date))
+				return "week_end";
+			return "";
 		},
 
 		acceptServerConfig : function(config) {
@@ -554,6 +621,20 @@
 
 		highlightCriticalPath : function(param) {
 			this.gantt.config.highlight_critical_path = param.display;
+			this.gantt.render();
+		},
+
+		setScaleType : function(param) {
+			var type = param.type;
+			if (type == "month-week-date") {
+				this.configScale_0(this.gantt.config);
+			} else if (type == "year-month-week") {
+				this.configScale_1(this.gantt.config);
+			} else if (type = "year-month") {
+				this.configScale_2(this.gantt.config);
+			} else if (type = "month-week") {
+				this.configScale_3(this.gantt.config);
+			}
 			this.gantt.render();
 		}
 

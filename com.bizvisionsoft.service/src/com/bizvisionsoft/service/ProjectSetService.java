@@ -17,7 +17,7 @@ import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.ProjectSet;
 import com.mongodb.BasicDBObject;
 
-@Path("/projset")
+@Path("/projectset")
 public interface ProjectSetService {
 	
 	@POST

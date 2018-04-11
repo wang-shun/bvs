@@ -93,14 +93,14 @@ public class UserInfo {
 		this.name = name;
 	}
 
-	@Structure("用户列表#list")
-	public List<UserInfo> getChildren() {
-		return ServicesLoader.get(UserService.class).createDataSet(new Query().skip(0).limit(5).bson());
-	}
-
-	@Structure("用户列表#count")
-	public long countChildren() {
-		return 5;
-	}
+//	@Structure("用户列表#list")
+//	public List<UserInfo> getChildren() {
+//		return ServicesLoader.get(UserService.class).createDataSet(new Query().skip(0).limit(5).bson());
+//	}
+//
+//	@Structure("用户列表#count")
+//	public long countChildren() {
+//		return 5;
+//	}
 
 }

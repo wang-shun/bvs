@@ -13,40 +13,35 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
-import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.ProjectTemplate;
 import com.mongodb.BasicDBObject;
 
-
-@Path("/org")
-public interface OrganizationService {
+@Path("/projecttemplate")
+public interface ProjectTemplateService {
 
 	@POST
 	@Path("/")
-	@Consumes("application/json")
-	@Produces("application/json; charset=UTF-8")
-	public Organization insert(Organization orgInfo);
-	
-	@GET
-	@Path("/{_id}")
-	@Consumes("application/json")
-	@Produces("application/json; charset=UTF-8")
-	public Organization get(@PathParam("_id") ObjectId _id);
-	
-	
-	@POST
-	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet(DataSet.LIST)
-	public List<Organization> createDataSet(
-			@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
-	
-	
+	public ProjectTemplate insert(ProjectTemplate project);
+
+	@GET
+	@Path("/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet(DataSet.INPUT)
+	public ProjectTemplate get(@PathParam("_id") @ServiceParam("_id") ObjectId _id);
+
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet(DataSet.COUNT)
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
+
+	@POST
+	@Path("/ds/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<ProjectTemplate> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 }

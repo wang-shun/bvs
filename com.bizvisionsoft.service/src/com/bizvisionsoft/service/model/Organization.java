@@ -6,6 +6,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 @PersistenceCollection(value = "organization")
 public class Organization {
@@ -17,8 +18,9 @@ public class Organization {
 	 * 组织编号
 	 */
 	@Persistence
-	@ReadValue(" orgNum ")
-	private String number;
+	@ReadValue
+	@WriteValue
+	private String id;
 
 	/**
 	 * 上级组织
@@ -31,6 +33,7 @@ public class Organization {
 	 */
 	@Persistence
 	@ReadValue
+	@WriteValue
 	private String name;
 
 	/**
@@ -38,6 +41,7 @@ public class Organization {
 	 */
 	@Persistence
 	@ReadValue
+	@WriteValue
 	@Label
 	private String fullName;
 
@@ -46,16 +50,8 @@ public class Organization {
 	 */
 	@Persistence
 	@ReadValue
+	@WriteValue
 	private String type;
-
-	public String getNumber() {
-		return number;
-	}
-
-	public Organization setNumber(String number) {
-		this.number = number;
-		return this;
-	}
 
 	public ObjectId getParentId() {
 		return parentId;

@@ -215,7 +215,7 @@ public class GanttPart {
 	public void addTask(Object task, int index) {
 		gantt.addTask(task, index);
 	}
-	
+
 	public void deleteTask(String taskId) {
 		gantt.deleteTask(taskId);
 	}
@@ -223,7 +223,7 @@ public class GanttPart {
 	public void addLink(Object link) {
 		gantt.addLink(link);
 	}
-	
+
 	public void deleteLink(String linkId) {
 		gantt.deleteLink(linkId);
 	}
@@ -247,6 +247,10 @@ public class GanttPart {
 
 	public void switchCriticalPathHighLight() {
 		highlightCriticalPath(!this.highlightCriticalPath);
+	}
+
+	public void setScaleType(String type) {
+		gantt.setScaleType(type);
 	}
 
 }

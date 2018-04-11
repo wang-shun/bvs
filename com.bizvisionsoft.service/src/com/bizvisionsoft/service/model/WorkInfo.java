@@ -499,5 +499,13 @@ public class WorkInfo {
 		}
 
 	}
+	
+	public boolean isSummary() {
+		return summary;
+	}
+	
+	public boolean isMilestone() {
+		return milestone;
+	}
 
 }
