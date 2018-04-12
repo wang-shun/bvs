@@ -25,13 +25,15 @@ public class AssemblyStickerEditor extends ModelEditor {
 		createTextField(parent, "描述:", inputData, "description", SWT.BORDER);
 
 		createTextField(parent, "标题栏文本:", inputData, "stickerTitle", SWT.BORDER);
-		
+
+		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
+
 		createCheckboxField(parent, "上边框：", inputData, "borderTop", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "右边框：", inputData, "borderRight", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "下边框：", inputData, "borderBottom", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "左边框：", inputData, "borderLeft", SWT.CHECK);
 
 		parent = createTabItemContent("布局和子组件");
@@ -40,7 +42,7 @@ public class AssemblyStickerEditor extends ModelEditor {
 			((Assembly) inputData).setLayout(layouts = new ArrayList<Layout>());
 
 		new LayoutEditPane(parent, layouts, this);
-		
+
 		parent = createTabItemContent("操作");
 		List<Action> actions = ((Assembly) inputData).getActions();
 		if (actions == null)

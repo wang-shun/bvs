@@ -22,7 +22,7 @@ import com.bizvisionsoft.service.model.WorkLinkInfo;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class ProjectGanttDataSet {
+public class ProjectGantt {
 
 	@Inject
 	private BruiAssemblyContext context;

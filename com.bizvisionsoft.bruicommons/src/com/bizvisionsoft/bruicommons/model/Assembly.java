@@ -539,5 +539,18 @@ public class Assembly extends ModelObject {
 		this.hasTitlebar = hasTitlebar;
 	}
 	
+	//是否在标题栏上显示input对象的标签
+	private boolean displayInputLabelInTitlebar;
+	
+	public boolean isDisplayInputLabelInTitlebar() {
+		return displayInputLabelInTitlebar;
+	}
+	
+	public void setDisplayInputLabelInTitlebar(boolean displayInputLabelInTitlebar) {
+		this.displayInputLabelInTitlebar = displayInputLabelInTitlebar;
+	}
+	
+	
+	
 
 }

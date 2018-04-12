@@ -103,15 +103,23 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	}
 
 	@Override
-	public List<User> getMember(ObjectId org_id) {
-		List<User> result = new ArrayList<User>();
-		Service.col(User.class).find(new BasicDBObject("org_id", org_id)).into(result);
-		return result;
+	public List<User> getMember(BasicDBObject condition,ObjectId org_id) {
+		BasicDBObject filter = (BasicDBObject) condition.get("filter");
+		if (filter == null) {
+			filter = new BasicDBObject();
+			condition.put("filter", filter);
+		}
+		filter.put("org_id", org_id);
+		return createDataSet(condition, User.class);
 	}
 
 	@Override
-	public long countMemeber(ObjectId org_id) {
-		return Service.col(User.class).count(new BasicDBObject("org_id", org_id));
+	public long countMember(BasicDBObject filter,ObjectId org_id) {
+		if(filter == null) {
+			filter = new BasicDBObject();
+		}
+		filter.put("org_id", org_id);
+		return count(filter, User.class);
 	}
 
 }

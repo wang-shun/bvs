@@ -28,38 +28,40 @@ public class User {
 	private ObjectId _id;// _id字段在插入集合时Codex会自动生成，并在插入完成后写入，无需指定生成器
 
 	@Persistence
-	@ReadValue(" 用户编辑器 / 账号 ")
+	@ReadValue
 	private String userId;
 
 	@Persistence
 	private String password;
 
 	@Persistence
-	@WriteValue(" 用户编辑器 / 姓名 ")
+	@ReadValue
+	@WriteValue
 	private String name;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 / 电子邮件 ")
-	@WriteValue(" 用户编辑器 / 电子邮件 ")
+	@ReadValue
+	@WriteValue
 	private String email;
 
 	@Persistence
-	@WriteValue(" 用户编辑器 / 电话 ")
+	@ReadValue
+	@WriteValue
 	private String tel;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 / 移动电话 ")
-	@WriteValue(" 用户编辑器 / 移动电话 ")
+	@ReadValue
+	@WriteValue
 	private String mobile;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 / 微信账号 ")
-	@WriteValue(" 用户编辑器 / 微信账号 ")
+	@ReadValue
+	@WriteValue
 	private String weixin;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 / 激活 ")
-	@WriteValue(" 用户编辑器 / 激活 ")
+	@ReadValue
+	@WriteValue
 	private boolean activated;
 
 	@Persistence
@@ -128,8 +130,6 @@ public class User {
 		this.min = range[0];
 		this.max = range[1];
 	}
-	
-	
 
 	public String getUserId() {
 		return userId;
@@ -243,16 +243,17 @@ public class User {
 		}
 		return new ArrayList<Organization>();
 	}
-	
+
 	/**
 	 * 演示时间的最大值和最小值控制
+	 * 
 	 * @return
 	 */
 	@ReadValidation("lastLogin")
 	public String[] maxAndMinDateLimit() {
-		return new String[] {"2017-8-11 12:30:00","2018-8-11 11:30:00"};
+		return new String[] { "2017-8-11 12:30:00", "2018-8-11 11:30:00" };
 	}
-	
+
 	/**
 	 * 超文本字段
 	 */
@@ -260,7 +261,7 @@ public class User {
 	@ReadValue
 	@WriteValue
 	private String demoHtml;
-	
+
 	/**
 	 * 超文本字段
 	 */
@@ -268,7 +269,7 @@ public class User {
 	@ReadValue
 	@WriteValue
 	private String demoNote;
-	
+
 	@Override
 	@Label
 	public String toString() {

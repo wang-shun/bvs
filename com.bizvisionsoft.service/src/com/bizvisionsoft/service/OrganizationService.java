@@ -66,19 +66,17 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	public long countSub(@PathParam("_id") ObjectId parent_id);
 
-	@GET
-	@Path("/member/{_id}")
+	@POST
+	@Path("/member/{_id}/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("组织成员/" + DataSet.LIST)
-	public List<User> getMember(@PathParam("_id") ObjectId parent_id);
+	public List<User> getMember(BasicDBObject condition,@PathParam("_id") ObjectId parent_id);
 
-	@GET
-	@Path("/member/count/{_id}")
+	@POST
+	@Path("/member/count/{_id}/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("组织成员/" + DataSet.COUNT)
-	public long countMemeber(@PathParam("_id") ObjectId parent_id);
+	public long countMember(BasicDBObject filter,@PathParam("_id") ObjectId parent_id);
 
 	@POST
 	@Path("/ds/")

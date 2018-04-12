@@ -1,11 +1,15 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.Optional;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -53,7 +57,13 @@ public class StickerPart {
 
 		parent.setHtmlAttribute("class", cssClass);
 
-		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setText(assembly.getStickerTitle())
+		String text = assembly.getStickerTitle();
+		if (assembly.isDisplayInputLabelInTitlebar()) {
+			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, ""))
+					.map(l -> " - " + l).orElse("");
+		}
+
+		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setText(text)
 				.setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
@@ -75,5 +85,5 @@ public class StickerPart {
 			BruiActionEngine.create(action, service).invokeExecute(e, context);
 		});
 	}
-	
+
 }

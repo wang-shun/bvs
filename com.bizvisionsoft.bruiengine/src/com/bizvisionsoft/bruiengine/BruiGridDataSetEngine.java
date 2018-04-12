@@ -100,7 +100,10 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			try {
 				method.setAccessible(true);
 				return method.invoke(getTarget(), args);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(assembly.getName() + "的数据源注解DataSet值为 list的方法调用出错。", e.getTargetException());
 			}
 		}
 		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 list的方法。");
@@ -209,7 +212,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		return null;
 	}
 
-	public void attachListener(BiConsumer<String,Method> con) {
+	public void attachListener(BiConsumer<String, Method> con) {
 		Arrays.asList(clazz.getDeclaredMethods()).stream().forEach(m -> {
 			Listener anno = m.getAnnotation(Listener.class);
 			if (anno != null) {
@@ -223,7 +226,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 						listenerName = loc[1].trim();
 					}
 					if (listenerName != null) {
-						con.accept(listenerName,m);
+						con.accept(listenerName, m);
 					}
 				}
 

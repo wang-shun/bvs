@@ -97,6 +97,8 @@ public class AssemblyGridEditor extends ModelEditor {
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
 		
+		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
+		
 		createCheckboxField(parent, "容器上边框：", inputData, "borderTop", SWT.CHECK);
 		
 		createCheckboxField(parent, "容器右边框：", inputData, "borderRight", SWT.CHECK);
