@@ -37,6 +37,7 @@ import com.bizvisionsoft.bruicommons.model.Site;
 import com.bizvisionsoft.bruicommons.model.Template;
 import com.bizvisionsoft.bruicommons.model.TemplateLib;
 import com.bizvisionsoft.bruidesigner.Activator;
+import com.google.gson.GsonBuilder;
 
 public class ModelToolkit {
 
@@ -139,6 +140,8 @@ public class ModelToolkit {
 				return Activator.getImageDescriptor("icons/table.png");
 			if (Assembly.TYPE_STICKER.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/sticker.png");
+			if (Assembly.TYPE_SELECTOR.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/selector.png");
 			return Activator.getImageDescriptor("icons/assembly.png");
 		}
 		if (model instanceof AssemblyLink)
@@ -255,6 +258,15 @@ public class ModelToolkit {
 		assy.setFolderId(folderId);
 		SiteLoader.site.getAssyLib().getAssys().add(assy);
 		return assy;
+	}
+
+	public static Assembly duplicateAssembly(Assembly assy) {
+		String json = new GsonBuilder().create().toJson(assy);
+		Assembly newAssy = new GsonBuilder().create().fromJson(json, Assembly.class);
+		newAssy.setId(generateId());
+		newAssy.setName(generateName(newAssy.getName()));
+		SiteLoader.site.getAssyLib().getAssys().add(newAssy);
+		return newAssy;
 	}
 
 	public static void deleteAssembly(Assembly assy) {
@@ -376,6 +388,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyEditorEditor";
 					} else if (Assembly.TYPE_GANTT.equals(type)) {
 						editorId = "bruidesigner.assemblyGanttEditor";
+					} else if (Assembly.TYPE_SELECTOR.equals(type)) {
+						editorId = "bruidesigner.assemblySelectorEditor";
 					} else {
 						editorId = "bruidesigner.assemblyEditor";
 					}

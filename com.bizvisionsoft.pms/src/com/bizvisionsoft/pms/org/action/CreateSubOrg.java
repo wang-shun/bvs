@@ -26,7 +26,7 @@ public class CreateSubOrg {
 				Organization org = new Organization();
 				org.setParentId(((Organization) em).get_id());
 
-				new Editor<Organization>(bruiService.getEditor("组织编辑器"), context).setTitle("创建组织")
+				new Editor<Organization>(bruiService.getAssembly("组织编辑器"), context).setTitle("创建组织")
 
 						.setInput(org)
 

@@ -61,7 +61,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchContent(String assemblyName, Object input) {
-		switchContent(getEditor(assemblyName), input);
+		switchContent(getAssembly(assemblyName), input);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class BruiService implements IBruiService {
 	@Deprecated
 	public <T> Editor<T> createEditorByName(String assemblyName, T input, boolean editable, boolean ignoreNull,
 			IBruiContext context) {
-		return createEditor(getEditor(assemblyName), input, editable, ignoreNull, context);
+		return createEditor(getAssembly(assemblyName), input, editable, ignoreNull, context);
 	}
 
 }

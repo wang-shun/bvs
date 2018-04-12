@@ -23,7 +23,7 @@ public class AddTask {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		Project project = (Project) context.getRootInput();
 		// 显示编辑器
-		new Editor<WorkInfo>(bruiService.getEditor("创建甘特图工作编辑器"), context)
+		new Editor<WorkInfo>(bruiService.getAssembly("创建甘特图工作编辑器"), context)
 				.setInput(WorkInfo.newInstance(project.get_id(), ((WorkInfo) ((GanttEvent) event).task).get_id()))
 				.open((r, wi) -> {
 					GanttPart content = (GanttPart) context.getContent();

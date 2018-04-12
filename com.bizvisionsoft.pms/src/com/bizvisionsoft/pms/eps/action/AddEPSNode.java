@@ -24,7 +24,7 @@ public class AddEPSNode {
 		context.selected(elem -> {
 			if (elem instanceof EPS) {
 
-				new Editor<EPS>(bruiService.getEditor("EPS±à¼­Æ÷"), context)
+				new Editor<EPS>(bruiService.getAssembly("EPS±à¼­Æ÷"), context)
 
 						.setInput(new EPS().setParent_id(((EPS) elem).get_id()))
 

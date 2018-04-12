@@ -23,7 +23,7 @@ public class CreateRootOrg {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		Organization org = new Organization();
 
-		new Editor<Organization>(bruiService.getEditor("根组织编辑器"), context).setTitle("创建组织")
+		new Editor<Organization>(bruiService.getAssembly("根组织编辑器"), context).setTitle("创建组织")
 
 				.setInput(org)
 

@@ -1,5 +1,6 @@
 package com.bizvisionsoft.pms.org.action;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -8,14 +9,13 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.Editor;
-import com.bizvisionsoft.service.OrganizationService;
+import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
-import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class EditOrg {
+public class RemoveMember {
 
 	@Inject
 	private IBruiService bruiService;
@@ -23,22 +23,24 @@ public class EditOrg {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		context.selected(em -> {
-			if (em instanceof Organization) {
-				new Editor<Organization>(bruiService.getAssembly("组织编辑器"), context).setTitle("编辑组织")
+		context.selected(elem -> {
+			if (elem instanceof User) {
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "移除", "请确认将要从组织中移除选择的成员。")) {
+					try {
+						BasicDBObject fu = new FilterAndUpdate()
+								.filter(new BasicDBObject("userId", ((User) elem).getUserId()))
+								.set(new BasicDBObject("org_id", null)).bson();
+						Services.get(UserService.class).update(fu);
 
-						.setInput((Organization) em)
-
-						.open((r, pjset) -> {
-							FilterAndUpdate fu = new FilterAndUpdate()
-									.filter(new BasicDBObject("_id", ((Organization) em).get_id())).set(r);
-							if (Services.get(OrganizationService.class).update(fu.bson()) == 1) {
-								GridPart grid = (GridPart) context.getContent();
-								grid.replaceItem(em, pjset);
-							}
-						});
+						GridPart grid = (GridPart) context.getContent();
+						grid.remove(elem);
+					} catch (Exception e) {
+						MessageDialog.openError(bruiService.getCurrentShell(), "移除", e.getMessage());
+					}
+				}
 			}
 		});
+
 	}
 
 }

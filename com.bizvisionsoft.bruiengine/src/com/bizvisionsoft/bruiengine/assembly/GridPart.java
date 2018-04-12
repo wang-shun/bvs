@@ -607,4 +607,12 @@ public class GridPart {
 
 	}
 
+	public void setCheckAll(boolean b) {
+		Arrays.asList(viewer.getGrid().getItems()).stream().forEach(i -> i.setChecked(b));
+	}
+	
+	public Object getViewerInput() {
+		return viewer.getInput();
+	}
+
 }

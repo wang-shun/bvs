@@ -18,7 +18,7 @@ public class BasicServiceImpl {
 		BasicDBObject update = (BasicDBObject) fu.get("update");
 		UpdateOptions option = new UpdateOptions();
 		option.upsert(false);
-		return Service.col(clazz).updateOne(filter, update, option).getModifiedCount();
+		return Service.col(clazz).updateMany(filter, update, option).getModifiedCount();
 	}
 
 	protected <T> T insert(T obj, Class<T> clazz) {

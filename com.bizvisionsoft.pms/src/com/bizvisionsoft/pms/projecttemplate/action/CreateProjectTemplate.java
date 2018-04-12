@@ -32,7 +32,7 @@ public class CreateProjectTemplate {
 						"只能在EPS节点下创建新的项目模板。\n请选择EPS节点。");
 				return;
 			}
-			new Editor<ProjectTemplate>(bruiService.getEditor("项目模板编辑器"), context)
+			new Editor<ProjectTemplate>(bruiService.getAssembly("项目模板编辑器"), context)
 
 					.setInput(input)
 

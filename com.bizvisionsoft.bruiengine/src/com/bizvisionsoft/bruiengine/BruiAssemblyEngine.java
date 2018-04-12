@@ -13,6 +13,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
+import com.bizvisionsoft.bruiengine.assembly.SelectorPart;
 import com.bizvisionsoft.bruiengine.assembly.StickerPart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
@@ -45,6 +46,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new GanttPart(assembly));
 		} else if (Assembly.TYPE_EDITOR.equals(type)) {
 			brui = new BruiAssemblyEngine(new EditorPart(assembly));
+		} else if (Assembly.TYPE_SELECTOR.equals(type)) {
+			brui = new BruiAssemblyEngine(new SelectorPart(assembly));
 		} else {
 			brui = load(assembly.getBundleId(), assembly.getClassName())// load
 					.newInstance();

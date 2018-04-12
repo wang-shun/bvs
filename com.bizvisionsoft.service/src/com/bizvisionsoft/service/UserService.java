@@ -60,7 +60,14 @@ public interface UserService {
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("用户列表 / count")
+	@DataSet({"用户列表/count","用户选择列表/count"})
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
+	
+	@POST
+	@Path("/ds/selector/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("用户选择列表 / list")
+	public List<User> createDataSetForSelector(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 }

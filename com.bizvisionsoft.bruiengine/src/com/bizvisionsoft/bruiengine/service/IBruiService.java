@@ -42,7 +42,7 @@ public interface IBruiService extends IServiceWithId {
 	public <T> Editor<T> createEditorByName(String assemblyName, T input, boolean editable, boolean ignoreNull,
 			IBruiContext context);
 
-	public default Assembly getEditor(String name) {
+	public default Assembly getAssembly(String name) {
 		return Brui.site.getAssemblyByName(name);
 	}
 

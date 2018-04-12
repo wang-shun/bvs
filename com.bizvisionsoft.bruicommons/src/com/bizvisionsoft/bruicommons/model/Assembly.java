@@ -11,6 +11,8 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_EDITOR = "editor";
 
 	public static final String TYPE_GANTT = "gantt";
+	
+	public static final String TYPE_SELECTOR = "selector";
 
 	private String id;
 
@@ -550,7 +552,26 @@ public class Assembly extends ModelObject {
 		this.displayInputLabelInTitlebar = displayInputLabelInTitlebar;
 	}
 	
+	//Ñ¡ÔñÆ÷×é¼þ
 	
+	private String selectorGridAssemblyId;
 	
+	public String getSelectorGridAssemblyId() {
+		return selectorGridAssemblyId;
+	}
+	
+	public void setSelectorGridAssemblyId(String selectorGridAssemblyId) {
+		this.selectorGridAssemblyId = selectorGridAssemblyId;
+	}
+	
+	private boolean selectorMultiSelection;
+	
+	public boolean isSelectorMultiSelection() {
+		return selectorMultiSelection;
+	}
+	
+	public void setSelectorMultiSelection(boolean selectorMultiSelection) {
+		this.selectorMultiSelection = selectorMultiSelection;
+	}
 
 }

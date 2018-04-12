@@ -183,4 +183,12 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 		viewer.refresh();
 	}
 
+	public void duplicateAssembly(Assembly assy) {
+		TreeItem item = (TreeItem) viewer.testFindItem(assy);
+		Folder folder = (Folder) item.getParentItem().getData();
+		Assembly newAssy = ModelToolkit.duplicateAssembly(assy);
+		newAssy.addPropertyChangeListener("name", this);
+		viewer.refresh(folder);
+	}
+
 }

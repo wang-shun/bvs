@@ -53,6 +53,11 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<User> createDataSetForSelector(BasicDBObject condition) {
+		return createDataSet(condition, User.class);
+	}
+	
+	@Override
 	public List<UserInfo> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");

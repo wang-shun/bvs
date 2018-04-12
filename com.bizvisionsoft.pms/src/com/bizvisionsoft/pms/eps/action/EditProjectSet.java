@@ -25,7 +25,7 @@ public class EditProjectSet {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(em -> {
 			if (em instanceof ProjectSet) {
-				new Editor<ProjectSet>(bruiService.getEditor("项目集编辑器"), context).setTitle("编辑项目集")
+				new Editor<ProjectSet>(bruiService.getAssembly("项目集编辑器"), context).setTitle("编辑项目集")
 
 						.setInput((ProjectSet) em)
 

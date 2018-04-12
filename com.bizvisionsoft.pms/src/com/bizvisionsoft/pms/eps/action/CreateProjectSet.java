@@ -34,7 +34,7 @@ public class CreateProjectSet {
 						"只能在EPS节点或项目集下创建新的项目集。\n请选择EPS节点或项目集节点。");
 				return;
 			}
-			new Editor<ProjectSet>(bruiService.getEditor("项目集编辑器"), context)
+			new Editor<ProjectSet>(bruiService.getAssembly("项目集编辑器"), context)
 
 					.setInput(input)
 
