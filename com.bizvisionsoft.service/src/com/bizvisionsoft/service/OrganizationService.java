@@ -3,8 +3,10 @@ package com.bizvisionsoft.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,7 +18,6 @@ import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Organization;
 import com.mongodb.BasicDBObject;
 
-
 @Path("/org")
 public interface OrganizationService {
 
@@ -25,28 +26,63 @@ public interface OrganizationService {
 	@Consumes("application/json")
 	@Produces("application/json; charset=UTF-8")
 	public Organization insert(Organization orgInfo);
-	
+
 	@GET
 	@Path("/{_id}")
 	@Consumes("application/json")
 	@Produces("application/json; charset=UTF-8")
 	public Organization get(@PathParam("_id") ObjectId _id);
-	
-	
+
+	@PUT
+	@Path("/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long update(BasicDBObject filterAndUpdate);
+
+	@GET
+	@Path("/root")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织管理/" + DataSet.LIST)
+	public List<Organization> getRoot();
+
+	@GET
+	@Path("/root/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织管理/" + DataSet.COUNT)
+	public long countRoot();
+
+	@GET
+	@Path("/sub/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Organization> getSub(@PathParam("_id") ObjectId parent_id);
+
+	@GET
+	@Path("/sub/count/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countSub(@PathParam("_id") ObjectId parent_id);
+
 	@POST
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet(DataSet.LIST)
-	public List<Organization> createDataSet(
-			@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
-	
-	
+	@DataSet("组织选择器/" + DataSet.LIST)
+	public List<Organization> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet(DataSet.COUNT)
+	@DataSet("组织选择器/" + DataSet.COUNT)
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
+	
+	@DELETE
+	@Path("/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long delete(@PathParam("_id") ObjectId get_id) ;
 
 }

@@ -1,12 +1,20 @@
 package com.bizvisionsoft.service.model;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.service.OrganizationService;
+import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.tools.Checker;
 
 @PersistenceCollection(value = "organization")
 public class Organization {
@@ -26,7 +34,13 @@ public class Organization {
 	 * 上级组织
 	 */
 	@Persistence
-	private ObjectId parentId;
+	private ObjectId parent_id;
+
+	@ReadValue("parent")
+	public Organization getParent() {
+		return Optional.ofNullable(this.parent_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
+				.orElse(null);
+	}
 
 	/**
 	 * 组织名称
@@ -53,12 +67,52 @@ public class Organization {
 	@WriteValue
 	private String type;
 
-	public ObjectId getParentId() {
-		return parentId;
+	@Persistence
+	private String managerId;
+	
+	@ReadValue("managerInfo")
+	@WriteValue("managerInfo")
+	private String managerInfo;
+
+	@WriteValue("manager")
+	private void setManager(UserInfo manager) {
+		if(manager == null) {
+			managerId = null;
+			managerInfo = "";
+		}else {
+			managerId = manager.getUserId();
+			managerInfo = manager.toString();
+		}
 	}
 
-	public Organization setParentId(ObjectId parentId) {
-		this.parentId = parentId;
+	@ReadValue("manager")
+	private User getManager() {
+		return Optional.ofNullable(managerId).map(id -> ServicesLoader.get(UserService.class).get(id)).orElse(null);
+	}
+
+	@Structure("组织管理/list")
+	public List<Organization> getSub() {
+		Checker.checkNull(_id);
+		return ServicesLoader.get(OrganizationService.class).getSub(_id);
+	}
+
+	@Structure("组织管理/count")
+	public long countSub() {
+		Checker.checkNull(_id);
+		return ServicesLoader.get(OrganizationService.class).countSub(_id);
+	}
+
+	@Label
+	public String toString() {
+		return fullName == null ? "" : fullName;
+	}
+
+	public ObjectId getParentId() {
+		return parent_id;
+	}
+
+	public Organization setParentId(ObjectId parent_id) {
+		this.parent_id = parent_id;
 		return this;
 	}
 

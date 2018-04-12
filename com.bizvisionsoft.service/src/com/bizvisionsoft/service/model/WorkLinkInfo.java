@@ -51,7 +51,7 @@ import com.bizvisionsoft.service.WorkService;
  * <li><b><i>Optional properties</i></b></li>
  * <ul>
  * <li><b>lag</b>-(<i>number</i>) optional, <a href=
- * "desktop__auto_scheduling.html#settinglagandleadtimesbetweentasks">task
+ * "desktop__auto_scheduling.html/settinglagandleadtimesbetweentasks">task
  * lag</a>.</li>
  * <li><b>readonly</b>-(<i>boolean</i>) optional, can mark link as
  * <a href="desktop__readonly_mode.html">readonly</a>.</li>
@@ -82,12 +82,12 @@ public class WorkLinkInfo {
 	@Persistence
 	private ObjectId _id;
 
-	@ReadValue("项目甘特图#id")
+	@ReadValue("项目甘特图/id")
 	public String getId() {
 		return _id.toHexString();
 	}
 
-	@WriteValue("项目甘特图#id")
+	@WriteValue("项目甘特图/id")
 	public WorkLinkInfo setId(String id) {
 		this._id = new ObjectId(id);
 		return this;
@@ -99,12 +99,12 @@ public class WorkLinkInfo {
 	@Persistence
 	private ObjectId project_id;
 
-	@ReadValue("项目甘特图#project")
+	@ReadValue("项目甘特图/project")
 	public String getProject() {
 		return project_id == null ? null : project_id.toHexString();
 	}
 
-	@WriteValue("项目甘特图#project")
+	@WriteValue("项目甘特图/project")
 	public WorkLinkInfo setProject(String project_id) {
 		this.project_id = project_id == null ? null : new ObjectId(project_id);
 		return this;
@@ -115,12 +115,12 @@ public class WorkLinkInfo {
 	//
 	private WorkInfo source;
 
-	@ReadValue("项目甘特图#source")
+	@ReadValue("项目甘特图/source")
 	public String getSource() {
 		return source == null ? null : source.get_id().toHexString();
 	}
 
-	@ReadValue("工作搭接关系编辑器（1对1）#sourceTask")
+	@ReadValue("工作搭接关系编辑器（1对1）/sourceTask")
 	public String getSourceTaskLabel() {
 		return source.toString();
 	}
@@ -140,12 +140,12 @@ public class WorkLinkInfo {
 	//
 	private WorkInfo target;
 
-	@ReadValue("项目甘特图#target")
+	@ReadValue("项目甘特图/target")
 	public String getTarget() {
 		return target == null ? null : target.get_id().toHexString();
 	}
 
-	@ReadValue("工作搭接关系编辑器（1对1）#targetTask")
+	@ReadValue("工作搭接关系编辑器（1对1）/targetTask")
 	public String getTargetTaskLabel() {
 		return target.toString();
 	}
@@ -171,18 +171,18 @@ public class WorkLinkInfo {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	@ReadValue("项目甘特图#lag")
-	@WriteValue("项目甘特图#lag")
+	@ReadValue("项目甘特图/lag")
+	@WriteValue("项目甘特图/lag")
 	@Persistence
 	private int lag;
 
-	@WriteValue("工作搭接关系编辑器（1对1）#lag")
+	@WriteValue("工作搭接关系编辑器（1对1）/lag")
 	public WorkLinkInfo setLagFromEditor(String lag) {
 		this.lag = Integer.parseInt(lag);
 		return this;
 	}
 
-	@ReadValue("工作搭接关系编辑器（1对1）#lag")
+	@ReadValue("工作搭接关系编辑器（1对1）/lag")
 	public String getLagForEdior() {
 		return "" + lag;
 	}

@@ -34,7 +34,7 @@ public interface EPSService {
 	public List<EPS> getSubEPS(@PathParam("_id") ObjectId _id);
 
 	@GET
-	@Path("/eps")
+	@Path("/root")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("list")

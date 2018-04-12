@@ -60,11 +60,11 @@ public class EPS implements Comparable<EPS> {
 	@WriteValue
 	private String description;
 
-	@Behavior("EPS浏览#创建项目集") // 控制action
+	@Behavior("EPS浏览/创建项目集") // 控制action
 	@Exclude // 不用持久化
 	private boolean enableAddProjectSet = true;
 
-	@Behavior("项目模板管理#创建项目模板") // 控制action
+	@Behavior("项目模板管理/创建项目模板") // 控制action
 	@Exclude // 不用持久化
 	private boolean enableAddProjectTemplate = true;
 
@@ -86,17 +86,17 @@ public class EPS implements Comparable<EPS> {
 		return id.compareTo(o.id);
 	}
 
-	@Structure("EPS管理#list")
+	@Structure("EPS管理/list")
 	public List<EPS> getSubEPS() {
 		return ServicesLoader.get(EPSService.class).getSubEPS(_id);
 	}
 
-	@Structure("EPS管理#count")
+	@Structure("EPS管理/count")
 	public long countSubEPS() {
 		return ServicesLoader.get(EPSService.class).countSubEPS(_id);
 	}
 
-	@Structure("EPS浏览 #list")
+	@Structure("EPS浏览 /list")
 	public List<Object> getSubNodes() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
@@ -111,7 +111,7 @@ public class EPS implements Comparable<EPS> {
 		return result;
 	}
 
-	@Structure("EPS浏览#count")
+	@Structure("EPS浏览/count")
 	public long countSubNodes() {
 		// 查下级
 		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
@@ -120,7 +120,7 @@ public class EPS implements Comparable<EPS> {
 		return cnt;
 	}
 
-	@Structure("项目模板管理 #list")
+	@Structure("项目模板管理 /list")
 	public List<Object> getSubNodesForProjectTemplate() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
@@ -132,7 +132,7 @@ public class EPS implements Comparable<EPS> {
 		return result;
 	}
 
-	@Structure("项目模板管理#count")
+	@Structure("项目模板管理/count")
 	public long countSubNodesForProjectTemplate() {
 		// 查下级
 		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);
@@ -140,7 +140,7 @@ public class EPS implements Comparable<EPS> {
 		return cnt;
 	}
 
-	@Structure("EPS和项目集选择 #list")
+	@Structure("EPS和项目集选择 /list")
 	public List<Object> getSubEPSAndProjectSets() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
@@ -153,7 +153,7 @@ public class EPS implements Comparable<EPS> {
 
 	}
 
-	@Structure("EPS和项目集选择#count")
+	@Structure("EPS和项目集选择/count")
 	public long countSubEPSAndProjectSets() {
 		// 查下级
 		long cnt = ServicesLoader.get(EPSService.class).countSubEPS(_id);

@@ -68,7 +68,7 @@ public class ProjectTemplate {
 	private String description;
 	
 	
-	@Behavior("项目模板管理#打开项目模板") // 控制action
+	@Behavior("项目模板管理/打开项目模板") // 控制action
 	@Exclude // 不用持久化
 	private boolean enableOpenProjectTemplate = true;
 

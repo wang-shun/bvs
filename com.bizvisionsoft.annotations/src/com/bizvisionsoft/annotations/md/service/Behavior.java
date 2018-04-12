@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * 注解模型对象的可用的行为 注解方式 assemblyName # actionName，被注解的字段或方法返回boolean 表明该行为是否可用
+ * 注解模型对象的可用的行为 注解方式 assemblyName/actionName，被注解的字段或方法返回boolean 表明该行为是否可用
  * 
  * @author hua
  *

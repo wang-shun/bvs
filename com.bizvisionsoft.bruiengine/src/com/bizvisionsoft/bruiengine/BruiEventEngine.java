@@ -59,7 +59,7 @@ public class BruiEventEngine extends BruiEngine {
 				String[] values = anno.value();
 				for (int i = 0; i < values.length; i++) {
 					String listenerName = null;
-					String[] loc = values[i].split("#");
+					String[] loc = values[i].split("/");
 					if (loc.length == 1) {
 						listenerName = loc[0].trim();
 					} else if (loc.length > 1 && assembly.getName().equals(loc[0].trim())) {

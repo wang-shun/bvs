@@ -42,7 +42,7 @@ public class AUtil {
 	/**
 	 * 读取对象注解为 ReadValue的
 	 * 值。先读字段，后调用方法。没有对应字段或方法（包括字段类型、方法参数不对时，都视作不对应）时，返回defaultValue
-	 * 注解形式为ReadValue("容器名 # 字段名")
+	 * 注解形式为ReadValue("容器名/字段名")
 	 * 
 	 * @param element
 	 *            目标对象
@@ -262,8 +262,8 @@ public class AUtil {
 	/**
 	 * 
 	 * 容器注解匹配，形式如:</br>
-	 * 注解({容器1 # 字段1 , 容器2 # 字段2})</br>
-	 * 注解({字段1 , 容器2 # 字段2})</br>
+	 * 注解({容器1 / 字段1 , 容器2 / 字段2})</br>
+	 * 注解({字段1 , 容器2 / 字段2})</br>
 	 * 注解(字段)</br>
 	 * 注解（这时匹配fieldOrMethodName与fName相同）</br>
 	 * 如果注解中不包括容器，该注解则表示在各类容器中通用
@@ -287,7 +287,7 @@ public class AUtil {
 				return true;
 			}
 			for (int i = 0; i < ((String[]) v).length; i++) {
-				String[] loc = ((String[]) v)[i].split("#");
+				String[] loc = ((String[]) v)[i].split("/");
 				if (loc.length == 1 && fName.equals(loc[0].trim())) {
 					return true;
 				} else if (loc.length > 1 && cName.equals(loc[0].trim()) && fName.equals(loc[1].trim())) {

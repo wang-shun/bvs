@@ -97,7 +97,7 @@ public class ProjectSet {
 		return _id;
 	}
 
-	@Structure("EPS浏览 #list")
+	@Structure("EPS浏览 /list")
 	public List<Object> getSubProjectSetsAndProjects() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
@@ -110,7 +110,7 @@ public class ProjectSet {
 		return result;
 	}
 
-	@Structure("EPS浏览#count")
+	@Structure("EPS浏览/count")
 	public long countSubProjectSetsAndProjects() {
 		// 查下级
 		long cnt = ServicesLoader.get(ProjectService.class).count(new BasicDBObject("projectSet_id", _id));
@@ -118,34 +118,34 @@ public class ProjectSet {
 		return cnt;
 	}
 
-	@Structure("EPS和项目集选择 #list")
+	@Structure("EPS和项目集选择 /list")
 	public List<ProjectSet> getSubProjectSets() {
 		return ServicesLoader.get(ProjectSetService.class)
 				.createDataSet(new Query().filter(new BasicDBObject("parent_id", _id)).bson());
 	}
 
-	@Structure("EPS和项目集选择#count")
+	@Structure("EPS和项目集选择/count")
 	public long countSubProjectSets() {
 		// 查下级
 		return ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("parent_id", _id));
 	}
 
-	@Behavior("EPS浏览#编辑项目集") // 控制action
+	@Behavior("EPS浏览/编辑项目集") // 控制action
 	private boolean enableEdit() {
 		return true;// 考虑权限 TODO
 	}
 
-	@Behavior("EPS浏览#创建项目集") // 控制action
+	@Behavior("EPS浏览/创建项目集") // 控制action
 	private boolean enableAdd() {
 		return true;// 考虑权限 TODO
 	}
 
-	@Behavior("EPS浏览#删除项目集") // 控制action
+	@Behavior("EPS浏览/删除项目集") // 控制action
 	private boolean enableDelete() {
 		return true;// 考虑权限 TODO
 	}
 
-	@Behavior("EPS浏览#打开") // 控制action
+	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
 		return true;// 考虑权限 TODO
 	}

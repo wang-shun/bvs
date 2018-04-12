@@ -217,8 +217,8 @@ public class WorkInfo {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// index, 在gantt图中用于排序
-	@ReadValue("项目甘特图#index")
-	@WriteValue("项目甘特图#index")
+	@ReadValue("项目甘特图/index")
+	@WriteValue("项目甘特图/index")
 	@Persistence
 	private int index;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,13 +261,13 @@ public class WorkInfo {
 	@Persistence("planStart")
 	private Date start_date;
 
-	@WriteValue("创建甘特图工作编辑器#start_date")
+	@WriteValue("创建甘特图工作编辑器/start_date")
 	public void setStart_date(Date start_date) {
 		checkDate(start_date, this.end_date, this.deadline);
 		this.start_date = start_date;
 	}
 
-	@WriteValue("项目甘特图#start_date")
+	@WriteValue("项目甘特图/start_date")
 	public boolean setStart_date(String start_date) {
 		Date newDate = Util.str_date(start_date);
 		if (!Util.equals(newDate, this.start_date)) {
@@ -286,13 +286,13 @@ public class WorkInfo {
 	@Persistence("planFinish")
 	private Date end_date;
 
-	@WriteValue("创建甘特图工作编辑器#end_date")
+	@WriteValue("创建甘特图工作编辑器/end_date")
 	public void setEnd_date(Date end_date) {
 		checkDate(this.start_date, end_date, this.deadline);
 		this.end_date = end_date;
 	}
 
-	@WriteValue("项目甘特图#end_date")
+	@WriteValue("项目甘特图/end_date")
 	public boolean setEnd_date(String end_date) {
 		Date newDate = Util.str_date(end_date);
 		if (!Util.equals(newDate, this.end_date)) {
@@ -316,7 +316,7 @@ public class WorkInfo {
 		this.deadline = deadline;
 	}
 
-	@WriteValue("项目甘特图#deadline")
+	@WriteValue("项目甘特图/deadline")
 	public boolean setDeadline(String deadline) {
 		Date newDate = Util.str_date(deadline);
 		if (!Util.equals(newDate, this.deadline)) {

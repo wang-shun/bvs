@@ -301,7 +301,7 @@ public class ProjectInfo {
 		return "项目";
 	}
 
-	@Behavior("EPS浏览#打开") // 控制action
+	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
 		return true;// 考虑权限 TODO
 	}

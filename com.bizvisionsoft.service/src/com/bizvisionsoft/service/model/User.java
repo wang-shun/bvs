@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -27,38 +28,38 @@ public class User {
 	private ObjectId _id;// _id字段在插入集合时Codex会自动生成，并在插入完成后写入，无需指定生成器
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # 账号 ")
+	@ReadValue(" 用户编辑器 / 账号 ")
 	private String userId;
 
 	@Persistence
 	private String password;
 
 	@Persistence
-	@WriteValue(" 用户编辑器 # 姓名 ")
+	@WriteValue(" 用户编辑器 / 姓名 ")
 	private String name;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # 电子邮件 ")
-	@WriteValue(" 用户编辑器 # 电子邮件 ")
+	@ReadValue(" 用户编辑器 / 电子邮件 ")
+	@WriteValue(" 用户编辑器 / 电子邮件 ")
 	private String email;
 
 	@Persistence
-	@WriteValue(" 用户编辑器 # 电话 ")
+	@WriteValue(" 用户编辑器 / 电话 ")
 	private String tel;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # 移动电话 ")
-	@WriteValue(" 用户编辑器 # 移动电话 ")
+	@ReadValue(" 用户编辑器 / 移动电话 ")
+	@WriteValue(" 用户编辑器 / 移动电话 ")
 	private String mobile;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # 微信账号 ")
-	@WriteValue(" 用户编辑器 # 微信账号 ")
+	@ReadValue(" 用户编辑器 / 微信账号 ")
+	@WriteValue(" 用户编辑器 / 微信账号 ")
 	private String weixin;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # 激活 ")
-	@WriteValue(" 用户编辑器 # 激活 ")
+	@ReadValue(" 用户编辑器 / 激活 ")
+	@WriteValue(" 用户编辑器 / 激活 ")
 	private boolean activated;
 
 	@Persistence
@@ -67,16 +68,16 @@ public class User {
 	private List<RemoteFile> headPics;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # testCombo ")
-	@WriteValue(" 用户编辑器 # testCombo ")
+	@ReadValue(" 用户编辑器 / testCombo ")
+	@WriteValue(" 用户编辑器 / testCombo ")
 	private String location;
 
-	@Persistence("orgId")
+	@Persistence("org_id")
 	private ObjectId organizationId;
 
 	@Persistence
-	@ReadValue(" 用户编辑器 # lastLogin ")
-	@WriteValue(" 用户编辑器 # lastLogin ")
+	@ReadValue(" 用户编辑器 / lastLogin ")
+	@WriteValue(" 用户编辑器 / lastLogin ")
 	private Date lastLogin;
 
 	@Persistence
@@ -107,12 +108,12 @@ public class User {
 		return email;
 	}
 
-	@ReadValue(" 用户编辑器 # 姓名 ")
+	@ReadValue(" 用户编辑器 / 姓名 ")
 	public String getName() {
 		return name;
 	}
 
-	@ReadValue(" 用户编辑器 # 电话 ")
+	@ReadValue(" 用户编辑器 / 电话 ")
 	public String getTel() {
 		return tel;
 	}
@@ -199,7 +200,7 @@ public class User {
 		this.weixin = weixin;
 	}
 
-	@ReadOptions({ " 用户编辑器 # testCombo ", "testMultiCheck" })
+	@ReadOptions({ " 用户编辑器 / testCombo ", "testMultiCheck" })
 	public Map<String, Object> getOptionsForTestCombo() {
 		LinkedHashMap<String, Object> options = new LinkedHashMap<String, Object>();
 		options.put("北京", "PEK");
@@ -210,30 +211,30 @@ public class User {
 		return options;
 	}
 
-	@ReadOptions(" 用户编辑器 # lastLogin ")
+	@ReadOptions(" 用户编辑器 / lastLogin ")
 	public Map<String, Object> getMarksForTestDate() {
 		LinkedHashMap<String, Object> options = new LinkedHashMap<String, Object>();
 		options.put("0-0-15", "中旬");
 		return options;
 	}
 
-	@WriteValue(" 用户编辑器 # organization ")
+	@WriteValue(" 用户编辑器 / organization ")
 	public void setOrganization(Organization org) {
 		this.organizationId = org.get_id();
 	}
 
-	@ReadValue(" 用户编辑器 # organization ")
+	@ReadValue(" 用户编辑器 / organization ")
 	public Organization getOrganization() {
 		return ServicesLoader.get(OrganizationService.class).get(organizationId);
 	}
 
-	@WriteValue(" 用户编辑器 # organizations ")
+	@WriteValue(" 用户编辑器 / organizations ")
 	public void setOrganizations(List<Organization> orglist) {
 		this.orgIds = new ArrayList<ObjectId>();
 		Optional.ofNullable(orglist).ifPresent(os -> os.forEach(o -> orgIds.add(o.get_id())));
 	}
 
-	@ReadValue(" 用户编辑器 # organizations ")
+	@ReadValue(" 用户编辑器 / organizations ")
 	public List<Organization> getOrganizations() {
 		if (orgIds != null) {
 			BasicDBObject condition = new Query()
@@ -267,5 +268,11 @@ public class User {
 	@ReadValue
 	@WriteValue
 	private String demoNote;
+	
+	@Override
+	@Label
+	public String toString() {
+		return name + " [" + userId + "]";
+	}
 
 }

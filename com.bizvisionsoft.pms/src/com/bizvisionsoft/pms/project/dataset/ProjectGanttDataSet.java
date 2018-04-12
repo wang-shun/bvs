@@ -40,54 +40,54 @@ public class ProjectGanttDataSet {
 		workService = Services.get(WorkService.class);
 	}
 
-	@DataSet("项目甘特图#data")
+	@DataSet("项目甘特图/data")
 	public List<WorkInfo> data() {
 		return workService.createGanttDataSet(new BasicDBObject("project_id", project.get_id()));
 	}
 
-	@DataSet("项目甘特图#links")
+	@DataSet("项目甘特图/links")
 	public List<WorkLinkInfo> links() {
 		return workService.createGanttLinkSet(new BasicDBObject("project_id", project.get_id()));
 	}
 
-	@DataSet("项目甘特图#initDateRange")
+	@DataSet("项目甘特图/initDateRange")
 	public Date[] initDateRange() {
 		return Services.get(ProjectService.class).getPlanDateRange(project.get_id()).toArray(new Date[0]);
 	}
 
-	@Listener("项目甘特图#onAfterTaskAdd")
+	@Listener("项目甘特图/onAfterTaskAdd")
 	public void onAfterTaskAdd(GanttEvent e) {
 		workService.insertWork((WorkInfo) e.task);
 		System.out.println(e.text);
 	}
 
-	@Listener("项目甘特图#onAfterTaskUpdate")
+	@Listener("项目甘特图/onAfterTaskUpdate")
 	public void onAfterTaskUpdate(GanttEvent e) {
 		workService.updateWork(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
 				.set(Util.getBson(e.task, true, "_id")).bson());
 		System.out.println(e.text);
 	}
 
-	@Listener("项目甘特图#onAfterTaskDelete")
+	@Listener("项目甘特图/onAfterTaskDelete")
 	public void onAfterTaskDelete(GanttEvent e) {
 		workService.deleteWork(new ObjectId(e.id));
 		System.out.println(e.text);
 	}
 
-	@Listener("项目甘特图#onAfterLinkAdd")
+	@Listener("项目甘特图/onAfterLinkAdd")
 	public void onAfterLinkAdd(GanttEvent e) {
 		workService.insertLink((WorkLinkInfo) e.link);
 		System.out.println(e.text);
 	}
 
-	@Listener("项目甘特图#onAfterLinkUpdate")
+	@Listener("项目甘特图/onAfterLinkUpdate")
 	public void onAfterLinkUpdate(GanttEvent e) {
 		workService.updateLink(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
 				.set(Util.getBson(e.link, true, "_id")).bson());
 		System.out.println(e.text);
 	}
 
-	@Listener("项目甘特图#onAfterLinkDelete")
+	@Listener("项目甘特图/onAfterLinkDelete")
 	public void onAfterLinkDelete(GanttEvent e) {
 		workService.deleteLink(new ObjectId(e.id));
 		System.out.println(e.text);

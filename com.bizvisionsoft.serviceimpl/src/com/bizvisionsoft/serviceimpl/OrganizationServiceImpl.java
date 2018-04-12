@@ -2,52 +2,78 @@ package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.ws.rs.NotFoundException;
 
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Field;
+import com.mongodb.client.model.UnwindOptions;
 
-public class OrganizationServiceImpl implements OrganizationService {
+public class OrganizationServiceImpl extends BasicServiceImpl implements OrganizationService {
 
 	@Override
 	public Organization insert(Organization orgInfo) {
-		Service.col(Organization.class).insertOne(orgInfo);
-		return orgInfo;
+		return insert(orgInfo, Organization.class);
 	}
 
 	@Override
 	public Organization get(ObjectId _id) {
-		Organization result = Service.col(Organization.class).find(new BasicDBObject("_id", _id)).first();
-		return Optional.ofNullable(result).orElseThrow(NotFoundException::new);
+		return get(_id, Organization.class);
 	}
 
 	@Override
 	public List<Organization> createDataSet(BasicDBObject condition) {
-		Integer skip = (Integer) condition.get("skip");
-		Integer limit = (Integer) condition.get("limit");
-		BasicDBObject filter = (BasicDBObject) condition.get("filter");
-		return query(skip, limit, filter);
+		return createDataSet(condition, Organization.class);
 	}
 
-	private List<Organization> query(Integer skip, Integer limit, BasicDBObject filter) {
+	@Override
+	public long count(BasicDBObject filter) {
+		return count(filter, Organization.class);
+	}
 
+	@Override
+	public long update(BasicDBObject fu) {
+		return update(fu, Organization.class);
+	}
+
+	@Override
+	public List<Organization> getRoot() {
+		return getSub(null);
+	}
+
+	@Override
+	public long countRoot() {
+		return countSub(null);
+	}
+
+	/**
+	 * 
+	 * db.getCollection('organization').aggregate( [
+	 * {"$lookup":{"from":"account","localField":"managerId","foreignField":"userId","as":"user"}}
+	 * , {"$unwind":{"path":"$user","preserveNullAndEmptyArrays":true}} ,
+	 * {"$addFields":{"managerInfo":{"$concat":["$user.name","
+	 * [","$user.userId","]"]}}} , {"$project":{"user":0}} ])
+	 * 
+	 */
+	@Override
+	public List<Organization> getSub(ObjectId parent_id) {
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
-		if (filter != null)
-			pipeline.add(Aggregates.match(filter));
+		pipeline.add(Aggregates.match(new BasicDBObject("parent_id", parent_id)));
 
-		if (skip != null)
-			pipeline.add(Aggregates.skip(skip));
+		pipeline.add(Aggregates.lookup("account", "managerId", "userId", "user"));
 
-		if (limit != null)
-			pipeline.add(Aggregates.limit(limit));
+		pipeline.add(Aggregates.unwind("$user", new UnwindOptions().preserveNullAndEmptyArrays(true)));
+
+		pipeline.add(Aggregates.addFields(new Field<BasicDBObject>("managerInfo",
+				new BasicDBObject("$concat", new String[] { "$user.name", " [", "$user.userId", "]" }))));
+
+		pipeline.add(Aggregates.project(new BasicDBObject("user", 0)));//
 
 		List<Organization> result = new ArrayList<Organization>();
 		Service.col(Organization.class).aggregate(pipeline).into(result);
@@ -55,10 +81,25 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
-	public long count(BasicDBObject filter) {
-		if (filter != null)
-			return Service.col(Organization.class).count(filter);
-		return Service.col(Organization.class).count();
+	public long countSub(ObjectId parent_id) {
+		return Service.col(Organization.class).count(new BasicDBObject("parent_id", parent_id));
+	}
+
+	public long countMember(ObjectId _id) {
+		return Service.col(User.class).count(new BasicDBObject("org_id", _id));
+	}
+
+	@Override
+	public long delete(ObjectId _id) {
+		// 检查
+		if (countSub(_id) > 0)
+			throw new ServiceException("不允许删除有下级的组织");
+
+		if (countMember(_id) > 0)
+			throw new ServiceException("不允许删除有成员的组织");
+
+		// TODO
+		return delete(_id, Organization.class);
 	}
 
 }

@@ -21,5 +21,5 @@ public class OpenProjectTemplate {
 			MessageDialog.openError(bruiService.getCurrentShell(), "打开项目模板", "尚未完成。");
 		});
 	}
-
+	
 }

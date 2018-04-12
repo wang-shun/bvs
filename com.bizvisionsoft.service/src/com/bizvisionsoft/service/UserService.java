@@ -35,7 +35,7 @@ public interface UserService {
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("用户列表 # list")
+	@DataSet("用户列表 / list")
 	public List<UserInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 	@GET
@@ -60,7 +60,7 @@ public interface UserService {
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("用户列表 # count")
+	@DataSet("用户列表 / count")
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
 
 }
