@@ -1,4 +1,4 @@
-package com.bizvisionsoft.pms.epsmanage.action;
+package com.bizvisionsoft.pms.eps.action;
 
 import org.eclipse.swt.widgets.Event;
 

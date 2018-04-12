@@ -1,6 +1,5 @@
-package com.bizvisionsoft.pms.epsmanage.action;
+package com.bizvisionsoft.pms.eps.action;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -9,11 +8,12 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.model.EPS;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class DeleteEPSNode {
+public class AddEPSNode {
 
 	@Inject
 	private IBruiService bruiService;
@@ -21,18 +21,19 @@ public class DeleteEPSNode {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-
 		context.selected(elem -> {
 			if (elem instanceof EPS) {
-				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要删除选择的EPS节点。")) {
-					try {
-						Services.get(EPSService.class).delete(((EPS) elem).get_id());
-						GridPart grid = (GridPart) context.getContent();
-						grid.remove(elem);
-					} catch (Exception e) {
-						MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
-					}
-				}
+
+				new Editor<EPS>(bruiService.getEditor("EPS编辑器"), context)
+
+						.setInput(new EPS().setParent_id(((EPS) elem).get_id()))
+
+						.open((r, t) -> {
+							EPS item = Services.get(EPSService.class).insert(t);
+							GridPart grid = (GridPart) context.getContent();
+							grid.add(elem, item);
+						});
+
 			}
 		});
 	}
