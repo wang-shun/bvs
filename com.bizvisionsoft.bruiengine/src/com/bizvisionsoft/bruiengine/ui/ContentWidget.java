@@ -41,18 +41,19 @@ public class ContentWidget {
 		contentContainer.setLayout(new FillLayout());
 		Assembly assembly = Brui.site.getAssembly(contentArea.getAssemblyLinks().stream()
 				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(NoSuchElementException::new).getId());
-		switchAssembly(assembly);
+		switchAssembly(assembly,null);
 		contentContainer.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 		return this;
 	}
 
-	final public void switchAssembly(Assembly assembly) {
+	final public void switchAssembly(Assembly assembly, Object input) {
 		if (contentContainer == null || contentContainer.isDisposed())
 			return;
 		Arrays.asList(contentContainer.getChildren()).stream().filter(c -> !c.isDisposed())
 				.forEach(ctl -> ctl.dispose());
 
 		assemblyContainer = new AssemblyContainer(contentContainer,context);
+		assemblyContainer.setInput(input);
 		assemblyContainer.setAssembly(assembly).setServices(service).create();
 		contentContainer.layout(true, true);
 	}

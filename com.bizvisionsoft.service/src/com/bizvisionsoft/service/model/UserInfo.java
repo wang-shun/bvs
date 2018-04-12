@@ -14,31 +14,31 @@ public class UserInfo {
 	private ObjectId _id;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 账户Id ")
+	@ReadValue
 	private String userId;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 姓名 ")
+	@ReadValue
 	private String name;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 电子邮件 ")
+	@ReadValue
 	private String email;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 办公电话 ")
+	@ReadValue
 	private String tel;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 移动电话 ")
+	@ReadValue
 	private String mobile;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 微信 ")
+	@ReadValue
 	private String weixin;
 
 	@SetValue
-	@ReadValue(" 用户列表 / 激活 ")
+	@ReadValue
 	private boolean activated;
 
 	@SetValue
@@ -48,9 +48,9 @@ public class UserInfo {
 	@SetValue("orgId")
 	private ObjectId organizationId;
 
-	@SetValue("orgFullName")
-	@ReadValue(" 用户列表 / 所属组织 ")
-	private String organizationFullName;
+	@SetValue
+	@ReadValue
+	private String orgFullName;
 
 	public String getEmail() {
 		return email;
@@ -73,7 +73,7 @@ public class UserInfo {
 	}
 
 	public String getOrganizationFullName() {
-		return organizationFullName;
+		return orgFullName;
 	}
 
 	public ObjectId getOrganizationId() {

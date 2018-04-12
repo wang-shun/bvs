@@ -102,4 +102,16 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 		return delete(_id, Organization.class);
 	}
 
+	@Override
+	public List<User> getMember(ObjectId org_id) {
+		List<User> result = new ArrayList<User>();
+		Service.col(User.class).find(new BasicDBObject("org_id", org_id)).into(result);
+		return result;
+	}
+
+	@Override
+	public long countMemeber(ObjectId org_id) {
+		return Service.col(User.class).count(new BasicDBObject("org_id", org_id));
+	}
+
 }

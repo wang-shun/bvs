@@ -75,7 +75,7 @@ public class MultiSelectionField extends SelectionField {
 	}
 
 	protected void presentation() {
-		grid.setInput(value);
+		grid.setViewerInput(value);
 	}
 
 	@Override

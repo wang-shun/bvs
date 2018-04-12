@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruidesigner.dialog;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -16,7 +15,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
@@ -127,11 +125,13 @@ public class ResourceSelectionDialog extends SelectionDialog {
 			File file = (File) e.getStructuredSelection().getFirstElement();
 			getButton(OK).setEnabled(file.isFile());
 			if(file.isFile()) {
-				try {
-					Image image = new Image(Display.getCurrent(), new FileInputStream(file));
-					label.setImage(image);
-				} catch (Exception e1) {
-				}
+//				try {
+//					FileInputStream stream = new FileInputStream(file);
+//					Image image = new Image(Display.getCurrent(), stream);
+//					label.setImage(image);
+//					stream.close();
+//				} catch (Exception e1) {
+//				}
 			}
 		});
 		

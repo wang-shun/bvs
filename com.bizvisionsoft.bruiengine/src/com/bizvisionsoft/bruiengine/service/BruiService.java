@@ -56,7 +56,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchContent(Assembly assembly, Object input) {
-		contentWidget.switchAssembly(assembly);
+		contentWidget.switchAssembly(assembly,input);
 	}
 
 	@Override

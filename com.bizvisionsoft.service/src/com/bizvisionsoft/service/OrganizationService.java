@@ -16,6 +16,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 
 @Path("/org")
@@ -65,6 +66,20 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	public long countSub(@PathParam("_id") ObjectId parent_id);
 
+	@GET
+	@Path("/member/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织成员/" + DataSet.LIST)
+	public List<User> getMember(@PathParam("_id") ObjectId parent_id);
+
+	@GET
+	@Path("/member/count/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织成员/" + DataSet.COUNT)
+	public long countMemeber(@PathParam("_id") ObjectId parent_id);
+
 	@POST
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
@@ -78,11 +93,11 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织选择器/" + DataSet.COUNT)
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
-	
+
 	@DELETE
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public long delete(@PathParam("_id") ObjectId get_id) ;
+	public long delete(@PathParam("_id") ObjectId get_id);
 
 }

@@ -199,7 +199,7 @@ public class GridPart {
 		}
 		fd.bottom = new FormAttachment(100);
 
-		setInput();
+		setViewerInput();
 	}
 
 	private Composite createSticker(Composite parent) {
@@ -306,7 +306,7 @@ public class GridPart {
 		page.addListener(SWT.Selection, e -> {
 			currentPage = e.index;
 			skip = (currentPage - 1) * limit;
-			setInput();
+			setViewerInput();
 		});
 
 		return page;
@@ -466,13 +466,13 @@ public class GridPart {
 		}
 	}
 
-	private void setInput() {
+	private void setViewerInput() {
 		if (!disableDateSetEngine) {
-			setInput((List<?>) dataSetEngine.query(skip, limit, filter));
+			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter));
 		}
 	}
 
-	public void setInput(List<?> input) {
+	public void setViewerInput(List<?> input) {
 		renderEngine.setInput(input);
 		viewer.getGrid().removeAll();
 		viewer.setInput(input);
@@ -603,7 +603,7 @@ public class GridPart {
 			count = dataSetEngine.count(filter);
 			page.setCount(count);
 		}
-		setInput();
+		setViewerInput();
 
 	}
 

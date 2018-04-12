@@ -27,6 +27,7 @@ public class AssemblyContainer {
 	private Composite container;
 	private Composite parent;
 	private BruiAssemblyContext context;
+	private Object input;
 
 	public AssemblyContainer(Composite parent, BruiAssemblyContext parentContext) {
 		this.parent = parent;
@@ -36,6 +37,12 @@ public class AssemblyContainer {
 	public AssemblyContainer setAssembly(Assembly assembly) {
 		this.assembly = assembly;
 		context.setAssembly(assembly);
+		return this;
+	}
+
+	public AssemblyContainer setInput(Object input) {
+		this.input = input;
+		context.setInput(input);
 		return this;
 	}
 
@@ -125,6 +132,7 @@ public class AssemblyContainer {
 		// 创建子部件
 		layout.getAssemblys().forEach(al -> // 迭代
 		new AssemblyContainer((Composite) content, context)// 创建嵌套AssemblyContainer
+				.setInput(input)
 				.setAssembly(Brui.site.getAssembly(al.getId()))// 设置组件
 				.setContextName(al.getLayoutName())// 设置命名
 				.setServices(services)// 传递服务
