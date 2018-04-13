@@ -128,10 +128,12 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			try {
 				method.setAccessible(true);
 				return (long) method.invoke(getTarget(), filter);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(assembly.getName() + " 数据源count方法错误。", e.getTargetException());
 			}
 		}
-		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 count的方法。");
+		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 count的方法。");
 	}
 
 	public Object query() {
@@ -144,10 +146,13 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		if (m != null) {
 			try {
 				return m.invoke(getTarget());
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (IllegalAccessException | IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(assembly.getName() + " 数据源注解DataSet值为" + paramValue + "的无参方法调用错误。",
+						e.getTargetException());
 			}
 		}
-		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为" + paramValue + "的无参方法。");
+		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为" + paramValue + "的无参方法。");
 	}
 
 	/**
@@ -207,7 +212,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			}
 		} else {
-			throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 data的方法。");
+			throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 data的方法。");
 		}
 		return null;
 	}

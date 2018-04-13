@@ -109,7 +109,7 @@ public class CarouselDemo {
 		page.setText("<div style='vertical-align: middle;font-size:24px'> 当然也可以加一个重量级的组件</div>");
 
 		container = carousel.addPage(new Composite(carousel, SWT.NONE));
-		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(Brui.site.getAssemblyByName("用户列表"));
+		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(Brui.site.getAssemblyByName("用户管理"));
 		brui.init(new IServiceWithId[] { bruiService, new BruiAssemblyContext().setEngine(brui) }).createUI(container);
 	}
 

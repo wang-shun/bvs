@@ -1,7 +1,6 @@
-package com.bizvisionsoft.pms.action;
+package com.bizvisionsoft.pms.user.action;
 
-import java.util.Optional;
-
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -11,12 +10,10 @@ import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.UserService;
-import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.UserInfo;
 import com.bizvisionsoft.serviceconsumer.Services;
-import com.mongodb.BasicDBObject;
 
-public class EditUser {
+public class DeleteAccount {
 
 	@Inject
 	private IBruiService bruiService;
@@ -25,19 +22,17 @@ public class EditUser {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(elem -> {
-			UserService service = Services.get(UserService.class);
-			Optional.ofNullable(service.get(((UserInfo) elem).getUserId())).ifPresent(user -> {
-				bruiService.createEditorByName("用户编辑器", user, true, false, context).open((r, t) -> {
-					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-							.filter(new BasicDBObject("userId", user.getUserId())).set(r);
-					if (service.update(filterAndUpdate.bson()) == 1) {
-						UserInfo info = service.info(user.getUserId());
+			if (elem instanceof UserInfo) {
+				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要删除选择的账户。")) {
+					try {
+						Services.get(UserService.class).delete(((UserInfo) elem).get_id());
 						GridPart grid = (GridPart) context.getContent();
-						grid.replaceItem(elem, info);
+						grid.remove(elem);
+					} catch (Exception e) {
+						MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
 					}
-				});
-			});
-
+				}
+			}
 		});
 	}
 

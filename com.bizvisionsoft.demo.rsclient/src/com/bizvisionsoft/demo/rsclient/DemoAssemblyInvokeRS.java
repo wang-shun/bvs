@@ -31,13 +31,7 @@ public class DemoAssemblyInvokeRS {
 	private void createUI(Composite parent) {
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
 		BruiToolkit bruiToolkit = UserSession.bruiToolkit();
-		Button button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
-		button.setText("创建一个用户");
-		button.addListener(SWT.Selection, e -> {
-			User user = new User().setActivated(true).setEmail("zh@bizvisionsoft.com").setName("钟华").setPassword("1")
-					.setTel("1234").setUserId("zh");
-			Services.get(UserService.class).insert(user);
-		});
+		Button button ;
 
 		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
 		button.setText("更新一个用户,输入条件");
@@ -80,14 +74,7 @@ public class DemoAssemblyInvokeRS {
 		button.addListener(SWT.Selection, e -> {
 			for (int i = 0; i < 300; i++) {
 				String id = Util._10_to_N(i, 24);
-				User user = new User()//
-						.setActivated(true)//
-						.setEmail(id + "@bizvisionsoft.com")//
-						.setName("新用户" + (i + 1))//
-						.setPassword("1")//
-						.setTel("1234")//
-						.setUserId(id)//
-						.setOrganizationId(new ObjectId("5a98b5de89db0071a0f77269"));//
+				User user = new User();//
 				Services.get(UserService.class).insert(user);
 			}
 			System.out.println("ok");

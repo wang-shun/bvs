@@ -3,12 +3,15 @@ package com.bizvisionsoft.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+
+import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
@@ -35,7 +38,7 @@ public interface UserService {
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("用户列表 / list")
+	@DataSet({ "用户管理/" + DataSet.LIST, "账户管理/" + DataSet.LIST })
 	public List<UserInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 	@GET
@@ -60,14 +63,20 @@ public interface UserService {
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet({"用户列表/count","用户选择列表/count"})
+	@DataSet(DataSet.COUNT)
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
-	
+
 	@POST
 	@Path("/ds/selector/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("用户选择列表 / list")
 	public List<User> createDataSetForSelector(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+	
+	@DELETE
+	@Path("/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long delete(@PathParam("_id") ObjectId get_id) ;
 
 }

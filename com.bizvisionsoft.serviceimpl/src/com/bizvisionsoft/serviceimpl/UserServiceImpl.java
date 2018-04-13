@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.model.User;
@@ -25,7 +26,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	public User check(String userId, String password) {
 		User user = Service.col(User.class).find(new BasicDBObject("userId", userId).append("password", password))
 				.first();
-		if (user != null) {
+		if (user != null && user.isActivated()) {
 			return user;
 		}
 		throw new ServiceException("账户无法通过验证");
@@ -56,7 +57,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	public List<User> createDataSetForSelector(BasicDBObject condition) {
 		return createDataSet(condition, User.class);
 	}
-	
+
 	@Override
 	public List<UserInfo> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
@@ -78,7 +79,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		pipeline.add(Aggregates.lookup("organization", "orgId", "_id", "org"));
+		pipeline.add(Aggregates.lookup("organization", "org_id", "_id", "org"));
 
 		pipeline.add(Aggregates.replaceRoot(new BasicDBObject("$mergeObjects", //
 				new Object[] { new BasicDBObject("$arrayElemAt", new Object[] { "$org", 0 }), "$$ROOT" })));
@@ -89,7 +90,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 				.append("userId", 1)//
 				.append("email", 1)//
 				.append("headPics", 1)//
-				.append("orgId", 1)//
+				.append("org_id", 1)//
 				.append("activated", 1)//
 				.append("mobile", 1)//
 				.append("weixin", 1)//
@@ -104,6 +105,11 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	@Override
 	public long count(BasicDBObject filter) {
 		return count(filter, User.class);
+	}
+
+	@Override
+	public long delete(ObjectId _id) {
+		return delete(_id, User.class);
 	}
 
 }

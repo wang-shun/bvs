@@ -3,6 +3,7 @@ package com.bizvisionsoft.annotations.ui.common;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -13,6 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target(ElementType.PARAMETER)
+@Inherited
 public @interface MethodParam {
 
 	String value() default "";

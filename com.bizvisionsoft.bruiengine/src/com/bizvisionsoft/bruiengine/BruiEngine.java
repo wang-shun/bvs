@@ -72,7 +72,7 @@ public class BruiEngine {
 			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 			} catch (InvocationTargetException e1) {
 				e1.printStackTrace();
-				throw new RuntimeException("注解为" + methodAnnotation.getName() + "调用目标错误。", e1);
+				throw new RuntimeException("注解为" + methodAnnotation.getSimpleName() + "调用目标错误。", e1);
 			}
 			return null;
 		}).orElse(defaultValueForNoMethod);

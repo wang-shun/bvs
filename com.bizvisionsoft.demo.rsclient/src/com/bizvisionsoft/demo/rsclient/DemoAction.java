@@ -33,7 +33,7 @@ public class DemoAction {
 						.append("update", new BasicDBObject("$set", new BasicDBObject("name", userName)));
 				long cnt = Services.get(UserService.class).update(filterAndUpdate);
 				if (cnt == 1) {
-					GridPart grid = (GridPart) context.getChildContextByAssemblyName("用户列表").getContent();
+					GridPart grid = (GridPart) context.getContent();
 					((UserInfo) elem).setName(userName);
 					grid.update(elem);
 				}

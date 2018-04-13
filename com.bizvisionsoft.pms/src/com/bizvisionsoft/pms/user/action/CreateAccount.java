@@ -1,4 +1,4 @@
-package com.bizvisionsoft.pms.eps.action;
+package com.bizvisionsoft.pms.user.action;
 
 import org.eclipse.swt.widgets.Event;
 
@@ -8,11 +8,12 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.service.EPSService;
-import com.bizvisionsoft.service.model.EPS;
+import com.bizvisionsoft.bruiengine.ui.Editor;
+import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class CreateEPSRootNode {
+public class CreateAccount {
 
 	@Inject
 	private IBruiService bruiService;
@@ -20,12 +21,11 @@ public class CreateEPSRootNode {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
 			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		bruiService.createEditorByName("EPS±à¼­Æ÷", new EPS(), true,false, context).open((r,i)->{
-			EPS item = Services.get(EPSService.class).insert(i);
+		Editor.open("´´½¨ÕË»§±à¼­Æ÷", context, new User(), (r, i) -> {
+			User item = Services.get(UserService.class).insert(i);
 			GridPart grid = (GridPart) context.getContent();
 			grid.insert(item);
 		});
-		
 	}
 
 }

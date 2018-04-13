@@ -1387,6 +1387,7 @@ FileUpload.inline:disabled {
 
 FileUpload.inline:hover {
   background-image: none;
+  border: none;
   border-left: 1px solid #e6e6e6;
   background-color: #e6e6e6;
   color: #000000;

@@ -41,11 +41,7 @@ public class UserInfo {
 	@ReadValue
 	private boolean activated;
 
-	@SetValue
-	@ReadValue(" 用户列表 / 头像 ")
-	private String headpicURL;
-
-	@SetValue("orgId")
+	@SetValue("org_id")
 	private ObjectId organizationId;
 
 	@SetValue
@@ -66,10 +62,6 @@ public class UserInfo {
 
 	public String getUserId() {
 		return userId;
-	}
-
-	public String getHeadpicURL() {
-		return headpicURL;
 	}
 
 	public String getOrganizationFullName() {
