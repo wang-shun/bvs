@@ -11,9 +11,11 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.model.Organization;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.model.UserInfo;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
 
 public class UserServiceImpl extends BasicServiceImpl implements UserService {
@@ -110,11 +112,17 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 
 	@Override
 	public long delete(ObjectId _id) {
-		Document doc = Service.col("account").find(new BasicDBObject("_id", _id))
-				.projection(new BasicDBObject("activated", 1)).first();
-		if (doc.getBoolean("activated", false)) {
+		MongoCollection<Document> col = Service.col("account");
+		Document doc = col.find(new BasicDBObject("_id", _id))
+				.projection(new BasicDBObject("activated", 1).append("userId", 1)).first();
+		if (doc.getBoolean("activated", false))
 			throw new ServiceException("不能删除激活状态的用户。");
-		}
+
+		String userId = doc.getString("userId");
+		BasicDBObject filter = new BasicDBObject().append("managerId", userId);
+		if (count(filter, Organization.class) != 0)
+			throw new ServiceException("不能删除在组织中担任管理者的用户。");
+
 		// TODO 其他检查
 		return delete(_id, User.class);
 	}

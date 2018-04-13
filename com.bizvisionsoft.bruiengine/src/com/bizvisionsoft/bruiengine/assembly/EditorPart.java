@@ -76,8 +76,6 @@ public class EditorPart {
 	@Inject
 	private IBruiEditorContext context;
 
-	private TabFolder folder;
-
 	private Object input;
 
 	private Map<FormField, EditorField> fields;
@@ -127,12 +125,13 @@ public class EditorPart {
 		layout.marginHeight = context.isEmbedded() ? 8 : 16;
 
 		parent.setLayout(layout);
-		folder = new TabFolder(parent, SWT.TOP | SWT.BORDER);
 		List<FormField> fields = config.getFields();
 		// ÅÐ¶ÏÊÇ·ñ·Ö±êÇ©Ò³
+		Composite contentHolder;
 		if (FormField.TYPE_PAGE.equals(fields.get(0).getType())) {
+			TabFolder folder = new TabFolder(parent, SWT.TOP | SWT.BORDER);
 			fields.forEach(f -> {
-				Composite content = createTabItem(f.getFieldText());
+				Composite content = createTabItem(folder, f.getFieldText());
 				if (FormField.TYPE_PAGE_HTML.equals(f.getType())) {
 					createField(content, f).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				} else if (FormField.TYPE_PAGE_NOTE.equals(f.getType())) {
@@ -141,6 +140,12 @@ public class EditorPart {
 					createFields(content, f.getFormFields());
 				}
 			});
+			contentHolder = folder;
+		} else {
+			ScrolledComposite sc = createPage(parent);
+			Composite content = (Composite) sc.getContent();
+			createFields(content, fields);
+			contentHolder = sc;
 		}
 
 		Composite bar = createButtons(parent);
@@ -152,7 +157,7 @@ public class EditorPart {
 		fd.bottom = new FormAttachment(100);
 
 		fd = new FormData();
-		folder.setLayoutData(fd);
+		contentHolder.setLayoutData(fd);
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
@@ -308,10 +313,16 @@ public class EditorPart {
 		return fieldPart.getContainer();
 	}
 
-	private Composite createTabItem(String tabText) {
+	private Composite createTabItem(TabFolder folder, String tabText) {
 		TabItem item = new TabItem(folder, SWT.NONE);
 		item.setText(tabText);
-		final ScrolledComposite sc = new ScrolledComposite(folder, SWT.V_SCROLL);
+		ScrolledComposite sc = createPage(folder);
+		item.setControl(sc);
+		return (Composite) sc.getContent();
+	}
+
+	private ScrolledComposite createPage(Composite parent) {
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL);
 		Composite content = new Composite(sc, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
@@ -344,8 +355,7 @@ public class EditorPart {
 			sc.getContent().setSize(size.x, size.y);
 			sc.setMinHeight(size.y);
 		});
-		item.setControl(sc);
-		return content;
+		return sc;
 	}
 
 	public IBruiService getBruiService() {

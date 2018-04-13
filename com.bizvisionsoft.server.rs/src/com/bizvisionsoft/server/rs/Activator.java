@@ -7,6 +7,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OrganizationService;
@@ -16,6 +17,7 @@ import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.provider.BsonProvider;
+import com.bizvisionsoft.serviceimpl.CommonServiceImpl;
 import com.bizvisionsoft.serviceimpl.EPSServiceImpl;
 import com.bizvisionsoft.serviceimpl.FileServiceImpl;
 import com.bizvisionsoft.serviceimpl.OrganizationServiceImpl;
@@ -50,6 +52,8 @@ public class Activator implements BundleActivator {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 下面开始注册服务
 		regs.add(bc.registerService(FileService.class.getName(), new FileServiceImpl(), null));
+		
+		regs.add(bc.registerService(CommonService.class.getName(), new CommonServiceImpl(), null));
 
 		regs.add(bc.registerService(UserService.class.getName(), new UserServiceImpl(), null));
 

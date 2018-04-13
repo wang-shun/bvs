@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
-import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -22,10 +21,12 @@ public class User {
 
 	@Persistence
 	@ReadValue
+	@WriteValue
 	private String userId;
 
-	@SetValue
+	@ReadValue
 	@WriteValue
+	@Persistence
 	private String password;
 
 	@WriteValue("password2")
@@ -71,6 +72,11 @@ public class User {
 
 	@Persistence("org_id")
 	private ObjectId organizationId;
+	
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private List<String> certificates;
 
 	public String getUserId() {
 		return userId;
