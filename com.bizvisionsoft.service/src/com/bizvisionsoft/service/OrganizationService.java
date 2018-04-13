@@ -38,8 +38,9 @@ public interface OrganizationService {
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织管理/" + DataSet.UPDATE)
 	public long update(BasicDBObject filterAndUpdate);
-
+	
 	@GET
 	@Path("/root")
 	@Consumes("application/json; charset=UTF-8")

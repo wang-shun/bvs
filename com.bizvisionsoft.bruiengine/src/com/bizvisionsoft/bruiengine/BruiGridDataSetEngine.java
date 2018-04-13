@@ -17,6 +17,7 @@ import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -215,6 +216,28 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 data的方法。");
 		}
 		return null;
+	}
+
+	public void replace(Object element, BasicDBObject data) {
+		Method method = AUtil
+				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.UPDATE, a -> a.value())
+				.orElse(null);
+		if (method != null) {
+			try {
+				if (!data.containsField("_id")) {
+					return;
+				}
+				Object _id = data.get("_id");
+				data.removeField("_id");
+				BasicDBObject filterAndUpdate = new FilterAndUpdate().filter(new BasicDBObject("_id", _id)).set(data)
+						.bson();
+				method.invoke(getTarget(), filterAndUpdate);
+			} catch (IllegalAccessException | IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(assembly.getName() + " 数据源注解DataSet值为 update 的方法调用错误。",
+						e.getTargetException());
+			}
+		}
 	}
 
 	public void attachListener(BiConsumer<String, Method> con) {

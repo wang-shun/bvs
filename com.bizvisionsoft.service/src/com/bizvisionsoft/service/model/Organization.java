@@ -69,17 +69,17 @@ public class Organization {
 
 	@Persistence
 	private String managerId;
-	
+
 	@ReadValue("managerInfo")
 	@WriteValue("managerInfo")
 	private String managerInfo;
 
 	@WriteValue("manager")
-	private void setManager(UserInfo manager) {
-		if(manager == null) {
+	private void setManager(User manager) {
+		if (manager == null) {
 			managerId = null;
 			managerInfo = "";
-		}else {
+		} else {
 			managerId = manager.getUserId();
 			managerInfo = manager.toString();
 		}
@@ -87,7 +87,13 @@ public class Organization {
 
 	@ReadValue("manager")
 	private User getManager() {
-		return Optional.ofNullable(managerId).map(id -> ServicesLoader.get(UserService.class).get(id)).orElse(null);
+		return Optional.ofNullable(managerId).map(id -> {
+			try {
+				return ServicesLoader.get(UserService.class).get(id);
+			} catch (Exception e) {
+				return null;
+			}
+		}).orElse(null);
 	}
 
 	@Structure("组织管理/list")

@@ -2,9 +2,6 @@ package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.ws.rs.NotFoundException;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -38,7 +35,10 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	@Override
 	public User get(String userId) {
 		User user = Service.col(User.class).find(new BasicDBObject("userId", userId)).first();
-		return Optional.ofNullable(user).orElseThrow(NotFoundException::new);
+		if (user != null) {
+			return user;
+		}
+		throw new ServiceException("用户不存在");
 	}
 
 	@Override

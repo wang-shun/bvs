@@ -286,7 +286,7 @@ public class ActionsEditPane extends SashForm {
 			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
 
-			editor.createCheckboxField(parent, "只读打开:", action, "editorAssemblyEditable", SWT.CHECK);
+			editor.createCheckboxField(parent, "允许编辑:", action, "editorAssemblyEditable", SWT.CHECK);
 
 			action.addPropertyChangeListener("name", listener);
 		}

@@ -8,6 +8,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 
 public class OpenSelected {
 
@@ -24,11 +25,19 @@ public class OpenSelected {
 
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
-		context.selected(elem -> {
-			Object info = AUtil.deepCopy(elem);
-			bruiService.createEditor(assembly, info, editable, false, context)
-					.open((r, t) -> ((GridPart) context.getContent()).replaceItem(elem, info));
+		context.selected(em -> {
+			Editor<?> editor = new Editor<Object>(assembly, context).setInput(em).setEditable(editable);
+			String label = AUtil.readLabel(em, "");
+			if (label != null) {
+				editor.setTitle(editable?("±à¼­ "+label):label);
+			}
+
+			editor.open((r, o) -> {
+				GridPart grid = (GridPart) context.getContent();
+				grid.modify(em, r);
+			});
 		});
+
 	}
 
 }

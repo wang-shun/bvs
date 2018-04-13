@@ -49,6 +49,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
 public class GridPart {
@@ -115,6 +116,10 @@ public class GridPart {
 		// 注册数据集引擎
 		if (!disableDateSetEngine)
 			dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
+	}
+
+	public BruiGridDataSetEngine getDataSetEngine() {
+		return dataSetEngine;
 	}
 
 	public GridPart addItemSelector(ToolItemDescriptor listener) {
@@ -223,7 +228,7 @@ public class GridPart {
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (bundleId != null && classId != null) {
+		if (!Util.isEmptyOrNull(bundleId )&& !Util.isEmptyOrNull(classId )) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();
@@ -610,9 +615,21 @@ public class GridPart {
 	public void setCheckAll(boolean b) {
 		Arrays.asList(viewer.getGrid().getItems()).stream().forEach(i -> i.setChecked(b));
 	}
-	
+
 	public Object getViewerInput() {
 		return viewer.getInput();
+	}
+
+	/**
+	 * 
+	 * @param em
+	 * @param o
+	 */
+	public void modify(Object element, BasicDBObject newElement) {
+		if (dataSetEngine != null) {
+			dataSetEngine.replace(element,newElement);
+		}
+		replaceItem(element, newElement);
 	}
 
 }
