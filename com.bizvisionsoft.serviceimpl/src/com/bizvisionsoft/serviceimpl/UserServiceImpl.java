@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
 
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -109,6 +110,12 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 
 	@Override
 	public long delete(ObjectId _id) {
+		Document doc = Service.col("account").find(new BasicDBObject("_id", _id))
+				.projection(new BasicDBObject("activated", 1)).first();
+		if (doc.getBoolean("activated", false)) {
+			throw new ServiceException("不能删除激活状态的用户。");
+		}
+		// TODO 其他检查
 		return delete(_id, User.class);
 	}
 
