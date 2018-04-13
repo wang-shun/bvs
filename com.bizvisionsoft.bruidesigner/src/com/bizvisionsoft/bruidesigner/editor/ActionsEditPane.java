@@ -275,10 +275,12 @@ public class ActionsEditPane extends SashForm {
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			l = new Label(parent, SWT.NONE);
-			l.setText("如果用于切换内容区，请定义以下内容：");
+			l.setText("如果用于切换或打开内容区，请定义以下内容：");
 			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			editor.createAssemblyField(parent, "内容区组件:", action, "switchContentToAssemblyId", true);
 
+			editor.createCheckboxField(parent, "打开新内容（原有的内容区不关闭）:", action, "openContent", SWT.CHECK);
+			
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			l = new Label(parent, SWT.NONE);

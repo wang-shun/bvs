@@ -19,7 +19,7 @@ public class BruiActionEngine extends BruiEngine {
 		String editorId = action.getEditorAssemblyId();
 
 		if (staId != null && !staId.isEmpty()) {// 用于切换内容区的内置Action
-			brui = new BruiActionEngine(new SwitchContentToAssembly(Brui.site.getAssembly(staId)));
+			brui = new BruiActionEngine(new SwitchContentToAssembly(Brui.site.getAssembly(staId),action.isOpenContent()));
 		} else if (editorId != null && !editorId.isEmpty()) {// 用于打开编辑器的Action
 			brui = new BruiActionEngine(
 					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));

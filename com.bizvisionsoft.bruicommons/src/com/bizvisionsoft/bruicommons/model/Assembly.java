@@ -573,5 +573,16 @@ public class Assembly extends ModelObject {
 	public void setSelectorMultiSelection(boolean selectorMultiSelection) {
 		this.selectorMultiSelection = selectorMultiSelection;
 	}
+	
+	//
+	private boolean closable;
+	
+	public boolean isClosable() {
+		return closable;
+	}
+	
+	public void setClosable(boolean closable) {
+		this.closable = closable;
+	}
 
 }

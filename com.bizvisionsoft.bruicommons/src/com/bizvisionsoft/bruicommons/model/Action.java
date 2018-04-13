@@ -23,6 +23,8 @@ public class Action extends ModelObject {
 	private String className;
 
 	private String switchContentToAssemblyId;
+	
+	private boolean openContent;
 
 	private boolean propagate;
 
@@ -185,6 +187,14 @@ public class Action extends ModelObject {
 	
 	public void setObjectBehavier(boolean objectBehavier) {
 		this.objectBehavier = objectBehavier;
+	}
+	
+	public boolean isOpenContent() {
+		return openContent;
+	}
+	
+	public void setOpenContent(boolean openContent) {
+		this.openContent = openContent;
 	}
 
 	

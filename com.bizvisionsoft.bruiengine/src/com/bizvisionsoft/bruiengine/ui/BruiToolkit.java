@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.assembly.StickerTitlebar;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiToolkit {
@@ -93,10 +92,6 @@ public class BruiToolkit {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public StickerTitlebar newTitleBar(Composite parent) {
-		return new StickerTitlebar(parent);
 	}
 
 	public Composite newContentPanel(Composite parent) {

@@ -16,14 +16,21 @@ public class SwitchContentToAssembly {
 	
 	private Assembly assembly;
 
-	public SwitchContentToAssembly(Assembly assembly) {
+	private boolean openContent;
+
+	public SwitchContentToAssembly(Assembly assembly, boolean openContent) {
 		this.assembly = assembly;
+		this.openContent = openContent;
 	}
 
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		bruiService.switchContent(assembly, context.getFristElement());
+		if(openContent) {
+			bruiService.openContent(assembly, context.getFristElement());
+		}else {
+			bruiService.switchContent(assembly, context.getFristElement());
+		}
 	}
 	
 }

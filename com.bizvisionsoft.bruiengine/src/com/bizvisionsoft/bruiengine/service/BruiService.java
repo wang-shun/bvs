@@ -9,6 +9,7 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ContentWidget;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.ui.Part;
+import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
@@ -56,7 +57,21 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchContent(Assembly assembly, Object input) {
-		contentWidget.switchAssembly(assembly,input);
+		contentWidget.switchAssembly(assembly, input);
+	}
+
+	@Override
+	public void openContent(Assembly assembly, Object input) {
+		if(part instanceof View) {
+			((View)part).openAssemblyInContentArea(assembly, input);
+		}
+	}
+	
+	@Override
+	public void closeCurrentContent() {
+		if(part instanceof View) {
+			((View)part).closeCurrentContent();
+		}		
 	}
 
 	@Override
@@ -88,5 +103,6 @@ public class BruiService implements IBruiService {
 			IBruiContext context) {
 		return createEditor(getAssembly(assemblyName), input, editable, ignoreNull, context);
 	}
+
 
 }

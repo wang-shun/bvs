@@ -32,6 +32,8 @@ public interface IBruiService extends IServiceWithId {
 
 	public void switchContent(String assemblyName, Object input);
 
+	public void openContent(Assembly assembly, Object input);
+
 	public void switchPage(String pageName, String inputUid);
 
 	public void switchPage(Page page, String inputUid);
@@ -45,5 +47,8 @@ public interface IBruiService extends IServiceWithId {
 	public default Assembly getAssembly(String name) {
 		return Brui.site.getAssemblyByName(name);
 	}
+
+	public void closeCurrentContent();
+
 
 }

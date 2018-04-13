@@ -58,12 +58,18 @@ public class StickerPart {
 
 		String text = assembly.getStickerTitle();
 		if (assembly.isDisplayInputLabelInTitlebar()) {
-			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, ""))
-					.map(l -> " - " + l).orElse("");
+			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
+					.orElse("");
 		}
 
-		StickerTitlebar bar = UserSession.bruiToolkit().newTitleBar(parent).setText(text)
-				.setActions(assembly.getActions());
+		Action closeAction = null;
+		if (assembly.isClosable()) {
+			closeAction = new Action();
+			closeAction.setName("close");
+			closeAction.setImage("/img/left.svg");
+		}
+		StickerTitlebar bar = new StickerTitlebar(parent, closeAction);
+		bar.setText(text).setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
 		fd.left = new FormAttachment(0);
@@ -81,7 +87,11 @@ public class StickerPart {
 
 		bar.addListener(SWT.Selection, e -> {
 			Action action = ((Action) e.data);
-			BruiActionEngine.create(action, service).invokeExecute(e, context);
+			if ("close".equals(action.getName())) {
+				service.closeCurrentContent();
+			} else {
+				BruiActionEngine.create(action, service).invokeExecute(e, context);
+			}
 		});
 	}
 

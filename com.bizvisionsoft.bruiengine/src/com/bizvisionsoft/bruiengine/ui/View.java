@@ -1,5 +1,8 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.eclipse.swt.SWT;
@@ -9,6 +12,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
@@ -17,25 +21,35 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 public class View extends Part {
 
 	private Page page;
-	
+
 	private SidebarWidget sidebarWidget;
-	
-	private ContentWidget contentWidget;
 
 	private BruiAssemblyContext context;
 
-	public static View create(Page page,Object input) {
-		return new View(page,input);
+	private ContentWidget contentWidget;
+
+	private List<ContentWidget> previous;
+
+	private Composite parent;
+
+	private Composite headbar;
+
+	private Composite sidebar;
+
+	private Composite footbar;
+
+	public static View create(Page page, Object input) {
+		return new View(page, input);
 	}
 
-	public View(Page page,Object input) {
+	public View(Page page, Object input) {
 		super(UserSession.current().getShell());
+		previous = new ArrayList<>();
 		this.page = page;
 		this.context = new BruiAssemblyContext();
 		this.context.setInput(input);
-		
-		sidebarWidget = new SidebarWidget(page.getSidebar(),service,context);
-		contentWidget = new ContentWidget(page.getContentArea(),service,context);
+
+		sidebarWidget = new SidebarWidget(page.getSidebar(), service, context);
 
 	}
 
@@ -47,7 +61,8 @@ public class View extends Part {
 
 	public int open() {
 		if (page.isForceCheckLogin() || (page.isCheckLogin() && service.getCurrentUserInfo() == null))
-			Optional.ofNullable(Brui.site.getLoginAssembly()).map(a -> new Popup(a,new BruiAssemblyContext()).setTitle("请验证您的身份").open());
+			Optional.ofNullable(Brui.site.getLoginAssembly())
+					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("请验证您的身份").open());
 
 		int result = super.open();
 
@@ -62,22 +77,22 @@ public class View extends Part {
 
 	@Override
 	protected void createContents(Composite parent) {
+		this.parent = parent;
 		parent.setLayout(new FormLayout());
 		// 创建顶栏
-		Composite headbar = null;
 		if (page.getHeadbar().isEnabled()) {
 			headbar = createHeadbar(parent);
 		}
-		Composite sidebar = null;
 		if (page.getSidebar().isEnabled()) {
 			sidebar = createSidebar(parent);
 		}
-		Composite footbar = null;
 		if (page.getFootbar().isEnabled()) {
 			footbar = createFootbar(parent);
 		}
 
-		Composite contentArea = createContentArea(parent);
+		Assembly assembly = Brui.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
+				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(NoSuchElementException::new).getId());
+		createContentArea(assembly, null);
 
 		FormData fd;
 		if (headbar != null) {
@@ -107,17 +122,18 @@ public class View extends Part {
 			fd.height = page.getHeadbar().getHeight();
 		}
 
-		fd = new FormData();
+	}
+
+	private Composite createContentArea(Assembly assembly, Object input) {
+		contentWidget = new ContentWidget(assembly, service, context);
+		Composite contentArea = contentWidget.createUI(parent, input).getControl();
+		FormData fd = new FormData();
 		contentArea.setLayoutData(fd);
 		fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
 		fd.left = sidebar != null ? new FormAttachment(sidebar) : new FormAttachment();
 		fd.right = new FormAttachment(100);
 		fd.bottom = footbar != null ? new FormAttachment(footbar) : new FormAttachment(100);
-
-	}
-
-	private Composite createContentArea(Composite parent) {
-		return contentWidget.createUI(parent).getControl();
+		return contentArea;
 	}
 
 	private Composite createHeadbar(Composite parent) {
@@ -132,5 +148,19 @@ public class View extends Part {
 		return sidebarWidget.createUI(parent).getControl();
 	}
 
+	public void openAssemblyInContentArea(Assembly assembly, Object input) {
+		previous.add(contentWidget);
+		Composite contentArea = createContentArea(assembly, input);
+		contentArea.moveAbove(null);
+		parent.layout();
+	}
+
+	public void closeCurrentContent() {
+		contentWidget.getControl().dispose();
+		contentWidget = previous.get(previous.size()-1);
+		previous.remove(previous.size()-1);
+		contentWidget.getControl().moveAbove(null);
+		parent.layout();
+	}
 
 }

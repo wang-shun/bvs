@@ -1,23 +1,19 @@
 package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruicommons.model.ContentArea;
-import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
-import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 
 public class ContentWidget {
 
-	private ContentArea contentArea;
 
 	private BruiService service;
 
@@ -27,21 +23,21 @@ public class ContentWidget {
 
 	private BruiAssemblyContext context;
 
+	private Assembly assembly;
+
 	// private BruiEngine brui;
 
-	public ContentWidget(ContentArea contentArea, BruiService service,BruiAssemblyContext parentContext) {
-		this.contentArea = contentArea;
+	public ContentWidget(Assembly assembly, BruiService service,BruiAssemblyContext parentContext) {
+		this.assembly = assembly;
 		this.service = service;
 		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
 		service.setContentWidget(this);
 	}
 
-	public ContentWidget createUI(Composite parent) {
+	public ContentWidget createUI(Composite parent,Object input) {
 		contentContainer = new Composite(parent, SWT.NONE);
 		contentContainer.setLayout(new FillLayout());
-		Assembly assembly = Brui.site.getAssembly(contentArea.getAssemblyLinks().stream()
-				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(NoSuchElementException::new).getId());
-		switchAssembly(assembly,null);
+		switchAssembly(assembly,input);
 		contentContainer.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 		return this;
 	}
