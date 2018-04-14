@@ -239,20 +239,27 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			}
 		}
 	}
-	
-	public void delete(Object element) {
-		Object id = Util.getBson(element, true).get("_id");
+
+	public void delete(Object element, Object parent) {
 		Method method = AUtil
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.DELETE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			try {
-				method.invoke(getTarget(), id);
-			} catch (IllegalAccessException | IllegalArgumentException e) {
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e.getTargetException().getMessage());
+				Object[] values;
+				String[] names;
+				if (parent == null) {
+					values = new Object[] { Util.getBson(element, true).get("_id"), element };
+					names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+				}else {
+					values = new Object[] { Util.getBson(parent, true).get("_id"), parent ,Util.getBson(element, true).get("_id"), element};
+					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT,ServiceParam._ID, ServiceParam.OBJECT };
+				}
+				invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
+			} catch (RuntimeException e) {
+				throw e;
 			}
-		}		
+		}
 	}
 
 	public void attachListener(BiConsumer<String, Method> con) {
@@ -276,7 +283,5 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			}
 		});
 	}
-
-
 
 }

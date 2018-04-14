@@ -18,13 +18,22 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 public @interface ServiceParam {
 	
-	public static String SKIP = "skip";
+	String SKIP = "skip";
 
-	public static String LIMIT = "limit";
+	String LIMIT = "limit";
 	
-	public static String FILTER = "filter";
+	String FILTER = "filter";
 
-	public static String CONDITION = "condition";
+	String CONDITION = "condition";
+
+	String _ID = "_id";
+
+	String OBJECT = "object";
+
+	String PARENT_ID = "parent_id";
+	
+	String PARENT_OBJECT = "parent";
+
 
 	String value();
 

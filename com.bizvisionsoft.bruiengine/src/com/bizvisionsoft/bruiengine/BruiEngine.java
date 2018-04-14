@@ -3,8 +3,10 @@ package com.bizvisionsoft.bruiengine;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.function.Function;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -44,58 +46,64 @@ public class BruiEngine {
 	final protected <T extends Annotation> Object invokeMethodInjectParams(Class<T> methodAnnotation,
 			Object[] parameters, String[] paramAnnotations, Object defaultValueForNoMethod) {
 		return AUtil.getMethod(clazz, methodAnnotation).map(method -> {
-			Object[] args;
-			if (paramAnnotations == null) {
-				args = parameters;
-			} else {
-				args = new Object[method.getParameterCount()];
-				Parameter[] para = method.getParameters();
-				for (int i = 0; i < para.length; i++) {
-					MethodParam emp = para[i].getAnnotation(MethodParam.class);
-					if (emp != null) {
-						String paramName = emp.value();
-						int idx = -1;
-						for (int j = 0; j < paramAnnotations.length; j++) {
-							if (paramAnnotations[j].equals(paramName)) {
-								idx = j;
-								break;
-							}
-						}
-						if (idx != -1)
-							args[i] = parameters[idx];
-					}
-				}
-			}
-			try {
-				method.setAccessible(true);
-				return method.invoke(getTarget(), args);
-			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			} catch (InvocationTargetException e1) {
-				e1.printStackTrace();
-				throw new RuntimeException("注解为" + methodAnnotation.getSimpleName() + "调用目标错误。", e1);
-			}
-			return null;
+			return invokeMethodInjectParams(method, parameters, paramAnnotations, MethodParam.class, m -> m.value());
 		}).orElse(defaultValueForNoMethod);
 	}
 
-//	final protected <T extends Annotation> Object getFieldValue(Class<T> annoClass) {
-//		try {
-//			Field field = AUtil.getField(clazz, annoClass).orElse(null);
-//			if (field != null) {
-//				field.setAccessible(true);
-//				return field.get(target);
-//			} else {
-//				return null;
-//			}
-//		} catch (IllegalAccessException e) {
-//			throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
-//		} catch (IllegalArgumentException e1) {
-//			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
-//		}
-//	}
+	protected <T extends Annotation> Object invokeMethodInjectParams(Method method, Object[] parameterValues,
+			String[] paramemterNames, Class<T> parameterAnnotationClass,
+			Function<T, String> howToGetParameterNameFromAnnotation) {
+		Object[] args;
+		if (paramemterNames == null) {
+			args = parameterValues;
+		} else {
+			args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				T emp = para[i].getAnnotation(parameterAnnotationClass);
+				if (emp != null) {
+					String paramName = howToGetParameterNameFromAnnotation.apply(emp);
+					int idx = -1;
+					for (int j = 0; j < paramemterNames.length; j++) {
+						if (paramemterNames[j].equals(paramName)) {
+							idx = j;
+							break;
+						}
+					}
+					if (idx != -1)
+						args[i] = parameterValues[idx];
+				}
+			}
+		}
+		try {
+			method.setAccessible(true);
+			return method.invoke(getTarget(), args);
+		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+		} catch (InvocationTargetException e1) {
+			throw new RuntimeException(e1.getTargetException());
+		}
+		return null;
+	}
+
+	// final protected <T extends Annotation> Object getFieldValue(Class<T>
+	// annoClass) {
+	// try {
+	// Field field = AUtil.getField(clazz, annoClass).orElse(null);
+	// if (field != null) {
+	// field.setAccessible(true);
+	// return field.get(target);
+	// } else {
+	// return null;
+	// }
+	// } catch (IllegalAccessException e) {
+	// throw new RuntimeException("注解为" + annoClass + "的字段或方法无法访问。", e);
+	// } catch (IllegalArgumentException e1) {
+	// throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
+	// }
+	// }
 
 	final protected <T extends Annotation> Object getValue(Class<T> annoClass) {
-		return AUtil.getValue(clazz,annoClass,target);
+		return AUtil.getValue(clazz, annoClass, target);
 	}
 
 	final protected <T extends Annotation> void setFieldValue(Class<T> annoClass, Object value) {

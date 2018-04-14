@@ -111,6 +111,20 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	public long countRoles(BasicDBObject filter, @PathParam("_id") ObjectId parent_id);
 
+
+	@POST
+	@Path("/roles/{_id}/users")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<User> queryUsersOfRole(@PathParam("_id") ObjectId _id);
+
+	@POST
+	@Path("/roles/{_id}/users/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countUsersOfRole(@PathParam("_id") ObjectId _id);
+	
+	
 	@POST
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
@@ -130,12 +144,13 @@ public interface OrganizationService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织管理/" + DataSet.DELETE)
-	public long delete(@PathParam("_id") ObjectId get_id);
+	public long delete(@PathParam("_id") ObjectId _id);
 
 	@DELETE
 	@Path("/role/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public long deleteRole(@PathParam("_id") ObjectId get_id);
+	@DataSet("组织角色/" + DataSet.DELETE)
+	public long deleteRole(@PathParam("_id") ObjectId _id);
 
 }

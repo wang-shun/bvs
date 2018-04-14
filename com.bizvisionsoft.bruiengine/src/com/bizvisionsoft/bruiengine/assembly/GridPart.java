@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.Document;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,6 +16,7 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
+import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -542,7 +544,12 @@ public class GridPart {
 
 	public void add(Object parent, Object item) {
 		viewer.add(parent, item);
+		viewer.refresh(parent);
 		viewer.expandToLevel(parent, 1);
+	}
+
+	public void refresh(Object parent) {
+		viewer.refresh(parent);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -618,8 +625,8 @@ public class GridPart {
 		Arrays.asList(viewer.getGrid().getItems()).stream().forEach(i -> i.setChecked(b));
 	}
 
-	public Object getViewerInput() {
-		return viewer.getInput();
+	public List<?> getViewerInput() {
+		return (List<?>) viewer.getInput();
 	}
 
 	/**
@@ -641,7 +648,9 @@ public class GridPart {
 	public void delete(Object element) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.delete(element);
+				Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element))
+						.map(i -> i.getParentItem()).map(p -> p.getData()).orElse(null);
+				dataSetEngine.delete(element, parentData);
 				remove(element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());

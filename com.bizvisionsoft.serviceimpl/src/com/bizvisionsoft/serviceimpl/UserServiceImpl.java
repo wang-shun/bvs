@@ -57,7 +57,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> createDataSetForSelector(BasicDBObject condition) {
+	public List<User> queryUser(BasicDBObject condition) {
 		return createDataSet(condition, User.class);
 	}
 

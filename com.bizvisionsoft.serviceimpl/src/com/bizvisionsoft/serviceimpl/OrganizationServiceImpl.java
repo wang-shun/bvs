@@ -3,6 +3,7 @@ package com.bizvisionsoft.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -169,6 +170,54 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	@Override
 	public long deleteRole(ObjectId _id) {
 		return delete(_id, Role.class);
+	}
+
+	/**
+	 * db.getCollection('role').aggregate( [
+	 * {$match:{_id:ObjectId("5ad1366585e0fb292c30cb26")}},
+	 * {$unwind:{"path":"$users"}},
+	 * {$lookup:{"from":"account","localField":"users","foreignField":"userId","as":"user"}},
+	 * {$project:{"user":1,"_id":0}},
+	 * 
+	 * {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$user", 0 ]},
+	 * "$$ROOT" ] } }},
+	 * 
+	 * {$project:{"user":0}} ] )
+	 */
+	@Override
+	public List<User> queryUsersOfRole(ObjectId _id) {
+		List<Bson> pipeline = new ArrayList<>();
+
+		pipeline.add(Aggregates.match(new BasicDBObject("_id", _id)));
+
+		pipeline.add(Aggregates.unwind("$users"));
+
+		pipeline.add(Aggregates.lookup("account", "users", "userId", "user"));
+
+		pipeline.add(Aggregates.project(new BasicDBObject("user", true).append("_id", false)));
+
+		pipeline.add(Aggregates.replaceRoot(new BasicDBObject("$mergeObjects",
+				new Object[] { new BasicDBObject("$arrayElemAt", new Object[] { "$user", 0 }), "$$ROOT" })));
+
+		pipeline.add(Aggregates.project(new BasicDBObject("user", false)));
+		
+		pipeline.add(Aggregates.sort(new BasicDBObject("userId",1)));
+
+		List<User> result = new ArrayList<User>();
+		Service.col(Role.class).aggregate(pipeline, User.class).into(result);
+		return result;
+	}
+
+	@Override
+	public long countUsersOfRole(ObjectId _id) {
+		Document doc = Service.col("role").find(new BasicDBObject("_id", _id)).first();
+		if (doc == null) {
+			throw new ServiceException("没有指定id的角色");
+		}
+		Object users = doc.get("users");
+		if (users instanceof List<?>)
+			return ((List<?>) users).size();
+		return 0;
 	}
 
 }

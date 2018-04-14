@@ -32,8 +32,7 @@ public class AddMember {
 		new Selector(bruiService.getAssembly("用户选择器"), context).setTitle("选择用户添加为组织成员").open(r -> {
 			final List<String> ids = new ArrayList<String>();
 			GridPart grid = (GridPart) context.getContent();
-			@SuppressWarnings("unchecked")
-			List<User> input = (List<User>) grid.getViewerInput();
+			List<?> input = (List<?>) grid.getViewerInput();
 			r.forEach(a -> {
 				if (!input.contains(a)) {
 					grid.insert(a, 0);

@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -20,8 +22,8 @@ public class User {
 	private ObjectId _id;
 
 	@Persistence
-	@ReadValue
-	@WriteValue
+	@ReadValue({"userId","组织角色/id"})
+	@WriteValue({"userId","组织角色/id"})
 	private String userId;
 
 	@ReadValue
@@ -137,5 +139,9 @@ public class User {
 	public boolean isActivated() {
 		return activated;
 	}
+	
+	@Behavior("组织角色/编辑角色") // 控制action
+	@Exclude // 不用持久化
+	private boolean enableEditInRoleManage = false;
 
 }
