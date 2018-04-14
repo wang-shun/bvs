@@ -43,6 +43,7 @@ public interface CommonService {
 	@Path("/cert/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
+	@DataSet("执业资格列表/"+DataSet.DELETE)
 	public long deleteCertificate(@PathParam("_id") ObjectId _id);
 	
 	@PUT

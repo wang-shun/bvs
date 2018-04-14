@@ -370,5 +370,9 @@ public class AUtil {
 		}
 		return null;
 	}
+	
+	public static String readLabel(Object target) {
+		return readLabel(target, "");
+	}
 
 }

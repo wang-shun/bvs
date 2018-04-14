@@ -10,11 +10,12 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.Role;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class OrgMember {
+public class OrganizationDataSet {
 
 	@Inject
 	private BruiAssemblyContext context;
@@ -33,13 +34,24 @@ public class OrgMember {
 	}
 
 	@DataSet("组织成员/" + DataSet.LIST)
-	public List<User> list(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition) {
+	public List<User> listMember(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition) {
 		return service.getMember( condition,org.get_id());
 	}
 
 	@DataSet("组织成员/" + DataSet.COUNT)
-	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter) {
+	public long countMember(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter) {
 		return service.countMember(filter,org.get_id());
+	}
+
+	
+	@DataSet("组织角色/" + DataSet.LIST)
+	public List<Role> listRole(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition) {
+		return service.getRoles( condition,org.get_id());
+	}
+
+	@DataSet("组织角色/" + DataSet.COUNT)
+	public long countRole(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter) {
+		return service.countRoles(filter,org.get_id());
 	}
 
 }

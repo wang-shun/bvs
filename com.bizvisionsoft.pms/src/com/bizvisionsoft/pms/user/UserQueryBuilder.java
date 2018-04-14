@@ -27,7 +27,7 @@ public class UserQueryBuilder {
 	@WriteValue
 	public Object name;
 
-	public Object orgIds;
+	public Object org_id;
 
 	@WriteValue
 	public Object activated;
@@ -35,9 +35,9 @@ public class UserQueryBuilder {
 	@WriteValue("orgIds")
 	public void setOrgIds(List<Organization> orgs) {
 		if (orgs == null || orgs.isEmpty()) {
-			orgIds = null;
+			org_id = null;
 		} else {
-			orgIds = new BasicDBObject("$in", Util.getList(orgs, Organization::get_id));
+			org_id = new BasicDBObject("$in", Util.getList(orgs, Organization::get_id));
 		}
 	}
 

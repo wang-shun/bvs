@@ -41,6 +41,12 @@ public class Organization {
 		return Optional.ofNullable(this.parent_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
 	}
+	
+	/**
+	 * 所属项目
+	 */
+	@Persistence
+	private ObjectId project_id;
 
 	/**
 	 * 组织名称

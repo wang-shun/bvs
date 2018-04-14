@@ -104,6 +104,9 @@ public class User {
 	public String toString() {
 		return name + " [" + userId + "]";
 	}
+	
+	@ReadValue
+	private String typeName = "”√ªß";
 
 	@Override
 	public int hashCode() {

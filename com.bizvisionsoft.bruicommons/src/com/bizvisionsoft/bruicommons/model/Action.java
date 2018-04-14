@@ -202,4 +202,24 @@ public class Action extends ModelObject {
 	public String toString() {
 		return name;
 	}
+	
+	private boolean genericDelete;
+	
+	public boolean isGenericDelete() {
+		return genericDelete;
+	}
+	
+	public void setGenericDelete(boolean genericDelete) {
+		this.genericDelete = genericDelete;
+	}
+	
+	private boolean genericQuery;
+	
+	public boolean isGenericQuery() {
+		return genericQuery;
+	}
+	
+	public void setGenericQuery(boolean genericQuery) {
+		this.genericQuery = genericQuery;
+	}
 }

@@ -6,7 +6,9 @@ import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruiengine.action.DeleteSelected;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
+import com.bizvisionsoft.bruiengine.action.QueryInGrid;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -19,10 +21,15 @@ public class BruiActionEngine extends BruiEngine {
 		String editorId = action.getEditorAssemblyId();
 
 		if (staId != null && !staId.isEmpty()) {// 用于切换内容区的内置Action
-			brui = new BruiActionEngine(new SwitchContentToAssembly(Brui.site.getAssembly(staId),action.isOpenContent()));
+			brui = new BruiActionEngine(
+					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
 		} else if (editorId != null && !editorId.isEmpty()) {// 用于打开编辑器的Action
 			brui = new BruiActionEngine(
 					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
+		} else if (action.isGenericDelete()) {
+			brui = new BruiActionEngine(new DeleteSelected());
+		} else if (action.isGenericQuery()) {
+			brui = new BruiActionEngine(new QueryInGrid());
 		} else {
 			brui = load(action.getBundleId(), action.getClassName())// load
 					.newInstance();

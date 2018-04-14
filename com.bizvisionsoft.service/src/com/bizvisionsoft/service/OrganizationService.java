@@ -16,6 +16,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.Role;
 import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 
@@ -28,11 +29,23 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	public Organization insert(Organization orgInfo);
 
+	@POST
+	@Path("/role/")
+	@Consumes("application/json")
+	@Produces("application/json; charset=UTF-8")
+	public Role insertRole(Role role);
+
 	@GET
 	@Path("/{_id}")
 	@Consumes("application/json")
 	@Produces("application/json; charset=UTF-8")
 	public Organization get(@PathParam("_id") ObjectId _id);
+
+	@GET
+	@Path("/role/{_id}")
+	@Consumes("application/json")
+	@Produces("application/json; charset=UTF-8")
+	public Role getRole(@PathParam("_id") ObjectId _id);
 
 	@PUT
 	@Path("/")
@@ -40,7 +53,14 @@ public interface OrganizationService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织管理/" + DataSet.UPDATE)
 	public long update(BasicDBObject filterAndUpdate);
-	
+
+	@PUT
+	@Path("/role/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织角色/" + DataSet.UPDATE)
+	public long updateRole(BasicDBObject filterAndUpdate);
+
 	@GET
 	@Path("/root")
 	@Consumes("application/json; charset=UTF-8")
@@ -71,13 +91,25 @@ public interface OrganizationService {
 	@Path("/member/{_id}/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<User> getMember(BasicDBObject condition,@PathParam("_id") ObjectId parent_id);
+	public List<User> getMember(BasicDBObject condition, @PathParam("_id") ObjectId parent_id);
 
 	@POST
 	@Path("/member/count/{_id}/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public long countMember(BasicDBObject filter,@PathParam("_id") ObjectId parent_id);
+	public long countMember(BasicDBObject filter, @PathParam("_id") ObjectId parent_id);
+
+	@POST
+	@Path("/roles/{_id}/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Role> getRoles(BasicDBObject condition, @PathParam("_id") ObjectId parent_id);
+
+	@POST
+	@Path("/roles/count/{_id}/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countRoles(BasicDBObject filter, @PathParam("_id") ObjectId parent_id);
 
 	@POST
 	@Path("/ds/")
@@ -97,6 +129,13 @@ public interface OrganizationService {
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织管理/" + DataSet.DELETE)
 	public long delete(@PathParam("_id") ObjectId get_id);
+
+	@DELETE
+	@Path("/role/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long deleteRole(@PathParam("_id") ObjectId get_id);
 
 }

@@ -77,6 +77,7 @@ public interface UserService {
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
+	@DataSet(DataSet.DELETE)
 	public long delete(@PathParam("_id") ObjectId get_id) ;
 
 }

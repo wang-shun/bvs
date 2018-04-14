@@ -119,9 +119,9 @@ public class ActionsEditPane extends SashForm {
 		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
 		remove.addListener(SWT.Selection, e -> {
 			Action parent = getParentAction(current);
-			if(parent==null) {
+			if (parent == null) {
 				actions.remove(current);
-			}else {
+			} else {
 				parent.getChildren().remove(current);
 			}
 			viewer.refresh();
@@ -258,10 +258,11 @@ public class ActionsEditPane extends SashForm {
 
 			// editor.createCheckboxField(parent, "是否向所在组件的下层传递事件:", action, "propagate",
 			// SWT.CHECK);
-			
+
 			editor.createCheckboxField(parent, "由对象行为控制有效性:", action, "objectBehavier", SWT.CHECK);
 
-
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			Label l = new Label(parent, SWT.NONE);
@@ -272,6 +273,8 @@ public class ActionsEditPane extends SashForm {
 
 			editor.createTextField(parent, "完整的类名:", action, "className", SWT.BORDER);
 
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			l = new Label(parent, SWT.NONE);
@@ -280,7 +283,9 @@ public class ActionsEditPane extends SashForm {
 			editor.createAssemblyField(parent, "内容区组件:", action, "switchContentToAssemblyId", true);
 
 			editor.createCheckboxField(parent, "打开新内容（原有的内容区不关闭）:", action, "openContent", SWT.CHECK);
-			
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			l = new Label(parent, SWT.NONE);
@@ -289,6 +294,24 @@ public class ActionsEditPane extends SashForm {
 			editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
 
 			editor.createCheckboxField(parent, "允许编辑:", action, "editorAssemblyEditable", SWT.CHECK);
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			l = new Label(parent, SWT.NONE);
+			l.setText("如果用于删除选中内容，请勾选以下（DataSet需提供Delete注解的方法）：");
+			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			editor.createCheckboxField(parent, "通用删除操作:", action, "genericDelete", SWT.CHECK);
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			l = new Label(parent, SWT.NONE);
+			l.setText("如果用于查询，请勾选以下（仅适用于定义了查询字段的表格组件）：");
+			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			editor.createCheckboxField(parent, "通用查询操作:", action, "genericQuery", SWT.CHECK);
 
 			action.addPropertyChangeListener("name", listener);
 		}

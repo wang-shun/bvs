@@ -17,6 +17,7 @@ import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
@@ -234,10 +235,24 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				method.invoke(getTarget(), filterAndUpdate);
 			} catch (IllegalAccessException | IllegalArgumentException e) {
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException(assembly.getName() + " 数据源注解DataSet值为 update 的方法调用错误。",
-						e.getTargetException());
+				throw new RuntimeException(e.getTargetException().getMessage());
 			}
 		}
+	}
+	
+	public void delete(Object element) {
+		Object id = Util.getBson(element, true).get("_id");
+		Method method = AUtil
+				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.DELETE, a -> a.value())
+				.orElse(null);
+		if (method != null) {
+			try {
+				method.invoke(getTarget(), id);
+			} catch (IllegalAccessException | IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(e.getTargetException().getMessage());
+			}
+		}		
 	}
 
 	public void attachListener(BiConsumer<String, Method> con) {
@@ -261,5 +276,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 			}
 		});
 	}
+
+
 
 }

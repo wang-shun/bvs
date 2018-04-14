@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.model.Role;
 import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
@@ -43,12 +44,12 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 
 	@Override
 	public List<Organization> getRoot() {
-		return getSub(null);
+		return getOrganizations(new BasicDBObject("parent_id", null).append("project_id", null));
 	}
 
 	@Override
 	public long countRoot() {
-		return countSub(null);
+		return countOrganizations(new BasicDBObject("parent_id", null).append("project_id", null));
 	}
 
 	/**
@@ -62,9 +63,13 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	 */
 	@Override
 	public List<Organization> getSub(ObjectId parent_id) {
+		return getOrganizations(new BasicDBObject("parent_id", parent_id));
+	}
+
+	private List<Organization> getOrganizations(BasicDBObject match) {
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
-		pipeline.add(Aggregates.match(new BasicDBObject("parent_id", parent_id)));
+		pipeline.add(Aggregates.match(match));
 
 		pipeline.add(Aggregates.lookup("account", "managerId", "userId", "user"));
 
@@ -82,7 +87,11 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 
 	@Override
 	public long countSub(ObjectId parent_id) {
-		return Service.col(Organization.class).count(new BasicDBObject("parent_id", parent_id));
+		return countOrganizations(new BasicDBObject("parent_id", parent_id));
+	}
+
+	private long countOrganizations(BasicDBObject match) {
+		return Service.col(Organization.class).count(match);
 	}
 
 	public long countMember(ObjectId _id) {
@@ -103,7 +112,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	}
 
 	@Override
-	public List<User> getMember(BasicDBObject condition,ObjectId org_id) {
+	public List<User> getMember(BasicDBObject condition, ObjectId org_id) {
 		BasicDBObject filter = (BasicDBObject) condition.get("filter");
 		if (filter == null) {
 			filter = new BasicDBObject();
@@ -114,12 +123,52 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	}
 
 	@Override
-	public long countMember(BasicDBObject filter,ObjectId org_id) {
-		if(filter == null) {
+	public long countMember(BasicDBObject filter, ObjectId org_id) {
+		if (filter == null) {
 			filter = new BasicDBObject();
 		}
 		filter.put("org_id", org_id);
 		return count(filter, User.class);
+	}
+
+	@Override
+	public List<Role> getRoles(BasicDBObject condition, ObjectId org_id) {
+		BasicDBObject filter = (BasicDBObject) condition.get("filter");
+		if (filter == null) {
+			filter = new BasicDBObject();
+			condition.put("filter", filter);
+		}
+		filter.put("org_id", org_id);
+		return createDataSet(condition, Role.class);
+	}
+
+	@Override
+	public long countRoles(BasicDBObject filter, ObjectId org_id) {
+		if (filter == null) {
+			filter = new BasicDBObject();
+		}
+		filter.put("org_id", org_id);
+		return count(filter, Role.class);
+	}
+
+	@Override
+	public Role insertRole(Role role) {
+		return insert(role, Role.class);
+	}
+
+	@Override
+	public Role getRole(ObjectId _id) {
+		return get(_id, Role.class);
+	}
+
+	@Override
+	public long updateRole(BasicDBObject fu) {
+		return update(fu, Role.class);
+	}
+
+	@Override
+	public long deleteRole(ObjectId _id) {
+		return delete(_id, Role.class);
 	}
 
 }
