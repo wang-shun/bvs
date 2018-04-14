@@ -161,10 +161,9 @@ public class EPS implements Comparable<EPS> {
 		return cnt;
 	}
 
-	@ReadValue("epsType")
-	public String getEPSNodeType() {
-		return "EPS";
-	}
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "EPS";
 
 	@Override
 	@Label

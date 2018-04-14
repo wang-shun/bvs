@@ -20,6 +20,8 @@ import java.lang.annotation.Target;
 public @interface ReadValue {
 
 	
+	String TYPE = "_elementType";
+
 	/**
 	 * 空格不是必须的，只是为了好看，解释的时候会自动去掉前后多余的空格，如果该属性被多个表格或列使用时，可标记为数组
 	 * 

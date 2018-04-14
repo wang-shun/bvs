@@ -72,12 +72,12 @@ public interface UserService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("用户选择列表 / list")
 	public List<User> queryUser(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
-	
+
 	@DELETE
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet(DataSet.DELETE)
-	public long delete(@PathParam("_id") ObjectId get_id) ;
+	public long delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId get_id);
 
 }

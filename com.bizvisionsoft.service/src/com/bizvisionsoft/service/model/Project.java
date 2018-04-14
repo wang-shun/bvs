@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.GetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
@@ -272,6 +273,10 @@ public class Project {
 	public String toString() {
 		return name + " [" + id + "]";
 	}
+	
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "ÏîÄ¿";
 	
 	public Date getPlanStart() {
 		return planStart;

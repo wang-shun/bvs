@@ -163,4 +163,8 @@ public class View extends Part {
 		parent.layout();
 	}
 
+	public void switchAssemblyInContentArea(Assembly assembly, Object input) {
+		contentWidget.switchAssembly(assembly, input);
+	}
+
 }

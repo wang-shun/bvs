@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Certificate;
 import com.mongodb.BasicDBObject;
 
@@ -25,12 +26,12 @@ public interface CommonService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("执业资格列表/" + DataSet.LIST)
 	public List<Certificate> getCertificates();
-	
+
 	@POST
 	@Path("/cert/names/ds")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("执业资格选择器列表/"+DataSet.LIST)
+	@DataSet("执业资格选择器列表/" + DataSet.LIST)
 	public List<String> getCertificateNames();
 
 	@POST
@@ -43,9 +44,9 @@ public interface CommonService {
 	@Path("/cert/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("执业资格列表/"+DataSet.DELETE)
-	public long deleteCertificate(@PathParam("_id") ObjectId _id);
-	
+	@DataSet("执业资格列表/" + DataSet.DELETE)
+	public long deleteCertificate(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+
 	@PUT
 	@Path("/cert/")
 	@Consumes("application/json; charset=UTF-8")

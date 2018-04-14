@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
@@ -78,10 +79,9 @@ public class ProjectSet {
 	@Persistence
 	private String description;
 
-	@ReadValue("epsType")
-	public String getEPSNodeType() {
-		return "项目集";
-	}
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "项目集";
 
 	public ProjectSet setEps_id(ObjectId eps_id) {
 		this.eps_id = eps_id;

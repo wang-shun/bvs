@@ -37,9 +37,6 @@ public class Role {
 	@WriteValue
 	private ObjectId org_id;
 
-	@ReadValue
-	private String typeName = "角色";
-
 	public ObjectId get_id() {
 		return _id;
 	}
@@ -54,6 +51,10 @@ public class Role {
 	public String toString() {
 		return name + " [" + id + "]";
 	}
+	
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "角色";
 
 	@Structure("组织角色/list")
 	public List<User> getUser() {

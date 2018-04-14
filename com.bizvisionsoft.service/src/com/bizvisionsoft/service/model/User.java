@@ -107,9 +107,10 @@ public class User {
 		return name + " [" + userId + "]";
 	}
 	
-	@ReadValue
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
 	private String typeName = "”√ªß";
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

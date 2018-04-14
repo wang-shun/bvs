@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.action;
 
+import java.util.Optional;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
@@ -20,8 +22,9 @@ public class DeleteSelected {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(elem -> {
-			String label = AUtil.readLabel(elem);
-			String message = label == null ? "请确认将要删除选择的记录。" : ("请确认将要删除 " + label);
+			String message = Optional.ofNullable(AUtil.readTypeAndLabel(elem)).map(m -> "请确认将要删除 " + m)
+					.orElse("请确认将要删除选择的记录。");
+
 			if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
 				GridPart grid = (GridPart) context.getContent();
 				grid.delete(elem);

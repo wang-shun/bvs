@@ -292,7 +292,7 @@ public class AUtil {
 				String[] loc = ((String[]) v)[i].split("/");
 				if (loc.length == 1 && fName.equals(loc[0].trim())) {
 					return true;
-				} else if (loc.length > 1 && cName.equals(loc[0].trim()) && fName.equals(loc[1].trim())) {
+				} else if (loc.length > 1 && loc[0].trim().equals(cName) && loc[1].trim().equals(fName)) {
 					return true;
 				}
 			}
@@ -370,9 +370,29 @@ public class AUtil {
 		}
 		return null;
 	}
-	
+
 	public static String readLabel(Object target) {
 		return readLabel(target, "");
+	}
+
+	public static String readType(Object elem) {
+		return Optional.ofNullable(readValue(elem, "", ReadValue.TYPE, null)).map(v -> v.toString()).orElse(null);
+	}
+
+	public static String readTypeAndLabel(Object elem) {
+		String message = null;
+		String type = AUtil.readType(elem);
+		if (type != null) {
+			message = type;
+		}
+		String label = AUtil.readLabel(elem);
+		if (label != null) {
+			if (message != null)
+				message += ": " + label;
+			else
+				message = label;
+		}
+		return message;
 	}
 
 }

@@ -6,7 +6,6 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.ui.ContentWidget;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
@@ -15,8 +14,6 @@ import com.bizvisionsoft.service.model.User;
 public class BruiService implements IBruiService {
 
 	private Part part;
-
-	private ContentWidget contentWidget;
 
 	public BruiService(Part part) {
 		this.part = part;
@@ -51,13 +48,11 @@ public class BruiService implements IBruiService {
 		return part.getShell();
 	}
 
-	public void setContentWidget(ContentWidget contentWidget) {
-		this.contentWidget = contentWidget;
-	}
-
 	@Override
 	public void switchContent(Assembly assembly, Object input) {
-		contentWidget.switchAssembly(assembly, input);
+		if(part instanceof View) {
+			((View)part).switchAssemblyInContentArea(assembly, input);
+		}
 	}
 
 	@Override

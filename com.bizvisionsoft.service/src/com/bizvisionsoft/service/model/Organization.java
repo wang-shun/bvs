@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.Label;
@@ -118,6 +119,10 @@ public class Organization {
 	public String toString() {
 		return fullName == null ? "" : fullName;
 	}
+	
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "×éÖ¯";
 
 	public ObjectId getParentId() {
 		return parent_id;

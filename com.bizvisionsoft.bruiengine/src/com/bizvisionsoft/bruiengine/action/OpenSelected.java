@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.action;
 
+import java.util.Optional;
+
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -27,10 +29,8 @@ public class OpenSelected {
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(em -> {
 			Editor<?> editor = new Editor<Object>(assembly, context).setInput(em).setEditable(editable);
-			String label = AUtil.readLabel(em, "");
-			if (label != null) {
-				editor.setTitle(editable?("±à¼­ "+label):label);
-			}
+			String message = Optional.ofNullable(AUtil.readTypeAndLabel(em)).orElse("");
+			editor.setTitle(editable ? ("±à¼­ " + message) : message);
 
 			editor.open((r, o) -> {
 				GridPart grid = (GridPart) context.getContent();

@@ -93,10 +93,9 @@ public class ProjectTemplate {
 		return name + " [" + id + "]";
 	}
 	
-	@ReadValue("epsType")
-	public String getEPSNodeType() {
-		return "项目模板";
-	}
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "项目模板";
 	
 
 }

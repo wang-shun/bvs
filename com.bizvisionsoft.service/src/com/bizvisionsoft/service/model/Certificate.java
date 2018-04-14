@@ -2,6 +2,7 @@ package com.bizvisionsoft.service.model;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -17,6 +18,11 @@ public class Certificate {
 	@Label
 	public String name;//TODO 唯一
 
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "执业资格";
+
+	
 	@ReadValue
 	@WriteValue
 	private String description;

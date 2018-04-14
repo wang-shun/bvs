@@ -31,7 +31,6 @@ public class ContentWidget {
 		this.assembly = assembly;
 		this.service = service;
 		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
-		service.setContentWidget(this);
 	}
 
 	public ContentWidget createUI(Composite parent,Object input) {

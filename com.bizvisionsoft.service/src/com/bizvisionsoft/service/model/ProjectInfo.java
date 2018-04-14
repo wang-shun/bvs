@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
+import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
@@ -296,11 +297,6 @@ public class ProjectInfo {
 		return null;// TODO
 	}
 
-	@ReadValue("epsType")
-	public String getEPSNodeType() {
-		return "项目";
-	}
-
 	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
 		return true;// 考虑权限 TODO
@@ -311,4 +307,8 @@ public class ProjectInfo {
 	public String toString() {
 		return name + " [" + id + "]";
 	}
+	
+	@ReadValue(ReadValue.TYPE)
+	@Exclude
+	private String typeName = "项目";
 }
