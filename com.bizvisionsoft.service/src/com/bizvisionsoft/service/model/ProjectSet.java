@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
-import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -28,7 +27,8 @@ public class ProjectSet {
 	/**
 	 * _id
 	 */
-	@SetValue
+	@ReadValue
+	@WriteValue
 	private ObjectId _id;
 
 	/**
@@ -149,7 +149,7 @@ public class ProjectSet {
 	private boolean enableOpen() {
 		return true;// ¿¼ÂÇÈ¨ÏÞ TODO
 	}
-	
+
 	@Override
 	@Label
 	public String toString() {

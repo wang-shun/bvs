@@ -57,7 +57,15 @@ public interface EPSService {
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public long delete(@PathParam("_id") ObjectId get_id) ;
+	@DataSet("EPS管理/" + DataSet.DELETE)
+	public long delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId get_id);
+
+	@DELETE
+	@Path("/projectset/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("EPS浏览/" + DataSet.DELETE)
+	public long deleteProjectSet(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId get_id);
 
 	@PUT
 	@Path("/")
@@ -69,6 +77,7 @@ public interface EPSService {
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public EPS insert(EPS eps);
+	@DataSet("EPS管理/" + DataSet.INSERT)
+	public EPS insert(@ServiceParam(ServiceParam.OBJECT) EPS eps);
 
 }

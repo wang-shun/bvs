@@ -19,13 +19,13 @@ import com.mongodb.BasicDBObject;
 
 @Path("/projectset")
 public interface ProjectSetService {
-	
+
 	@POST
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public ProjectSet insert(ProjectSet project);
-	
+
 	@PUT
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
@@ -37,22 +37,23 @@ public interface ProjectSetService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public ProjectSet get(@PathParam("_id") ObjectId _id);
-	
+
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
-	
+
 	@POST
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public List<ProjectSet> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
-	
+
 	@DELETE
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public long delete(@PathParam("_id") ObjectId get_id) ;
+	@Deprecated
+	public long delete(@PathParam("_id") ObjectId get_id);
 }

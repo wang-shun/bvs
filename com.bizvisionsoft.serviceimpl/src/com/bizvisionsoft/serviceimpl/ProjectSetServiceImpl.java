@@ -58,6 +58,7 @@ public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSe
 	}
 
 	@Override
+	@Deprecated
 	public long delete(ObjectId _id) {
 		// 如果有下级项目集不可被删除
 		if (Service.col(ProjectSet.class).count(new BasicDBObject("parent_id", _id)) > 0)
