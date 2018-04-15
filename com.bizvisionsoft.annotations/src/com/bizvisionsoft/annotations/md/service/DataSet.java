@@ -27,6 +27,9 @@ public @interface DataSet {
 	public static final String UPDATE = "update";
 
 	public static final String DELETE = "delete";
+	
+	public static final String INSERT = "insert";
+
 
 	/**
 	 * @author hua

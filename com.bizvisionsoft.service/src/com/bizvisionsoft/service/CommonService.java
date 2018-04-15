@@ -42,7 +42,8 @@ public interface CommonService {
 	@Path("/cert/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Certificate insertCertificate(Certificate cert);
+	@DataSet("执业资格列表/" + DataSet.INSERT)
+	public Certificate insertCertificate(@ServiceParam(ServiceParam.OBJECT) Certificate cert);
 
 	@DELETE
 	@Path("/cert/_id/{_id}")

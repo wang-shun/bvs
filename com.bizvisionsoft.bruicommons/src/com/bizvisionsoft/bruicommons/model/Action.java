@@ -3,7 +3,21 @@ package com.bizvisionsoft.bruicommons.model;
 import java.util.List;
 
 public class Action extends ModelObject {
+	
+	public final static String TYPE_INSERT = "insert";
 
+	public final static String TYPE_EDIT = "edit";
+
+	public final static String TYPE_DELETE = "delete";
+
+	public final static String TYPE_QUERY = "query";
+
+	public final static String TYPE_CUSTOMIZED = "customized";
+
+	public static final String TYPE_SWITCHCONTENT = "switch";
+
+	public static final String TYPE_OPENPAGE = "openpage";
+	
 	private String id;
 
 	private String name;
@@ -203,23 +217,36 @@ public class Action extends ModelObject {
 		return name;
 	}
 	
-	private boolean genericDelete;
 	
-	public boolean isGenericDelete() {
-		return genericDelete;
+	private String type;
+	
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
-	public void setGenericDelete(boolean genericDelete) {
-		this.genericDelete = genericDelete;
+	public String getType() {
+		return type;
 	}
 	
-	private boolean genericQuery;
+	private String createActionNewInstanceBundleId;
+
+	private String createActionNewInstanceClassName;
 	
-	public boolean isGenericQuery() {
-		return genericQuery;
+	public String getCreateActionNewInstanceBundleId() {
+		return createActionNewInstanceBundleId;
 	}
 	
-	public void setGenericQuery(boolean genericQuery) {
-		this.genericQuery = genericQuery;
+	public String getCreateActionNewInstanceClassName() {
+		return createActionNewInstanceClassName;
 	}
+	
+	public void setCreateActionNewInstanceBundleId(String createActionNewInstanceBundleId) {
+		this.createActionNewInstanceBundleId = createActionNewInstanceBundleId;
+	}
+	
+	public void setCreateActionNewInstanceClassName(String createActionNewInstanceClassName) {
+		this.createActionNewInstanceClassName = createActionNewInstanceClassName;
+	}
+	
 }

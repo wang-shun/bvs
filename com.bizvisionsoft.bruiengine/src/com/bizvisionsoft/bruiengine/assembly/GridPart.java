@@ -600,7 +600,7 @@ public class GridPart {
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (!Util.isEmptyOrNull(bundleId)&& !Util.isEmptyOrNull(classId)) {
+		if (!Util.isEmptyOrNull(bundleId) && !Util.isEmptyOrNull(classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();
@@ -634,7 +634,7 @@ public class GridPart {
 	 * @param em
 	 * @param o
 	 */
-	public void modify(Object element, BasicDBObject newElement) {
+	public void doModify(Object element, BasicDBObject newElement) {
 		if (dataSetEngine != null) {
 			try {
 				dataSetEngine.replace(element, newElement);
@@ -645,7 +645,7 @@ public class GridPart {
 		}
 	}
 
-	public void delete(Object element) {
+	public void doDelete(Object element) {
 		if (dataSetEngine != null) {
 			try {
 				Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element))
@@ -654,6 +654,17 @@ public class GridPart {
 				remove(element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());
+			}
+		}
+	}
+
+	public void doCreate(Object parent, Object element) {
+		if (dataSetEngine != null) {
+			Object newElement = dataSetEngine.insert(parent, element);
+			if (parent == null) {
+				insert(newElement);
+			}else{
+				refresh(parent);
 			}
 		}
 	}

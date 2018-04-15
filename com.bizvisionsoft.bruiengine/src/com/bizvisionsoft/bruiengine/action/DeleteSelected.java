@@ -27,7 +27,7 @@ public class DeleteSelected {
 
 			if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "É¾³ý", message)) {
 				GridPart grid = (GridPart) context.getContent();
-				grid.delete(elem);
+				grid.doDelete(elem);
 			}
 		});
 	}

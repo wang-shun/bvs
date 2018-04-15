@@ -6,40 +6,64 @@ import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruiengine.action.CreateRoot;
 import com.bizvisionsoft.bruiengine.action.DeleteSelected;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.action.QueryInGrid;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiActionEngine extends BruiEngine {
 
 	public static BruiActionEngine create(Action action, IServiceWithId... services) {
 		BruiEngine brui;
-		String staId = action.getSwitchContentToAssemblyId();
-		String editorId = action.getEditorAssemblyId();
+		String type = action.getType();
 
-		if (staId != null && !staId.isEmpty()) {// 用于切换内容区的内置Action
-			brui = new BruiActionEngine(
-					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
-		} else if (editorId != null && !editorId.isEmpty()) {// 用于打开编辑器的Action
+		if (Action.TYPE_INSERT.equals(type)) {
+			String editorId = action.getEditorAssemblyId();
+			String bid = action.getCreateActionNewInstanceBundleId();
+			String cla = action.getCreateActionNewInstanceClassName();
+			brui = new BruiActionEngine(new CreateRoot(Brui.site.getAssembly(editorId),bid,cla));
+
+		} else if (Action.TYPE_EDIT.equals(type)) {
+			String editorId = action.getEditorAssemblyId();
 			brui = new BruiActionEngine(
 					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
-		} else if (action.isGenericDelete()) {
+
+		} else if (Action.TYPE_DELETE.equals(type)) {
 			brui = new BruiActionEngine(new DeleteSelected());
-		} else if (action.isGenericQuery()) {
+
+		} else if (Action.TYPE_QUERY.equals(type)) {
 			brui = new BruiActionEngine(new QueryInGrid());
+
+		} else if (Action.TYPE_CUSTOMIZED.equals(type)) {
+			brui = load(action.getBundleId(), action.getClassName())// load
+					.newInstance();
+
+		} else if (Action.TYPE_SWITCHCONTENT.equals(type)) {
+			String staId = action.getSwitchContentToAssemblyId();
+			brui = new BruiActionEngine(
+					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
+		} else if (Action.TYPE_OPENPAGE.equals(type)) {
+			// TODO
+			String staId = action.getSwitchContentToAssemblyId();
+			brui = new BruiActionEngine(
+					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
 		} else {
 			brui = load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
+
 		}
+
 		return (BruiActionEngine) brui.init(services);
 	}
 
 	private static BruiEngine load(String bundleId, String className) {
-		if (bundleId == null || bundleId.isEmpty())
-			throw new RuntimeException("插件Id为空");
+		if (Util.isEmptyOrNull(bundleId) || Util.isEmptyOrNull(className))
+			throw new RuntimeException("插件Id或ClassName为空");
+
 		Bundle bundle = Platform.getBundle(bundleId);
 
 		if (bundle == null)

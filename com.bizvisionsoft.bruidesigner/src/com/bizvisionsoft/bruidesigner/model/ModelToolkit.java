@@ -196,11 +196,18 @@ public class ModelToolkit {
 		SiteLoader.site.getPages().remove(page);
 	}
 
-	public static Action createAction() {
+	public static Action createAction(String type) {
 		Action action = new Action();
+		action.setType(type);
 		action.setId(generateId());
 		String name = generateName("ÐÂ²Ù×÷Ïî");
 		action.setName(name);
+
+		if(Action.TYPE_INSERT.equals(type)) {
+			
+		}
+		
+		
 		return action;
 	}
 

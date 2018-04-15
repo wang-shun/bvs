@@ -240,6 +240,31 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		}
 	}
 
+	public Object insert(Object parent, Object element) {
+		Method method = AUtil
+				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.INSERT, a -> a.value())
+				.orElse(null);
+		if (method != null) {
+			try {
+				Object[] values;
+				String[] names;
+				if (parent == null) {
+					values = new Object[] { Util.getBson(element, true).get("_id"), element };
+					names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+				} else {
+					values = new Object[] { Util.getBson(parent, true).get("_id"), parent,
+							Util.getBson(element, true).get("_id"), element };
+					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
+							ServiceParam.OBJECT };
+				}
+				return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
+			} catch (RuntimeException e) {
+				throw e;
+			}
+		}
+		return new RuntimeException("DateSet缺少Insert注解的方法");
+	}
+
 	public void delete(Object element, Object parent) {
 		Method method = AUtil
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.DELETE, a -> a.value())
@@ -251,9 +276,11 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				if (parent == null) {
 					values = new Object[] { Util.getBson(element, true).get("_id"), element };
 					names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
-				}else {
-					values = new Object[] { Util.getBson(parent, true).get("_id"), parent ,Util.getBson(element, true).get("_id"), element};
-					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT,ServiceParam._ID, ServiceParam.OBJECT };
+				} else {
+					values = new Object[] { Util.getBson(parent, true).get("_id"), parent,
+							Util.getBson(element, true).get("_id"), element };
+					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
+							ServiceParam.OBJECT };
 				}
 				invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
 			} catch (RuntimeException e) {

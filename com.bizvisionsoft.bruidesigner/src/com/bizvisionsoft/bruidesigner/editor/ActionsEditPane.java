@@ -16,7 +16,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.bizvisionsoft.bruicommons.model.Action;
@@ -110,10 +111,7 @@ public class ActionsEditPane extends SashForm {
 
 		Button add = new Button(toolbar, SWT.PUSH);
 		add.setImage(Activator.getImageDescriptor("icons/add.png").createImage());
-		add.addListener(SWT.Selection, e -> {
-			actions.add(ModelToolkit.createAction());
-			viewer.refresh();
-		});
+		add.addListener(SWT.Selection, e -> showActionAddMenu(add));
 
 		Button remove = new Button(toolbar, SWT.PUSH);
 		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
@@ -216,6 +214,70 @@ public class ActionsEditPane extends SashForm {
 		createRightPane();
 	}
 
+	/*
+	 * 
+	 * 
+	 */
+	private void showActionAddMenu(Button parent) {
+		Menu menu = new Menu(parent);
+		MenuItem item;
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("切换内容区");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_SWITCHCONTENT));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("打开新页面");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_OPENPAGE));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("创建新对象（适用于表格组件）");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_INSERT));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("编辑或打开选择中对象（适用于表格组件）");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_EDIT));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("删除选择中对象（适用于表格组件）");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_DELETE));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("根据查询字段查询（适用于表格组件）");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_QUERY));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("自定义操作");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_CUSTOMIZED));
+			viewer.refresh();
+		});
+
+		parent.setMenu(menu);
+		parent.addListener(SWT.Selection, e -> {
+			menu.setLocation(parent.toDisplay(0, 32));
+			menu.setVisible(true);
+		});
+	}
+
 	private void createRightPane() {
 		rightPane = new Composite(this, SWT.NONE);
 		GridLayout layout = new GridLayout(3, false);
@@ -236,6 +298,12 @@ public class ActionsEditPane extends SashForm {
 
 		if (action != null) {
 
+			editor.createComboField(parent,
+					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "自定义操作" },
+					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT,
+							Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY, Action.TYPE_CUSTOMIZED },
+					"操作类型：", action, "type", SWT.READ_ONLY);
+
 			editor.createTextField(parent, "唯一标识符:", action, "id", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "操作名称:", action, "name", SWT.BORDER);
@@ -254,65 +322,48 @@ public class ActionsEditPane extends SashForm {
 					new String[] { "", "normal", "info", "warning", "serious" }, "按钮风格（仅对工具栏按钮有效）：", action, "style",
 					SWT.READ_ONLY);
 
-			editor.createPathField(parent, "图标URL（失效状态）:", action, "imageDisabled", SWT.BORDER);
-
-			// editor.createCheckboxField(parent, "是否向所在组件的下层传递事件:", action, "propagate",
-			// SWT.CHECK);
-
 			editor.createCheckboxField(parent, "由对象行为控制有效性:", action, "objectBehavier", SWT.CHECK);
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			Label l = new Label(parent, SWT.NONE);
-			l.setText("如果是自定义操作，请定义以下内容：");
-			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-			editor.createTextField(parent, "插件唯一标识符（Bundle Id）:", action, "bundleId", SWT.BORDER);
-
-			editor.createTextField(parent, "完整的类名:", action, "className", SWT.BORDER);
+			if (Action.TYPE_CUSTOMIZED.equals(action.getType())) {
+				editor.createTextField(parent, "插件唯一标识符（Bundle Id）:", action, "bundleId", SWT.BORDER);
+				editor.createTextField(parent, "完整的类名:", action, "className", SWT.BORDER);
+			}
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			l = new Label(parent, SWT.NONE);
-			l.setText("如果用于切换或打开内容区，请定义以下内容：");
-			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			editor.createAssemblyField(parent, "内容区组件:", action, "switchContentToAssemblyId", true);
-
-			editor.createCheckboxField(parent, "打开新内容（原有的内容区不关闭）:", action, "openContent", SWT.CHECK);
-
+			if (Action.TYPE_SWITCHCONTENT.equals(action.getType())) {
+				editor.createAssemblyField(parent, "内容区组件:", action, "switchContentToAssemblyId", true);
+				editor.createCheckboxField(parent, "打开新内容（原有的内容区不关闭）:", action, "openContent", SWT.CHECK);
+			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			l = new Label(parent, SWT.NONE);
-			l.setText("如果用于打开选中内容，请定义以下内容：");
-			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
+			if (Action.TYPE_OPENPAGE.equals(action.getType())) {
 
-			editor.createCheckboxField(parent, "允许编辑:", action, "editorAssemblyEditable", SWT.CHECK);
-
+			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			l = new Label(parent, SWT.NONE);
-			l.setText("如果用于删除选中内容，请勾选以下（DataSet需提供Delete注解的方法）：");
-			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			editor.createCheckboxField(parent, "通用删除操作:", action, "genericDelete", SWT.CHECK);
-
+			if (Action.TYPE_INSERT.equals(action.getType())) {
+				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
+				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId", SWT.BORDER);
+				editor.createTextField(parent, "新对象的完整类名:", action, "createActionNewInstanceClassName", SWT.BORDER);
+			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			l = new Label(parent, SWT.NONE);
-			l.setText("如果用于查询，请勾选以下（仅适用于定义了查询字段的表格组件）：");
-			l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			editor.createCheckboxField(parent, "通用查询操作:", action, "genericQuery", SWT.CHECK);
-
+			if (Action.TYPE_EDIT.equals(action.getType())) {
+				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
+				editor.createCheckboxField(parent, "允许编辑:", action, "editorAssemblyEditable", SWT.CHECK);
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (Action.TYPE_DELETE.equals(action.getType())) {
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (Action.TYPE_QUERY.equals(action.getType())) {
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			action.addPropertyChangeListener("name", listener);
 		}
 
