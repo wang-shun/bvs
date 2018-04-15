@@ -16,7 +16,6 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.model.UserInfo;
 import com.mongodb.BasicDBObject;
 
 @Path("/user")
@@ -38,8 +37,8 @@ public interface UserService {
 	@Path("/ds/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet({ "用户管理/" + DataSet.LIST, "账户管理/" + DataSet.LIST })
-	public List<UserInfo> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
+	@DataSet(DataSet.LIST)
+	public List<User> createDataSet(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 	@GET
 	@Path("/check/{userId}/{password}")
@@ -57,7 +56,7 @@ public interface UserService {
 	@Path("/info/userId/{userId}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public UserInfo info(@PathParam("userId") String userId);
+	public User info(@PathParam("userId") String userId);
 
 	@POST
 	@Path("/count/")
@@ -65,13 +64,6 @@ public interface UserService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet(DataSet.COUNT)
 	public long count(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
-
-	@POST
-	@Path("/ds/selector/")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	@DataSet("用户选择列表 / list")
-	public List<User> queryUser(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);
 
 	@DELETE
 	@Path("/_id/{_id}")

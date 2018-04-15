@@ -10,7 +10,6 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.model.Organization;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.model.UserInfo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
@@ -42,8 +41,8 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserInfo info(String userId) {
-		List<UserInfo> ds = createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
+	public User info(String userId) {
+		List<User> ds = createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
 				new BasicDBObject("userId", userId)));
 		if (ds.size() == 0) {
 			throw new ServiceException("没有用户Id为" + userId + "的用户。");
@@ -57,19 +56,14 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> queryUser(BasicDBObject condition) {
-		return createDataSet(condition, User.class);
-	}
-
-	@Override
-	public List<UserInfo> createDataSet(BasicDBObject condition) {
+	public List<User> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");
 		BasicDBObject filter = (BasicDBObject) condition.get("filter");
 		return query(skip, limit, filter);
 	}
 
-	private List<UserInfo> query(Integer skip, Integer limit, BasicDBObject filter) {
+	private List<User> query(Integer skip, Integer limit, BasicDBObject filter) {
 
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
@@ -100,8 +94,8 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 				.append("orgFullName", "$fullName")//
 		));
 
-		List<UserInfo> result = new ArrayList<UserInfo>();
-		Service.col(UserInfo.class).aggregate(pipeline).into(result);
+		List<User> result = new ArrayList<User>();
+		Service.col(User.class).aggregate(pipeline).into(result);
 		return result;
 	}
 
@@ -122,6 +116,9 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		BasicDBObject filter = new BasicDBObject().append("managerId", userId);
 		if (count(filter, Organization.class) != 0)
 			throw new ServiceException("不能删除在组织中担任管理者的用户。");
+
+		// TODO
+		// 有角色的需要清除
 
 		// TODO 其他检查
 		return delete(_id, User.class);

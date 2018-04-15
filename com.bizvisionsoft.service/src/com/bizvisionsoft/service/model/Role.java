@@ -66,11 +66,8 @@ public class Role {
 		return ServicesLoader.get(OrganizationService.class).countUsersOfRole(_id);
 	}
 
-	@Behavior("组织角色/添加用户") // 控制action
+	@Behavior({"组织角色/添加用户","组织角色/编辑角色"}) // 控制action
 	@Exclude // 不用持久化
-	private boolean enableAddUser = true;
+	private boolean behaviours = true;
 	
-	@Behavior("组织角色/编辑角色") // 控制action
-	@Exclude // 不用持久化
-	private boolean enableEditInRoleManage = true;
 }

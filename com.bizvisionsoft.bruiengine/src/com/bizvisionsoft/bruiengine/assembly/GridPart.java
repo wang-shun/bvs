@@ -178,7 +178,7 @@ public class GridPart {
 			queryPanel.setLayoutData(fd);
 			fd.top = new FormAttachment();
 			fd.left = new FormAttachment();
-			fd.width = 320;
+			fd.right = new FormAttachment(30);
 			fd.bottom = new FormAttachment(100);
 
 			sep = new Label(panel, SWT.VERTICAL | SWT.SEPARATOR);
@@ -600,7 +600,7 @@ public class GridPart {
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (bundleId != null && classId != null) {
+		if (!Util.isEmptyOrNull(bundleId)&& !Util.isEmptyOrNull(classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();

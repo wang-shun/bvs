@@ -1,8 +1,5 @@
 package com.bizvisionsoft.demo.rsclient;
 
-import java.util.List;
-
-import org.bson.types.ObjectId;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,11 +11,8 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.UserService;
-import com.bizvisionsoft.service.model.Organization;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.model.UserInfo;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -80,13 +74,13 @@ public class DemoAssemblyInvokeRS {
 			System.out.println("ok");
 		});
 
-		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
-		button.setText("测试查询用户");
-		button.addListener(SWT.Selection, e -> {
-			BasicDBObject condition = new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
-					new BasicDBObject("userId", "zh"));
-			List<UserInfo> result = Services.get(UserService.class).createDataSet(condition);
-			System.out.println("ok" + result);
-		});
+//		button = bruiToolkit.newStyledControl(Button.class, parent, SWT.PUSH, BruiToolkit.CSS_NORMAL);
+//		button.setText("测试查询用户");
+//		button.addListener(SWT.Selection, e -> {
+//			BasicDBObject condition = new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
+//					new BasicDBObject("userId", "zh"));
+//			List<UserInfo> result = Services.get(UserService.class).createDataSet(condition);
+//			System.out.println("ok" + result);
+//		});
 	}
 }

@@ -8,10 +8,11 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
-import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 
@@ -22,7 +23,7 @@ public class User {
 	private ObjectId _id;
 
 	@Persistence
-	@ReadValue({"userId","组织角色/id"})
+	@ReadValue({"userId","组织角色/id","资源类型/id"})
 	@WriteValue({"userId","组织角色/id"})
 	private String userId;
 
@@ -75,10 +76,19 @@ public class User {
 	@Persistence("org_id")
 	private ObjectId organizationId;
 	
+	@SetValue
+	@ReadValue
+	private String orgFullName;
+	
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private List<String> certificates;
+	
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private ObjectId resourceType_id;
 
 	public String getUserId() {
 		return userId;
@@ -98,6 +108,17 @@ public class User {
 	@ReadValue("organization ")
 	public Organization getOrganization() {
 		return Optional.ofNullable(organizationId).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
+				.orElse(null);
+	}
+	
+	@WriteValue("resourceType ")
+	public void setResourceType(ResourceType rt) {
+		this.resourceType_id = Optional.ofNullable(rt).map(o -> o.get_id()).orElse(null);
+	}
+
+	@ReadValue("resourceType ")
+	public ResourceType getResourceType() {
+		return Optional.ofNullable(resourceType_id).map(_id -> ServicesLoader.get(CommonService.class).getResourceType(_id))
 				.orElse(null);
 	}
 
@@ -141,8 +162,5 @@ public class User {
 		return activated;
 	}
 	
-	@Behavior("组织角色/编辑角色") // 控制action
-	@Exclude // 不用持久化
-	private boolean enableEditInRoleManage = false;
 
 }

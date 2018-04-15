@@ -60,13 +60,9 @@ public class EPS implements Comparable<EPS> {
 	@WriteValue
 	private String description;
 
-	@Behavior("EPS浏览/创建项目集") // 控制action
+	@Behavior({"EPS浏览/创建项目集","项目模板管理/创建项目模板"}) // 控制action
 	@Exclude // 不用持久化
-	private boolean enableAddProjectSet = true;
-
-	@Behavior("项目模板管理/创建项目模板") // 控制action
-	@Exclude // 不用持久化
-	private boolean enableAddProjectTemplate = true;
+	private boolean enabledBehaviors = true;
 
 	public ObjectId get_id() {
 		return _id;
