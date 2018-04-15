@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiToolkit {
@@ -104,7 +104,7 @@ public class BruiToolkit {
 		if (!resPath.startsWith("/")) {
 			resPath = "/" + resPath;
 		}
-		String aliasOfResFolder = Brui.site.getAliasOfResFolder();
+		String aliasOfResFolder = ModelLoader.site.getAliasOfResFolder();
 		return "rwt-resources/" + aliasOfResFolder + resPath;
 	}
 

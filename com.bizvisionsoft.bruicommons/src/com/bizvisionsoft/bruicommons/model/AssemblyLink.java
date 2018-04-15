@@ -1,6 +1,33 @@
 package com.bizvisionsoft.bruicommons.model;
 
+import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.bruicommons.ModelLoader;
+
 public class AssemblyLink extends ModelObject{
+	
+	@ReadValue(ReadValue.TYPE)
+	private String typeName = "×é¼þÁ´½Ó";
+
+	@Override
+	@Label
+	public String toString() {
+		return ModelLoader.site.getAssembly(id).toString();
+	}
+	
+	@ReadValue("name")
+	public String getName() {
+		return ModelLoader.site.getAssembly(id).getName();
+	}
+	
+	@ReadValue("title")
+	public String getTitle() {
+		return ModelLoader.site.getAssembly(id).getTitle();
+	}
+	
+	@Behavior({"É¾³ý","±à¼­"})
+	private boolean behavior = true;
 	
 	private String id;
 	

@@ -13,8 +13,8 @@ import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
 import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
 import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
@@ -47,7 +47,7 @@ public class SelectorPart {
 	public SelectorPart(Assembly assembly) {
 		this.config = assembly;
 		String gridConfigId = assembly.getSelectorGridAssemblyId();
-		gridConfig = Brui.site.getAssembly(gridConfigId);
+		gridConfig = ModelLoader.site.getAssembly(gridConfigId);
 		this.result = new ArrayList<>();
 	}
 	

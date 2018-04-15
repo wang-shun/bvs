@@ -5,9 +5,11 @@ import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.action.CreateRoot;
 import com.bizvisionsoft.bruiengine.action.DeleteSelected;
+import com.bizvisionsoft.bruiengine.action.OpenPage;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.action.QueryInGrid;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
@@ -25,12 +27,12 @@ public class BruiActionEngine extends BruiEngine {
 			String editorId = action.getEditorAssemblyId();
 			String bid = action.getCreateActionNewInstanceBundleId();
 			String cla = action.getCreateActionNewInstanceClassName();
-			brui = new BruiActionEngine(new CreateRoot(Brui.site.getAssembly(editorId),bid,cla));
+			brui = new BruiActionEngine(new CreateRoot(ModelLoader.site.getAssembly(editorId), bid, cla));
 
 		} else if (Action.TYPE_EDIT.equals(type)) {
 			String editorId = action.getEditorAssemblyId();
 			brui = new BruiActionEngine(
-					new OpenSelected(Brui.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
+					new OpenSelected(ModelLoader.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
 
 		} else if (Action.TYPE_DELETE.equals(type)) {
 			brui = new BruiActionEngine(new DeleteSelected());
@@ -45,12 +47,10 @@ public class BruiActionEngine extends BruiEngine {
 		} else if (Action.TYPE_SWITCHCONTENT.equals(type)) {
 			String staId = action.getSwitchContentToAssemblyId();
 			brui = new BruiActionEngine(
-					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
+					new SwitchContentToAssembly(ModelLoader.site.getAssembly(staId), action.isOpenContent()));
 		} else if (Action.TYPE_OPENPAGE.equals(type)) {
-			// TODO
-			String staId = action.getSwitchContentToAssemblyId();
-			brui = new BruiActionEngine(
-					new SwitchContentToAssembly(Brui.site.getAssembly(staId), action.isOpenContent()));
+			String pageName = action.getOpenPageName();
+			brui = new BruiActionEngine(new OpenPage(pageName));
 		} else {
 			brui = load(action.getBundleId(), action.getClassName())// load
 					.newInstance();

@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.ToolItemDescriptor;
@@ -29,7 +29,7 @@ public class MultiSelectionField extends SelectionField {
 	protected Control createControl(Composite parent) {
 		// 1. 实例化，设置上下文
 		BruiAssemblyEngine brui = BruiAssemblyEngine
-				.newInstance(Brui.site.getAssembly(fieldConfig.getSelectorAssemblyId()));
+				.newInstance(ModelLoader.site.getAssembly(fieldConfig.getSelectorAssemblyId()));
 		BruiAssemblyContext gridContext;
 		context.add(gridContext = new BruiAssemblyContext().setParent(context));
 		gridContext.setEngine(brui);

@@ -18,7 +18,7 @@ import com.bizivisionsoft.widgets.carousel.Carousel;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.Inject;
-import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -109,7 +109,7 @@ public class CarouselDemo {
 		page.setText("<div style='vertical-align: middle;font-size:24px'> 当然也可以加一个重量级的组件</div>");
 
 		container = carousel.addPage(new Composite(carousel, SWT.NONE));
-		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(Brui.site.getAssemblyByName("用户管理"));
+		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(ModelLoader.site.getAssemblyByName("用户管理"));
 		brui.init(new IServiceWithId[] { bruiService, new BruiAssemblyContext().setEngine(brui) }).createUI(container);
 	}
 

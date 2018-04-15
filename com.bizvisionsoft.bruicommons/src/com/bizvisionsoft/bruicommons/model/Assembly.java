@@ -2,7 +2,34 @@ package com.bizvisionsoft.bruicommons.model;
 
 import java.util.List;
 
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
+
 public class Assembly extends ModelObject {
+	
+	@ReadValue(ReadValue.TYPE)
+	private String getTypeName() {
+		 String text = "组件";
+		 if(TYPE_EDITOR.equals(type)) {
+			 text += " - 编辑器";
+		 }else if(TYPE_SELECTOR.equals(type)) {
+			 text += " - 弹出式选择器";
+		 }else if(TYPE_STICKER.equals(type)) {
+			 text += " - 带有标题栏容器";
+		 }else if(TYPE_GRID.equals(type)) {
+			 text += " - 表格";
+		 }else if(TYPE_GANTT.equals(type)) {
+			 text += " - 甘特图";
+		 }
+		 return text;
+	}
+
+	@Override
+	@Label
+	public String toString() {
+		return name + " [" + id + "]";
+	}
 
 	public static final String TYPE_STICKER = "sticker";
 
@@ -16,6 +43,8 @@ public class Assembly extends ModelObject {
 
 	private String id;
 
+	@ReadValue
+	@WriteValue
 	private String name;
 
 	private String title;

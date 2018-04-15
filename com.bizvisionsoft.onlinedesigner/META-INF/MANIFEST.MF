@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Onlinedesigner
+Bundle-SymbolicName: com.bizvisionsoft.onlinedesigner
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: BIZVISIONSOFT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.bizvisionsoft.bruicommons,
+ com.bizvisionsoft.bruiengine,
+ com.bizvisionsoft.annotations,
+ org.eclipse.rap.rwt,
+ com.bizvisionsoft.widgets,
+ org.mongodb.mongo-java-driver;bundle-version="3.6.0",
+ com.google.gson,
+ org.eclipse.rap.jface

@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.service;
 
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
@@ -39,7 +40,7 @@ public class BruiService implements IBruiService {
 		if (!resPath.startsWith("/")) {
 			resPath = "/" + resPath;
 		}
-		String aliasOfResFolder = Brui.site.getAliasOfResFolder();
+		String aliasOfResFolder = ModelLoader.site.getAliasOfResFolder();
 		return "rwt-resources/" + aliasOfResFolder + resPath;
 	}
 
@@ -76,7 +77,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchPage(String pageName, String inputUid) {
-		Page page = Brui.site.getPageByName(pageName);
+		Page page = ModelLoader.site.getPageByName(pageName);
 		switchPage(page, inputUid);
 	}
 

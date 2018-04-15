@@ -4,18 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.Structure;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
+
 /**
  * @author hua
  *
  */
 public class Site extends ModelObject {
 
+	@ReadValue(ReadValue.TYPE)
+	private String typeName = "站点";
+
+	@Override
+	@Label
+	public String toString() {
+		return name + " [" + id + "]";
+	}
+
+	@ReadValue
+	@WriteValue
 	private String id;
 
+	@ReadValue
+	@WriteValue
 	private String name;
 
+	@ReadValue
+	@WriteValue
 	private String title;
 
+	@Behavior({ "添加", "编辑" })
+	private boolean behavior = true;
+
+	@ReadValue
+	@WriteValue
 	private String path;
 
 	private List<Page> pages;
@@ -24,19 +50,42 @@ public class Site extends ModelObject {
 
 	private TemplateLib templateLib;
 
+	@ReadValue
+	@WriteValue
 	private String headHtml;
 
+	@ReadValue
+	@WriteValue
 	private String bodyHtml;
 
+	@ReadValue
+	@WriteValue
 	private String pageOverflow;
 
+	@ReadValue
+	@WriteValue
 	private String aliasOfResFolder;
 
+	@ReadValue
+	@WriteValue
 	private String favIcon;
 
+	@ReadValue
+	@WriteValue
 	private String description;
 
 	private String login;
+
+	@ReadValue("login")
+	public Assembly getLoginAssembly() {
+		Assembly ass = Optional.ofNullable(login).map(id -> getAssembly(id)).orElse(null);
+		return ass;
+	}
+
+	@WriteValue("login")
+	public void setLoginAssembly(Assembly loginAssembly) {
+		login = Optional.ofNullable(loginAssembly).map(l -> l.getId()).orElse(null);
+	}
 
 	private List<DataSource> dataSources;
 
@@ -50,8 +99,14 @@ public class Site extends ModelObject {
 		this.pages = pages;
 	}
 
+	@Structure("list")
 	public List<Page> getPages() {
 		return pages;
+	}
+
+	@Structure("count")
+	public long countPages() {
+		return Optional.ofNullable(pages).map(p -> p.size()).orElse(0);
 	}
 
 	public void setAssyLib(AssemblyLib assyLib) {
@@ -161,15 +216,6 @@ public class Site extends ModelObject {
 	 */
 	public Page getHomePage() {
 		return pages.parallelStream().filter(p -> p.isHome()).findFirst().orElse(null);
-	}
-
-	/**
-	 * 获得登录组件
-	 * 
-	 * @return
-	 */
-	public Assembly getLoginAssembly() {
-		return Optional.ofNullable(getLogin()).map(id -> getAssembly(id)).orElse(null);
 	}
 
 	/**

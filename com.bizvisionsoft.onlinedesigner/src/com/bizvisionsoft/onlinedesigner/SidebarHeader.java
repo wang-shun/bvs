@@ -1,4 +1,4 @@
-package com.bizvisionsoft.pms.assembly;
+package com.bizvisionsoft.onlinedesigner;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
-import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
@@ -16,7 +15,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 
-public class SidebarHeaderL2Page {
+public class SidebarHeader {
 
 	@Inject
 	private IBruiService bruiService;
@@ -49,22 +48,11 @@ public class SidebarHeaderL2Page {
 		pic.setText("<img alt='headpic' style='cursor:pointer;margin-top:8px;' src='" + url + "' width=" + 32
 				+ "px height=" + 32 + "px/>");
 
-		Object input = context.getParentContext().getInput();
-
-		String name, id;
-
-		if (input != null) {
-			name = AUtil.readLabel(input, com.bizvisionsoft.annotations.md.service.Label.NAME_LABEL);
-			id = AUtil.readLabel(input, com.bizvisionsoft.annotations.md.service.Label.ID_LABEL);
-		} else {
-			name = parent.getShell().getText();
-			id = "";
-		}
 		title.setText(
 				"<div style='color:white;margin-left:2px;margin-top:4px;width:180px;'><div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
-						+ name
+						+ "Brui APP Sketcher 2018"
 						+ "</div><div style='font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
-						+ id + "</div></div>");
+						+ "在线设计，即改即用" + "</div></div>");
 		pic.addListener(SWT.MouseDown, e -> {
 			WidgetToolkit.execJS("history.back()");
 		});

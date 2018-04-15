@@ -249,4 +249,14 @@ public class Action extends ModelObject {
 		this.createActionNewInstanceClassName = createActionNewInstanceClassName;
 	}
 	
+	private String openPageName;
+	
+	public String getOpenPageName() {
+		return openPageName;
+	}
+	
+	public void setOpenPageName(String openPageName) {
+		this.openPageName = openPageName;
+	}
+	
 }

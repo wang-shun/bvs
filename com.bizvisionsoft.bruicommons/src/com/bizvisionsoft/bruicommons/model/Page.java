@@ -1,12 +1,54 @@
 package com.bizvisionsoft.bruicommons.model;
 
-public class Page extends ModelObject {
+import java.util.ArrayList;
+import java.util.List;
 
+import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.Structure;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
+
+public class Page extends ModelObject {
+	
+	@ReadValue(ReadValue.TYPE)
+	private String typeName = "Ò³Ãæ";
+
+	@Override
+	@Label
+	public String toString() {
+		return name + " [" + id + "]";
+	}
+
+	@ReadValue
+	@WriteValue
 	private String id;
 
+	@ReadValue
+	@WriteValue
 	private String name;
 
+	@ReadValue
+	@WriteValue
 	private String title;
+	
+	@Behavior({"É¾³ý","±à¼­"})
+	private boolean behavior = true;
+	
+	@Structure("list")
+	private List<Object> getStructure(){
+		ArrayList<Object> result = new ArrayList<Object>();
+		result.add(sidebar);
+		result.add(headbar);
+		result.add(footbar);
+		result.add(contentArea);
+		return result;
+	}
+	
+	@Structure("count")
+	private long countStructure() {
+		return 4;
+	}
 
 	private Headbar headbar;
 
@@ -16,18 +58,32 @@ public class Page extends ModelObject {
 
 	private ContentArea contentArea;
 
+	@ReadValue
+	@WriteValue
 	private String description;
 
+	@ReadValue
+	@WriteValue
 	private boolean home;
 
+	@ReadValue
+	@WriteValue
 	private boolean checkLogin;
 
+	@ReadValue
+	@WriteValue
 	private boolean forceCheckLogin;
 	
+	@ReadValue
+	@WriteValue
 	private String inputDataSetService;
 
+	@ReadValue
+	@WriteValue
 	private String inputDataSetBundleId;
 
+	@ReadValue
+	@WriteValue
 	private String inputDataSetClassName;
 
 	public Headbar getHeadbar() {

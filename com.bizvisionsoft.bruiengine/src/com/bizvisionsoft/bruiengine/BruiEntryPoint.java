@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
@@ -31,9 +32,9 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 	@Override
 	public int createUI() {
-		if (Brui.reloadSiteForSession)
+		if (ModelLoader.reloadSiteForSession)
 			try {
-				Brui.loadSite();
+				ModelLoader.loadSite();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -91,7 +92,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		service.addBrowserNavigationListener(event -> {
 			String state = event.getState();
 			if (state.isEmpty()) {
-				switchPage(Brui.site.getHomePage(), null, false);
+				switchPage(ModelLoader.site.getHomePage(), null, false);
 			} else {
 				int idx = state.indexOf("/");
 				String pageId, inputUid = null;
@@ -101,11 +102,11 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 				} else {
 					pageId = state;
 				}
-				Page toPage = Brui.site.getPageById(pageId);
+				Page toPage = ModelLoader.site.getPageById(pageId);
 				switchPage(toPage, inputUid, true);
 			}
 		});
-		switchPage(Brui.site.getHomePage(), null, true);
+		switchPage(ModelLoader.site.getHomePage(), null, true);
 	}
 
 	public void switchPage(Page page, String inputUid, boolean addHistory) {

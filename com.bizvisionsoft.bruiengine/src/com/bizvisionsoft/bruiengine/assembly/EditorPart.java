@@ -29,9 +29,9 @@ import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
 import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
 import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckQueryField;
@@ -371,7 +371,7 @@ public class EditorPart {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// 扩展DataGrid
 		// 1. 实例化，设置上下文
-		Assembly gridConfig = Brui.site.getAssembly(assemblyId);
+		Assembly gridConfig = ModelLoader.site.getAssembly(assemblyId);
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(gridConfig);
 		context.add(containerContext = new BruiAssemblyContext().setParent(context));
 		containerContext.setEngine(brui);

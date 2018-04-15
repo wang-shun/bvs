@@ -11,10 +11,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.AssemblyLayouted;
 import com.bizvisionsoft.bruicommons.model.Layout;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -133,7 +133,7 @@ public class AssemblyContainer {
 		layout.getAssemblys().forEach(al -> // 迭代
 		new AssemblyContainer((Composite) content, context)// 创建嵌套AssemblyContainer
 				.setInput(input)
-				.setAssembly(Brui.site.getAssembly(al.getId()))// 设置组件
+				.setAssembly(ModelLoader.site.getAssembly(al.getId()))// 设置组件
 				.setContextName(al.getLayoutName())// 设置命名
 				.setServices(services)// 传递服务
 				.create()// 创建

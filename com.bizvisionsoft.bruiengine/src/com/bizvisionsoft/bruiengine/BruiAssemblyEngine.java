@@ -9,6 +9,7 @@ import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
 import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;
@@ -28,7 +29,7 @@ public class BruiAssemblyEngine extends BruiEngine {
 	}
 
 	public static BruiAssemblyEngine create(String assemblyId, IServiceWithId... services) {
-		return create(Brui.site.getAssembly(assemblyId), services);
+		return create(ModelLoader.site.getAssembly(assemblyId), services);
 	}
 
 	public static BruiAssemblyEngine create(Assembly assembly, IServiceWithId... services) {

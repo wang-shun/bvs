@@ -2,8 +2,23 @@ package com.bizvisionsoft.bruicommons.model;
 
 import java.util.List;
 
-public class Sidebar extends ModelObject {
+import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 
+public class Sidebar extends ModelObject {
+	
+	
+	@Override
+	@ReadValue(ReadValue.TYPE)
+	@Label
+	public String toString() {
+		return "²à±ßÀ¸"+(enabled?"":" [½ûÓÃ]");
+	}
+	
+	@Behavior("±à¼­")
+	private boolean behavior = true;
+	
 	private boolean enabled;
 
 	private Integer width;

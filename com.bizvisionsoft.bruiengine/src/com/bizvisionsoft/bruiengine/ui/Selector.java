@@ -9,8 +9,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 
@@ -23,7 +23,7 @@ public class Selector extends Popup {
 	}
 
 	public static  Selector create(String name, IBruiContext parentContext,Object input) {
-		Assembly config = Brui.site.getAssemblyByName(name);
+		Assembly config = ModelLoader.site.getAssemblyByName(name);
 		return new Selector(config, parentContext).setInput(input);
 	}
 

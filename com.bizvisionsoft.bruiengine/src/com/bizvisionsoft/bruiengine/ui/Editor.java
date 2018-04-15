@@ -8,8 +8,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.mongodb.BasicDBObject;
@@ -24,7 +24,7 @@ public class Editor<T> extends Popup {
 	}
 
 	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input) {
-		Assembly editorConfig = Brui.site.getAssemblyByName(name);
+		Assembly editorConfig = ModelLoader.site.getAssemblyByName(name);
 		return new Editor<M>(editorConfig, parentContext).setInput(input);
 	}
 

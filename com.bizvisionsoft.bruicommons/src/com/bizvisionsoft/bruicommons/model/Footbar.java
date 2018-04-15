@@ -1,7 +1,21 @@
 package com.bizvisionsoft.bruicommons.model;
 
-public class Footbar  extends ModelObject{
+import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 
+public class Footbar  extends ModelObject{
+	
+	@Override
+	@ReadValue(ReadValue.TYPE)
+	@Label
+	public String toString() {
+		return "µ×À¸"+(enabled?"":" [½ûÓÃ]");
+	}
+
+	@Behavior("±à¼­")
+	private boolean behavior = true;
+	
 	private boolean enabled;
 	private Integer height;
 

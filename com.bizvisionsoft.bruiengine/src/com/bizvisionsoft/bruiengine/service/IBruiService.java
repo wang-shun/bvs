@@ -2,9 +2,9 @@ package com.bizvisionsoft.bruiengine.service;
 
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.model.User;
 
@@ -45,7 +45,7 @@ public interface IBruiService extends IServiceWithId {
 			IBruiContext context);
 
 	public default Assembly getAssembly(String name) {
-		return Brui.site.getAssemblyByName(name);
+		return ModelLoader.site.getAssemblyByName(name);
 	}
 
 	public void closeCurrentContent();

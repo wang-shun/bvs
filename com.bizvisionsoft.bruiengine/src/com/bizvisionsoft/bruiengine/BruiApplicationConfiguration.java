@@ -14,17 +14,19 @@ import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
+
 public class BruiApplicationConfiguration implements ApplicationConfiguration {
 
 	public void configure(Application application) {
-		String title = Brui.site.getTitle();
-		String path = Brui.site.getPath();
-		String headHtml = Brui.site.getHeadHtml();
-		String bodyHtml = Brui.site.getBodyHtml();
-		String pageOverflow = Brui.site.getPageOverflow();
-		String aliasResFolder = Brui.site.getAliasOfResFolder();
-		String favIcon = Brui.site.getFavIcon();
-		bindingApplcationExtenalResource(application, new File(new File(Brui.sitePath).getParent() + "/res"),
+		String title = ModelLoader.site.getTitle();
+		String path = ModelLoader.site.getPath();
+		String headHtml = ModelLoader.site.getHeadHtml();
+		String bodyHtml = ModelLoader.site.getBodyHtml();
+		String pageOverflow = ModelLoader.site.getPageOverflow();
+		String aliasResFolder = ModelLoader.site.getAliasOfResFolder();
+		String favIcon = ModelLoader.site.getFavIcon();
+		bindingApplcationExtenalResource(application, new File(new File(ModelLoader.sitePath).getParent() + "/res"),
 				aliasResFolder);
 
 		Map<String, String> properties = new HashMap<String, String>();

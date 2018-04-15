@@ -12,9 +12,9 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 
@@ -61,7 +61,7 @@ public class View extends Part {
 
 	public int open() {
 		if (page.isForceCheckLogin() || (page.isCheckLogin() && service.getCurrentUserInfo() == null))
-			Optional.ofNullable(Brui.site.getLoginAssembly())
+			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
 					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("请验证您的身份").open());
 
 		int result = super.open();
@@ -90,7 +90,7 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Assembly assembly = Brui.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
+		Assembly assembly = ModelLoader.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
 				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(NoSuchElementException::new).getId());
 		createContentArea(assembly, null);
 
