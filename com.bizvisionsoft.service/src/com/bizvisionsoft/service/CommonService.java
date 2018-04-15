@@ -73,7 +73,8 @@ public interface CommonService {
 	@Path("/restype/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public ResourceType insertResourceType(ResourceType resourceType);
+	@DataSet("资源类型/" + DataSet.INSERT)
+	public ResourceType insertResourceType(@ServiceParam(ServiceParam.OBJECT) ResourceType resourceType);
 
 	@DELETE
 	@Path("/restype/_id/{_id}")
@@ -133,7 +134,8 @@ public interface CommonService {
 	@Path("/euip/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Equipment insertEquipment(Equipment cert);
+	@DataSet("设备设施/" + DataSet.INSERT)
+	public Equipment insertEquipment(@ServiceParam(ServiceParam.OBJECT) Equipment cert);
 
 	@DELETE
 	@Path("/euip/_id/{_id}")
