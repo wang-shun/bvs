@@ -367,11 +367,12 @@ public class MessageDialog extends IconAndMessageDialog {
 	 * @since 1.3
 	 */
 	public static boolean open(int kind, Shell parent, String title, String message, int style) {
-		MessageDialog dialog = new MessageDialog(parent, title, null, message, kind, getButtonLabels(kind), 0);
+		String[] labels = getButtonLabels(kind);
+		MessageDialog dialog = new MessageDialog(parent, title, null, message, kind, labels, 0);
 		dialog.buttonStyle = getButtonStyle(kind);
 		style &= SWT.SHEET;
 		dialog.setShellStyle(dialog.getShellStyle() | style);
-		return dialog.open() == 0;
+		return dialog.open() == labels.length - 1;
 	}
 
 	/**
@@ -384,19 +385,20 @@ public class MessageDialog extends IconAndMessageDialog {
 		case ERROR:
 		case INFORMATION:
 		case WARNING: {
-			dialogButtonLabels = new String[] { "确定" };
+			dialogButtonLabels = new String[] { IDialogConstants.get().OK_LABEL };
 			break;
 		}
 		case CONFIRM: {
-			dialogButtonLabels = new String[] { "确定", "取消" };
+			dialogButtonLabels = new String[] { IDialogConstants.get().CANCEL_LABEL, IDialogConstants.get().OK_LABEL };
 			break;
 		}
 		case QUESTION: {
-			dialogButtonLabels = new String[] { "是", "否" };
+			dialogButtonLabels = new String[] { IDialogConstants.get().NO_LABEL, IDialogConstants.get().YES_LABEL };
 			break;
 		}
 		case QUESTION_WITH_CANCEL: {
-			dialogButtonLabels = new String[] { "是", "否", "取消" };
+			dialogButtonLabels = new String[] { IDialogConstants.get().CANCEL_LABEL, IDialogConstants.get().NO_LABEL,
+					IDialogConstants.get().YES_LABEL };
 			break;
 		}
 		default: {
@@ -405,7 +407,7 @@ public class MessageDialog extends IconAndMessageDialog {
 		}
 		return dialogButtonLabels;
 	}
-	
+
 	/**
 	 * @param kind
 	 * @return
