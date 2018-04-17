@@ -240,19 +240,19 @@ public class Project {
 	/**
 	 * 承担单位
 	 */
-	@Persistence
+	@Persistence//数据库存取
 	private ObjectId impUnit_id;
 
-	@SetValue
-	@ReadValue
+	@SetValue//查询服务设置
+	@ReadValue//表格用
 	private String impUnitOrgFullName;
 
-	@WriteValue("impUnit")
+	@WriteValue("impUnit")//编辑器用
 	public void setOrganization(Organization org) {
 		this.impUnit_id = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
 	}
 
-	@ReadValue("impUnit")
+	@ReadValue("impUnit")//编辑器用
 	public Organization getOrganization() {
 		return Optional.ofNullable(impUnit_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
