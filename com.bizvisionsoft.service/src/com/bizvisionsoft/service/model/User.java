@@ -9,6 +9,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
@@ -26,6 +27,9 @@ public class User {
 	@ReadValue({"userId","组织角色/id","资源类型/id"})
 	@WriteValue({"userId","组织角色/id"})
 	private String userId;
+	
+	@ImageURL({"userId","组织角色/id","资源类型/id"})
+	private String logo = "/img/user_c.svg";
 
 	@ReadValue
 	@WriteValue

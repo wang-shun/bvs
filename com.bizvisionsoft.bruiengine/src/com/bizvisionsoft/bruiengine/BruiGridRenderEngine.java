@@ -70,8 +70,10 @@ public class BruiGridRenderEngine extends BruiEngine {
 	public void renderCell(ViewerCell cell, Column column) {
 		Object element = cell.getElement();
 		Object value = getColumnValue(element, column);
+		Object image = getColumnImageUrl(element, column);
+		
 		if (defaultRender != null) {
-			defaultRender.renderCell(cell, column, value);
+			defaultRender.renderCell(cell, column, value,image);
 		} else {
 			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
@@ -79,6 +81,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 					element.toString());
 		}
 	}
+
 
 	public void renderHeaderText(GridColumn col, Column c) {
 		if (defaultRender != null) {
@@ -102,6 +105,10 @@ public class BruiGridRenderEngine extends BruiEngine {
 
 	private Object getColumnValue(Object element, Column column) {
 		return AUtil.readValue(element, config.getName(), column.getName(), element);
+	}
+	
+	private Object getColumnImageUrl(Object element, Column column) {
+		return AUtil.readImageUrl(element, config.getName(), column.getName(), element);
 	}
 
 	public int compare(Column column, Object e1, Object e2) {

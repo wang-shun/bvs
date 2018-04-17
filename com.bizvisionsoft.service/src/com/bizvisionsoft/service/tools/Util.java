@@ -6,11 +6,17 @@ import java.util.Date;
 
 public class Util {
 
+	public static final String DATE_FORMAT_JS_FULL = "yyyy-MM-dd'T'HH:mm:ss.SSS Z";
+
+	public static final String DATE_FORMAT_DATE= "yyyy-MM-dd";
+	
+	public static final String DATE_FORMAT_TIME= "HH:mm";
+
 	public static Date str_date(String str) {
 		if (str == null)
 			return null;
 		String _str = str.replace("Z", " UTC");
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+		SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_JS_FULL);
 		try {
 			return format.parse(_str);
 		} catch (ParseException e) {

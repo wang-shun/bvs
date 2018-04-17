@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
@@ -59,6 +60,14 @@ public class AUtil {
 			return ((Map<?, ?>) element).get(fName);
 		} else {
 			return read(element.getClass(), ReadValue.class, element, cName, fName, defaultValue, a -> a.value());
+		}
+	}
+
+	public static Object readImageUrl(Object element, String cName, String fName, Object defaultValue) {
+		if (element instanceof Map<?, ?>) {
+			return ((Map<?, ?>) element).get(fName);
+		} else {
+			return read(element.getClass(), ImageURL.class, element, cName, fName, defaultValue, a -> a.value());
 		}
 	}
 
@@ -307,18 +316,18 @@ public class AUtil {
 	 * @param elem
 	 * @return
 	 */
-	public static Object simpleCopy(Object source, Object target) {
-		Arrays.asList(source.getClass().getDeclaredFields()).forEach(srcField -> {
+	public static Object simpleCopy(Object from, Object to) {
+		Arrays.asList(from.getClass().getDeclaredFields()).forEach(srcField -> {
 			try {
-				Field tgtField = target.getClass().getDeclaredField(srcField.getName());
+				Field tgtField = to.getClass().getDeclaredField(srcField.getName());
 				tgtField.setAccessible(true);
 				srcField.setAccessible(true);
-				Object srcValue = srcField.get(source);
-				tgtField.set(target, srcValue);
+				Object srcValue = srcField.get(from);
+				tgtField.set(to, srcValue);
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			}
 		});
-		return target;
+		return to;
 	}
 
 	public static Object deepCopy(Object elem) {

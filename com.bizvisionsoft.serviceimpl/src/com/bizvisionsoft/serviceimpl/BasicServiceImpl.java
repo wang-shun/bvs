@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Field;
+import com.mongodb.client.model.UnwindOptions;
 import com.mongodb.client.model.UpdateOptions;
 
 public class BasicServiceImpl {
@@ -63,6 +65,17 @@ public class BasicServiceImpl {
 		List<T> result = new ArrayList<T>();
 		Service.col(clazz).aggregate(pipeline).into(result);
 		return result;
+	}
+	
+	
+	protected void appendOrgFullName(ArrayList<Bson> pipeline) {
+		pipeline.add(Aggregates.lookup("organization", "org_id", "_id", "org"));
+
+		pipeline.add(Aggregates.unwind("$org", new UnwindOptions().preserveNullAndEmptyArrays(true)));
+
+		pipeline.add(Aggregates.addFields(new Field<String>("orgFullName", "$org.fullName")));
+
+		pipeline.add(Aggregates.project(new BasicDBObject("org", false)));//
 	}
 
 }

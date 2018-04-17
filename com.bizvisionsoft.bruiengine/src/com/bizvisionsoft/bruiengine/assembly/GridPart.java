@@ -84,8 +84,6 @@ public class GridPart {
 	@Inject
 	private BruiAssemblyContext context;
 
-	private int actionColWidth;
-
 	private Composite toolbar;
 
 	private ToolItemDescriptor itemSelector;
@@ -105,6 +103,8 @@ public class GridPart {
 	private Column sortColumn;
 
 	private int sortSequance;
+
+	private int actionColWidth;
 
 	public GridPart(Assembly gridConfig) {
 		this.config = gridConfig;
@@ -369,7 +369,6 @@ public class GridPart {
 		// 创建操作列
 		//
 		final List<Action> actions = config.getRowActions();
-
 		// 如果作为选择器，无需创建操作
 		if (itemSelector == null && actions != null && actions.size() > 0) {
 			actionColWidth = BruiToolkit.actionMargin;
@@ -405,7 +404,7 @@ public class GridPart {
 				});
 			});
 		} else if (itemSelector != null) {
-			int actionColWidth = 2 * BruiToolkit.actionMargin + BruiToolkit.actionTextBtnWidth;
+			actionColWidth = 2 * BruiToolkit.actionMargin + BruiToolkit.actionTextBtnWidth;
 
 			GridColumn col = new GridColumn(grid, SWT.NONE);
 			col.setWidth(actionColWidth);
@@ -431,6 +430,7 @@ public class GridPart {
 				if (width == 0) {
 					return;
 				}
+				width -= actionColWidth;
 				GridColumn[] cols = grid.getColumns();
 				int total = 0;
 				for (int i = 0; i < cols.length; i++) {
@@ -558,8 +558,8 @@ public class GridPart {
 		viewer.refresh();
 	}
 
-	public void replaceItem(Object elem, Object info) {
-		update(AUtil.simpleCopy(info, elem));
+	public void replaceItem(Object oldElement, Object newElement) {
+		update(AUtil.simpleCopy(newElement, oldElement));
 	}
 
 	public void update(Object elem) {
@@ -634,10 +634,10 @@ public class GridPart {
 	 * @param em
 	 * @param o
 	 */
-	public void doModify(Object element, BasicDBObject newElement) {
+	public void doModify(Object element, Object newElement,BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.replace(element, newElement);
+				dataSetEngine.replace(element, newData);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
@@ -648,14 +648,19 @@ public class GridPart {
 	public void doDelete(Object element) {
 		if (dataSetEngine != null) {
 			try {
-				Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element))
-						.map(i -> i.getParentItem()).map(p -> p.getData()).orElse(null);
+				Object parentData = getParentElement(element);
 				dataSetEngine.delete(element, parentData);
 				remove(element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
 			}
 		}
+	}
+
+	public Object getParentElement(Object element) {
+		Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element))
+				.map(i -> i.getParentItem()).map(p -> p.getData()).orElse(null);
+		return parentData;
 	}
 
 	public void doCreate(Object parent, Object element) {

@@ -44,12 +44,6 @@ public class Site extends ModelObject {
 	@WriteValue
 	private String path;
 
-	private List<Page> pages;
-
-	private AssemblyLib assyLib;
-
-	private TemplateLib templateLib;
-
 	@ReadValue
 	@WriteValue
 	private String headHtml;
@@ -86,19 +80,7 @@ public class Site extends ModelObject {
 	public void setLoginAssembly(Assembly loginAssembly) {
 		login = Optional.ofNullable(loginAssembly).map(l -> l.getId()).orElse(null);
 	}
-
-	private List<DataSource> dataSources;
-
-	private Formatter formatter;
-
-	private Folder rootFolder;
-
-	// private List<String> extLibPath;
-
-	public void setPages(List<Page> pages) {
-		this.pages = pages;
-	}
-
+	
 	@Structure("list")
 	public List<Page> getPages() {
 		return pages;
@@ -107,6 +89,16 @@ public class Site extends ModelObject {
 	@Structure("count")
 	public long countPages() {
 		return Optional.ofNullable(pages).map(p -> p.size()).orElse(0);
+	}
+	
+	private Folder rootFolder;
+	
+	private List<Page> pages;
+
+	private AssemblyLib assyLib;
+
+	public void setPages(List<Page> pages) {
+		this.pages = pages;
 	}
 
 	public void setAssyLib(AssemblyLib assyLib) {
@@ -238,30 +230,6 @@ public class Site extends ModelObject {
 		return result;
 	}
 
-	public TemplateLib getTemplateLib() {
-		return templateLib;
-	}
-
-	public void setTemplateLib(TemplateLib templateLib) {
-		this.templateLib = templateLib;
-	}
-
-	public List<DataSource> getDataSources() {
-		return dataSources;
-	}
-
-	public void setDataSources(List<DataSource> dataSources) {
-		this.dataSources = dataSources;
-	}
-
-	public Formatter getFormatter() {
-		return formatter;
-	}
-
-	public void setFormatter(Formatter formatter) {
-		this.formatter = formatter;
-	}
-
 	public Folder getRootFolder() {
 		return rootFolder;
 	}
@@ -278,11 +246,4 @@ public class Site extends ModelObject {
 		return pages.stream().filter(p -> pageId.equals(p.getId())).findFirst().orElse(null);
 	}
 
-	// public void setExtLibPath(List<String> extLibPath) {
-	// this.extLibPath = extLibPath;
-	// }
-	//
-	// public List<String> getExtLibPath() {
-	// return extLibPath;
-	// }
 }

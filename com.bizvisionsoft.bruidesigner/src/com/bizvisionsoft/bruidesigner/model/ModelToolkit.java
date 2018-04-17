@@ -27,7 +27,6 @@ import com.bizvisionsoft.bruicommons.model.DataSource;
 import com.bizvisionsoft.bruicommons.model.Folder;
 import com.bizvisionsoft.bruicommons.model.Footbar;
 import com.bizvisionsoft.bruicommons.model.FormField;
-import com.bizvisionsoft.bruicommons.model.Formatter;
 import com.bizvisionsoft.bruicommons.model.Headbar;
 import com.bizvisionsoft.bruicommons.model.Layout;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
@@ -235,14 +234,11 @@ public class ModelToolkit {
 		site.setId(generateId());
 		site.setName("新站点");
 		site.setPages(new ArrayList<Page>());
-		site.setDataSources(new ArrayList<DataSource>());
 		AssemblyLib assyLib = new AssemblyLib();
 		assyLib.setAssys(new ArrayList<Assembly>());
 		site.setAssyLib(assyLib);
 		TemplateLib templateLib = new TemplateLib();
 		templateLib.setTemplates(new ArrayList<Template>());
-		site.setTemplateLib(templateLib);
-		site.setFormatter(new Formatter());
 		return site;
 	}
 
@@ -278,30 +274,6 @@ public class ModelToolkit {
 
 	public static void deleteAssembly(Assembly assy) {
 		SiteLoader.site.getAssyLib().getAssys().remove(assy);
-	}
-
-	public static DataSource createDataSource() {
-		DataSource ds = new DataSource();
-		ds.setId(generateId());
-		ds.setName(generateName("新数据源"));
-		SiteLoader.site.getDataSources().add(ds);
-		return ds;
-	}
-
-	public static void deleteDataSource(DataSource ds) {
-		SiteLoader.site.getDataSources().remove(ds);
-	}
-
-	public static void deleteTemplate(Template template) {
-		SiteLoader.site.getTemplateLib().getTemplates().remove(template);
-	}
-
-	public static Template createTemplate() {
-		Template template = new Template();
-		template.setId(generateId());
-		template.setName(generateName("新模板"));
-		SiteLoader.site.getTemplateLib().getTemplates().add(template);
-		return template;
 	}
 
 	public static void addAssemblies(ContentArea ca, List<String> assysIds) {

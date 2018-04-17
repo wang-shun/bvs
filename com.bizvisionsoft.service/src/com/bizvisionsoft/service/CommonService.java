@@ -15,10 +15,10 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.service.model.Calendar;
 import com.bizvisionsoft.service.model.Certificate;
 import com.bizvisionsoft.service.model.Equipment;
 import com.bizvisionsoft.service.model.ResourceType;
-import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 
 @Path("/common")
@@ -91,18 +91,6 @@ public interface CommonService {
 	public long updateResourceType(BasicDBObject filterAndUpdate);
 
 	@GET
-	@Path("/restype/{_id}/hr")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	public List<User> getHRResources(@PathParam("_id") ObjectId _id);
-
-	@GET
-	@Path("/restype/{_id}/hr/count")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	public long countHRResources(@PathParam("_id") ObjectId _id);
-
-	@GET
 	@Path("/restype/{_id}/er")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
@@ -150,4 +138,53 @@ public interface CommonService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("设备设施/" + DataSet.UPDATE)
 	public long updateEquipment(BasicDBObject filterAndUpdate);
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	@POST
+	@Path("/cal/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("工作日历/" + DataSet.LIST)
+	public List<Calendar> getCalendars();
+
+	@POST
+	@Path("/cal/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("工作日历/" + DataSet.INSERT)
+	public Calendar insertCalendar(@ServiceParam(ServiceParam.OBJECT) Calendar obj);
+
+	@DELETE
+	@Path("/cal/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("工作日历/" + DataSet.DELETE)
+	public long deleteCalendar(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+
+	@POST
+	@Path("/cal/{_id}/wt/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public void addCalendarWorktime(BasicDBObject r, @PathParam("_id") ObjectId _cal_id);
+
+	@PUT
+	@Path("/cal/wt/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public void updateCalendarWorkTime(BasicDBObject r);
+
+	@PUT
+	@Path("/cal/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("工作日历/" + DataSet.UPDATE)
+	public long updateCalendar(BasicDBObject filterAndUpdate);
+
+	@DELETE
+	@Path("/cal/wt/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public void deleteCalendarWorkTime(@PathParam("_id") ObjectId _id);
+
 }

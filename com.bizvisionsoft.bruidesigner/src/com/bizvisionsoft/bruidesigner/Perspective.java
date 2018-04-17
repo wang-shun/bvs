@@ -22,9 +22,7 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, 0.4f, editorArea);
 
 		folder.addView(SiteView.ID);
-//		folder.addView(AssyLibView.ID);
 		folder.addView(FolderView.ID);
-//		folder.addView(DataSourcesView.ID);
 
 	}
 }

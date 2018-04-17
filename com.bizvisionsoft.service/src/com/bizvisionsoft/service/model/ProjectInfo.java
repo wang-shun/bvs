@@ -11,6 +11,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
 import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.service.EPSService;
@@ -42,6 +43,9 @@ public class ProjectInfo {
 	@ReadValue
 	@Label(Label.ID_LABEL)
 	private String id;
+	
+	@ImageURL("id")
+	private String logo = "/img/project_c.svg";
 
 	/**
 	 * ¹¤×÷ÁîºÅ

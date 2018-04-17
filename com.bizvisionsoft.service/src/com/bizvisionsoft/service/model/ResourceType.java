@@ -13,6 +13,9 @@ import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.datatools.Query;
+import com.mongodb.BasicDBObject;
 
 @PersistenceCollection("resourceType")
 public class ResourceType {
@@ -105,7 +108,7 @@ public class ResourceType {
 	@Structure("list")
 	public List<?> getResource() {
 		if (TYPE_HR.equals(type))
-			return ServicesLoader.get(CommonService.class).getHRResources(_id);
+			return ServicesLoader.get(UserService.class).createDataSet(new Query().filter(new BasicDBObject("resourceType_id",_id)).bson());
 		else
 			return ServicesLoader.get(CommonService.class).getERResources(_id);
 
@@ -114,7 +117,7 @@ public class ResourceType {
 	@Structure("count")
 	public long countResource() {
 		if (TYPE_HR.equals(type))
-			return ServicesLoader.get(CommonService.class).countHRResources(_id);
+			return ServicesLoader.get(UserService.class).count(new BasicDBObject("resourceType_id",_id));
 		else
 			return ServicesLoader.get(CommonService.class).countERResources(_id);
 

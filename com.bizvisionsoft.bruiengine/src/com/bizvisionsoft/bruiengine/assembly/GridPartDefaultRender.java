@@ -4,10 +4,13 @@ import java.util.Locale;
 
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.widgets.grid.GridColumn;
+import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.swt.graphics.Image;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
+import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class GridPartDefaultRender {
@@ -30,9 +33,17 @@ public class GridPartDefaultRender {
 		this.config = config;
 	}
 
-	public void renderCell(ViewerCell cell, Column column, Object value) {
+	public void renderCell(ViewerCell cell, Column column, Object value, Object image) {
 		String format = column.getFormat();
 		String text = Util.getFormatText(value, format, locale);
+		if (image instanceof Image) {
+			cell.setImage((Image) image);
+		} else if (image instanceof String && config.isGridMarkupEnabled()) {
+			 GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
+			 int size = gridItem.getHeight()-16;
+			text = "<img src='" + BruiToolkit.getResourceURL((String) image) + "' style='margin-right:8px;' width='"
+					+ size + "px' height='" + size + "px'></img>" + text;
+		}
 		cell.setText(text);
 		// 默认不处理以下的配置
 		// cell.setBackground(getBackground(element));

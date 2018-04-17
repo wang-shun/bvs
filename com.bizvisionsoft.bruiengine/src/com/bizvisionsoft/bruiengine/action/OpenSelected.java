@@ -34,7 +34,7 @@ public class OpenSelected {
 
 			editor.open((r, o) -> {
 				GridPart grid = (GridPart) context.getContent();
-				grid.doModify(em, r);
+				grid.doModify(em, o, r);
 			});
 		});
 

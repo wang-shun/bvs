@@ -56,13 +56,6 @@
             name="组件库"
             restorable="true">
       </view>
-      <view
-            class="com.bizvisionsoft.bruidesigner.view.DataSourcesView"
-            icon="icons/database.png"
-            id="com.bizvisionsoft.bruidesigner.view.DataSourcesView"
-            name="数据源"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
@@ -162,24 +155,6 @@
                id="bruidesigner.save"
                label="提交修改"
                mode="FORCE_TEXT"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:com.bizvisionsoft.bruidesigner.view.DataSourcesView?after=additions">
-         <command
-               commandId="bruidesigner.createDataSource"
-               icon="icons/add.png"
-               id="bruidesigner.createDataSource"
-               label="创建数据源"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.deleteDataSource"
-               icon="icons/delete.gif"
-               id="bruidesigner.deleteDataSource"
-               label="删除数据源"
                style="push">
          </command>
       </menuContribution>
@@ -494,15 +469,6 @@
             name="删除目录">
       </command>
       <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateDataSource"
-            id="bruidesigner.createDataSource"
-            name="创建数据源">
-      </command>
-      <command
-            id="bruidesigner.deleteDataSource"
-            name="删除数据源">
-      </command>
-      <command
             defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateStickerAssembly"
             id="bruidesigner.addStickerAssemblyToLib"
             name="创建带有标题栏的容器组件">
@@ -577,22 +543,6 @@
       <handler
             class="com.bizvisionsoft.bruidesigner.command.DeleteFolder"
             commandId="bruidesigner.deleteFolder">
-      </handler>
-      <handler
-            class="com.bizvisionsoft.bruidesigner.command.DeleteDataSource"
-            commandId="bruidesigner.deleteDataSource">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <instanceof
-                        value="com.bizvisionsoft.bruicommons.model.DataSource">
-                  </instanceof>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
    </extension>
    <extension

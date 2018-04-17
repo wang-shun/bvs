@@ -52,12 +52,6 @@ public interface UserService {
 	@Produces("application/json; charset=UTF-8")
 	public User get(@PathParam("userId") String userId);
 
-	@GET
-	@Path("/info/userId/{userId}")
-	@Consumes("application/json; charset=UTF-8")
-	@Produces("application/json; charset=UTF-8")
-	public User info(@PathParam("userId") String userId);
-
 	@POST
 	@Path("/count/")
 	@Consumes("application/json; charset=UTF-8")

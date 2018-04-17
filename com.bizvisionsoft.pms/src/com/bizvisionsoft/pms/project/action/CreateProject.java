@@ -23,7 +23,7 @@ public class CreateProject {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		new Editor<Project>(bruiService.getAssembly("创建项目编辑器"), context)
 
-				.setInput(new Project())
+				.setInput(new Project().setStageEnable(true))
 
 				.open((r, proj) -> {
 					Project pj = Services.get(ProjectService.class).insert(proj);

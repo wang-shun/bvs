@@ -35,7 +35,7 @@ public class EditUser {
 					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
 							.filter(new BasicDBObject("userId", user.getUserId())).set(r);
 					if (service.update(filterAndUpdate.bson()) == 1) {
-						User info = service.info(user.getUserId());
+						User info = service.get(user.getUserId());
 						GridPart grid = (GridPart) context.getContent();
 						grid.replaceItem(elem, info);
 					}

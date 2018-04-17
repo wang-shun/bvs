@@ -9,6 +9,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.Structure;
@@ -38,6 +39,9 @@ public class ProjectSet {
 	@WriteValue
 	@Persistence
 	private String id;
+	
+	@ImageURL("id")
+	private String logo = "/img/project_set_c.svg";
 
 	/**
 	 * ¹¤×÷ÁîºÅ

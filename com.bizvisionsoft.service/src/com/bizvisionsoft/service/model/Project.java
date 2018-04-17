@@ -13,6 +13,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
+import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -48,7 +49,7 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private String id;
-
+	
 	/**
 	 * 工作令号
 	 */
@@ -190,6 +191,7 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private Integer actualWorks;
+
 	/**
 	 * 完工期限
 	 */
@@ -197,6 +199,15 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private Date deadline;
+	
+	
+	/**
+	 * 启用阶段管理
+	 */
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private boolean stageEnable;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 客户化基本属性
@@ -209,13 +220,22 @@ public class Project {
 	private String type1;
 
 	/**
-	 * 分为：独立、联合、部分委托，其它
+	 * 分为：独立、联合、部分委托
 	 */
 	@ReadValue
 	@WriteValue
 	@Persistence
 	private String type2;
 
+	/**
+	 * 分为：其它
+	 */
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private String type3;
+
+	
 	/**
 	 * 军兵种
 	 */
@@ -231,15 +251,8 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private List<String> area;
-
-	public ObjectId get_id() {
-		return _id;
-	}
-
-	public void set_id(ObjectId _id) {
-		this._id = _id;
-	}
-
+	
+	
 	@WriteValue("eps_or_projectset_id")
 	public void setEPSorProjectSet(Object element) {
 		if (element instanceof EPS)
@@ -274,9 +287,22 @@ public class Project {
 		return name + " [" + id + "]";
 	}
 	
+	@ImageURL("id")
+	private String logo = "/img/project_c.svg";
+
+	
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "项目";
+
+	public ObjectId get_id() {
+		return _id;
+	}
+
+	public void set_id(ObjectId _id) {
+		this._id = _id;
+	}
+
 	
 	public Date getPlanStart() {
 		return planStart;
@@ -284,6 +310,11 @@ public class Project {
 	
 	public Date getPlanFinish() {
 		return planFinish;
+	}
+	
+	public Project setStageEnable(boolean stageEnable) {
+		this.stageEnable = stageEnable;
+		return this;
 	}
 
 }

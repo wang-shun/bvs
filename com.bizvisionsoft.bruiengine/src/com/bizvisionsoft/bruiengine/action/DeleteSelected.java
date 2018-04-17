@@ -22,14 +22,18 @@ public class DeleteSelected {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(elem -> {
-			String message = Optional.ofNullable(AUtil.readTypeAndLabel(elem)).map(m -> "请确认将要删除 " + m)
-					.orElse("请确认将要删除选择的记录。");
-
-			if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
-				GridPart grid = (GridPart) context.getContent();
-				grid.doDelete(elem);
-			}
+			deleteElementInGrid(bruiService, context, elem);
 		});
+	}
+
+	public static void deleteElementInGrid(IBruiService bruiService, IBruiContext context, Object elem) {
+		String message = Optional.ofNullable(AUtil.readTypeAndLabel(elem)).map(m -> "请确认将要删除 " + m)
+				.orElse("请确认将要删除选择的记录。");
+
+		if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
+			GridPart grid = (GridPart) context.getContent();
+			grid.doDelete(elem);
+		}
 	}
 
 }

@@ -33,15 +33,6 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 
 	@Override
 	public User get(String userId) {
-		User user = Service.col(User.class).find(new BasicDBObject("userId", userId)).first();
-		if (user != null) {
-			return user;
-		}
-		throw new ServiceException("用户不存在");
-	}
-
-	@Override
-	public User info(String userId) {
 		List<User> ds = createDataSet(new BasicDBObject().append("skip", 0).append("limit", 1).append("filter",
 				new BasicDBObject("userId", userId)));
 		if (ds.size() == 0) {
@@ -63,6 +54,18 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		return query(skip, limit, filter);
 	}
 
+	/**
+	 * db.getCollection('account').aggregate([ {$lookup:{
+	 * "from":"organization","localField":"org_id","foreignField":"_id","as":"org"}},
+	 * {$unwind:{"path":"$org",preserveNullAndEmptyArrays:true}},
+	 * {$addFields:{"orgFullName":"$org.fullName"}}, {$project:{"org":0}} ])
+	 * 
+	 * @param skip
+	 * @param limit
+	 * @param filter
+	 * @return
+	 */
+
 	private List<User> query(Integer skip, Integer limit, BasicDBObject filter) {
 
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
@@ -76,23 +79,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		pipeline.add(Aggregates.lookup("organization", "org_id", "_id", "org"));
-
-		pipeline.add(Aggregates.replaceRoot(new BasicDBObject("$mergeObjects", //
-				new Object[] { new BasicDBObject("$arrayElemAt", new Object[] { "$org", 0 }), "$$ROOT" })));
-
-		pipeline.add(Aggregates.project(new BasicDBObject()//
-				.append("name", 1)//
-				.append("tel", 1)//
-				.append("userId", 1)//
-				.append("email", 1)//
-				.append("headPics", 1)//
-				.append("org_id", 1)//
-				.append("activated", 1)//
-				.append("mobile", 1)//
-				.append("weixin", 1)//
-				.append("orgFullName", "$fullName")//
-		));
+		appendOrgFullName(pipeline);
 
 		List<User> result = new ArrayList<User>();
 		Service.col(User.class).aggregate(pipeline).into(result);
