@@ -80,7 +80,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 		if (condition != null)
 			pipeline.add(Aggregates.match(condition));
 
-		appendOrgFullName(pipeline);
+		appendOrgFullName(pipeline,"org_id","orgFullName");
 
 		ArrayList<Equipment> result = new ArrayList<Equipment>();
 		Service.col(Equipment.class).aggregate(pipeline).into(result);

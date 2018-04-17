@@ -13,8 +13,6 @@ import com.bizvisionsoft.service.model.Role;
 import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Field;
-import com.mongodb.client.model.UnwindOptions;
 
 public class OrganizationServiceImpl extends BasicServiceImpl implements OrganizationService {
 
@@ -72,14 +70,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 
 		pipeline.add(Aggregates.match(match));
 
-		pipeline.add(Aggregates.lookup("account", "managerId", "userId", "user"));
-
-		pipeline.add(Aggregates.unwind("$user", new UnwindOptions().preserveNullAndEmptyArrays(true)));
-
-		pipeline.add(Aggregates.addFields(new Field<BasicDBObject>("managerInfo",
-				new BasicDBObject("$concat", new String[] { "$user.name", " [", "$user.userId", "]" }))));
-
-		pipeline.add(Aggregates.project(new BasicDBObject("user", 0)));//
+		appendUserInfo(pipeline,"managerId","managerInfo");
 
 		List<Organization> result = new ArrayList<Organization>();
 		Service.col(Organization.class).aggregate(pipeline).into(result);

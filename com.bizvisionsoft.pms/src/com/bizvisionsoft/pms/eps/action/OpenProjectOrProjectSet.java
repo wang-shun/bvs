@@ -7,7 +7,7 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.service.model.ProjectInfo;
+import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectSet;
 
 public class OpenProjectOrProjectSet {
@@ -20,9 +20,9 @@ public class OpenProjectOrProjectSet {
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(em -> {
 			if (em instanceof ProjectSet) {
-				
-			}else if(em instanceof ProjectInfo) {
-				bruiService.switchPage("项目首页", ((ProjectInfo) em).get_id().toHexString());
+
+			} else if (em instanceof Project) {
+				bruiService.switchPage("项目首页", ((Project) em).get_id().toHexString());
 			}
 		});
 

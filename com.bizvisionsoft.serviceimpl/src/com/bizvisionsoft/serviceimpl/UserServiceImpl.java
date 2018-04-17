@@ -79,7 +79,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		appendOrgFullName(pipeline);
+		appendOrgFullName(pipeline,"org_id","orgFullName");
 
 		List<User> result = new ArrayList<User>();
 		Service.col(User.class).aggregate(pipeline).into(result);

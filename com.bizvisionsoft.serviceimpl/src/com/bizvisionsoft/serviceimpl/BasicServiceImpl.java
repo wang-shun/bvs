@@ -66,16 +66,30 @@ public class BasicServiceImpl {
 		Service.col(clazz).aggregate(pipeline).into(result);
 		return result;
 	}
-	
-	
-	protected void appendOrgFullName(ArrayList<Bson> pipeline) {
-		pipeline.add(Aggregates.lookup("organization", "org_id", "_id", "org"));
 
-		pipeline.add(Aggregates.unwind("$org", new UnwindOptions().preserveNullAndEmptyArrays(true)));
+	protected void appendOrgFullName(ArrayList<Bson> pipeline, String inputField, String outputField) {
+		String tempField = "_org_" + inputField;
 
-		pipeline.add(Aggregates.addFields(new Field<String>("orgFullName", "$org.fullName")));
+		pipeline.add(Aggregates.lookup("organization", inputField, "_id", tempField));
 
-		pipeline.add(Aggregates.project(new BasicDBObject("org", false)));//
+		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
+
+		pipeline.add(Aggregates.addFields(new Field<String>(outputField, "$" + tempField + ".fullName")));
+
+		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
+	}
+
+	protected void appendUserInfo(ArrayList<Bson> pipeline, String inputField, String outputField) {
+		String tempField = "_user_" + inputField;
+
+		pipeline.add(Aggregates.lookup("account", inputField, "userId", tempField));
+
+		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
+
+		pipeline.add(Aggregates.addFields(new Field<BasicDBObject>(outputField, new BasicDBObject("$concat",
+				new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" }))));
+
+		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
 }

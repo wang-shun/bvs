@@ -9,7 +9,6 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.Project;
-import com.bizvisionsoft.service.model.ProjectInfo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
 
@@ -31,14 +30,14 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	}
 
 	@Override
-	public List<ProjectInfo> createDataSet(BasicDBObject condition) {
+	public List<Project> createDataSet(BasicDBObject condition) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");
 		BasicDBObject filter = (BasicDBObject) condition.get("filter");
 		return query(skip, limit, filter);
 	}
 
-	private List<ProjectInfo> query(Integer skip, Integer limit, BasicDBObject filter) {
+	private List<Project> query(Integer skip, Integer limit, BasicDBObject filter) {
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
 		if (filter != null)
@@ -51,9 +50,13 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			pipeline.add(Aggregates.limit(limit));
 
 		// TODO
-
-		List<ProjectInfo> result = new ArrayList<ProjectInfo>();
-		Service.col(ProjectInfo.class).aggregate(pipeline).into(result);
+		//1. ³Ðµ£×éÖ¯
+		appendOrgFullName(pipeline, "impUnit_id", "impUnitOrgFullName");
+		
+		appendUserInfo(pipeline, "pmId", "pmInfo");
+		
+		List<Project> result = new ArrayList<Project>();
+		Service.col(Project.class).aggregate(pipeline).into(result);
 		return result;
 
 	}

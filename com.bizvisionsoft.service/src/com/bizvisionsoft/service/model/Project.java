@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
@@ -13,14 +14,17 @@ import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
+import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.UserService;
 
 /**
  * 项目基本模型，用于创建和编辑
@@ -49,7 +53,7 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private String id;
-	
+
 	/**
 	 * 工作令号
 	 */
@@ -199,8 +203,7 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private Date deadline;
-	
-	
+
 	/**
 	 * 启用阶段管理
 	 */
@@ -208,6 +211,53 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private boolean stageEnable;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 项目经理
+	 */
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private String pmId;
+
+	@SetValue
+	@ReadValue
+	private String pmInfo;
+
+	@WriteValue("pm")
+	private void setPM(User pm) {
+		this.pmId = Optional.ofNullable(pm).map(o -> o.getUserId()).orElse(null);
+	}
+
+	@ReadValue("pm")
+	private User getPM() {
+		return Optional.ofNullable(pmId).map(id -> ServicesLoader.get(UserService.class).get(id)).orElse(null);
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 承担单位
+	 */
+	@Persistence
+	private ObjectId impUnit_id;
+
+	@SetValue
+	@ReadValue
+	private String impUnitOrgFullName;
+
+	@WriteValue("impUnit")
+	public void setOrganization(Organization org) {
+		this.impUnit_id = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
+	}
+
+	@ReadValue("impUnit")
+	public Organization getOrganization() {
+		return Optional.ofNullable(impUnit_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
+				.orElse(null);
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 客户化基本属性
@@ -235,7 +285,6 @@ public class Project {
 	@Persistence
 	private String type3;
 
-	
 	/**
 	 * 军兵种
 	 */
@@ -251,8 +300,7 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private List<String> area;
-	
-	
+
 	@WriteValue("eps_or_projectset_id")
 	public void setEPSorProjectSet(Object element) {
 		if (element instanceof EPS)
@@ -280,20 +328,24 @@ public class Project {
 		options.put("CBB", "CBB");
 		return options;
 	}
-	
+
 	@Override
 	@Label
 	public String toString() {
 		return name + " [" + id + "]";
 	}
-	
+
 	@ImageURL("id")
 	private String logo = "/img/project_c.svg";
 
-	
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "项目";
+	
+	@Behavior("EPS浏览/打开") // 控制action
+	private boolean enableOpen() {
+		return true;// 考虑权限 TODO
+	}
 
 	public ObjectId get_id() {
 		return _id;
@@ -303,15 +355,14 @@ public class Project {
 		this._id = _id;
 	}
 
-	
 	public Date getPlanStart() {
 		return planStart;
 	}
-	
+
 	public Date getPlanFinish() {
 		return planFinish;
 	}
-	
+
 	public Project setStageEnable(boolean stageEnable) {
 		this.stageEnable = stageEnable;
 		return this;
