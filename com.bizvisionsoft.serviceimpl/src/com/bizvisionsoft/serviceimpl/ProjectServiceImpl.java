@@ -21,7 +21,11 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 	@Override
 	public Project get(ObjectId _id) {
-		return get(_id, Project.class);
+		List<Project> ds = createDataSet(new BasicDBObject("filter", new BasicDBObject("_id", _id)));
+		if (ds.size() == 0) {
+			throw new ServiceException("没有_id为" + _id + "的项目。");
+		}
+		return ds.get(0);
 	}
 
 	@Override
@@ -50,11 +54,11 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			pipeline.add(Aggregates.limit(limit));
 
 		// TODO
-		//1. 承担组织
+		// 1. 承担组织
 		appendOrgFullName(pipeline, "impUnit_id", "impUnitOrgFullName");
-		
+
 		appendUserInfo(pipeline, "pmId", "pmInfo");
-		
+
 		List<Project> result = new ArrayList<Project>();
 		Service.col(Project.class).aggregate(pipeline).into(result);
 		return result;
@@ -69,6 +73,11 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		result.add(data.getPlanStart());
 		result.add(data.getPlanFinish());
 		return result;
+	}
+
+	@Override
+	public long update(BasicDBObject fu) {
+		return update(fu, Project.class);
 	}
 
 }

@@ -166,5 +166,8 @@ public class User {
 		return activated;
 	}
 	
+	public String getName() {
+		return name;
+	}
 
 }

@@ -23,7 +23,7 @@ public class UserSession implements IShellProvider {
 		UserSession session = (UserSession) SingletonUtil.getSessionInstance(UserSession.class);
 		return session;
 	}
-
+	
 	public UserSession setShell(Shell shell) {
 		this.shell = shell;
 		return this;
@@ -49,4 +49,5 @@ public class UserSession implements IShellProvider {
 	public BruiEntryPoint getEntryPoint() {
 		return bruiEntryPoint;
 	}
+
 }

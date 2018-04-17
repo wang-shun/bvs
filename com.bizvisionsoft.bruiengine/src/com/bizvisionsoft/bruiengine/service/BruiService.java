@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.util.Date;
+
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -10,6 +12,7 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.service.model.CreationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
@@ -28,6 +31,15 @@ public class BruiService implements IBruiService {
 	@Override
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getSessionUserInfo();
+	}
+	
+	public CreationInfo creationInfo() {
+		CreationInfo info = new CreationInfo();
+		User user = getCurrentUserInfo();
+		info.userId = user.getUserId();
+		info.userName = user.getName();
+		info.date = new Date();
+		return info;
 	}
 
 	@Override

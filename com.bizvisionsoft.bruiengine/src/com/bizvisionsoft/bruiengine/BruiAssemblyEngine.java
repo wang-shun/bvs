@@ -11,6 +11,7 @@ import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
 import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.assembly.ActionPanelPart;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
@@ -49,6 +50,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new EditorPart(assembly));
 		} else if (Assembly.TYPE_SELECTOR.equals(type)) {
 			brui = new BruiAssemblyEngine(new SelectorPart(assembly));
+		} else if (Assembly.TYPE_ACTION_PANEL.equals(type)) {
+			brui = new BruiAssemblyEngine(new ActionPanelPart(assembly));
 		} else {
 			brui = load(assembly.getBundleId(), assembly.getClassName())// load
 					.newInstance();

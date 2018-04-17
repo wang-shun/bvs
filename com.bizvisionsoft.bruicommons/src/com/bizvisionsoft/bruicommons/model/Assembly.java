@@ -7,22 +7,24 @@ import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class Assembly extends ModelObject {
-	
+
 	@ReadValue(ReadValue.TYPE)
 	private String getTypeName() {
-		 String text = "组件";
-		 if(TYPE_EDITOR.equals(type)) {
-			 text += " - 编辑器";
-		 }else if(TYPE_SELECTOR.equals(type)) {
-			 text += " - 弹出式选择器";
-		 }else if(TYPE_STICKER.equals(type)) {
-			 text += " - 带有标题栏容器";
-		 }else if(TYPE_GRID.equals(type)) {
-			 text += " - 表格";
-		 }else if(TYPE_GANTT.equals(type)) {
-			 text += " - 甘特图";
-		 }
-		 return text;
+		String text = "组件";
+		if (TYPE_EDITOR.equals(type)) {
+			text += " - 编辑器";
+		} else if (TYPE_SELECTOR.equals(type)) {
+			text += " - 弹出式选择器";
+		} else if (TYPE_STICKER.equals(type)) {
+			text += " - 带有标题栏容器";
+		} else if (TYPE_GRID.equals(type)) {
+			text += " - 表格";
+		} else if (TYPE_GANTT.equals(type)) {
+			text += " - 甘特图";
+		} else if (TYPE_ACTION_PANEL.equals(type)) {
+			text += " - 操作面板";
+		}
+		return text;
 	}
 
 	@Override
@@ -38,8 +40,10 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_EDITOR = "editor";
 
 	public static final String TYPE_GANTT = "gantt";
-	
+
 	public static final String TYPE_SELECTOR = "selector";
+
+	public static final String TYPE_ACTION_PANEL = "actionpanel";
 
 	private String id;
 
@@ -418,11 +422,11 @@ public class Assembly extends ModelObject {
 	public List<Action> getRowActions() {
 		return rowActions;
 	}
-	
+
 	public void setRowActions(List<Action> rowActions) {
 		this.rowActions = rowActions;
 	}
-	
+
 	// *******************************************************************************************
 	// form field
 
@@ -518,7 +522,6 @@ public class Assembly extends ModelObject {
 
 	private int ganttGridWidth;
 
-
 	public void setGanttGridWidth(int ganttGridWidth) {
 		this.ganttGridWidth = ganttGridWidth;
 	}
@@ -526,23 +529,23 @@ public class Assembly extends ModelObject {
 	public int getGanttGridWidth() {
 		return ganttGridWidth;
 	}
-	
+
 	private String eventHandlerBundleId;
-	
+
 	private String eventHandlerClassName;
-	
+
 	public String getEventHandlerBundleId() {
 		return eventHandlerBundleId;
 	}
-	
+
 	public String getEventHandlerClassName() {
 		return eventHandlerClassName;
 	}
-	
+
 	public void setEventHandlerBundleId(String eventHandlerBundleId) {
 		this.eventHandlerBundleId = eventHandlerBundleId;
 	}
-	
+
 	public void setEventHandlerClassName(String eventHandlerClassName) {
 		this.eventHandlerClassName = eventHandlerClassName;
 	}
@@ -558,60 +561,91 @@ public class Assembly extends ModelObject {
 	public void setHeadActions(List<Action> headActions) {
 		this.headActions = headActions;
 	}
-	
-	//合并sticker
+
+	// 合并sticker
 	private boolean hasTitlebar;
-	
+
 	public boolean isHasTitlebar() {
 		return hasTitlebar;
 	}
-	
+
 	public void setHasTitlebar(boolean hasTitlebar) {
 		this.hasTitlebar = hasTitlebar;
 	}
-	
-	//是否在标题栏上显示input对象的标签
+
+	// 是否在标题栏上显示input对象的标签
 	private boolean displayInputLabelInTitlebar;
-	
+
 	public boolean isDisplayInputLabelInTitlebar() {
 		return displayInputLabelInTitlebar;
 	}
-	
+
 	public void setDisplayInputLabelInTitlebar(boolean displayInputLabelInTitlebar) {
 		this.displayInputLabelInTitlebar = displayInputLabelInTitlebar;
 	}
-	
-	//选择器组件
-	
+
+	private boolean displayRootInputLabelInTitlebar;
+
+	public boolean isDisplayRootInputLabelInTitlebar() {
+		return displayRootInputLabelInTitlebar;
+	}
+
+	public void setDisplayRootInputLabelInTitlebar(boolean displayRootInputLabelInTitlebar) {
+		this.displayRootInputLabelInTitlebar = displayRootInputLabelInTitlebar;
+	}
+
+	// 选择器组件
+
 	private String selectorGridAssemblyId;
-	
+
 	public String getSelectorGridAssemblyId() {
 		return selectorGridAssemblyId;
 	}
-	
+
 	public void setSelectorGridAssemblyId(String selectorGridAssemblyId) {
 		this.selectorGridAssemblyId = selectorGridAssemblyId;
 	}
-	
+
 	private boolean selectorMultiSelection;
-	
+
 	public boolean isSelectorMultiSelection() {
 		return selectorMultiSelection;
 	}
-	
+
 	public void setSelectorMultiSelection(boolean selectorMultiSelection) {
 		this.selectorMultiSelection = selectorMultiSelection;
 	}
-	
+
 	//
 	private boolean closable;
-	
+
 	public boolean isClosable() {
 		return closable;
 	}
-	
+
 	public void setClosable(boolean closable) {
 		this.closable = closable;
+	}
+	
+	
+	private String message;
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public int actionPanelColumnCount;
+	
+	public void setActionPanelColumnCount(int actionPanelColumnCount) {
+		this.actionPanelColumnCount = actionPanelColumnCount;
+	}
+	
+	public int getActionPanelColumnCount() {
+		return actionPanelColumnCount;
 	}
 
 }

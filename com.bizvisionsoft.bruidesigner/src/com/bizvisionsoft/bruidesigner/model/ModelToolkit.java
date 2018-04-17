@@ -137,6 +137,8 @@ public class ModelToolkit {
 				return Activator.getImageDescriptor("icons/gantt.png");
 			if (Assembly.TYPE_GRID.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/table.png");
+			if (Assembly.TYPE_ACTION_PANEL.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/actionpanel.png");
 			if (Assembly.TYPE_STICKER.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/sticker.png");
 			if (Assembly.TYPE_SELECTOR.equals(((Assembly) model).getType()))
@@ -369,6 +371,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyGanttEditor";
 					} else if (Assembly.TYPE_SELECTOR.equals(type)) {
 						editorId = "bruidesigner.assemblySelectorEditor";
+					} else if (Assembly.TYPE_ACTION_PANEL.equals(type)) {
+						editorId = "bruidesigner.assemblyActionPanelEditor";
 					} else {
 						editorId = "bruidesigner.assemblyEditor";
 					}

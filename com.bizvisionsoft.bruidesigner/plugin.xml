@@ -645,6 +645,13 @@
             id="bruidesigner.assemblySelectorEditor"
             name="选择器组件">
       </editor>
+      <editor
+            class="com.bizvisionsoft.bruidesigner.editor.AssemblyActionPanelEditor"
+            default="false"
+            icon="icons/selector.png"
+            id="bruidesigner.assemblyActionPanelEditor"
+            name="操作面板组件">
+      </editor>
    </extension>
 
 </plugin>

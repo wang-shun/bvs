@@ -240,19 +240,19 @@ public class Project {
 	/**
 	 * 承担单位
 	 */
-	@Persistence//数据库存取
+	@Persistence // 数据库存取
 	private ObjectId impUnit_id;
 
-	@SetValue//查询服务设置
-	@ReadValue//表格用
+	@SetValue // 查询服务设置
+	@ReadValue // 表格用
 	private String impUnitOrgFullName;
 
-	@WriteValue("impUnit")//编辑器用
+	@WriteValue("impUnit") // 编辑器用
 	public void setOrganization(Organization org) {
 		this.impUnit_id = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
 	}
 
-	@ReadValue("impUnit")//编辑器用
+	@ReadValue("impUnit") // 编辑器用
 	public Organization getOrganization() {
 		return Optional.ofNullable(impUnit_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
@@ -341,11 +341,14 @@ public class Project {
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "项目";
-	
+
 	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
 		return true;// 考虑权限 TODO
 	}
+
+	@Persistence
+	private CreationInfo creationInfo;
 
 	public ObjectId get_id() {
 		return _id;
@@ -365,6 +368,11 @@ public class Project {
 
 	public Project setStageEnable(boolean stageEnable) {
 		this.stageEnable = stageEnable;
+		return this;
+	}
+
+	public Project setCreationInfo(CreationInfo creationInfo) {
+		this.creationInfo = creationInfo;
 		return this;
 	}
 

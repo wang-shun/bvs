@@ -60,6 +60,9 @@ public class StickerPart {
 		if (assembly.isDisplayInputLabelInTitlebar()) {
 			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
 					.orElse("");
+		}else if(assembly.isDisplayRootInputLabelInTitlebar()) {
+			text += Optional.ofNullable(context.getRootInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
+					.orElse("");
 		}
 
 		Action closeAction = null;

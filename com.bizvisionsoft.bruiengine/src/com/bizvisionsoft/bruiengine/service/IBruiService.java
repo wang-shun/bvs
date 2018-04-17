@@ -6,6 +6,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.ui.Editor;
+import com.bizvisionsoft.service.model.CreationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public interface IBruiService extends IServiceWithId {
@@ -49,6 +50,8 @@ public interface IBruiService extends IServiceWithId {
 	}
 
 	public void closeCurrentContent();
+
+	CreationInfo creationInfo();
 
 
 }
