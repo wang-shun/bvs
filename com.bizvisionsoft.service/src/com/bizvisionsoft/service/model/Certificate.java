@@ -31,9 +31,5 @@ public class Certificate {
 	@WriteValue
 	private String scope;
 
-	@Override
-	public String toString() {
-		return name;
-	}
 
 }

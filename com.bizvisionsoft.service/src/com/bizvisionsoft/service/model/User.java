@@ -107,6 +107,7 @@ public class User {
 	@WriteValue("organization ")
 	public void setOrganization(Organization org) {
 		this.organizationId = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
+		this.orgFullName = Optional.ofNullable(org).map(o -> o.getFullName()).orElse(null);
 	}
 
 	@ReadValue("organization ")
@@ -135,32 +136,6 @@ public class User {
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "”√ªß";
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (userId == null) {
-			if (other.userId != null)
-				return false;
-		} else if (!userId.equals(other.userId))
-			return false;
-		return true;
-	}
-	
 	
 	public boolean isActivated() {
 		return activated;

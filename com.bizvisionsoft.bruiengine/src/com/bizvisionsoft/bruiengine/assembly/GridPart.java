@@ -51,6 +51,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
@@ -238,7 +239,7 @@ public class GridPart {
 
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(queryConfig);
 		IBruiContext childContext = new BruiEditorContext().setEditable(true).setEmbeded(true).setInput(input)
-				.setIgnoreNull(true).setParent(context).setAssembly(queryConfig).setEngine(brui);
+				.setParent(context).setAssembly(queryConfig).setEngine(brui);
 		context.add(childContext);
 
 		final EditorPart editor = (EditorPart) brui.getTarget();
@@ -346,7 +347,7 @@ public class GridPart {
 
 		viewer.setAutoExpandLevel(config.getGridAutoExpandLevel());
 		viewer.setAutoPreferredHeight(config.isGridAutoHeight());
-		viewer.setUseHashlookup(true);
+		viewer.setUseHashlookup(false);
 
 		if (itemSelector != null || config.isGridMarkupEnabled()
 				|| (config.getRowActions() != null && !config.getRowActions().isEmpty()))
@@ -566,10 +567,18 @@ public class GridPart {
 		viewer.update(elem, null);
 	}
 
-	@SuppressWarnings("rawtypes")
 	public void remove(Object elem) {
-		((List) viewer.getInput()).remove(elem);
-		viewer.remove(elem);
+		remove(null, elem);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void remove(Object parent, Object elem) {
+		if (parent == null) {
+			((List) viewer.getInput()).remove(elem);
+			viewer.remove(elem);
+		} else {
+			viewer.remove(parent, new Object[] { elem });
+		}
 	}
 
 	public List<Object> getCheckedItems() {
@@ -580,9 +589,7 @@ public class GridPart {
 	}
 
 	public void removeCheckedItem() {
-		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked()).forEach(c -> {
-			c.dispose();
-		});
+		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked()).forEach(c -> c.dispose());
 	}
 
 	public void removeAllItem() {
@@ -605,8 +612,7 @@ public class GridPart {
 		} else {
 			input = new Document();
 		}
-
-		bruiService.createEditor(queryConfig, input, true, true, context).open((r, t) -> doQuery(r));
+		new Editor<Object>(queryConfig, context).setInput(true, input).ok((r, t) -> doQuery(r));
 	}
 
 	private void doQuery(BasicDBObject result) {
@@ -634,7 +640,7 @@ public class GridPart {
 	 * @param em
 	 * @param o
 	 */
-	public void doModify(Object element, Object newElement,BasicDBObject newData) {
+	public void doModify(Object element, Object newElement, BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
 				dataSetEngine.replace(element, newData);
@@ -648,9 +654,9 @@ public class GridPart {
 	public void doDelete(Object element) {
 		if (dataSetEngine != null) {
 			try {
-				Object parentData = getParentElement(element);
-				dataSetEngine.delete(element, parentData);
-				remove(element);
+				Object parentElement = getParentElement(element);
+				dataSetEngine.delete(element, parentElement);
+				remove(parentElement, element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());
 			}
@@ -658,8 +664,8 @@ public class GridPart {
 	}
 
 	public Object getParentElement(Object element) {
-		Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element))
-				.map(i -> i.getParentItem()).map(p -> p.getData()).orElse(null);
+		Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element)).map(i -> i.getParentItem())
+				.map(p -> p.getData()).orElse(null);
 		return parentData;
 	}
 
@@ -668,10 +674,17 @@ public class GridPart {
 			Object newElement = dataSetEngine.insert(parent, element);
 			if (parent == null) {
 				insert(newElement);
-			}else{
+			} else {
 				refresh(parent);
 			}
 		}
+	}
+
+	public Object doGetEditInput(Object em) {
+		if (dataSetEngine != null) {
+			return dataSetEngine.query(em);
+		}
+		return null;
 	}
 
 }

@@ -38,7 +38,7 @@ public class CreateProjectSet {
 
 					.setInput(input)
 
-					.open((r, pjset) -> {
+					.ok((r, pjset) -> {
 						pjset = Services.get(ProjectSetService.class).insert(pjset);
 						if (pjset != null) {
 							GridPart grid = (GridPart) context.getContent();

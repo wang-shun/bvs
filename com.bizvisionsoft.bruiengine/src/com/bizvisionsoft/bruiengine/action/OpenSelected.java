@@ -28,14 +28,27 @@ public class OpenSelected {
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(em -> {
-			Editor<?> editor = new Editor<Object>(assembly, context).setInput(em).setEditable(editable);
 			String message = Optional.ofNullable(AUtil.readTypeAndLabel(em)).orElse("");
-			editor.setTitle(editable ? ("±à¼­ " + message) : message);
 
-			editor.open((r, o) -> {
+			Editor<Object> editor = new Editor<Object>(assembly, context).setEditable(editable)
+					.setTitle(editable ? ("±à¼­ " + message) : message);
+
+			if (editable) {
 				GridPart grid = (GridPart) context.getContent();
-				grid.doModify(em, o, r);
-			});
+				Object input = grid.doGetEditInput(em);
+				if (input != null) {
+					editor.setInput(true, input);
+				} else {
+					editor.setInput(false, em);
+				}
+				editor.ok((r, o) -> {
+					grid.doModify(em, o, r);
+				});
+			} else {
+				editor.setInput(true, em);
+				editor.open();
+			}
+			
 		});
 
 	}

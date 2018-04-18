@@ -64,7 +64,7 @@ public class ProjectGantt {
 	@Listener("项目甘特图/onAfterTaskUpdate")
 	public void onAfterTaskUpdate(GanttEvent e) {
 		workService.updateWork(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
-				.set(Util.getBson(e.task, true, "_id")).bson());
+				.set(Util.getBson(e.task,  "_id")).bson());
 		System.out.println(e.text);
 	}
 
@@ -83,7 +83,7 @@ public class ProjectGantt {
 	@Listener("项目甘特图/onAfterLinkUpdate")
 	public void onAfterLinkUpdate(GanttEvent e) {
 		workService.updateLink(new FilterAndUpdate().filter(new BasicDBObject("_id", new ObjectId(e.id)))
-				.set(Util.getBson(e.link, true, "_id")).bson());
+				.set(Util.getBson(e.link,  "_id")).bson());
 		System.out.println(e.text);
 	}
 

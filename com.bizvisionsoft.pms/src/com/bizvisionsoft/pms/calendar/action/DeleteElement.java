@@ -34,7 +34,8 @@ public class DeleteElement {
 					.orElse("请确认将要删除选择的记录。");
 			if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
 				Services.get(CommonService.class).deleteCalendarWorkTime(((WorkTime) elem).get_id());
-				((GridPart) context.getContent()).remove(elem);
+				GridPart grid = ((GridPart) context.getContent());
+				grid.remove(grid.getParentElement(elem),elem);
 			}
 		}
 	}

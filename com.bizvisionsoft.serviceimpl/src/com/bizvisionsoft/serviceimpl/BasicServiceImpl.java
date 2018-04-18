@@ -12,15 +12,19 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Field;
 import com.mongodb.client.model.UnwindOptions;
 import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.UpdateResult;
 
 public class BasicServiceImpl {
 
 	protected <T> long update(BasicDBObject fu, Class<T> clazz) {
 		BasicDBObject filter = (BasicDBObject) fu.get("filter");
 		BasicDBObject update = (BasicDBObject) fu.get("update");
+		update.remove("_id");
 		UpdateOptions option = new UpdateOptions();
 		option.upsert(false);
-		return Service.col(clazz).updateMany(filter, update, option).getModifiedCount();
+		UpdateResult updateMany = Service.col(clazz).updateMany(filter, update, option);
+		long cnt = updateMany.getModifiedCount();
+		return cnt;
 	}
 
 	protected <T> T insert(T obj, Class<T> clazz) {

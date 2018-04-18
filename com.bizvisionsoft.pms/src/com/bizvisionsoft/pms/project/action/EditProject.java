@@ -29,7 +29,7 @@ public class EditProject {
 		String message = Optional.ofNullable(AUtil.readTypeAndLabel(project)).orElse("");
 
 		new Editor<Project>(bruiService.getAssembly("ÏîÄ¿±à¼­Æ÷"), context).setInput(project).setTitle("±à¼­ " + message)
-				.open((r, proj) -> {
+				.ok((r, proj) -> {
 					Services.get(ProjectService.class).update(
 							new FilterAndUpdate().filter(new BasicDBObject("_id", project.get_id())).set(r).bson());
 				});

@@ -25,7 +25,7 @@ public class CreateProject {
 
 				.setInput(new Project().setStageEnable(true).setCreationInfo(bruiService.creationInfo()))
 
-				.open((r, proj) -> {
+				.ok((r, proj) -> {
 					Project pj = Services.get(ProjectService.class).insert(proj);
 					if (pj != null) {
 						if (MessageDialog.openQuestion(bruiService.getCurrentShell(), "创建项目", "项目创建成功，是否进入项目主页？")) {

@@ -10,9 +10,9 @@ public interface IBruiEditorContext extends IBruiContext{
 
 	IBruiEditorContext setEditable(boolean editable);
 
-	boolean isIgnoreNull();
+//	boolean isIgnoreNull();
 
-	IBruiEditorContext setIgnoreNull(boolean ignoreNull);
+//	IBruiEditorContext setIgnoreNull(boolean ignoreNull);
 
 	IBruiEditorContext setEmbeded(boolean compact);
 

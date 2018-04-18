@@ -18,17 +18,19 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface DataSet {
 	
-	public static final String LIST = "list";
+	String LIST = "list";
 
-	public static final String COUNT = "count";
+	String COUNT = "count";
 
-	public static final String INPUT = "input";
+	String INPUT = "input";
 
-	public static final String UPDATE = "update";
+	String UPDATE = "update";
 
-	public static final String DELETE = "delete";
+	String DELETE = "delete";
 	
-	public static final String INSERT = "insert";
+	String INSERT = "insert";
+
+	String GET = "get";
 
 
 	/**

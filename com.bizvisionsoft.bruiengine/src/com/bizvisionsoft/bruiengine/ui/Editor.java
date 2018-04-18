@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
@@ -18,14 +19,19 @@ public class Editor<T> extends Popup {
 
 	private T input;
 
-	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input,
+	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input, boolean modifyInput,
 			BiConsumer<BasicDBObject, M> doit) {
-		return create(name, parentContext, input).open(doit);
+		return create(name, parentContext, input, modifyInput).ok(doit);
 	}
 
-	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input) {
+	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input,
+			BiConsumer<BasicDBObject, M> doit) {
+		return open(name, parentContext, input, false, doit);
+	}
+
+	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input, boolean modifyInput) {
 		Assembly editorConfig = ModelLoader.site.getAssemblyByName(name);
-		return new Editor<M>(editorConfig, parentContext).setInput(input);
+		return new Editor<M>(editorConfig, parentContext).setInput(modifyInput, input);
 	}
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {
@@ -51,15 +57,23 @@ public class Editor<T> extends Popup {
 		return this;
 	}
 
-	public Editor<T> setIgnoreNull(boolean ignoreNull) {
-		getContext().setIgnoreNull(ignoreNull);
+//	public Editor<T> setIgnoreNull(boolean ignoreNull) {
+//		getContext().setIgnoreNull(ignoreNull);
+//		return this;
+//	}
+
+	public Editor<T> setInput(boolean modifyInput, T input) {
+		if (!modifyInput) {
+			this.input = AUtil.deepCopy(input);
+		} else {
+			this.input = input;
+		}
+		getContext().setInput(this.input);
 		return this;
 	}
 
 	public Editor<T> setInput(T input) {
-		this.input = input;
-		getContext().setInput(input);
-		return this;
+		return setInput(false, input);
 	}
 
 	@Override
@@ -105,7 +119,7 @@ public class Editor<T> extends Popup {
 		return brui.getReturnObject();
 	}
 
-	public Editor<T> open(BiConsumer<BasicDBObject, T> doit) {
+	public Editor<T> ok(BiConsumer<BasicDBObject, T> doit) {
 		if (Window.OK == open()) {
 			doit.accept((BasicDBObject) getResult(), input);
 		}

@@ -39,7 +39,7 @@ public class CreateRoot {
 			String message = Optional.ofNullable(AUtil.readType(input)).orElse("");
 			Editor<?> editor = new Editor<Object>(assembly, context).setInput(input);
 			editor.setTitle("´´½¨ " + message);
-			editor.open((r, o) -> {
+			editor.ok((r, o) -> {
 				GridPart grid = (GridPart) context.getContent();
 				grid.doCreate(parent, o);
 			});

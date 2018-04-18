@@ -23,8 +23,6 @@ public interface IBruiService extends IServiceWithId {
 
 	public Shell getCurrentShell();
 
-	// TODO ªÒµ√Webserviceµÿ÷∑
-
 	public default String getServiceId() {
 		return Id;
 	}
@@ -38,12 +36,6 @@ public interface IBruiService extends IServiceWithId {
 	public void switchPage(String pageName, String inputUid);
 
 	public void switchPage(Page page, String inputUid);
-
-	public <T> Editor<T> createEditor(Assembly assembly, T input, boolean editable, boolean ignoreNull,
-			IBruiContext context);
-
-	public <T> Editor<T> createEditorByName(String assemblyName, T input, boolean editable, boolean ignoreNull,
-			IBruiContext context);
 
 	public default Assembly getAssembly(String name) {
 		return ModelLoader.site.getAssemblyByName(name);

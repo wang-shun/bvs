@@ -25,7 +25,7 @@ public class AddTask {
 		// 显示编辑器
 		new Editor<WorkInfo>(bruiService.getAssembly("创建甘特图工作编辑器"), context)
 				.setInput(WorkInfo.newInstance(project.get_id(), ((WorkInfo) ((GanttEvent) event).task).get_id()))
-				.open((r, wi) -> {
+				.ok((r, wi) -> {
 					GanttPart content = (GanttPart) context.getContent();
 					content.addTask(wi,  wi.index());
 				});

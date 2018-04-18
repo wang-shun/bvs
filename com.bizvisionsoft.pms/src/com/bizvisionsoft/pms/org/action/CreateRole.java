@@ -30,7 +30,7 @@ public class CreateRole {
 
 				.setInput(role)
 
-				.open((r, t) -> {
+				.ok((r, t) -> {
 					Role newRole = Services.get(OrganizationService.class).insertRole(t);
 					GridPart grid = (GridPart) context.getContent();
 					grid.insert(newRole);

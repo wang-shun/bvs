@@ -9,7 +9,6 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.CreationInfo;
@@ -96,20 +95,6 @@ public class BruiService implements IBruiService {
 	@Override
 	public void switchPage(Page page, String inputUid) {
 		UserSession.current().getEntryPoint().switchPage(page, inputUid, true);
-	}
-
-	@Override
-	@Deprecated
-	public <T> Editor<T> createEditor(Assembly assembly, T input, boolean editable, boolean ignoreNull,
-			IBruiContext context) {
-		return new Editor<T>(assembly, context).setEditable(editable).setInput(input).setIgnoreNull(ignoreNull);
-	}
-
-	@Override
-	@Deprecated
-	public <T> Editor<T> createEditorByName(String assemblyName, T input, boolean editable, boolean ignoreNull,
-			IBruiContext context) {
-		return createEditor(getAssembly(assemblyName), input, editable, ignoreNull, context);
 	}
 
 

@@ -639,6 +639,8 @@ public class Assembly extends ModelObject {
 	}
 	
 	public int actionPanelColumnCount;
+
+	private String nullValueAllowedFields;
 	
 	public void setActionPanelColumnCount(int actionPanelColumnCount) {
 		this.actionPanelColumnCount = actionPanelColumnCount;
@@ -647,5 +649,14 @@ public class Assembly extends ModelObject {
 	public int getActionPanelColumnCount() {
 		return actionPanelColumnCount;
 	}
+
+	public String getNullValueAllowedFields() {
+		return nullValueAllowedFields;
+	}
+
+	public void setNullValueAllowedFields(String nullValueAllowedFields) {
+		this.nullValueAllowedFields = nullValueAllowedFields;
+	}
+
 
 }

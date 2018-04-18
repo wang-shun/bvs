@@ -30,7 +30,7 @@ public class CreateSubOrg {
 
 						.setInput(org)
 
-						.open((r, t) -> {
+						.ok((r, t) -> {
 							Organization result = Services.get(OrganizationService.class).insert(t);
 							GridPart grid = (GridPart) context.getContent();
 							grid.add(em, result);

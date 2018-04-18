@@ -33,7 +33,7 @@ public class RemoveMember {
 						Services.get(UserService.class).update(fu);
 
 						GridPart grid = (GridPart) context.getContent();
-						grid.remove(elem);
+						grid.remove(grid.getParentElement(elem),elem);
 					} catch (Exception e) {
 						MessageDialog.openError(bruiService.getCurrentShell(), "ÒÆ³ý", e.getMessage());
 					}

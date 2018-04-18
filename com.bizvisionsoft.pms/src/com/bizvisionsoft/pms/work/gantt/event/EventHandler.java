@@ -54,7 +54,7 @@ public class EventHandler {
 		}else {
 			editor = "甘特图工作编辑器";
 		}
-		Editor.create(editor, context, event.task).setTitle("编辑工作").open((r, wi) -> {
+		Editor.create(editor, context, event.task,false).setTitle("编辑工作").ok((r, wi) -> {
 			GanttPart content = (GanttPart) context.getContent();
 			content.updateTask(wi);
 		});

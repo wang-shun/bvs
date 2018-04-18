@@ -36,7 +36,7 @@ public class CreateProjectTemplate {
 
 					.setInput(input)
 
-					.open((r, pjset) -> {
+					.ok((r, pjset) -> {
 						pjset = Services.get(ProjectTemplateService.class).insert(pjset);
 						if (pjset != null) {
 							GridPart grid = (GridPart) context.getContent();

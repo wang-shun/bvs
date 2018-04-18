@@ -23,7 +23,7 @@ public class CreateRootTask {
 		Project project = (Project) context.getRootInput();
 		// ÏÔÊ¾±à¼­Æ÷
 		new Editor<WorkInfo>(bruiService.getAssembly("¸ÊÌØÍ¼¹¤×÷±à¼­Æ÷"), context).setInput(WorkInfo.newInstance(project.get_id()))
-				.open((r, wi) -> {
+				.ok((r, wi) -> {
 					GanttPart content = (GanttPart) context.getContent();
 					content.addTask(wi,  wi.index());
 				});

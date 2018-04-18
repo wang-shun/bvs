@@ -28,6 +28,8 @@ public class AssemblyEditorEditor extends ModelEditor {
 		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
+
+		createTextField(parent, "保存时不能忽略null值的字段名（#分割）：", inputData, "nullValueAllowedFields", SWT.BORDER);
 		
 		new Label(parent, SWT.SEPARATOR|SWT.HORIZONTAL).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent,SWT.NONE);

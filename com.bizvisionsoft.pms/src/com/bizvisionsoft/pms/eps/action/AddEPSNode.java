@@ -28,7 +28,7 @@ public class AddEPSNode {
 
 						.setInput(new EPS().setParent_id(((EPS) elem).get_id()))
 
-						.open((r, t) -> {
+						.ok((r, t) -> {
 							EPS item = Services.get(EPSService.class).insert(t);
 							GridPart grid = (GridPart) context.getContent();
 							grid.add(elem, item);

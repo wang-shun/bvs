@@ -1,7 +1,5 @@
 package com.bizvisionsoft.pms.user.action;
 
-import java.util.Optional;
-
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -9,6 +7,7 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.User;
@@ -28,15 +27,12 @@ public class EditPassword {
 	}
 
 	protected void open(IBruiService bruiService, IBruiContext context, String editorName) {
-		context.selected(elem -> {
+		context.selected(user -> {
 			UserService service = Services.get(UserService.class);
-			Optional.ofNullable(service.get(((User) elem).getUserId())).ifPresent(user -> {
-				
-				bruiService.createEditorByName(editorName, new UserPassword(), true, false, context).open((r, t) -> {
-					FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-							.filter(new BasicDBObject("userId", user.getUserId())).set(r);
-					service.update(filterAndUpdate.bson());
-				});
+			Editor.open(editorName, context, new UserPassword(), true, (r, t) -> {
+				FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
+						.filter(new BasicDBObject("userId", ((User) user).getUserId())).set(r);
+				service.update(filterAndUpdate.bson());
 			});
 		});
 	}

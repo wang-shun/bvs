@@ -330,9 +330,10 @@ public class AUtil {
 		return to;
 	}
 
-	public static Object deepCopy(Object elem) {
-		String json = new GsonBuilder().create().toJson(elem);
-		return new GsonBuilder().create().fromJson(json, elem.getClass());
+	@SuppressWarnings("unchecked")
+	public static <T> T deepCopy(T source) {
+		String json = new GsonBuilder().create().toJson(source);
+		return (T) new GsonBuilder().create().fromJson(json, source.getClass());
 	}
 
 	public static <T extends Annotation> Object getValue(Class<?> clazz, Class<T> annoClass, Object target) {

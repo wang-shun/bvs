@@ -102,7 +102,8 @@ public class Util {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static BasicDBObject getBson(Object input, boolean ignoreNull, String... ignoreFields) {
+	public static BasicDBObject getBson(Object input, boolean ignoreNull, String[] containFields,
+			String[] ignoreFields) {
 		Codec codec = CodexProvider.getRegistry().get(input.getClass());
 		StringWriter sw = new StringWriter();
 		codec.encode(new JsonWriter(sw), input, EncoderContext.builder().build());
@@ -117,12 +118,16 @@ public class Util {
 				continue;
 			}
 			Object v = result.get(k);
-			if (ignoreNull && v == null) {
+			if (ignoreNull && v == null && containFields != null && !Arrays.asList(containFields).contains(k)) {
 				continue;
 			}
 			_result.append(k, v);
 		}
 		return _result;
+	}
+
+	public static BasicDBObject getBson(Object input, String... ignoreFields) {
+		return getBson(input, true, null, ignoreFields);
 	}
 
 	public static <T, R> List<R> getList(List<T> source, Function<T, R> func) {

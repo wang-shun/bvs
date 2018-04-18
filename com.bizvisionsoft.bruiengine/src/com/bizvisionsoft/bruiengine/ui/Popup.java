@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.Optional;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -56,12 +58,10 @@ public class Popup extends Part {
 		// 5. before open
 		super.open();
 		// 6. after open
-		Integer code = brui.getReturnCode();
-		if (code != null) {
-			return code.intValue();
-		} else {
-			return -1;
-		}
+
+		int code = Optional.ofNullable(brui.getReturnCode()).orElse(-1);
+		setReturnCode(code);
+		return code;
 	}
 
 	@Override

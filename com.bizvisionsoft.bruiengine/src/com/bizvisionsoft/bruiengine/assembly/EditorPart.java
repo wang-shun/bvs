@@ -96,7 +96,7 @@ public class EditorPart {
 
 	private boolean editable;
 
-	private boolean ignoreNull;
+	// private boolean ignoreNull;
 
 	private List<ToolItemDescriptor> toolitems = new ArrayList<ToolItemDescriptor>();
 
@@ -116,7 +116,7 @@ public class EditorPart {
 
 		this.contentArea = parent;
 		input = context.getInput();
-		ignoreNull = context.isIgnoreNull();
+		// ignoreNull = context.isIgnoreNull();
 		editable = context.isEditable();
 
 		FormLayout layout = new FormLayout();
@@ -234,8 +234,12 @@ public class EditorPart {
 		for (Iterator<EditorField> iterator = fs.iterator(); iterator.hasNext();) {
 			iterator.next().writeToInput(true);
 		}
-
-		result = Util.getBson(input, ignoreNull);
+		String _s = config.getNullValueAllowedFields();
+		String[] containFields = null;
+		if (!Util.isEmptyOrNull(_s)) {
+			containFields = _s.split("#");
+		}
+		result = Util.getBson(input, true, containFields, null);
 		return result;
 	}
 
