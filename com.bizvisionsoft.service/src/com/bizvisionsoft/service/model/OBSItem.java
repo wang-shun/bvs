@@ -19,6 +19,7 @@ import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.OBSService;
+import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
 
@@ -39,19 +40,19 @@ public class OBSItem {
 		if (name != null && !name.isEmpty())
 			txt += name;
 
-		if (roleName != null && !roleName .isEmpty())
-			txt += " "+roleName ;
+		if (roleName != null && !roleName.isEmpty())
+			txt += " " + roleName;
 
-		if (id != null && !id .isEmpty())
-			txt += " ["+id+"]";
+		if (id != null && !id.isEmpty())
+			txt += " [" + id + "]";
 
-		if (managerInfo!=null)
-			txt += " ("+ managerInfo+")";
-		
+		if (managerInfo != null && !managerInfo.isEmpty())
+			txt += " (" + managerInfo + ")";
+
 		return txt;
 	}
 
-	@Behavior({ "项目团队/添加", "项目团队/编辑" })
+	@Behavior({ "项目团队/选择角色", "项目团队/创建角色","项目团队/创建团队", "项目团队/编辑" })
 	public boolean behaviorAddItem() {
 		return true;
 	}
@@ -82,8 +83,19 @@ public class OBSItem {
 	@WriteValue
 	private ObjectId scope_id;
 
-	private ObjectId linkedOrg_id;
+	private ObjectId org_id;
 
+	@WriteValue("organization ")
+	public void setOrganization(Organization org) {
+		this.org_id = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
+	}
+
+	@ReadValue("organization ")
+	public Organization getOrganization() {
+		return Optional.ofNullable(org_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
+				.orElse(null);
+	}
+	
 	@Persistence
 	private String managerId;
 
@@ -153,11 +165,11 @@ public class OBSItem {
 	public Map<String, String> getSystemOBSRole() {
 		return ServicesLoader.get(CommonService.class).getDictionary("角色名称");
 	}
-	
+
 	@WriteValue("selectedRole")
 	public void writeSelectedRole(String selectedRole) {
 		this.selectedRole = selectedRole;
-		if(this.selectedRole !=null) {
+		if (this.selectedRole != null) {
 			id = selectedRole.split("#")[0];
 			roleName = selectedRole.split("#")[1];
 		}
@@ -233,5 +245,8 @@ public class OBSItem {
 		return scope_id;
 	}
 	
+	public ObjectId getOrg_id() {
+		return org_id;
+	}
 
 }

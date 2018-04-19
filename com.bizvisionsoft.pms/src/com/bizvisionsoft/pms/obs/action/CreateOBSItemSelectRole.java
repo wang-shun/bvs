@@ -16,7 +16,7 @@ import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.model.OBSItem;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class CreateOBSItem {
+public class CreateOBSItemSelectRole {
 
 	@Inject
 	private IBruiService bruiService;
@@ -29,8 +29,8 @@ public class CreateOBSItem {
 					.setScope_id(((OBSItem) em).getScope_id());
 
 			String message = Optional.ofNullable(AUtil.readType(em)).orElse("");
-			message = "创建角色添加到" + message + "下级";
-			Editor.create("OBS节点编辑器", context, input, true).setTitle(message).ok((r, t) -> {
+			message = "选择角色添加到" + message + "下级";
+			Editor.create("OBS节点编辑器（选择系统角色）", context, input, true).setTitle(message).ok((r, t) -> {
 				OBSItem item = Services.get(OBSService.class).insert(t);
 				((GridPart) context.getContent()).add(em, item);
 			});

@@ -36,12 +36,12 @@ public class OrganizationDataSet {
 		service = Services.get(OrganizationService.class);
 	}
 
-	@DataSet("组织成员/" + DataSet.LIST)
+	@DataSet({"组织成员/" + DataSet.LIST,"组织成员（浏览）/"+ DataSet.LIST})
 	public List<User> listMember(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition) {
 		return service.getMember(condition, org.get_id());
 	}
 
-	@DataSet("组织成员/" + DataSet.COUNT)
+	@DataSet({"组织成员/" + DataSet.COUNT,"组织成员（浏览）/"+ DataSet.COUNT})
 	public long countMember(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter) {
 		return service.countMember(filter, org.get_id());
 	}

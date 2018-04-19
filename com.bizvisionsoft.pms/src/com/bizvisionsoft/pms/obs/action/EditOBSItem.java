@@ -21,7 +21,7 @@ public class EditOBSItem {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(em -> {
-			String editName = isRootOBSItem(em, context.getRootInput()) ? "OBS根编辑器" : "OBS节点编辑器";
+			String editName = isRootOBSItem(em, context.getRootInput()) ? "OBS根编辑器" : "OBS节点编辑器（修改用）";
 			Assembly assembly = bruiService.getAssembly(editName);
 			new OpenSelected(assembly, true).execute(context);
 		});
