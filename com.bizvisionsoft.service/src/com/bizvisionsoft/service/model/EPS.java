@@ -86,7 +86,7 @@ public class EPS implements Comparable<EPS> {
 	}
 
 	@Structure("EPS管理/list")
-	public List<EPS> getSubEPS() {
+	public List<EPS> listSubEPS() {
 		return ServicesLoader.get(EPSService.class).getSubEPS(_id);
 	}
 
@@ -96,7 +96,7 @@ public class EPS implements Comparable<EPS> {
 	}
 
 	@Structure("EPS浏览 /list")
-	public List<Object> getSubNodes() {
+	public List<Object> listSubNodes() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
 		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
@@ -120,7 +120,7 @@ public class EPS implements Comparable<EPS> {
 	}
 
 	@Structure("项目模板管理 /list")
-	public List<Object> getSubNodesForProjectTemplate() {
+	public List<Object> listSubNodesForProjectTemplate() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
 		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));
@@ -140,7 +140,7 @@ public class EPS implements Comparable<EPS> {
 	}
 
 	@Structure("EPS和项目集选择 /list")
-	public List<Object> getSubEPSAndProjectSets() {
+	public List<Object> listSubEPSAndProjectSets() {
 		ArrayList<Object> result = new ArrayList<Object>();
 
 		result.addAll(ServicesLoader.get(EPSService.class).getSubEPS(_id));

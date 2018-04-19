@@ -115,7 +115,7 @@ public class OBSItem {
 	private String description;
 
 	@Structure("项目团队/list")
-	public List<OBSItem> getSubOBSItem() {
+	public List<OBSItem> listSubOBSItem() {
 		return ServicesLoader.get(OBSService.class).getSubOBSItem(_id);
 	}
 

@@ -54,12 +54,12 @@ public class Equipment {
 	private String typeName = "设备设施";
 	
 	@WriteValue("organization ")
-	public void setOrganization(Organization org) {
+	public void writeOrganization(Organization org) {
 		this.organizationId = Optional.ofNullable(org).map(o -> o.get_id()).orElse(null);
 	}
 
 	@ReadValue("organization ")
-	public Organization getOrganization() {
+	public Organization readOrganization() {
 		return Optional.ofNullable(organizationId).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
 	}
