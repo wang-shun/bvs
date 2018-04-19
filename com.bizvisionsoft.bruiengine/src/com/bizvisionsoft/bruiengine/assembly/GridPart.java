@@ -305,7 +305,7 @@ public class GridPart {
 	}
 
 	private Control createPageControl() {
-		count = dataSetEngine.count(filter);
+		count = dataSetEngine.count(filter, context);
 		// 获得最佳的每页记录数
 		limit = LIMIT;
 		// 起始
@@ -476,7 +476,7 @@ public class GridPart {
 
 	private void setViewerInput() {
 		if (!disableDateSetEngine) {
-			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter,context));
+			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
 		}
 	}
 
@@ -620,7 +620,7 @@ public class GridPart {
 		if (pageEnabled()) {
 			currentPage = 0;
 			skip = 0;
-			count = dataSetEngine.count(filter);
+			count = dataSetEngine.count(filter, context);
 			page.setCount(count);
 		}
 		setViewerInput();

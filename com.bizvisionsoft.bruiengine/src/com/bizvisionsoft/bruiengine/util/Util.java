@@ -118,7 +118,8 @@ public class Util {
 				continue;
 			}
 			Object v = result.get(k);
-			if (ignoreNull && v == null && containFields != null && !Arrays.asList(containFields).contains(k)) {
+			if (v == null && ignoreNull && (containFields == null
+					|| (containFields != null && !Arrays.asList(containFields).contains(k)))) {
 				continue;
 			}
 			_result.append(k, v);

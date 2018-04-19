@@ -3,7 +3,9 @@ package com.bizvisionsoft.serviceimpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -17,22 +19,50 @@ import com.mongodb.client.model.Aggregates;
 public class ProjectServiceImpl extends BasicServiceImpl implements ProjectService {
 
 	@Override
-	public Project insert(Project project) {
-		Project newPj;
-		if (project.getProjectTemplate_id() == null) {
+	public Project insert(Project input) {
+		Project project;
+		if (input.getProjectTemplate_id() == null) {
+			/////////////////////////////////////////////////////////////////////////////
+			// 0. 创建项目
+			project = insert(input.setObs_id(new ObjectId()), Project.class);
+			ObjectId projectSet_id = project.getProjectSet_id();
+
 			/////////////////////////////////////////////////////////////////////////////
 			// 1. 项目团队初始化
-			OBSItem obsItem = insert(new OBSItem().setId(OBSItem.ID_PM).setName(OBSItem.NAME_PM).setManagerId(project.getPmId()),
-					OBSItem.class);
-			project.setObs_id(obsItem.get_id());
-			
-			newPj = insert(project, Project.class);
+			ObjectId obsParent_id = null;
+			if (projectSet_id != null) {
+				Document doc = Service.col("projectSet").find(new BasicDBObject("_id", projectSet_id))
+						.projection(new BasicDBObject("obs_id", true)).first();
+				Optional.ofNullable(doc).map(d -> d.getObjectId("obs_id")).orElse(null);
+			}
+
+			new OBSServiceImpl().insert(new OBSItem()// 创建本项目的OBS根节点
+
+					.set_id(project.getObs_id())// 设置_id与项目关联
+
+					.setScope_id(project.get_id())// 设置scope_id表明该组织节点是该项目的组织
+
+					.setParent_id(obsParent_id)// 设置上级的id
+
+					.setName(project.getName() + "项目组")// 设置该组织节点的默认名称
+
+					.setId(OBSItem.ID_PM)// 设置该组织节点的角色id
+
+					.setRoleName(OBSItem.NAME_PM)// 设置该组织节点的名称
+
+					.setManagerId(project.getPmId()) // 设置该组织节点的角色对应的人
+
+					.setScopeRoot(true) // 区分这个节点是范围内的根节点
+
+			);// 插入记录
+				//////////////////////////////////////////////////////////////////////////////
+
 		} else {
 			// TODO
 
-			newPj = insert(project, Project.class);
+			project = insert(input, Project.class);
 		}
-		return newPj;
+		return project;
 	}
 
 	@Override

@@ -110,9 +110,10 @@ public class BruiAssemblyContext implements IBruiContext {
 		return getSelection().getFirstElement();
 	}
 
-	public void selected(Consumer<? super Object> consumer) {
+	@SuppressWarnings("unchecked")
+	public <T> void selected(Consumer<T> consumer) {
 		Optional.ofNullable(selectionProvider).map(sp -> (StructuredSelection) sp.getSelection())
-				.map(sel -> sel.getFirstElement()).ifPresent(consumer);
+				.map(sel -> sel.getFirstElement()).map(m->(T)m).ifPresent((Consumer<T>) consumer);
 	}
 
 	public IBruiContext getParentContext() {

@@ -34,7 +34,7 @@ import com.bizvisionsoft.service.UserService;
  */
 @Strict
 @PersistenceCollection("project")
-public class Project {
+public class Project implements IOBSScope{
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ±Í ∂ Ù–‘
@@ -394,5 +394,16 @@ public class Project {
 		this.obs_id = obs_id;
 		return this;
 	}
+	
+	public ObjectId getObs_id() {
+		return obs_id;
+	}
+	
+	public String getName() {
+		return name;
+	}
 
+	public ObjectId getProjectSet_id() {
+		return projectSet_id;
+	}
 }

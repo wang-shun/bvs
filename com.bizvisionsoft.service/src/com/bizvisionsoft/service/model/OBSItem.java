@@ -1,19 +1,23 @@
 package com.bizvisionsoft.service.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
+import com.bizvisionsoft.annotations.md.mongocodex.GetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
@@ -29,16 +33,30 @@ public class OBSItem {
 
 	@Override
 	@Label
+	@ReadValue("项目团队/label")
 	public String toString() {
-		return name + " [" + id + "]";
+		String txt = "";
+		if (name != null && !name.isEmpty())
+			txt += name;
+
+		if (roleName != null && !roleName .isEmpty())
+			txt += " "+roleName ;
+
+		if (id != null && !id .isEmpty())
+			txt += " ["+id+"]";
+
+		if (managerInfo!=null)
+			txt += " ("+ managerInfo+")";
+		
+		return txt;
 	}
 
-	@Behavior("项目团队/添加")
+	@Behavior({ "项目团队/添加", "项目团队/编辑" })
 	public boolean behaviorAddItem() {
 		return true;
 	}
 
-	@Behavior({ "项目团队/编辑", "项目团队/删除" })
+	@Behavior({ "项目团队/删除" })
 	public boolean behaviorEditOrDeleteItem() {
 		return parent_id != null;// 根节点能编辑和删除
 	}
@@ -62,13 +80,9 @@ public class OBSItem {
 
 	@ReadValue
 	@WriteValue
-	private ObjectId eps_id;
+	private ObjectId scope_id;
 
 	private ObjectId linkedOrg_id;
-
-	private ObjectId linkRole_id;
-
-	private List<String> member;
 
 	@Persistence
 	private String managerId;
@@ -104,15 +118,26 @@ public class OBSItem {
 
 	@ReadValue
 	@WriteValue
-	private String id;
-
-	@ReadValue
-	@WriteValue
 	private String name;
 
 	@ReadValue
 	@WriteValue
 	private String description;
+
+	@Exclude
+	private String selectedRole;
+
+	@ReadValue
+	@WriteValue
+	@SetValue
+	private String id;
+
+	@ReadValue
+	@WriteValue
+	@SetValue
+	private String roleName;
+
+	private boolean scopeRoot;
 
 	@Structure("项目团队/list")
 	public List<OBSItem> listSubOBSItem() {
@@ -124,13 +149,45 @@ public class OBSItem {
 		return ServicesLoader.get(OBSService.class).countSubOBSItem(_id);
 	}
 
+	@ReadOptions("selectedRole")
+	public Map<String, String> getSystemOBSRole() {
+		return ServicesLoader.get(CommonService.class).getDictionary("角色名称");
+	}
+	
+	@WriteValue("selectedRole")
+	public void writeSelectedRole(String selectedRole) {
+		this.selectedRole = selectedRole;
+		if(this.selectedRole !=null) {
+			id = selectedRole.split("#")[0];
+			roleName = selectedRole.split("#")[1];
+		}
+	}
+
+	@GetValue("id")
+	public String getId() {
+		if (id != null && !id.isEmpty())
+			return id;
+		if (selectedRole != null && !selectedRole.isEmpty())
+			return selectedRole.split("#")[0];
+		return null;
+	}
+
+	@GetValue("roleName")
+	public String getRoleName() {
+		if (roleName != null && !roleName.isEmpty())
+			return roleName;
+		if (selectedRole != null && !selectedRole.isEmpty())
+			return selectedRole.split("#")[1];
+		return null;
+	}
+
 	public OBSItem setId(String id) {
 		this.id = id;
 		return this;
 	}
 
-	public OBSItem setDescription(String description) {
-		this.description = description;
+	public OBSItem setRoleName(String roleName) {
+		this.roleName = roleName;
 		return this;
 	}
 
@@ -152,5 +209,29 @@ public class OBSItem {
 	public ObjectId get_id() {
 		return _id;
 	}
+
+	public OBSItem set_id(ObjectId _id) {
+		this._id = _id;
+		return this;
+	}
+
+	public OBSItem setScope_id(ObjectId scope_id) {
+		this.scope_id = scope_id;
+		return this;
+	}
+
+	public OBSItem setScopeRoot(boolean scopeRoot) {
+		this.scopeRoot = scopeRoot;
+		return this;
+	}
+
+	public boolean isScopeRoot() {
+		return scopeRoot;
+	}
+
+	public ObjectId getScope_id() {
+		return scope_id;
+	}
+	
 
 }

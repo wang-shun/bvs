@@ -157,7 +157,6 @@ public class Codex<T> implements CollectibleCodec<T> {
 		writer.writeStartDocument();
 
 		beforeFields(writer, model, encoderContext);
-
 		getGetNames(encodingType).forEach(name -> {
 			if (!skipField(encoderContext, name)) {
 				Object value = valueForRead(model, name);
@@ -170,8 +169,10 @@ public class Codex<T> implements CollectibleCodec<T> {
 
 				if (value == null || (value instanceof List && ((List<?>) value).isEmpty())
 						|| (value instanceof Map && ((Map<?, ?>) value).isEmpty())) {
-					writer.writeName(name);
-					writeValue(writer, encoderContext, null);
+					if(!encoderContext.isEncodingCollectibleDocument()) {
+						writer.writeName(name);
+						writeValue(writer, encoderContext, null);
+					}
 				} else {
 					writer.writeName(name);
 					// boolean encodingSubtype = encodingSubtype(name);

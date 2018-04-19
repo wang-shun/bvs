@@ -1,6 +1,7 @@
 package com.bizvisionsoft.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,6 +18,7 @@ import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Calendar;
 import com.bizvisionsoft.service.model.Certificate;
+import com.bizvisionsoft.service.model.Dictionary;
 import com.bizvisionsoft.service.model.Equipment;
 import com.bizvisionsoft.service.model.ResourceType;
 import com.mongodb.BasicDBObject;
@@ -186,5 +188,42 @@ public interface CommonService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public void deleteCalendarWorkTime(@PathParam("_id") ObjectId _id);
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	@POST
+	@Path("/dict/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("Ãû³Æ×Öµä/" + DataSet.LIST)
+	public List<Dictionary> getDictionary();
+
+	@POST
+	@Path("/dict/{type}/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public Map<String,String> getDictionary(@PathParam("type") String type);
+	
+	@POST
+	@Path("/dict/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("Ãû³Æ×Öµä/" + DataSet.INSERT)
+	public Dictionary insertResourceType(@ServiceParam(ServiceParam.OBJECT) Dictionary resourceType);
+
+	@DELETE
+	@Path("/dict/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("Ãû³Æ×Öµä/" + DataSet.DELETE)
+	public long deleteDictionary(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+
+	@PUT
+	@Path("/dict/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("Ãû³Æ×Öµä/" + DataSet.UPDATE)
+	public long updateDictionary(BasicDBObject filterAndUpdate);
 
 }

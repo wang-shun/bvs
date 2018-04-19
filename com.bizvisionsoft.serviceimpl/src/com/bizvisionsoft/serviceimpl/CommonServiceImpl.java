@@ -1,14 +1,18 @@
 package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.model.Calendar;
 import com.bizvisionsoft.service.model.Certificate;
+import com.bizvisionsoft.service.model.Dictionary;
 import com.bizvisionsoft.service.model.Equipment;
 import com.bizvisionsoft.service.model.ResourceType;
 import com.mongodb.BasicDBObject;
@@ -80,7 +84,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 		if (condition != null)
 			pipeline.add(Aggregates.match(condition));
 
-		appendOrgFullName(pipeline,"org_id","orgFullName");
+		appendOrgFullName(pipeline, "org_id", "orgFullName");
 
 		ArrayList<Equipment> result = new ArrayList<Equipment>();
 		Service.col(Equipment.class).aggregate(pipeline).into(result);
@@ -163,6 +167,36 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	public void deleteCalendarWorkTime(ObjectId _id) {
 		Service.col(Calendar.class).updateOne(new BasicDBObject("workTime._id", _id),
 				new BasicDBObject("$pull", new BasicDBObject("workTime", new BasicDBObject("_id", _id))));
+	}
+
+	@Override
+	public List<Dictionary> getDictionary() {
+		List<Dictionary> target = new ArrayList<Dictionary>();
+		Service.col(Dictionary.class).find().sort(new BasicDBObject("type", 1)).into(target);
+		return target;
+	}
+
+	@Override
+	public Dictionary insertResourceType(Dictionary dic) {
+		return insert(dic, Dictionary.class);
+	}
+
+	@Override
+	public long deleteDictionary(ObjectId _id) {
+		return delete(_id, Dictionary.class);
+	}
+
+	@Override
+	public long updateDictionary(BasicDBObject filterAndUpdate) {
+		return update(filterAndUpdate, Dictionary.class);
+	}
+
+	@Override
+	public Map<String, String> getDictionary(String type) {
+		Map<String, String> result = new HashMap<String, String>();
+		Iterable<Document> itr = Service.col("dictionary").find(new BasicDBObject("type", type));
+		itr.forEach(d -> result.put(d.getString("name") +" ["+d.getString("id")+"]", d.getString("id")+"#"+d.getString("name")));
+		return result;
 	}
 
 }

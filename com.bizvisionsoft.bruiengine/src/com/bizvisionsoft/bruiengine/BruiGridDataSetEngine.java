@@ -134,29 +134,44 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet的list方法。");
 	}
 
-	public long count(BasicDBObject filter) {
+	public long count(BasicDBObject filter, IBruiContext context) {
 		Method method = AUtil
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.COUNT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
-				if (ServiceParam.FILTER.equals(sp.value())) {
-					args[i] = filter;
-				} else {
-					args[i] = null;
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+
+			names.add(ServiceParam.FILTER);
+			values.add(filter);
+
+			if (context != null) {
+				Object input = context.getInput();
+				if (input != null) {
+					names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
+					values.add(input);
+
+					Object _id = Util.getBson(input).get("_id");
+					if (_id != null) {
+						names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
+						values.add(_id);
+					}
+				}
+				input = context.getRootInput();
+				if (input != null) {
+					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
+					values.add(input);
+
+					Object _id = Util.getBson(input).get("_id");
+					if (_id != null) {
+						names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
+						values.add(_id);
+					}
 				}
 			}
 
-			try {
-				method.setAccessible(true);
-				return (long) method.invoke(getTarget(), filter);
-			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(assembly.getName() + " 数据源count方法错误。", e.getTargetException());
-			}
+			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), ServiceParam.class,
+					t -> t.value());
 		}
 		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 count的方法。");
 	}

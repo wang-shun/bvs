@@ -1,19 +1,16 @@
 package com.bizvisionsoft.pms.obs.action;
 
-import org.bson.types.ObjectId;
 import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.GridPart;
+import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.Editor;
-import com.bizvisionsoft.service.OrganizationService;
-import com.bizvisionsoft.service.model.Organization;
-import com.bizvisionsoft.service.model.Role;
-import com.bizvisionsoft.serviceconsumer.Services;
+import com.bizvisionsoft.service.model.IOBSScope;
+import com.bizvisionsoft.service.model.OBSItem;
 
 public class EditOBSItem {
 
@@ -23,18 +20,17 @@ public class EditOBSItem {
 	@Execute
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		ObjectId org_id = ((Organization) context.getInput()).get_id();
-		Role role = new Role().setOrg_id(org_id);
+		context.selected(em -> {
+			String editName = isRootOBSItem(em, context.getRootInput()) ? "OBS¸ù±à¼­Æ÷" : "OBS½Úµã±à¼­Æ÷";
+			Assembly assembly = bruiService.getAssembly(editName);
+			new OpenSelected(assembly, true).execute(context);
+		});
 
-		new Editor<Role>(bruiService.getAssembly("½ÇÉ«±à¼­Æ÷"), context).setTitle("´´½¨½ÇÉ«")
+	}
 
-				.setInput(role)
-
-				.ok((r, t) -> {
-					Role newRole = Services.get(OrganizationService.class).insertRole(t);
-					GridPart grid = (GridPart) context.getContent();
-					grid.insert(newRole);
-				});
+	private boolean isRootOBSItem(Object em, Object input) {
+		return em instanceof OBSItem && input instanceof IOBSScope
+				&& ((OBSItem) em).get_id().equals(((IOBSScope) input).getObs_id());
 	}
 
 }

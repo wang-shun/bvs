@@ -872,7 +872,7 @@ Link-Hyperlink:hover:disabled {
 /* Shell default theme */
 
 Shell {
-  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
+  animation: fadeIn 100ms linear, fadeOut 100ms ease-out;
   border: none;
   border-radius: 2px;
   background-color: #ffffff;

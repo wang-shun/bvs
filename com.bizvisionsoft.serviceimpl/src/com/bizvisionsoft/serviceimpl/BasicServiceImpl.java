@@ -96,6 +96,7 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
+	@Deprecated
 	protected List<Bson> getOBSRootPipline(ObjectId project_id) {
 		List<Bson> pipeline = new ArrayList<Bson>();
 
