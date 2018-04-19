@@ -92,7 +92,7 @@ public class View extends Part {
 
 		Assembly assembly = ModelLoader.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
 				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(NoSuchElementException::new).getId());
-		createContentArea(assembly, null);
+		createContentArea(assembly, null, false);
 
 		FormData fd;
 		if (headbar != null) {
@@ -124,9 +124,9 @@ public class View extends Part {
 
 	}
 
-	private Composite createContentArea(Assembly assembly, Object input) {
+	private Composite createContentArea(Assembly assembly, Object input, boolean closeable) {
 		contentWidget = new ContentWidget(assembly, service, context);
-		Composite contentArea = contentWidget.createUI(parent, input).getControl();
+		Composite contentArea = contentWidget.createUI(parent, input, closeable).getControl();
 		FormData fd = new FormData();
 		contentArea.setLayoutData(fd);
 		fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
@@ -150,21 +150,21 @@ public class View extends Part {
 
 	public void openAssemblyInContentArea(Assembly assembly, Object input) {
 		previous.add(contentWidget);
-		Composite contentArea = createContentArea(assembly, input);
+		Composite contentArea = createContentArea(assembly, input, true);
 		contentArea.moveAbove(null);
 		parent.layout();
 	}
 
 	public void closeCurrentContent() {
 		contentWidget.getControl().dispose();
-		contentWidget = previous.get(previous.size()-1);
-		previous.remove(previous.size()-1);
+		contentWidget = previous.get(previous.size() - 1);
+		previous.remove(previous.size() - 1);
 		contentWidget.getControl().moveAbove(null);
 		parent.layout();
 	}
 
 	public void switchAssemblyInContentArea(Assembly assembly, Object input) {
-		contentWidget.switchAssembly(assembly, input);
+		contentWidget.switchAssembly(assembly, input, false);
 	}
 
 }

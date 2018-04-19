@@ -9,6 +9,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
 import com.bizvisionsoft.annotations.md.mongocodex.Persistence;
 import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -24,11 +25,11 @@ public class User {
 	private ObjectId _id;
 
 	@Persistence
-	@ReadValue({"userId","组织角色/id","资源类型/id"})
-	@WriteValue({"userId","组织角色/id"})
+	@ReadValue({ "userId", "组织角色/id", "资源类型/id" })
+	@WriteValue({ "userId", "组织角色/id" })
 	private String userId;
-	
-	@ImageURL({"userId","组织角色/id","资源类型/id"})
+
+	@ImageURL({ "userId", "组织角色/id", "资源类型/id" })
 	private String logo = "/img/user_c.svg";
 
 	@ReadValue
@@ -79,16 +80,16 @@ public class User {
 
 	@Persistence("org_id")
 	private ObjectId organizationId;
-	
+
 	@SetValue
 	@ReadValue
 	private String orgFullName;
-	
+
 	@Persistence
 	@ReadValue
 	@WriteValue
 	private List<String> certificates;
-	
+
 	@Persistence
 	@ReadValue
 	@WriteValue
@@ -115,7 +116,7 @@ public class User {
 		return Optional.ofNullable(organizationId).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
 	}
-	
+
 	@WriteValue("resourceType ")
 	public void setResourceType(ResourceType rt) {
 		this.resourceType_id = Optional.ofNullable(rt).map(o -> o.get_id()).orElse(null);
@@ -123,8 +124,8 @@ public class User {
 
 	@ReadValue("resourceType ")
 	public ResourceType getResourceType() {
-		return Optional.ofNullable(resourceType_id).map(_id -> ServicesLoader.get(CommonService.class).getResourceType(_id))
-				.orElse(null);
+		return Optional.ofNullable(resourceType_id)
+				.map(_id -> ServicesLoader.get(CommonService.class).getResourceType(_id)).orElse(null);
 	}
 
 	@Override
@@ -132,15 +133,15 @@ public class User {
 	public String toString() {
 		return name + " [" + userId + "]";
 	}
-	
+
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "用户";
-	
+
 	public boolean isActivated() {
 		return activated;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

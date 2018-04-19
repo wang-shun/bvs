@@ -1,4 +1,4 @@
-package com.bizvisionsoft.serviceimpl;
+package com.bizvisionsoft.serviceimpl.exception;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;

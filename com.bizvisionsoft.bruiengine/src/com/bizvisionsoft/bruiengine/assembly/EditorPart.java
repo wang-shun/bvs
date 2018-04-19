@@ -225,7 +225,6 @@ public class EditorPart {
 			fd.width = 64;
 			right = btn;
 		}
-
 		return toolbar;
 	}
 

@@ -33,21 +33,22 @@ public class ContentWidget {
 		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
 	}
 
-	public ContentWidget createUI(Composite parent,Object input) {
+	public ContentWidget createUI(Composite parent,Object input, boolean closeable) {
 		contentContainer = new Composite(parent, SWT.NONE);
 		contentContainer.setLayout(new FillLayout());
-		switchAssembly(assembly,input);
+		switchAssembly(assembly,input,closeable);
 		contentContainer.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 		return this;
 	}
 
-	final public void switchAssembly(Assembly assembly, Object input) {
+	final public void switchAssembly(Assembly assembly, Object input, boolean closeable) {
 		if (contentContainer == null || contentContainer.isDisposed())
 			return;
 		Arrays.asList(contentContainer.getChildren()).stream().filter(c -> !c.isDisposed())
 				.forEach(ctl -> ctl.dispose());
 
 		assemblyContainer = new AssemblyContainer(contentContainer,context);
+		assemblyContainer.setCloseable(closeable);
 		assemblyContainer.setInput(input);
 		assemblyContainer.setAssembly(assembly).setServices(service).create();
 		contentContainer.layout(true, true);

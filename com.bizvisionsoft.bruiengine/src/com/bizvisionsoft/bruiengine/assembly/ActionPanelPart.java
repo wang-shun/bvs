@@ -3,14 +3,13 @@ package com.bizvisionsoft.bruiengine.assembly;
 import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -129,8 +128,8 @@ public class ActionPanelPart {
 	}
 
 	private void createAction(Composite parent, Action a) {
-		Button btn = createButton(parent, a);
-		btn.addListener(SWT.Selection, e -> {
+		Label btn = createButton(parent, a);
+		btn.addListener(SWT.MouseDown, e -> {
 			try {
 				BruiActionEngine.create(a, service).invokeExecute(e, context);
 			} catch (Exception e2) {
@@ -139,42 +138,55 @@ public class ActionPanelPart {
 			}
 		});
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 256;
-		gd.heightHint = 256;
 		btn.setLayoutData(gd);
 	}
 
-	public Button createButton(Composite parent, Action a) {
-		Button btn = new Button(parent, SWT.PUSH);
+	public Label createButton(Composite parent, Action a) {
+		final Label btn = new Label(parent, SWT.NONE);
 		toolkit.enableMarkup(btn);
-		String imageUrl = a.getImage();
-		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
 
-		String text = "";
-		if (imageUrl != null) {
-			text += "<img alter='" + a.getName() + "' src='" + BruiToolkit.getResourceURL(a.getImage())
-					+ "' style='cursor:pointer;' width='100px' height='100px'></img>";
-		}
-		if (a.isForceText()) {
-			if (imageUrl != null) {
-				text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
-			} else {
-				text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+		btn.addListener(SWT.Resize, e -> {
+			Point size = btn.getSize();
+			if (size.x == 0 || size.y == 0) {
+				return;
 			}
-		} else {
-			text += "<div style='font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
-		}
 
-		String desc = a.getTooltips();
-		if (!Util.isEmptyOrNull(desc)) {
-			text += "<div style='font-size:13px;font-weight:lighter;margin-top:8px;'>" + desc + "</div>";
-		}
+			int imageSize = Math.min(size.x, size.y) / 2;
+			int marginWidth = (size.x - imageSize) / 2;
+			int marginTop = (size.y - (imageSize + 50)) / 2;
+			String imageUrl = a.getImage();
+			String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
 
-		btn.setText(text);
-		String style = a.getStyle();
-		if (style != null && !style.isEmpty()) {
-			btn.setData(RWT.CUSTOM_VARIANT, style);
-		}
+			String text = "";
+			if (imageUrl != null) {
+				text += "<img alter='" + a.getName() + "' src='" + BruiToolkit.getResourceURL(a.getImage())
+						+ "' style='margin-top:" + marginTop + "px;margin-left:" + marginWidth
+						+ "px;cursor:pointer;' width='" + imageSize + "px' height='" + imageSize + "px'></img>";
+			}
+			if (a.isForceText()) {
+				text += "<div style='width:" + size.x
+						+ "px;text-align:center;font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText
+						+ "</div>";
+			} else {
+				text += "<div style='width:" + size.x
+						+ "px;text-align:center;font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText
+						+ "</div>";
+			}
+
+			String desc = a.getTooltips();
+			if (!Util.isEmptyOrNull(desc)) {
+				text += "<div style='width:" + size.x
+						+ "px;text-align:center;font-size:13px;font-weight:lighter;margin-top:8px;'>" + desc + "</div>";
+			}
+
+			btn.setText(text);
+
+		});
+
+		// String style = a.getStyle();
+		// if (style != null && !style.isEmpty()) {
+		// btn.setData(RWT.CUSTOM_VARIANT, style);
+		// }
 		return btn;
 	}
 

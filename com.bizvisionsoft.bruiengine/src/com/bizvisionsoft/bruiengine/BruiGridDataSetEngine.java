@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
@@ -71,44 +73,65 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		return this;
 	}
 
-	public Object query(Integer skip, Integer limit, BasicDBObject filter) {
+	public Object query(Integer skip, Integer limit, BasicDBObject filter, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.LIST, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
-				if (sp != null) {
-					String paramName = sp.value();
-					// if (paramName.equals(ServiceParam.SKIP)) {
-					// args[i] = skip;
-					// } else if (paramName.equals(ServiceParam.LIMIT)) {
-					// args[i] = limit;
-					// } else if (paramName.equals(ServiceParam.FILTER)) {
-					// args[i] = filter;
-					// } else
-					if (paramName.equals(ServiceParam.CONDITION)) {
-						args[i] = new BasicDBObject().append("skip", skip).append("limit", limit).append("filter",
-								filter);
-					} else {
-						args[i] = null;
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			names.add(ServiceParam.SKIP);
+			values.add(skip);
+
+			names.add(ServiceParam.LIMIT);
+			values.add(limit);
+
+			names.add(ServiceParam.FILTER);
+			values.add(filter);
+
+			names.add(ServiceParam.CONDITION);
+			values.add(new BasicDBObject().append("skip", skip).append("limit", limit).append("filter", filter));
+
+			if (context != null) {
+				Object input = context.getInput();
+				if (input != null) {
+					names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
+					values.add(input);
+
+					Object _id = Util.getBson(input).get("_id");
+					if (_id != null) {
+						names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
+						values.add(_id);
 					}
-				} else {
-					args[i] = null;
+				}
+				input = context.getRootInput();
+				if (input != null) {
+					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
+					values.add(input);
+
+					Object _id = Util.getBson(input).get("_id");
+					if (_id != null) {
+						names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
+						values.add(_id);
+					}
 				}
 			}
 
-			try {
-				method.setAccessible(true);
-				return method.invoke(getTarget(), args);
-			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), ServiceParam.class,
+					t -> t.value());
 
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(assembly.getName() + "的数据源注解DataSet值为 list的方法调用出错。", e.getTargetException());
-			}
+			// try {
+			// method.setAccessible(true);
+			// return method.invoke(getTarget(), args);
+			// } catch (IllegalAccessException | IllegalArgumentException e) {//
+			// 访问错误，参数错误视作没有定义该方法。
+			//
+			// } catch (InvocationTargetException e) {
+			// String message = assembly.getName() + "的数据源注解DataSet的list方法调用出错。" +
+			// e.getTargetException().getMessage();
+			// throw new RuntimeException(message, e.getTargetException());
+			// }
 		}
-		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet值为 list的方法。");
+		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet的list方法。");
 	}
 
 	public long count(BasicDBObject filter) {
@@ -245,22 +268,18 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.INSERT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			try {
-				Object[] values;
-				String[] names;
-				if (parent == null) {
-					values = new Object[] { Util.getBson(element).get("_id"), element };
-					names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
-				} else {
-					values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
-							element };
-					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
-							ServiceParam.OBJECT };
-				}
-				return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
-			} catch (RuntimeException e) {
-				throw e;
+			Object[] values;
+			String[] names;
+			if (parent == null) {
+				values = new Object[] { Util.getBson(element).get("_id"), element };
+				names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+			} else {
+				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
+						element };
+				names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
+						ServiceParam.OBJECT };
 			}
+			return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
 		}
 		return new RuntimeException("DateSet缺少Insert注解的方法");
 	}
@@ -270,22 +289,18 @@ public class BruiGridDataSetEngine extends BruiEngine {
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.DELETE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			try {
-				Object[] values;
-				String[] names;
-				if (parent == null) {
-					values = new Object[] { Util.getBson(element).get("_id"), element };
-					names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
-				} else {
-					values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
-							element };
-					names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
-							ServiceParam.OBJECT };
-				}
-				invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
-			} catch (RuntimeException e) {
-				throw e;
+			Object[] values;
+			String[] names;
+			if (parent == null) {
+				values = new Object[] { Util.getBson(element).get("_id"), element };
+				names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+			} else {
+				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
+						element };
+				names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
+						ServiceParam.OBJECT };
 			}
+			invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
 		}
 	}
 
@@ -293,15 +308,11 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.GET, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			try {
-				Object[] values;
-				String[] names;
-				values = new Object[] { Util.getBson(element).get("_id"), element };
-				names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
-				return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
-			} catch (RuntimeException e) {
-				throw e;
-			}
+			Object[] values;
+			String[] names;
+			values = new Object[] { Util.getBson(element).get("_id"), element };
+			names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+			return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
 		}
 		return null;
 	}

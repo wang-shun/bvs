@@ -176,4 +176,8 @@ public class AssemblyContainer {
 		container.setLayoutData(gd);
 	}
 
+	public void setCloseable(boolean closeable) {
+		this.context.setCloseable( closeable);
+	}
+
 }

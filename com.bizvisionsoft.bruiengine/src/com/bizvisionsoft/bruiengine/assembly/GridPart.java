@@ -476,7 +476,7 @@ public class GridPart {
 
 	private void setViewerInput() {
 		if (!disableDateSetEngine) {
-			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter));
+			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter,context));
 		}
 	}
 

@@ -21,6 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class BruiAssemblyEngine extends BruiEngine {
 
+
 	private BruiAssemblyEngine(Class<?> clazz) {
 		super(clazz);
 	}

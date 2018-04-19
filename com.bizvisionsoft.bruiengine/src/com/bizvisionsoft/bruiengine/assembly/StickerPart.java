@@ -60,16 +60,16 @@ public class StickerPart {
 		if (assembly.isDisplayInputLabelInTitlebar()) {
 			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
 					.orElse("");
-		}else if(assembly.isDisplayRootInputLabelInTitlebar()) {
+		} else if (assembly.isDisplayRootInputLabelInTitlebar()) {
 			text += Optional.ofNullable(context.getRootInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
 					.orElse("");
 		}
 
 		Action closeAction = null;
-		if (assembly.isClosable()) {
+		if (assembly.isClosable() || context.isCloseable()) {
 			closeAction = new Action();
 			closeAction.setName("close");
-			closeAction.setImage("/img/left.svg");
+			closeAction.setImage("/img/close.svg");
 		}
 		StickerTitlebar bar = new StickerTitlebar(parent, closeAction);
 		bar.setText(text).setActions(assembly.getActions());

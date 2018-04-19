@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.model.Organization;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;

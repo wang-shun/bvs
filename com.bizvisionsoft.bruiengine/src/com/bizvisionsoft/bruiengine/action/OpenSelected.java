@@ -48,7 +48,7 @@ public class OpenSelected {
 				editor.setInput(true, em);
 				editor.open();
 			}
-			
+
 		});
 
 	}

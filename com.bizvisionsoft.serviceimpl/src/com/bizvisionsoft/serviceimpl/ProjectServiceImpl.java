@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.Project;
+import com.bizvisionsoft.service.model.OBSItem;
+import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
 
@@ -16,7 +18,21 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 	@Override
 	public Project insert(Project project) {
-		return insert(project, Project.class);
+		Project newPj;
+		if (project.getProjectTemplate_id() == null) {
+			/////////////////////////////////////////////////////////////////////////////
+			// 1. 项目团队初始化
+			OBSItem obsItem = insert(new OBSItem().setId(OBSItem.ID_PM).setName(OBSItem.NAME_PM).setManagerId(project.getPmId()),
+					OBSItem.class);
+			project.setObs_id(obsItem.get_id());
+			
+			newPj = insert(project, Project.class);
+		} else {
+			// TODO
+
+			newPj = insert(project, Project.class);
+		}
+		return newPj;
 	}
 
 	@Override

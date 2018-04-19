@@ -17,11 +17,11 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface ServiceParam {
-	
+
 	String SKIP = "skip";
 
 	String LIMIT = "limit";
-	
+
 	String FILTER = "filter";
 
 	String CONDITION = "condition";
@@ -31,9 +31,16 @@ public @interface ServiceParam {
 	String OBJECT = "object";
 
 	String PARENT_ID = "parent_id";
-	
+
 	String PARENT_OBJECT = "parent";
 
+	String ROOT_CONTEXT_INPUT_OBJECT = "root_context_input_object";
+
+	String CONTEXT_INPUT_OBJECT = "context_input_object";
+
+	String ROOT_CONTEXT_INPUT_OBJECT_ID = "root_context_input_object_id";
+
+	String CONTEXT_INPUT_OBJECT_ID = "context_input_object_id";
 
 	String value();
 

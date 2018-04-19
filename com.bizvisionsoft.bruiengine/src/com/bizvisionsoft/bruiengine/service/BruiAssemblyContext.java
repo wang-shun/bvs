@@ -27,6 +27,8 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private Object input;
 
+	private boolean closeable;
+
 	public BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
@@ -148,6 +150,14 @@ public class BruiAssemblyContext implements IBruiContext {
 	@Override
 	public Object getRootInput() {
 		return getRoot().getInput();
+	}
+
+	public void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	public boolean isCloseable() {
+		return closeable;
 	}
 
 }

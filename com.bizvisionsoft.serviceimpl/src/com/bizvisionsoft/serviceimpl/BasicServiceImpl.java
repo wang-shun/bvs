@@ -71,7 +71,7 @@ public class BasicServiceImpl {
 		return result;
 	}
 
-	protected void appendOrgFullName(ArrayList<Bson> pipeline, String inputField, String outputField) {
+	protected void appendOrgFullName(List<Bson> pipeline, String inputField, String outputField) {
 		String tempField = "_org_" + inputField;
 
 		pipeline.add(Aggregates.lookup("organization", inputField, "_id", tempField));
@@ -83,7 +83,7 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
-	protected void appendUserInfo(ArrayList<Bson> pipeline, String inputField, String outputField) {
+	protected void appendUserInfo(List<Bson> pipeline, String inputField, String outputField) {
 		String tempField = "_user_" + inputField;
 
 		pipeline.add(Aggregates.lookup("account", inputField, "userId", tempField));
@@ -94,6 +94,20 @@ public class BasicServiceImpl {
 				new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" }))));
 
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
+	}
+
+	protected List<Bson> getOBSRootPipline(ObjectId project_id) {
+		List<Bson> pipeline = new ArrayList<Bson>();
+
+		String tempField = "_obs" + project_id;
+		pipeline.add(Aggregates.match(new BasicDBObject("_id", project_id)));
+		pipeline.add(Aggregates.lookup("obs", "obs_id", "_id", tempField));
+		pipeline.add(Aggregates.project(new BasicDBObject(tempField, true).append("_id", false)));
+		pipeline.add(Aggregates.replaceRoot(new BasicDBObject("$mergeObjects",
+				new Object[] { new BasicDBObject("$arrayElemAt", new Object[] { "$" + tempField, 0 }), "$$ROOT" })));
+		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));
+
+		return pipeline;
 	}
 
 }

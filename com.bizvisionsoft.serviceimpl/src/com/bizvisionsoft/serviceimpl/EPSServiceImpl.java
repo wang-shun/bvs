@@ -9,6 +9,7 @@ import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.model.EPS;
 import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectSet;
+import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 
 public class EPSServiceImpl extends BasicServiceImpl implements EPSService {

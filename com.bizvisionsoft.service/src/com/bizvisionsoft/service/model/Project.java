@@ -211,6 +211,9 @@ public class Project {
 	@WriteValue
 	@Persistence
 	private boolean stageEnable;
+	
+	@Persistence
+	private ObjectId projectTemplate_Id;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
@@ -349,6 +352,9 @@ public class Project {
 
 	@Persistence
 	private CreationInfo creationInfo;
+	
+	@Persistence
+	private ObjectId obs_id;
 
 	public ObjectId get_id() {
 		return _id;
@@ -373,6 +379,19 @@ public class Project {
 
 	public Project setCreationInfo(CreationInfo creationInfo) {
 		this.creationInfo = creationInfo;
+		return this;
+	}
+
+	public ObjectId getProjectTemplate_id() {
+		return projectTemplate_Id;
+	}
+	
+	public String getPmId() {
+		return pmId;
+	}
+	
+	public Project setObs_id(ObjectId obs_id) {
+		this.obs_id = obs_id;
 		return this;
 	}
 

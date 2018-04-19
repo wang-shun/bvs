@@ -40,4 +40,8 @@ public interface IBruiContext extends IServiceWithId{
 	
 	Object getRootInput();
 
+	void setCloseable(boolean closeable);
+
+	boolean isCloseable();
+
 }
