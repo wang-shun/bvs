@@ -24,24 +24,27 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 	 */
 	@Override
 	public List<OBSItem> getScopeRootOBS(ObjectId scope_id) {
+		return query(new BasicDBObject("scope_id", scope_id).append("scopeRoot", true));
+	}
+
+	private List<OBSItem> query(BasicDBObject match) {
 		ArrayList<OBSItem> result = new ArrayList<OBSItem>();
 		List<Bson> pipeline = new ArrayList<Bson>();
-		pipeline.add(Aggregates.match(new BasicDBObject("scope_id", scope_id).append("scopeRoot", true)));
+		pipeline.add(Aggregates.match(match));
 
-		appendUserInfo(pipeline, "managerId", "managerInfo");
+		appendUserInfoAndHeadPic(pipeline, "managerId", "managerInfo","managerHeadPic");
 		Service.col(OBSItem.class).aggregate(pipeline).into(result);
 		return result;
 	}
 
 	@Override
 	public List<OBSItem> getSubOBSItem(ObjectId _id) {
-		ArrayList<OBSItem> result = new ArrayList<OBSItem>();
-		List<Bson> pipeline = new ArrayList<Bson>();
-		pipeline.add(Aggregates.match(new BasicDBObject("parent_id", _id)));
-
-		appendUserInfo(pipeline, "managerId", "managerInfo");
-		Service.col(OBSItem.class).aggregate(pipeline).into(result);
-		return result;
+		return query(new BasicDBObject("parent_id", _id));
+	}
+	
+	@Override
+	public List<OBSItem> getScopeOBS(ObjectId scope_id) {
+		return query(new BasicDBObject("scope_id", scope_id));
 	}
 
 	@Override
@@ -109,4 +112,6 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 			return new UserServiceImpl().count(filter);
 		}
 	}
+
+
 }

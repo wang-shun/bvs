@@ -160,5 +160,9 @@ public class BruiAssemblyContext implements IBruiContext {
 	public boolean isCloseable() {
 		return closeable;
 	}
+	
+	public Assembly getAssembly() {
+		return assembly;
+	}
 
 }

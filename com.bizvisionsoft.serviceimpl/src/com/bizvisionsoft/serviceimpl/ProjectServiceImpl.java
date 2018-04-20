@@ -46,7 +46,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 					.setName(project.getName() + "项目组")// 设置该组织节点的默认名称
 
-					.setId(OBSItem.ID_PM)// 设置该组织节点的角色id
+					.setRoleId(OBSItem.ID_PM)// 设置该组织节点的角色id
 
 					.setRoleName(OBSItem.NAME_PM)// 设置该组织节点的名称
 

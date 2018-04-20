@@ -17,6 +17,7 @@ import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.SelectorPart;
 import com.bizvisionsoft.bruiengine.assembly.StickerPart;
+import com.bizvisionsoft.bruiengine.assembly.TreePart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class BruiAssemblyEngine extends BruiEngine {
@@ -47,6 +48,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new GridPart(assembly));
 		} else if (Assembly.TYPE_GANTT.equals(type)) {
 			brui = new BruiAssemblyEngine(new GanttPart(assembly));
+		} else if (Assembly.TYPE_TREE.equals(type)) {
+			brui = new BruiAssemblyEngine(new TreePart(assembly));
 		} else if (Assembly.TYPE_EDITOR.equals(type)) {
 			brui = new BruiAssemblyEngine(new EditorPart(assembly));
 		} else if (Assembly.TYPE_SELECTOR.equals(type)) {

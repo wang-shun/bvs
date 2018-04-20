@@ -3,6 +3,7 @@ package com.bizvisionsoft.service.tools;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Util {
 
@@ -26,6 +27,14 @@ public class Util {
 	
 	public static boolean equals(Object v1, Object v2) {
 		return v1 != null && v1.equals(v2) || v1 == null && v2 == null;
+	}
+	
+	public static boolean isEmptyOrNull(String s) {
+		return s == null || s.isEmpty();
+	}
+
+	public static boolean isEmptyOrNull(List<?> s) {
+		return s == null || s.isEmpty();
 	}
 
 }

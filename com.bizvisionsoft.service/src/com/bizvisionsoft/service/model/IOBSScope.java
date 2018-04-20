@@ -6,5 +6,7 @@ public interface IOBSScope {
 	
 	public ObjectId getObs_id();
 
+	public ObjectId getScope_id();
+
 
 }

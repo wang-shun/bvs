@@ -8,6 +8,7 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class Assembly extends ModelObject {
 
+
 	@ReadValue(ReadValue.TYPE)
 	private String getTypeName() {
 		String text = "组件";
@@ -19,6 +20,8 @@ public class Assembly extends ModelObject {
 			text += " - 带有标题栏容器";
 		} else if (TYPE_GRID.equals(type)) {
 			text += " - 表格";
+		} else if (TYPE_TREE.equals(type)) {
+			text += " - 树";
 		} else if (TYPE_GANTT.equals(type)) {
 			text += " - 甘特图";
 		} else if (TYPE_ACTION_PANEL.equals(type)) {
@@ -36,6 +39,8 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_STICKER = "sticker";
 
 	public static final String TYPE_GRID = "grid";
+	
+	public static final String TYPE_TREE = "tree";
 
 	public static final String TYPE_EDITOR = "editor";
 

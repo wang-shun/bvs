@@ -83,18 +83,38 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
-	protected void appendUserInfo(List<Bson> pipeline, String inputField, String outputField) {
-		String tempField = "_user_" + inputField;
+	protected void appendUserInfo(List<Bson> pipeline, String useIdField, String userInfoField) {
+		String tempField = "_user_" + useIdField;
 
-		pipeline.add(Aggregates.lookup("account", inputField, "userId", tempField));
+		pipeline.add(Aggregates.lookup("account", useIdField, "userId", tempField));
 
 		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
 
-		pipeline.add(Aggregates.addFields(new Field<BasicDBObject>(outputField, new BasicDBObject("$concat",
+		pipeline.add(Aggregates.addFields(new Field<BasicDBObject>(userInfoField, new BasicDBObject("$concat",
 				new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" }))));
 
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
+	
+	protected void appendUserInfoAndHeadPic(List<Bson> pipeline, String useIdField, String userInfoField,String headPicField) {
+		String tempField = "_user_" + useIdField;
+
+		pipeline.add(Aggregates.lookup("account", useIdField, "userId", tempField));
+
+		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
+
+		pipeline.add(Aggregates.addFields(
+				//info×Ö¶Î
+				new Field<BasicDBObject>(userInfoField, new BasicDBObject("$concat",
+						new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" })),
+				//headPics×Ö¶Î
+				new Field<BasicDBObject>(headPicField,new BasicDBObject("$arrayElemAt", new Object[] { "$" + tempField + ".headPics", 0 }))				
+				));
+
+		
+		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
+	}
+
 
 	@Deprecated
 	protected List<Bson> getOBSRootPipline(ObjectId project_id) {

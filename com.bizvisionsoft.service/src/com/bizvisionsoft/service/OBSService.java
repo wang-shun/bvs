@@ -29,12 +29,20 @@ public interface OBSService {
 	public OBSItem insert(OBSItem project);
 
 	@GET
-	@Path("/scope/{_id}")
+	@Path("/scope/root/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("项目团队/list")
 	public List<OBSItem> getScopeRootOBS(
 			@PathParam("_id") @ServiceParam(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID) ObjectId project_id);
+
+	@GET
+	@Path("/scope/id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("组织结构图/list")
+	public List<OBSItem> getScopeOBS(
+			@PathParam("_id") @ServiceParam(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID) ObjectId scope_id);
 
 	@GET
 	@Path("/{_id}")

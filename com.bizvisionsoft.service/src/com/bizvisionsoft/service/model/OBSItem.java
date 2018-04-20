@@ -22,6 +22,7 @@ import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.tools.Util;
 
 @PersistenceCollection("obs")
 public class OBSItem {
@@ -43,8 +44,8 @@ public class OBSItem {
 		if (roleName != null && !roleName.isEmpty())
 			txt += " " + roleName;
 
-		if (id != null && !id.isEmpty())
-			txt += " [" + id + "]";
+		if (roleId != null && !roleId.isEmpty())
+			txt += " [" + roleId + "]";
 
 		if (managerInfo != null && !managerInfo.isEmpty())
 			txt += " (" + managerInfo + ")";
@@ -125,6 +126,9 @@ public class OBSItem {
 			}
 		}).orElse(null);
 	}
+	
+	@SetValue
+	private RemoteFile managerHeadPic;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -142,7 +146,7 @@ public class OBSItem {
 	@ReadValue
 	@WriteValue
 	@SetValue
-	private String id;
+	private String roleId;
 
 	@ReadValue
 	@WriteValue
@@ -170,15 +174,15 @@ public class OBSItem {
 	public void writeSelectedRole(String selectedRole) {
 		this.selectedRole = selectedRole;
 		if (this.selectedRole != null) {
-			id = selectedRole.split("#")[0];
+			roleId = selectedRole.split("#")[0];
 			roleName = selectedRole.split("#")[1];
 		}
 	}
 
-	@GetValue("id")
+	@GetValue("roleId")
 	public String getId() {
-		if (id != null && !id.isEmpty())
-			return id;
+		if (roleId != null && !roleId.isEmpty())
+			return roleId;
 		if (selectedRole != null && !selectedRole.isEmpty())
 			return selectedRole.split("#")[0];
 		return null;
@@ -192,9 +196,46 @@ public class OBSItem {
 			return selectedRole.split("#")[1];
 		return null;
 	}
+	
+	@ReadValue("组织结构图/title")
+	public String getDiagramTitle() {
+		String title = "";
+		if(!Util.isEmptyOrNull(roleName))
+			title+= roleName;
+		else if(!Util.isEmptyOrNull(name)) 
+			title += name;
+		return title;
+	}
+	
+	@ReadValue("组织结构图/id")
+	public String getDiagramId() {
+		return _id.toHexString();
+	}
+	
+	@ReadValue("组织结构图/text")
+	public String getDiagramText() {
+		if(!Util.isEmptyOrNull(managerInfo)) {
+			return managerInfo.substring(0, managerInfo.indexOf("["));
+		}else {
+			return "团队";
+		}
+	}
+	
+	@ReadValue("组织结构图/parent")
+	public String getDiagramParent() {
+		return parent_id==null?"":parent_id.toHexString();
+	}
+	
+	@ReadValue("组织结构图/img")
+	public String getDiagramImage() {
+		if(managerHeadPic!=null) {
+			return managerHeadPic.getURL(ServicesLoader.url);
+		}
+		return "";
+	}
 
-	public OBSItem setId(String id) {
-		this.id = id;
+	public OBSItem setRoleId(String roleId) {
+		this.roleId = roleId;
 		return this;
 	}
 

@@ -406,4 +406,9 @@ public class Project implements IOBSScope{
 	public ObjectId getProjectSet_id() {
 		return projectSet_id;
 	}
+
+	@Override
+	public ObjectId getScope_id() {
+		return _id;
+	}
 }

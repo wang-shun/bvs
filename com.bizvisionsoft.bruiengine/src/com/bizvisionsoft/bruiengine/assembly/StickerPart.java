@@ -32,8 +32,17 @@ public class StickerPart {
 	@Inject
 	IBruiContext context;
 
+	private StickerTitlebar bar;
+
+	private Action[] rightActions;
+
 	public StickerPart(Assembly assembly) {
 		this.assembly = assembly;
+	}
+	
+	public StickerPart addActions(Action...actions) {
+		this.rightActions = actions;
+		return this;
 	}
 
 	@CreateUI
@@ -71,7 +80,7 @@ public class StickerPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
 		}
-		StickerTitlebar bar = new StickerTitlebar(parent, closeAction);
+		bar = new StickerTitlebar(parent, closeAction,rightActions);
 		bar.setText(text).setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
@@ -97,5 +106,5 @@ public class StickerPart {
 			}
 		});
 	}
-
+	
 }

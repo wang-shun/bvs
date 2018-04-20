@@ -245,7 +245,7 @@ public class WidgetToolkit {
 			}
 		} else {
 			for (int i = 0; i < v.length; i++) {
-				String[] loc = ((String[]) v)[i].split("#");
+				String[] loc = ((String[]) v)[i].split("/");
 				if (loc.length == 1 && ignoreEmptyCName) {// 注解的是fName// 如果忽略容器名
 					return loc[0].trim();
 				} else if (loc.length > 1 && cName.equals(loc[0].trim())) {// 容器名称匹配
@@ -269,7 +269,7 @@ public class WidgetToolkit {
 			}
 		} else {
 			for (int i = 0; i < v.length; i++) {
-				String[] loc = ((String[]) v)[i].split("#");
+				String[] loc = ((String[]) v)[i].split("/");
 				if (loc.length == 1 && ignoreEmptyCName) {// 注解的是fName// 如果忽略容器名
 					return loc[0].trim();
 				} else if (loc.length > 1 && cName.equals(loc[0].trim())) {// 容器名称匹配
