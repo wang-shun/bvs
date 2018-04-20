@@ -20,17 +20,16 @@ public class SVGGenerator extends HttpServlet {
 			throws ServletException, IOException {
 		String text = request.getParameter("text");
 		String color = request.getParameter("color");
-
-		String svg =
-				"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
-						+ "	 width=\"100px\" height=\"100px\" viewBox=\"0 0 100 100\" enable-background=\"new 0 0 100 100\" xml:space=\"preserve\">\r\n"
-						+ "<text transform=\"matrix(1.0463 0 0 1 18.3418 62.9326)\" fill=\"#" + color
-						+ "\" font-family=\"'TimesNewRomanPSMT'\" font-size=\"41.8704\">" + text + "</text>\r\n"
-						+ "</svg>";
-
-		response.setContentType("image/svg");
+		String svg ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
+				"<svg version=\"1.1\" id=\"layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100px\" height=\"100px\" viewBox=\"0 0 100 100\" enable-background=\"new 0 0 100 100\" xml:space=\"preserve\">\r\n" + 
+				"<text x=\"50\" y=\"55\"  text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#"+color+"\" font-size=\"40\">"+text+"</text>\r\n" + 
+				"</svg>";
+		byte[] bs = svg.getBytes("utf-8");
+		response.setContentLength(bs.length);  
+		response.setContentType("image/svg+xml;charset=UTF-8");  
+        response.addHeader("Accept-Ranges","bytes"); 
 		ServletOutputStream os = response.getOutputStream();
-		os.write(svg.getBytes());
+		os.write(bs);
 		os.close();
 	}
 
