@@ -30,16 +30,6 @@ public class AssemblyTreeEditor extends ModelEditor {
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);
-		l.setText("事件侦听器：");
-		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-		createTextField(parent, "插件唯一标识符（Bundle Id）：", inputData, "eventHandlerBundleId", SWT.BORDER);
-
-		createTextField(parent, "完整的类名:", inputData, "eventHandlerClassName", SWT.BORDER);
-
-		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-		l = new Label(parent, SWT.NONE);
 		l.setText("自定义取数，您可以使用插件或选择调用服务：");
 		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 

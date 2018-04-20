@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
@@ -23,8 +24,12 @@ public class Popup extends Part {
 
 	private BruiAssemblyContext context;
 
+	private BruiService service;
+
 	public Popup(Assembly assembly, IBruiContext parentContext) {
 		super(UserSession.current().getShell());
+		service = new BruiService(this);
+
 		this.assembly = assembly;
 		setBlockOnOpen(true);
 		setShellStyle(SWT.TITLE | SWT.ON_TOP);

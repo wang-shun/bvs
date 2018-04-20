@@ -95,8 +95,9 @@ public class BasicServiceImpl {
 
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
-	
-	protected void appendUserInfoAndHeadPic(List<Bson> pipeline, String useIdField, String userInfoField,String headPicField) {
+
+	protected void appendUserInfoAndHeadPic(List<Bson> pipeline, String useIdField, String userInfoField,
+			String headPicField) {
 		String tempField = "_user_" + useIdField;
 
 		pipeline.add(Aggregates.lookup("account", useIdField, "userId", tempField));
@@ -104,17 +105,20 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
 
 		pipeline.add(Aggregates.addFields(
-				//info×Ö¶Î
-				new Field<BasicDBObject>(userInfoField, new BasicDBObject("$concat",
-						new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" })),
-				//headPics×Ö¶Î
-				new Field<BasicDBObject>(headPicField,new BasicDBObject("$arrayElemAt", new Object[] { "$" + tempField + ".headPics", 0 }))				
-				));
+				// info×Ö¶Î
+				new Field<BasicDBObject>(userInfoField,
+						new BasicDBObject("$concat",
+								new String[] { "$" + tempField + ".name", " [", "$" + tempField + ".userId", "]" })),
+				// headPics×Ö¶Î
+				new Field<BasicDBObject>(headPicField,
+						new BasicDBObject("$arrayElemAt", new Object[] { "$" + tempField + ".headPics", 0 }))));
 
-		
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
+	protected void appendSortBy(List<Bson> pipeline, String fieldName, int i) {
+		pipeline.add(Aggregates.sort(new BasicDBObject(fieldName, i)));
+	}
 
 	@Deprecated
 	protected List<Bson> getOBSRootPipline(ObjectId project_id) {

@@ -23,7 +23,7 @@ public class StickerTitlebar extends Composite {
 	private Composite toolbar;
 	private BruiToolkit toolkit;
 
-	public StickerTitlebar(Composite parent, Action leftAction, Action...rightActions) {
+	public StickerTitlebar(Composite parent, Action leftAction, List<Action> rightActions) {
 		super(parent, SWT.NONE);
 		toolkit = UserSession.bruiToolkit();
 		setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
@@ -53,7 +53,7 @@ public class StickerTitlebar extends Composite {
 		toolbar.setLayout(rl);
 		
 		if(rightActions!=null) {
-			setActions(Arrays.asList(rightActions));
+			setActions(rightActions);
 		}
 	}
 

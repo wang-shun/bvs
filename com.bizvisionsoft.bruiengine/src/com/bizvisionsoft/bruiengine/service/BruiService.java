@@ -16,7 +16,7 @@ import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
 
-	private Part part;
+	final private Part part;
 
 	public BruiService(Part part) {
 		this.part = part;

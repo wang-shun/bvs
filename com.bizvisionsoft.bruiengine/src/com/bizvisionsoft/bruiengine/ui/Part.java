@@ -11,8 +11,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
-import com.bizvisionsoft.bruiengine.service.BruiService;
-
 public abstract class Part implements Serializable {
 
 	private int shellStyle = SWT.NO_TRIM | SWT.ON_TOP;
@@ -25,11 +23,8 @@ public abstract class Part implements Serializable {
 
 	private Shell parentShell;
 
-	protected BruiService service;
-
 	protected Part(Shell parentShell) {
 		this.parentShell = parentShell;
-		service = new BruiService(this);
 	}
 
 	public boolean close() {

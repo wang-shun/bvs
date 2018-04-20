@@ -3,6 +3,7 @@ package com.bizivisionsoft.widgets.diagram;
 import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
@@ -14,9 +15,10 @@ import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
+import com.bizvisionsoft.annotations.AUtil;
 
 public class Diagram extends Composite {
 
@@ -24,17 +26,16 @@ public class Diagram extends Composite {
 
 	private final String widgetName = "diagram";
 
-	private JsonArray inputData;
-
 	private RemoteObject remoteObject;
 
 	private final OperationHandler operationHandler = new AbstractOperationHandler() {
 
 		@Override
 		public void handleCall(String eventCode, JsonObject jo) {
-
 			Display.getCurrent().asyncExec(() -> {
-
+				if (eventCode.equals("click")) {
+					select(jo);
+				}
 			});
 		}
 
@@ -70,7 +71,7 @@ public class Diagram extends Composite {
 		this.data = new ArrayList<>();
 		this.data.addAll(data);
 
-		inputData = transformToJsonInput(containerName, this.data);
+		JsonArray inputData = transformToJsonInput(containerName, this.data);
 		remoteObject.set("inputData", inputData);
 	}
 
@@ -87,23 +88,56 @@ public class Diagram extends Composite {
 		return _data;
 	}
 
-	public void addEventListener(String eventCode, Listener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void zoomOut() {
-		if (scale > 0) {
+	public void zoomIn() {
+		if (scale > 0.5) {
 			scale -= 0.1;
 			remoteObject.set("scale", scale);
 		}
 	}
 
-	public void zoomIn() {
-		if (scale < 2) {
+	public void zoomOut() {
+		if (scale < 1.5) {
 			scale += 0.1;
 			remoteObject.set("scale", scale);
 		}
+	}
+
+	private void select(JsonObject jo) {
+		String id = jo.get("id").asString();
+		Event event = new Event();
+		Object item = findItem(id);
+		event.data = item;
+		event.text = id;
+		Arrays.asList(getListeners(SWT.Selection)).forEach(l -> l.handleEvent(event));
+	}
+
+	private Object findItem(String id) {
+		return this.data.stream().filter(o -> {
+			return id.equals(AUtil.readValue(o, containerName, "id", null));
+		}).findFirst().orElse(null);
+	}
+
+	public void addItem(Object item) {
+		this.data.add(item);
+		JsonObject jo = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, null);
+		remoteObject.call("addItem", jo);
+	}
+
+	public void updateItem(Object oldItem, Object item) {
+		int idx = this.data.indexOf(oldItem);
+		if (idx != -1) {
+			this.data.remove(idx);
+			this.data.add(idx, item);
+		}
+		JsonObject jo = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, null);
+		remoteObject.call("updateItem", jo);
+	}
+
+	public void deleteItem(Object item) {
+		this.data.remove(item);
+		JsonObject jo = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, null);
+		remoteObject.call("removeItem", jo);
+
 	}
 
 }

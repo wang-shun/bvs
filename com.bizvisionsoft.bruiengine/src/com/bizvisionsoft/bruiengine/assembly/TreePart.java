@@ -1,26 +1,33 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IPostSelectionProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.diagram.Diagram;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
-import com.bizvisionsoft.bruiengine.action.TreePartZoomInAction;
-import com.bizvisionsoft.bruiengine.action.TreePartZoomOutAction;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.util.Util;
+import com.mongodb.BasicDBObject;
 
-public class TreePart {
+public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Inject
 	private IBruiService bruiService;
@@ -33,9 +40,11 @@ public class TreePart {
 	@GetContent("tree")
 	private Diagram tree;
 
+	private ListenerList<ISelectionChangedListener> postSelectionChangedListeners = new ListenerList<>();
+
 	private BruiGridDataSetEngine dataSetEngine;
 
-	private BruiEventEngine eventEngine;
+	private Object selectedItem;
 
 	public TreePart(Assembly config) {
 		this.config = config;
@@ -44,12 +53,27 @@ public class TreePart {
 	@Init
 	private void init() {
 		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
-		eventEngine = BruiEventEngine.create(config, bruiService, context);
 	}
 
 	private Composite createSticker(Composite parent) {
 		StickerPart sticker = new StickerPart(config);
-		sticker.addActions(new TreePartZoomInAction(tree), new TreePartZoomOutAction(tree));
+
+		Action zoomIn = new Action();
+		zoomIn.setType(Action.TYPE_CUSTOMIZED);
+		zoomIn.setImage("/img/zoomin_w.svg");
+		zoomIn.setStyle("info");
+		sticker.addAction(zoomIn, e -> {
+			tree.zoomIn();
+		});
+
+		Action zoomIOut = new Action();
+		zoomIOut.setType(Action.TYPE_CUSTOMIZED);
+		zoomIOut.setImage("/img/zoomOut_w.svg");
+		zoomIOut.setStyle("info");
+		sticker.addAction(zoomIOut, e -> {
+			tree.zoomOut();
+		});
+
 		sticker.context = context;
 		sticker.service = bruiService;
 		sticker.createUI(parent);
@@ -75,23 +99,80 @@ public class TreePart {
 		// 设置为gantt输入
 		tree.setInputData(input);
 
-		// 处理客户端事件侦听
-		if (eventEngine != null) {
-			eventEngine.attachListener((eventCode, m) -> {
-				addEventListener(eventCode, e1 -> {
-					try {
-						m.invoke(eventEngine.getTarget(), e1);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
-						e2.printStackTrace();
-					}
-				});
-			});
-		}
+		context.setSelectionProvider(this);
 
+		List<Action> rowActions = config.getRowActions();
+		if (!Util.isEmptyOrNull(rowActions)) {
+			tree.addListener(SWT.Selection, e -> selected(e));
+		}
 	}
 
-	public void addEventListener(String eventCode, Listener listener) {
-		tree.addEventListener(eventCode, listener);
+	private void selected(Event e) {
+		this.selectedItem = e.data;
+		new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(e.data)
+				.setActions(config.getRowActions()).setEvent(e).open();
+	}
+
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.add(listener);
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return new StructuredSelection(selectedItem);
+	}
+
+	@Override
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.remove(listener);
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+	}
+
+	@Override
+	public void addPostSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.add(listener);
+	}
+
+	public void removePostSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.remove(listener);
+	}
+
+	@Override
+	public void doModify(Object element, Object newElement, BasicDBObject newData) {
+		if (dataSetEngine != null) {
+			try {
+				dataSetEngine.replace(element, newData);
+				replaceItem(element, newElement);
+			} catch (Exception e) {
+				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public void doDelete(Object element) {
+		if (dataSetEngine != null) {
+			try {
+				dataSetEngine.delete(element, null);
+				tree.deleteItem(element);
+			} catch (Exception e) {
+				MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public void replaceItem(Object element, Object newElement) {
+		tree.updateItem(element, newElement);
+	}
+
+	@Override
+	public void add(Object parent, Object child) {
+		tree.addItem(child);
 	}
 
 }

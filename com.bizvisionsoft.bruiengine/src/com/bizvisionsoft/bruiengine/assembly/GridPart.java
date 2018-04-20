@@ -55,7 +55,7 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class GridPart {
+public class GridPart implements IStructuredDataPart{
 
 	private static final int LIMIT = 50;
 
@@ -469,7 +469,7 @@ public class GridPart {
 			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
 		} else {
 			// œ‘ æ≤Àµ•
-			new ActionMenu().setAssembly(config).setInput(elem).setContext(context).setActions(action.getChildren())
+			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context).setActions(action.getChildren())
 					.setEvent(e).open();
 		}
 	}
@@ -543,6 +543,7 @@ public class GridPart {
 		viewer.insert(viewer.getInput(), item, i);
 	}
 
+	@Override
 	public void add(Object parent, Object item) {
 		viewer.add(parent, item);
 		viewer.refresh(parent);

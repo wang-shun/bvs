@@ -104,8 +104,9 @@
  -webkit-font-smoothing:antialiased
 }
 .dhx_diagram_item {
- font:14px Roboto,sans-serif
-}
+ font:14px Roboto,sans-serif;
+ cursor:pointer
+ }
 .dhx_diagram_item .dhx_hide_icon {
  display:none;
  user-select:none;

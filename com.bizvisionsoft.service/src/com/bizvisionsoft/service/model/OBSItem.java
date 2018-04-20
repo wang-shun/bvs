@@ -53,12 +53,12 @@ public class OBSItem {
 		return txt;
 	}
 
-	@Behavior({ "项目团队/选择角色", "项目团队/创建角色","项目团队/创建团队", "项目团队/编辑" })
+	@Behavior({ "选择角色", "创建角色", "创建团队", "编辑" })
 	public boolean behaviorAddItem() {
 		return true;
 	}
 
-	@Behavior({ "项目团队/删除" })
+	@Behavior({ "删除" })
 	public boolean behaviorEditOrDeleteItem() {
 		return parent_id != null;// 根节点能编辑和删除
 	}
@@ -83,6 +83,14 @@ public class OBSItem {
 	@ReadValue
 	@WriteValue
 	private ObjectId scope_id;
+	
+	@ReadValue
+	private Integer seq;
+	
+	@WriteValue("seq")
+	public void writeSeq(String _seq) {
+		seq = Integer.parseInt(_seq);
+	}
 
 	private ObjectId org_id;
 
@@ -96,7 +104,7 @@ public class OBSItem {
 		return Optional.ofNullable(org_id).map(_id -> ServicesLoader.get(OrganizationService.class).get(_id))
 				.orElse(null);
 	}
-	
+
 	@Persistence
 	private String managerId;
 
@@ -105,14 +113,20 @@ public class OBSItem {
 	@SetValue
 	private String managerInfo;
 
+	@SetValue
+	private RemoteFile managerHeadPic;
+
 	@WriteValue("manager")
 	private void setManager(User manager) {
 		if (manager == null) {
 			managerId = null;
 			managerInfo = "";
+			managerHeadPic = null;
 		} else {
 			managerId = manager.getUserId();
 			managerInfo = manager.toString();
+			List<RemoteFile> _pics = manager.getHeadPics();
+			managerHeadPic = _pics != null && _pics.size() > 0 ? _pics.get(0) : null;
 		}
 	}
 
@@ -126,9 +140,6 @@ public class OBSItem {
 			}
 		}).orElse(null);
 	}
-	
-	@SetValue
-	private RemoteFile managerHeadPic;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,42 +207,43 @@ public class OBSItem {
 			return selectedRole.split("#")[1];
 		return null;
 	}
-	
+
 	@ReadValue("组织结构图/title")
 	public String getDiagramTitle() {
 		String title = "";
-		if(!Util.isEmptyOrNull(roleName))
-			title+= roleName;
-		else if(!Util.isEmptyOrNull(name)) 
+		if (!Util.isEmptyOrNull(roleName))
+			title += roleName;
+		else if (!Util.isEmptyOrNull(name))
 			title += name;
 		return title;
 	}
-	
+
 	@ReadValue("组织结构图/id")
 	public String getDiagramId() {
 		return _id.toHexString();
 	}
-	
+
 	@ReadValue("组织结构图/text")
 	public String getDiagramText() {
-		if(!Util.isEmptyOrNull(managerInfo)) {
+		if (!Util.isEmptyOrNull(managerInfo)) {
 			return managerInfo.substring(0, managerInfo.indexOf("["));
-		}else {
+		} else {
 			return "团队";
 		}
 	}
-	
+
 	@ReadValue("组织结构图/parent")
 	public String getDiagramParent() {
-		return parent_id==null?"":parent_id.toHexString();
+		return parent_id == null ? "" : parent_id.toHexString();
 	}
-	
+
 	@ReadValue("组织结构图/img")
 	public String getDiagramImage() {
-		if(managerHeadPic!=null) {
+		if (managerHeadPic != null) {
 			return managerHeadPic.getURL(ServicesLoader.url);
+		}else {
+			return "/bvs/svg?text="+roleId+"&color=ffffff";
 		}
-		return "";
 	}
 
 	public OBSItem setRoleId(String roleId) {
@@ -285,7 +297,7 @@ public class OBSItem {
 	public ObjectId getScope_id() {
 		return scope_id;
 	}
-	
+
 	public ObjectId getOrg_id() {
 		return org_id;
 	}

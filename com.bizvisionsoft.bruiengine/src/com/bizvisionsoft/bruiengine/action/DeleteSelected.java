@@ -9,7 +9,7 @@ import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.GridPart;
+import com.bizvisionsoft.bruiengine.assembly.IStructuredDataPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 
@@ -31,8 +31,10 @@ public class DeleteSelected {
 				.orElse("请确认将要删除选择的记录。");
 
 		if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
-			GridPart grid = (GridPart) context.getContent();
-			grid.doDelete(elem);
+			Object content = context.getContent();
+			if(content instanceof IStructuredDataPart) {
+				((IStructuredDataPart)content).doDelete(elem);
+			}
 		}
 	}
 

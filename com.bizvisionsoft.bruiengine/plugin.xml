@@ -14,6 +14,10 @@
             alias="/bvs/fs"
             class="com.bizvisionsoft.bruiengine.servlet.Download">
       </servlet>
+      <servlet
+            alias="/bvs/svg"
+            class="com.bizvisionsoft.bruiengine.servlet.SVGGenerator">
+      </servlet>
    </extension>
 
 </plugin>

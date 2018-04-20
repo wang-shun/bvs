@@ -32,7 +32,8 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 		List<Bson> pipeline = new ArrayList<Bson>();
 		pipeline.add(Aggregates.match(match));
 
-		appendUserInfoAndHeadPic(pipeline, "managerId", "managerInfo","managerHeadPic");
+		appendUserInfoAndHeadPic(pipeline, "managerId", "managerInfo", "managerHeadPic");
+		appendSortBy(pipeline, "seq", 1);
 		Service.col(OBSItem.class).aggregate(pipeline).into(result);
 		return result;
 	}
@@ -41,7 +42,7 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 	public List<OBSItem> getSubOBSItem(ObjectId _id) {
 		return query(new BasicDBObject("parent_id", _id));
 	}
-	
+
 	@Override
 	public List<OBSItem> getScopeOBS(ObjectId scope_id) {
 		return query(new BasicDBObject("scope_id", scope_id));
@@ -70,6 +71,8 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 	@Override
 	public void delete(ObjectId _id) {
 		// TODO Auto-generated method stub
+		// 级联删除下级节点
+		// 不能删除的情况
 		delete(_id, OBSItem.class);
 	}
 
@@ -112,6 +115,5 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 			return new UserServiceImpl().count(filter);
 		}
 	}
-
 
 }

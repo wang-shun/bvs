@@ -54,7 +54,7 @@ public interface OBSService {
 	@Path("/_id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("项目团队/" + DataSet.DELETE)
+	@DataSet({"项目团队/" + DataSet.DELETE,"组织结构图/" + DataSet.DELETE})
 	public void delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
 
 	@GET
@@ -73,7 +73,7 @@ public interface OBSService {
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("项目团队/" + DataSet.UPDATE)
+	@DataSet({ "项目团队/" + DataSet.UPDATE, "组织结构图/" + DataSet.UPDATE })
 	public long update(BasicDBObject filterAndUpdate);
 
 	@POST

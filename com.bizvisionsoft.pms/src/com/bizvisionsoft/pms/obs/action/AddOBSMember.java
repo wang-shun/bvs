@@ -20,7 +20,7 @@ import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class AddOBSMember {
+public class AddOBSMember{
 
 	@Inject
 	private IBruiService bruiService;

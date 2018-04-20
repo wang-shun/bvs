@@ -78,7 +78,7 @@ public class ActionPanelPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/left.svg");
 		}
-		StickerTitlebar bar = new StickerTitlebar(parent, closeAction);
+		StickerTitlebar bar = new StickerTitlebar(parent, closeAction, null);
 		bar.setText(text);
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);

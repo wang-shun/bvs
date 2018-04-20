@@ -196,12 +196,12 @@ public class GanttPart {
 	// }
 
 	private void showRowMenu(Event e) {
-		new ActionMenu().setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
+		new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
 				.setActions(config.getRowActions()).setEvent(e).open();
 	}
 
 	private void showHeadMenu(Event e) {
-		new ActionMenu().setAssembly(config).setContext(context).setActions(config.getHeadActions()).setEvent(e).open();
+		new ActionMenu(bruiService).setAssembly(config).setContext(context).setActions(config.getHeadActions()).setEvent(e).open();
 	}
 
 	public void addGanttEventListener(String eventCode, Listener listener) {

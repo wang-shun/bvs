@@ -422,15 +422,15 @@ public class MessageDialog extends IconAndMessageDialog {
 			break;
 		}
 		case CONFIRM: {
-			dialogButtonLabels = new String[] { "normal", "warning" };
+			dialogButtonLabels = new String[] { "warning", "normal" };
 			break;
 		}
 		case QUESTION: {
-			dialogButtonLabels = new String[] { "normal", "warning" };
+			dialogButtonLabels = new String[] { "warning", "normal" };
 			break;
 		}
 		case QUESTION_WITH_CANCEL: {
-			dialogButtonLabels = new String[] { "normal", "warning", "warning" };
+			dialogButtonLabels = new String[] { "warning", "warning", "normal" };
 			break;
 		}
 		default: {

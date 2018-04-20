@@ -19,6 +19,7 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.Util;
 
@@ -57,9 +58,11 @@ public class ActionMenu extends Part {
 	private Event event;
 	private Object input;
 	private Assembly assembly;
+	private IBruiService service;
 
-	public ActionMenu() {
+	public ActionMenu(IBruiService service) {
 		super(UserSession.current().getShell());
+		this.service = service;
 		setShellStyle(SWT.ON_TOP);
 	}
 

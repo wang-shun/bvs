@@ -9,9 +9,9 @@
 
 		destructor : "destroy",
 
-		properties : ["inputData" ],
+		properties : [ "inputData", "scale" ],
 
-		methods : [  ]
+		methods : [ "addItem", "updateItem","removeItem" ]
 
 	});
 
@@ -20,7 +20,8 @@
 	}
 
 	bizvision.diagram = function(properties) {
-		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy" ]);
+		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
+				"onShapeClick" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -41,13 +42,29 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始化并加载数据
-				this.diagram = new dhx.Diagram(this.element, { type: "org" ,defaultShapeType: "img-card"});
+				this.diagram = new dhx.Diagram(this.element, {
+					type : "org",
+					defaultShapeType : "img-card"
+				});
 				this.diagram.data.parse(this.inputData);
+
+				this.diagram.events.on("ShapeClick", this.onShapeClick);
 			}
+		},
+
+		onShapeClick : function(id) {
+			rap.getRemoteObject(this).call("click", {
+				"id" : id
+			});
 		},
 
 		setInputData : function(inputData) {
 			this.inputData = inputData;
+		},
+
+		setScale : function(scale) {
+			this.diagram.config.scale = scale;
+			this.diagram.paint();
 		},
 
 		onSend : function() {
@@ -58,6 +75,18 @@
 				rap.off("send", this.onSend);
 				this.element.parentNode.removeChild(this.element);
 			}
+		},
+
+		addItem : function(item) {
+			this.diagram.data.add(item);
+		},
+
+		updateItem : function(item) {
+			this.diagram.data.update(item.id, item);
+		},
+
+		removeItem : function(item) {
+			this.diagram.data.remove(item.id);
 		},
 
 		layout : function() {

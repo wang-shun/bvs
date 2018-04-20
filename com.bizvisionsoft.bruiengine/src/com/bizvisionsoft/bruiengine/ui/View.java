@@ -16,6 +16,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 
 public class View extends Part {
@@ -38,12 +39,16 @@ public class View extends Part {
 
 	private Composite footbar;
 
+	private BruiService service;
+
 	public static View create(Page page, Object input) {
 		return new View(page, input);
 	}
 
 	public View(Page page, Object input) {
 		super(UserSession.current().getShell());
+		service = new BruiService(this);
+
 		previous = new ArrayList<>();
 		this.page = page;
 		this.context = new BruiAssemblyContext();

@@ -1,6 +1,9 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -34,14 +37,21 @@ public class StickerPart {
 
 	private StickerTitlebar bar;
 
-	private Action[] rightActions;
+	private List<Action> rightActions;
+
+	private List<Consumer<IBruiContext>> rightConsumers;
 
 	public StickerPart(Assembly assembly) {
 		this.assembly = assembly;
 	}
-	
-	public StickerPart addActions(Action...actions) {
-		this.rightActions = actions;
+
+	public StickerPart addAction(Action action, Consumer<IBruiContext> e) {
+		if (rightActions == null) {
+			rightActions = new ArrayList<Action>();
+			rightConsumers = new ArrayList<>();
+		}
+		rightActions.add(action);
+		rightConsumers.add(e);
 		return this;
 	}
 
@@ -80,7 +90,7 @@ public class StickerPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
 		}
-		bar = new StickerTitlebar(parent, closeAction,rightActions);
+		bar = new StickerTitlebar(parent, closeAction, rightActions);
 		bar.setText(text).setActions(assembly.getActions());
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
@@ -101,10 +111,15 @@ public class StickerPart {
 			Action action = ((Action) e.data);
 			if ("close".equals(action.getName())) {
 				service.closeCurrentContent();
+			} else if (rightActions != null) {
+				int idx = rightActions.indexOf(action);
+				if (idx != -1) {
+					rightConsumers.get(idx).accept(context);
+				}
 			} else {
 				BruiActionEngine.create(action, service).invokeExecute(e, context);
 			}
 		});
 	}
-	
+
 }
