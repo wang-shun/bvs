@@ -2,7 +2,9 @@ package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.bson.Document;
@@ -58,14 +60,15 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			/////////////////////////////////////////////////////////////////////////////
 			// 2. 财务科目初始化
 			// 创建根
+			
 			BudgetItem cbsRoot = new BudgetItem()//
 					.set_id(cbsRoot_id)//
 					.setScope_id(project.get_id())//
 					.setParent_id(cbsParent_id)
 					.setName(project.getName()+"预算")
 					.setScopeRoot(true);// 区分这个节点是范围内的根节点
-			new CBSServiceImpl().createCBS(cbsRoot);// 插入记录
 
+			new CBSServiceImpl().createCBS(cbsRoot);// 插入记录
 		} else {
 			// TODO
 

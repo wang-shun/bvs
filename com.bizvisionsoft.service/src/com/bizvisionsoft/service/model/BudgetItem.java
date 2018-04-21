@@ -2,6 +2,7 @@ package com.bizvisionsoft.service.model;
 
 import java.util.List;
 
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
@@ -66,6 +67,8 @@ public class BudgetItem {
 	@WriteValue
 	private ObjectId scope_id;
 
+	private Document period; 
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	private boolean scopeRoot;
 
@@ -112,4 +115,5 @@ public class BudgetItem {
 		this.id = id;
 		return this;
 	}
+	
 }
