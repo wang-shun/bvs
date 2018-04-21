@@ -16,6 +16,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.service.model.AccountItem;
 import com.bizvisionsoft.service.model.Calendar;
 import com.bizvisionsoft.service.model.Certificate;
 import com.bizvisionsoft.service.model.Dictionary;
@@ -225,5 +226,49 @@ public interface CommonService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("名称字典/" + DataSet.UPDATE)
 	public long updateDictionary(BasicDBObject filterAndUpdate);
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	@GET
+	@Path("/accountitem/root/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet({ "财务科目设置/" + DataSet.LIST})
+	public List<AccountItem> getAccoutItemRoot();
+	
+	@GET
+	@Path("/accountitem/parent/{_id}/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<AccountItem> getAccoutItem(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+
+	@GET
+	@Path("/accountitem/parent/{_id}/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countAccoutItem(@PathParam("_id") ObjectId _id);
+
+	
+	@POST
+	@Path("/accountitem/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet({ "财务科目设置/" + DataSet.INSERT})
+	public AccountItem insertAccountItem(@ServiceParam(ServiceParam.OBJECT) AccountItem ai);
+
+	@DELETE
+	@Path("/accountitem/_id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet({ "财务科目设置/" + DataSet.DELETE})
+	public long deleteAccountItem(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+
+	@PUT
+	@Path("/accountitem/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet({ "财务科目设置/" + DataSet.DELETE})
+	public long updateAccountItem(BasicDBObject filterAndUpdate);
+
 
 }

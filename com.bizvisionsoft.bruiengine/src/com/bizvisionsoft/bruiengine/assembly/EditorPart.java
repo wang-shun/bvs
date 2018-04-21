@@ -173,6 +173,7 @@ public class EditorPart {
 			Button okBtn = UserSession.bruiToolkit().newStyledControl(Button.class, toolbar, SWT.PUSH,
 					BruiToolkit.CSS_NORMAL);
 			okBtn.setText("È·¶¨");
+			okBtn.getShell().setDefaultButton(okBtn);
 			okBtn.addListener(SWT.Selection, e -> {
 				try {
 					if (editable) {

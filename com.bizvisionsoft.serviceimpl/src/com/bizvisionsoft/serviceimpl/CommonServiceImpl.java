@@ -10,6 +10,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.CommonService;
+import com.bizvisionsoft.service.model.AccountItem;
 import com.bizvisionsoft.service.model.Calendar;
 import com.bizvisionsoft.service.model.Certificate;
 import com.bizvisionsoft.service.model.Dictionary;
@@ -195,8 +196,42 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	public Map<String, String> getDictionary(String type) {
 		Map<String, String> result = new HashMap<String, String>();
 		Iterable<Document> itr = Service.col("dictionary").find(new BasicDBObject("type", type));
-		itr.forEach(d -> result.put(d.getString("name") +" ["+d.getString("id")+"]", d.getString("id")+"#"+d.getString("name")));
+		itr.forEach(d -> result.put(d.getString("name") + " [" + d.getString("id") + "]",
+				d.getString("id") + "#" + d.getString("name")));
 		return result;
+	}
+
+	@Override
+	public List<AccountItem> getAccoutItemRoot() {
+		return getAccoutItem(null);
+	}
+
+	@Override
+	public List<AccountItem> getAccoutItem(ObjectId parent_id) {
+		List<AccountItem> target = new ArrayList<AccountItem>();
+		Service.col(AccountItem.class).find(new BasicDBObject("parent_id", parent_id)).sort(new BasicDBObject("id", 1))
+				.into(target);
+		return target;
+	}
+
+	@Override
+	public long countAccoutItem(ObjectId _id) {
+		return count(new BasicDBObject("parent_id", _id), AccountItem.class);
+	}
+
+	@Override
+	public AccountItem insertAccountItem(AccountItem ai) {
+		return insert(ai, AccountItem.class);
+	}
+
+	@Override
+	public long deleteAccountItem(ObjectId _id) {
+		return delete(_id, AccountItem.class);
+	}
+
+	@Override
+	public long updateAccountItem(BasicDBObject filterAndUpdate) {
+		return update(filterAndUpdate, AccountItem.class);
 	}
 
 }

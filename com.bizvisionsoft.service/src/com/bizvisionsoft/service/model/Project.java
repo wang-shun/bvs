@@ -356,6 +356,9 @@ public class Project implements IOBSScope{
 	@Persistence
 	private ObjectId obs_id;
 
+	@Persistence
+	private ObjectId cbs_id;
+
 	public ObjectId get_id() {
 		return _id;
 	}
@@ -390,8 +393,13 @@ public class Project implements IOBSScope{
 		return pmId;
 	}
 	
-	public Project setObs_id(ObjectId obs_id) {
+	public Project setOBS_id(ObjectId obs_id) {
 		this.obs_id = obs_id;
+		return this;
+	}
+	
+	public Project setCBS_id(ObjectId cbs_id) {
+		this.cbs_id = cbs_id;
 		return this;
 	}
 	
