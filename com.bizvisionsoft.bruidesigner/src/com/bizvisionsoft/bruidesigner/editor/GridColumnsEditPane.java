@@ -76,6 +76,10 @@ public class GridColumnsEditPane extends Composite {
 		setLayoutData(layoutData);
 
 		setLayout(new GridLayout(2, false));
+		
+		
+		
+		
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, true);
 		gd.widthHint = 500;
 		createLeftPane().setLayoutData(gd);

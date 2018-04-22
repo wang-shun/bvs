@@ -55,7 +55,7 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart{
+public class GridPart implements IStructuredDataPart {
 
 	private static final int LIMIT = 50;
 
@@ -65,22 +65,22 @@ public class GridPart implements IStructuredDataPart{
 	private Assembly config;
 
 	@GetContent("viewer")
-	private GridTreeViewer viewer;
+	protected GridTreeViewer viewer;
 
-	private BruiGridRenderEngine renderEngine;
+	protected BruiGridRenderEngine renderEngine;
 
-	private BruiGridDataSetEngine dataSetEngine;
+	protected BruiGridDataSetEngine dataSetEngine;
 
-	private long count;
+	protected long count;
 
-	private Integer limit;
+	protected Integer limit;
 
-	private Integer skip;
+	protected Integer skip;
 
-	private int currentPage;
+	protected int currentPage;
 
 	@GetContent("pagination")
-	private Pagination page;
+	protected Pagination page;
 
 	@Inject
 	private BruiAssemblyContext context;
@@ -107,12 +107,27 @@ public class GridPart implements IStructuredDataPart{
 
 	private int actionColWidth;
 
+	public GridPart() {
+	}
+
 	public GridPart(Assembly gridConfig) {
-		this.config = gridConfig;
+		setConfig(gridConfig);
+	}
+
+	protected void setConfig(Assembly config) {
+		this.config = config;
+	}
+
+	protected void setBruiService(IBruiService bruiService) {
+		this.bruiService = bruiService;
+	}
+
+	protected void setContext(BruiAssemblyContext context) {
+		this.context = context;
 	}
 
 	@Init
-	private void init() {
+	protected void init() {
 		// 注册渲染器
 		renderEngine = BruiGridRenderEngine.create(config, bruiService);
 
@@ -170,7 +185,7 @@ public class GridPart implements IStructuredDataPart{
 		}
 		panel.setLayout(new FormLayout());
 		Control queryPanel = createQueryPanel(panel);
-		Control grid = createGrid(panel);
+		Control grid = createGridViewer(panel);
 		Control pagec = createToolbar(panel);
 
 		Label sep = null;
@@ -320,7 +335,7 @@ public class GridPart implements IStructuredDataPart{
 		return page;
 	}
 
-	private Control createGrid(Composite parent) {
+	protected Grid createGridViewer(Composite parent) {
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 创建表格
 		int style = config.isGridHasBorder() ? SWT.BORDER : SWT.NONE;
@@ -333,38 +348,11 @@ public class GridPart implements IStructuredDataPart{
 
 		viewer = new GridTreeViewer(parent, style);
 		Grid grid = viewer.getGrid();
-		grid.setHeaderVisible(config.isGridHeaderVisiable());
-		grid.setFooterVisible(config.isGridFooterVisiable());
-		grid.setLinesVisible(config.isGridLineVisiable());
-		grid.setHideIndentionImage(config.isGridHideIndentionImage());
-		// 不分页时才需要考虑预加载
-		if (!config.isGridPageControl())
-			grid.setData(RWT.PRELOADED_ITEMS, 100);
-
-		// grid.setAutoHeight(config.isGridAutoHeight());
-		if (config.getGridCustomItemHeight() != 0)
-			grid.setItemHeight(config.getGridCustomItemHeight());
-
-		viewer.setAutoExpandLevel(config.getGridAutoExpandLevel());
-		viewer.setAutoPreferredHeight(config.isGridAutoHeight());
-		viewer.setUseHashlookup(false);
-
-		if (itemSelector != null || config.isGridMarkupEnabled()
-				|| (config.getRowActions() != null && !config.getRowActions().isEmpty()))
-			UserSession.bruiToolkit().enableMarkup(grid);
-
-		if (config.getGridFix() > 0)
-			grid.setData(RWT.FIXED_COLUMNS, config.getGridFix());
+		setupGridViewer(grid);
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 创建列
-		config.getColumns().forEach(c -> {
-			if (c.getColumns() == null || c.getColumns().isEmpty()) {
-				createColumn(grid, c);
-			} else {
-				createGroup(grid, c);
-			}
-		});
+		createColumns(grid);
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 创建操作列
@@ -464,13 +452,48 @@ public class GridPart implements IStructuredDataPart{
 		return grid;
 	}
 
+	protected void setupGridViewer(Grid grid) {
+		grid.setHeaderVisible(config.isGridHeaderVisiable());
+		grid.setFooterVisible(config.isGridFooterVisiable());
+		grid.setLinesVisible(config.isGridLineVisiable());
+		grid.setHideIndentionImage(config.isGridHideIndentionImage());
+		// 不分页时才需要考虑预加载
+		if (!config.isGridPageControl())
+			grid.setData(RWT.PRELOADED_ITEMS, 100);
+
+		// grid.setAutoHeight(config.isGridAutoHeight());
+		if (config.getGridCustomItemHeight() != 0)
+			grid.setItemHeight(config.getGridCustomItemHeight());
+
+		viewer.setAutoExpandLevel(config.getGridAutoExpandLevel());
+		viewer.setAutoPreferredHeight(config.isGridAutoHeight());
+		viewer.setUseHashlookup(false);
+
+		if (itemSelector != null || config.isGridMarkupEnabled()
+				|| (config.getRowActions() != null && !config.getRowActions().isEmpty()))
+			UserSession.bruiToolkit().enableMarkup(grid);
+
+		if (config.getGridFix() > 0)
+			grid.setData(RWT.FIXED_COLUMNS, config.getGridFix());
+	}
+
+	protected void createColumns(Grid grid) {
+		config.getColumns().forEach(c -> {
+			if (c.getColumns() == null || c.getColumns().isEmpty()) {
+				createColumn(grid, c);
+			} else {
+				createGroup(grid, c);
+			}
+		});
+	}
+
 	private void invoveAction(Event e, Object elem, Action action) {
 		if (action.getChildren() == null || action.getChildren().isEmpty()) {
 			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
 		} else {
 			// 显示菜单
-			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context).setActions(action.getChildren())
-					.setEvent(e).open();
+			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context)
+					.setActions(action.getChildren()).setEvent(e).open();
 		}
 	}
 
@@ -500,7 +523,7 @@ public class GridPart implements IStructuredDataPart{
 		return grp;
 	}
 
-	private GridColumn createColumn(Object parent, Column c) {
+	protected GridColumn createColumn(Object parent, Column c) {
 
 		GridColumn col;
 		if (parent instanceof Grid)
