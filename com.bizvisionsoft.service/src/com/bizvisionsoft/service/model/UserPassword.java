@@ -5,7 +5,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 
-@PersistenceCollection(value = "account")
+@PersistenceCollection(value = "user")
 public class UserPassword {
 
 	@ReadValue

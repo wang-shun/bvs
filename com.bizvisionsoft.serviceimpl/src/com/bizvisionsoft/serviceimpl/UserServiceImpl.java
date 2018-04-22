@@ -94,7 +94,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 
 	@Override
 	public long delete(ObjectId _id) {
-		MongoCollection<Document> col = Service.col("account");
+		MongoCollection<Document> col = Service.col("user");
 		Document doc = col.find(new BasicDBObject("_id", _id))
 				.projection(new BasicDBObject("activated", 1).append("userId", 1)).first();
 		if (doc.getBoolean("activated", false))

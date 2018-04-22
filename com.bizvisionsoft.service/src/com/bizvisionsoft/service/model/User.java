@@ -17,7 +17,7 @@ import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ServicesLoader;
 
-@PersistenceCollection(value = "account")
+@PersistenceCollection(value = "user")
 public class User {
 
 	@Persistence

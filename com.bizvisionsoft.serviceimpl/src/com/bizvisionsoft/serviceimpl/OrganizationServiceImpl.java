@@ -55,7 +55,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	/**
 	 * 
 	 * db.getCollection('organization').aggregate( [
-	 * {"$lookup":{"from":"account","localField":"managerId","foreignField":"userId","as":"user"}}
+	 * {"$lookup":{"from":"user","localField":"managerId","foreignField":"userId","as":"user"}}
 	 * , {"$unwind":{"path":"$user","preserveNullAndEmptyArrays":true}} ,
 	 * {"$addFields":{"managerInfo":{"$concat":["$user.name","
 	 * [","$user.userId","]"]}}} , {"$project":{"user":0}} ])
@@ -168,7 +168,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	 * db.getCollection('role').aggregate( [
 	 * {$match:{_id:ObjectId("5ad1366585e0fb292c30cb26")}},
 	 * {$unwind:{"path":"$users"}},
-	 * {$lookup:{"from":"account","localField":"users","foreignField":"userId","as":"user"}},
+	 * {$lookup:{"from":"user","localField":"users","foreignField":"userId","as":"user"}},
 	 * {$project:{"user":1,"_id":0}},
 	 * 
 	 * {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$user", 0 ]},
@@ -184,7 +184,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 
 		pipeline.add(Aggregates.unwind("$users"));
 
-		pipeline.add(Aggregates.lookup("account", "users", "userId", "user"));
+		pipeline.add(Aggregates.lookup("user", "users", "userId", "user"));
 
 		pipeline.add(Aggregates.project(new BasicDBObject("user", true).append("_id", false)));
 

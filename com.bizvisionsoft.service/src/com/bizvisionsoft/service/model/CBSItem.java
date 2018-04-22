@@ -2,7 +2,6 @@ package com.bizvisionsoft.service.model;
 
 import java.util.List;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.mongocodex.Exclude;
@@ -15,7 +14,7 @@ import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.ServicesLoader;
 
 @PersistenceCollection("cbs")
-public class BudgetItem {
+public class CBSItem {
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//基本的一些字段
@@ -67,8 +66,6 @@ public class BudgetItem {
 	@WriteValue
 	private ObjectId scope_id;
 
-	private Document period; 
-	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	private boolean scopeRoot;
 
@@ -78,22 +75,22 @@ public class BudgetItem {
 	}
 
 
-	public BudgetItem setParent_id(ObjectId parent_id) {
+	public CBSItem setParent_id(ObjectId parent_id) {
 		this.parent_id = parent_id;
 		return this;
 	}
 	
-	public BudgetItem set_id(ObjectId _id) {
+	public CBSItem set_id(ObjectId _id) {
 		this._id = _id;
 		return this;
 	}
 	
-	public BudgetItem setScope_id(ObjectId scope_id) {
+	public CBSItem setScope_id(ObjectId scope_id) {
 		this.scope_id = scope_id;
 		return this;
 	}
 
-	public BudgetItem setScopeRoot(boolean scopeRoot) {
+	public CBSItem setScopeRoot(boolean scopeRoot) {
 		this.scopeRoot = scopeRoot;
 		return this;
 	}
@@ -102,7 +99,7 @@ public class BudgetItem {
 		return scopeRoot;
 	}
 	
-	public BudgetItem setName(String name) {
+	public CBSItem setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -111,7 +108,7 @@ public class BudgetItem {
 		return scope_id;
 	}
 
-	public BudgetItem setId(String id) {
+	public CBSItem setId(String id) {
 		this.id = id;
 		return this;
 	}

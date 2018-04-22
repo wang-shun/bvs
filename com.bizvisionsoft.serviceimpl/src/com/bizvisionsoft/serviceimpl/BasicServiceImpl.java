@@ -86,7 +86,7 @@ public class BasicServiceImpl {
 	protected void appendUserInfo(List<Bson> pipeline, String useIdField, String userInfoField) {
 		String tempField = "_user_" + useIdField;
 
-		pipeline.add(Aggregates.lookup("account", useIdField, "userId", tempField));
+		pipeline.add(Aggregates.lookup("user", useIdField, "userId", tempField));
 
 		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
 
@@ -100,7 +100,7 @@ public class BasicServiceImpl {
 			String headPicField) {
 		String tempField = "_user_" + useIdField;
 
-		pipeline.add(Aggregates.lookup("account", useIdField, "userId", tempField));
+		pipeline.add(Aggregates.lookup("user", useIdField, "userId", tempField));
 
 		pipeline.add(Aggregates.unwind("$" + tempField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
 

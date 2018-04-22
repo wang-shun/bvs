@@ -2,9 +2,7 @@ package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.bson.Document;
@@ -12,9 +10,9 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.ProjectService;
-import com.bizvisionsoft.service.model.Project;
-import com.bizvisionsoft.service.model.BudgetItem;
+import com.bizvisionsoft.service.model.CBSItem;
 import com.bizvisionsoft.service.model.OBSItem;
+import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
@@ -61,7 +59,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			// 2. 财务科目初始化
 			// 创建根
 			
-			BudgetItem cbsRoot = new BudgetItem()//
+			CBSItem cbsRoot = new CBSItem()//
 					.set_id(cbsRoot_id)//
 					.setScope_id(project.get_id())//
 					.setParent_id(cbsParent_id)
