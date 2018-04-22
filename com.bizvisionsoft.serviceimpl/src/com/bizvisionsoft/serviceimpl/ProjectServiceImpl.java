@@ -58,15 +58,13 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			/////////////////////////////////////////////////////////////////////////////
 			// 2. 财务科目初始化
 			// 创建根
-			
+
 			CBSItem cbsRoot = new CBSItem()//
 					.set_id(cbsRoot_id)//
 					.setScope_id(project.get_id())//
-					.setParent_id(cbsParent_id)
-					.setName(project.getName()+"预算")
-					.setScopeRoot(true);// 区分这个节点是范围内的根节点
+					.setParent_id(cbsParent_id).setName(project.getName()).setScopeRoot(true);// 区分这个节点是范围内的根节点
 
-			new CBSServiceImpl().createCBS(cbsRoot);// 插入记录
+			new CBSServiceImpl().insertCBSItem(cbsRoot);// 插入记录
 		} else {
 			// TODO
 

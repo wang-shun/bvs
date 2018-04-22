@@ -131,7 +131,7 @@ public class BruiEngine {
 		return this;
 	}
 
-	protected BruiEngine init(IServiceWithId[] services) {
+	public BruiEngine init(IServiceWithId[] services) {
 		if (clazz == null)
 			return this;
 		for (int i = 0; i < services.length; i++) {

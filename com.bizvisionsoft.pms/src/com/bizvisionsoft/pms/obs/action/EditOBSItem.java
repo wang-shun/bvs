@@ -45,7 +45,7 @@ public class EditOBSItem {
 
 	private boolean isRootOBSItem(Object em, Object input) {
 		return em instanceof OBSItem && input instanceof IOBSScope
-				&& ((OBSItem) em).get_id().equals(((IOBSScope) input).getObs_id());
+				&& ((OBSItem) em).get_id().equals(((IOBSScope) input).getOBS_id());
 	}
 
 }

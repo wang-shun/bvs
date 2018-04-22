@@ -70,6 +70,7 @@ public class Action extends ModelObject {
 		Object old = this.name;
 		this.name = name;
 		firePropertyChange("name", old, this.name);
+		
 	}
 
 	public String getDescription() {
@@ -78,6 +79,7 @@ public class Action extends ModelObject {
 
 	public void setDescription(String description) {
 		this.description = description;
+		
 	}
 
 	public String getImage() {
@@ -94,14 +96,17 @@ public class Action extends ModelObject {
 
 	public void setTooltips(String tooltips) {
 		this.tooltips = tooltips;
+		
 	}
 
 	public void setImage(String image) {
 		this.image = image;
+		
 	}
 
 	public void setImageDisabled(String imageDisabled) {
 		this.imageDisabled = imageDisabled;
+		
 	}
 
 	public List<Action> getChildren() {
@@ -110,6 +115,7 @@ public class Action extends ModelObject {
 
 	public void setChildren(List<Action> children) {
 		this.children = children;
+		
 	}
 
 	public String getBundleId() {
@@ -128,6 +134,7 @@ public class Action extends ModelObject {
 		Object old = this.text;
 		this.text = text;
 		firePropertyChange("text", old, this.text);
+		
 	}
 
 	public void setBundleId(String bundleId) {
@@ -136,6 +143,7 @@ public class Action extends ModelObject {
 
 	public void setClassName(String className) {
 		this.className = className;
+		
 	}
 
 	public String getSwitchContentToAssemblyId() {
@@ -144,6 +152,7 @@ public class Action extends ModelObject {
 
 	public void setSwitchContentToAssemblyId(String switchContentToAssemblyId) {
 		this.switchContentToAssemblyId = switchContentToAssemblyId;
+		
 	}
 
 	public boolean isRunnable() {
@@ -157,6 +166,7 @@ public class Action extends ModelObject {
 
 	public void setPropagate(boolean propagate) {
 		this.propagate = propagate;
+		
 	}
 
 	public boolean isPropagate() {
@@ -165,6 +175,7 @@ public class Action extends ModelObject {
 
 	public void setForceText(boolean forceText) {
 		this.forceText = forceText;
+		
 	}
 
 	public boolean isForceText() {
@@ -177,6 +188,7 @@ public class Action extends ModelObject {
 
 	public void setStyle(String style) {
 		this.style = style;
+		
 	}
 
 	public String getEditorAssemblyId() {
@@ -185,6 +197,7 @@ public class Action extends ModelObject {
 
 	public void setEditorAssemblyId(String editorAssemblyId) {
 		this.editorAssemblyId = editorAssemblyId;
+		
 	}
 
 	public boolean isEditorAssemblyEditable() {
@@ -193,6 +206,7 @@ public class Action extends ModelObject {
 
 	public void setEditorAssemblyEditable(boolean editorAssemblyEditable) {
 		this.editorAssemblyEditable = editorAssemblyEditable;
+		
 	}
 	
 	public boolean isObjectBehavier() {
@@ -201,6 +215,7 @@ public class Action extends ModelObject {
 	
 	public void setObjectBehavier(boolean objectBehavier) {
 		this.objectBehavier = objectBehavier;
+		
 	}
 	
 	public boolean isOpenContent() {
@@ -209,6 +224,7 @@ public class Action extends ModelObject {
 	
 	public void setOpenContent(boolean openContent) {
 		this.openContent = openContent;
+		
 	}
 
 	
@@ -223,6 +239,7 @@ public class Action extends ModelObject {
 
 	public void setType(String type) {
 		this.type = type;
+		
 	}
 	
 	public String getType() {
@@ -243,10 +260,12 @@ public class Action extends ModelObject {
 	
 	public void setCreateActionNewInstanceBundleId(String createActionNewInstanceBundleId) {
 		this.createActionNewInstanceBundleId = createActionNewInstanceBundleId;
+		
 	}
 	
 	public void setCreateActionNewInstanceClassName(String createActionNewInstanceClassName) {
 		this.createActionNewInstanceClassName = createActionNewInstanceClassName;
+		
 	}
 	
 	private String openPageName;
@@ -257,6 +276,7 @@ public class Action extends ModelObject {
 	
 	public void setOpenPageName(String openPageName) {
 		this.openPageName = openPageName;
+		
 	}
 	
 }

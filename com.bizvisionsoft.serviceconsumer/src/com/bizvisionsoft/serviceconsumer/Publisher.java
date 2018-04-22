@@ -1,5 +1,6 @@
 package com.bizvisionsoft.serviceconsumer;
 
+import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
@@ -34,6 +35,8 @@ public class Publisher {
 						OrganizationService.class,
 						
 						OBSService.class,
+						
+						CBSService.class,
 
 						WorkService.class,
 						

@@ -33,7 +33,7 @@ public class Column extends ModelObject {
 	private boolean markupEnabled;
 
 	private String format;
-	
+
 	private int sort;
 
 	public List<Column> getColumns() {
@@ -68,6 +68,7 @@ public class Column extends ModelObject {
 
 	public void setDescription(String description) {
 		this.description = description;
+
 	}
 
 	public int getAlignment() {
@@ -76,6 +77,7 @@ public class Column extends ModelObject {
 
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
+
 	}
 
 	public int getWidth() {
@@ -84,6 +86,7 @@ public class Column extends ModelObject {
 
 	public void setWidth(int width) {
 		this.width = width;
+
 	}
 
 	public int getMinimumWidth() {
@@ -92,6 +95,7 @@ public class Column extends ModelObject {
 
 	public void setMinimumWidth(int minimumWidth) {
 		this.minimumWidth = minimumWidth;
+
 	}
 
 	public boolean isMoveable() {
@@ -100,6 +104,7 @@ public class Column extends ModelObject {
 
 	public void setMoveable(boolean moveable) {
 		this.moveable = moveable;
+
 	}
 
 	public boolean isResizeable() {
@@ -108,6 +113,7 @@ public class Column extends ModelObject {
 
 	public void setResizeable(boolean resizeable) {
 		this.resizeable = resizeable;
+
 	}
 
 	public String getText() {
@@ -118,6 +124,7 @@ public class Column extends ModelObject {
 		Object old = this.text;
 		this.text = text;
 		firePropertyChange("text", old, this.text);
+
 	}
 
 	public boolean isDetail() {
@@ -130,10 +137,12 @@ public class Column extends ModelObject {
 
 	public void setDetail(boolean detail) {
 		this.detail = detail;
+
 	}
 
 	public void setSummary(boolean summary) {
 		this.summary = summary;
+
 	}
 
 	public boolean isExpanded() {
@@ -142,6 +151,7 @@ public class Column extends ModelObject {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
+
 	}
 
 	public boolean isMarkupEnabled() {
@@ -150,6 +160,7 @@ public class Column extends ModelObject {
 
 	public void setMarkupEnabled(boolean markupEnabled) {
 		this.markupEnabled = markupEnabled;
+
 	}
 
 	public String getFormat() {
@@ -158,6 +169,7 @@ public class Column extends ModelObject {
 
 	public void setFormat(String format) {
 		this.format = format;
+
 	}
 
 	/**
@@ -171,14 +183,16 @@ public class Column extends ModelObject {
 
 	public void setHide(boolean hide) {
 		this.hide = hide;
+
 	}
-	
+
 	public int getSort() {
 		return sort;
 	}
-	
+
 	public void setSort(int sort) {
 		this.sort = sort;
+
 	}
-	
+
 }

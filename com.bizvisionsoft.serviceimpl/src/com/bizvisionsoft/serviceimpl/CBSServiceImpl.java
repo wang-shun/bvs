@@ -1,6 +1,5 @@
 package com.bizvisionsoft.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -11,13 +10,6 @@ import com.bizvisionsoft.service.model.CBSItem;
 import com.mongodb.BasicDBObject;
 
 public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
-
-	public void createCBS(CBSItem cbsRoot) {
-		List<CBSItem> items = new ArrayList<>();
-		items.add(cbsRoot);
-//		appendSubItems(items, cbsRoot.getScope_id(), cbsRoot.get_id(), null);
-		Service.col(CBSItem.class).insertMany(items);
-	}
 
 	/**
 	 * db.getCollection('accountItem').aggregate([ {$match:{parent_id:null}},
@@ -41,6 +33,33 @@ public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
 			items.add(item);
 			appendSubItemsFromTemplate(items, scope_id, _id, d.getObjectId("_id"));
 		});
+	}
+
+	@Override
+	public List<CBSItem> getScopeRoot(ObjectId scope_id) {
+		return createDataSet(
+				new BasicDBObject("filter", new BasicDBObject("scope_id", scope_id).append("scopeRoot", true)),
+				CBSItem.class);
+	}
+
+	@Override
+	public CBSItem insertCBSItem(CBSItem o) {
+		return insert(o, CBSItem.class);
+	}
+
+	@Override
+	public List<CBSItem> getSubCBSItems(ObjectId parent_id) {
+		return createDataSet(new BasicDBObject("filter", new BasicDBObject("parent_id", parent_id)), CBSItem.class);
+	}
+
+	@Override
+	public long countSubCBSItems(ObjectId parent_id) {
+		return count(new BasicDBObject("parent_id", parent_id), CBSItem.class);
+	}
+
+	@Override
+	public void delete(ObjectId _id) {
+		delete(_id, CBSItem.class);
 	}
 
 }

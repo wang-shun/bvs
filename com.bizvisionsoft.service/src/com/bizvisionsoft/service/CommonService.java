@@ -267,7 +267,7 @@ public interface CommonService {
 	@Path("/accountitem/")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet({ "财务科目设置/" + DataSet.DELETE})
+	@DataSet({ "财务科目设置/" + DataSet.UPDATE})
 	public long updateAccountItem(BasicDBObject filterAndUpdate);
 
 

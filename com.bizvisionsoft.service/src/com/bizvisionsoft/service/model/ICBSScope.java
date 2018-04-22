@@ -1,12 +1,16 @@
 package com.bizvisionsoft.service.model;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 
-public interface IOBSScope {
+public interface ICBSScope {
 	
-	public ObjectId getOBS_id();
+	public ObjectId getCBS_id();
 
 	public ObjectId getScope_id();
+
+	public Date[] getCBSRange();
 
 
 }

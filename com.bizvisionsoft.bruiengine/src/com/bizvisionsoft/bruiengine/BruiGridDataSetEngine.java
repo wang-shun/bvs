@@ -68,7 +68,7 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		throw new RuntimeException(grid.getName() + "缺少数据源定义。请在BruiDesigner组件页面中定义基于插件的数据源或直接指定服务。");
 	}
 
-	private BruiGridDataSetEngine setAssembly(Assembly assembly) {
+	public BruiGridDataSetEngine setAssembly(Assembly assembly) {
 		this.assembly = assembly;
 		return this;
 	}
@@ -352,6 +352,10 @@ public class BruiGridDataSetEngine extends BruiEngine {
 
 			}
 		});
+	}
+	
+	public BruiGridDataSetEngine newInstance() {
+		return (BruiGridDataSetEngine) super.newInstance();
 	}
 
 }

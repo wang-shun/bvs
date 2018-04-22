@@ -34,7 +34,7 @@ import com.bizvisionsoft.service.UserService;
  */
 @Strict
 @PersistenceCollection("project")
-public class Project implements IOBSScope{
+public class Project implements IOBSScope, ICBSScope {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ±Í ∂ Ù–‘
@@ -211,7 +211,7 @@ public class Project implements IOBSScope{
 	@WriteValue
 	@Persistence
 	private boolean stageEnable;
-	
+
 	@Persistence
 	private ObjectId projectTemplate_Id;
 
@@ -352,7 +352,7 @@ public class Project implements IOBSScope{
 
 	@Persistence
 	private CreationInfo creationInfo;
-	
+
 	@Persistence
 	private ObjectId obs_id;
 
@@ -388,25 +388,25 @@ public class Project implements IOBSScope{
 	public ObjectId getProjectTemplate_id() {
 		return projectTemplate_Id;
 	}
-	
+
 	public String getPmId() {
 		return pmId;
 	}
-	
+
 	public Project setOBS_id(ObjectId obs_id) {
 		this.obs_id = obs_id;
 		return this;
 	}
-	
+
 	public Project setCBS_id(ObjectId cbs_id) {
 		this.cbs_id = cbs_id;
 		return this;
 	}
-	
-	public ObjectId getObs_id() {
+
+	public ObjectId getOBS_id() {
 		return obs_id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -418,5 +418,15 @@ public class Project implements IOBSScope{
 	@Override
 	public ObjectId getScope_id() {
 		return _id;
+	}
+
+	@Override
+	public ObjectId getCBS_id() {
+		return cbs_id;
+	}
+
+	@Override
+	public Date[] getCBSRange() {
+		return new Date[] { planStart, planFinish };
 	}
 }

@@ -12,4 +12,8 @@ public interface IStructuredDataPart {
 
 	void doDelete(Object element);
 
+	void refresh(Object parent);
+
+	Object doGetEditInput(Object element);
+
 }

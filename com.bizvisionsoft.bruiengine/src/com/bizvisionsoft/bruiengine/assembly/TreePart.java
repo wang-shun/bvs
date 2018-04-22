@@ -175,4 +175,14 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 		tree.addItem(child);
 	}
 
+	@Override
+	public void refresh(Object parent) {
+		//TODO Ë¢ÐÂÊ÷
+	}
+
+	@Override
+	public Object doGetEditInput(Object element) {
+		return dataSetEngine.query(element);
+	}
+
 }

@@ -32,6 +32,7 @@ public class EditProject {
 				.ok((r, proj) -> {
 					Services.get(ProjectService.class).update(
 							new FilterAndUpdate().filter(new BasicDBObject("_id", project.get_id())).set(r).bson());
+					AUtil.simpleCopy(proj, project);
 				});
 
 	}

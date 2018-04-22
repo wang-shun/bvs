@@ -8,6 +8,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
@@ -35,6 +36,7 @@ public class Services implements BundleActivator {
 		register(CommonService.class);
 		register(UserService.class);
 		register(OBSService.class);
+		register(CBSService.class);
 		register(OrganizationService.class);
 		register(WorkService.class);
 		register(ProjectService.class);
