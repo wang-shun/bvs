@@ -185,7 +185,7 @@ public class GridPart implements IStructuredDataPart {
 		}
 		panel.setLayout(new FormLayout());
 		Control queryPanel = createQueryPanel(panel);
-		Control grid = createGridViewer(panel);
+		Control grid = createGridControl(panel);
 		Control pagec = createToolbar(panel);
 
 		Label sep = null;
@@ -335,20 +335,9 @@ public class GridPart implements IStructuredDataPart {
 		return page;
 	}
 
-	protected Grid createGridViewer(Composite parent) {
-		/////////////////////////////////////////////////////////////////////////////////////
-		// 创建表格
-		int style = config.isGridHasBorder() ? SWT.BORDER : SWT.NONE;
-		style = config.isGridHasVScroll() ? (style | SWT.V_SCROLL) : style;
-		style = config.isGridHasHScroll() ? (style | SWT.H_SCROLL) : style;
-		style = config.isGridMultiSelection() ? (style | SWT.MULTI) : style;
-
-		if (checkOn)
-			style |= SWT.CHECK;
-
-		viewer = new GridTreeViewer(parent, style);
+	protected Grid createGridControl(Composite parent) {
+		viewer = createGridViewer(parent);
 		Grid grid = viewer.getGrid();
-		setupGridViewer(grid);
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 创建列
@@ -452,7 +441,19 @@ public class GridPart implements IStructuredDataPart {
 		return grid;
 	}
 
-	protected void setupGridViewer(Grid grid) {
+	protected GridTreeViewer createGridViewer(Composite parent) {
+		/////////////////////////////////////////////////////////////////////////////////////
+		// 创建表格
+		int style = config.isGridHasBorder() ? SWT.BORDER : SWT.NONE;
+		style = config.isGridHasVScroll() ? (style | SWT.V_SCROLL) : style;
+		style = config.isGridHasHScroll() ? (style | SWT.H_SCROLL) : style;
+		style = config.isGridMultiSelection() ? (style | SWT.MULTI) : style;
+
+		if (checkOn)
+			style |= SWT.CHECK;
+
+		GridTreeViewer viewer = new GridTreeViewer(parent, style);
+		Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(config.isGridHeaderVisiable());
 		grid.setFooterVisible(config.isGridFooterVisiable());
 		grid.setLinesVisible(config.isGridLineVisiable());
@@ -475,6 +476,8 @@ public class GridPart implements IStructuredDataPart {
 
 		if (config.getGridFix() > 0)
 			grid.setData(RWT.FIXED_COLUMNS, config.getGridFix());
+		
+		return viewer;
 	}
 
 	protected void createColumns(Grid grid) {
@@ -523,7 +526,7 @@ public class GridPart implements IStructuredDataPart {
 		return grp;
 	}
 
-	protected GridColumn createColumn(Object parent, Column c) {
+	protected GridViewerColumn createColumn(Object parent, Column c) {
 
 		GridColumn col;
 		if (parent instanceof Grid)
@@ -557,7 +560,7 @@ public class GridPart implements IStructuredDataPart {
 			this.sortSequance = c.getSort();
 		}
 
-		return col;
+		return vcol;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

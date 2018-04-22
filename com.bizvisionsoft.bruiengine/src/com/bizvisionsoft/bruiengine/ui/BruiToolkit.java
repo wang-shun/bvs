@@ -109,15 +109,23 @@ public class BruiToolkit {
 	}
 
 	public String getActionHtml(Action action, String element) {
+		return getActionHtml(action, element, false);
+	}
+
+	private String getActionHtml(Action action, String element, boolean placeHolder) {
 		String imgUrl = action.getImage();
 		boolean forceText = action.isForceText();
 		if (imgUrl == null || imgUrl.isEmpty()) {
-			return getActionTextButtonHtml(action, element);
+			return getActionTextButtonHtml(action, element, placeHolder);
 		} else if (forceText) {
-			return getActionTextImageButtonHtml(action, element);
+			return getActionTextImageButtonHtml(action, element, placeHolder);
 		} else {
-			return getActionImageButtonHtml(action, element);
+			return getActionImageButtonHtml(action, element, placeHolder);
 		}
+	}
+
+	public String getActionPlaceholderHtml(Action action) {
+		return getActionHtml(action, "div", true);
 	}
 
 	public static int actionMargin = 12;
@@ -128,19 +136,31 @@ public class BruiToolkit {
 
 	public static int actionForceBtnTextWidth = 64;
 
-	public String getActionImageButtonHtml(Action a, String element) {
-		return "<" + element + " class='cellbutton " + getStyle(a) + "' href='" + a.getId() + "' target='_rwt'>"
-				+ getImage(a, 16) + "</" + element + ">";
+	public String getActionImageButtonHtml(Action a, String element, boolean placeHolder) {
+		if (placeHolder)
+			return "<div style='margin-right:12px;width:28px;height:28px;'></div>";
+		else
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' href='" + a.getId() + "' target='_rwt'>"
+					+ getImage(a, 16) + "</" + element + ">";
 	}
 
-	public String getActionTextImageButtonHtml(Action a, String element) {
-		return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionForceBtnTextWidth
-				+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getImage(a, 16) + getText(a) + "</" + element + ">";
+	public String getActionTextImageButtonHtml(Action a, String element, boolean placeHolder) {
+		if (placeHolder)
+			return "<div style='margin-right:12px;height:28px;width:" + actionForceBtnTextWidth + "px;' ></div>";
+		else
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionForceBtnTextWidth
+					+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getImage(a, 16) + getText(a) + "</" + element
+					+ ">";
+
 	}
 
-	public String getActionTextButtonHtml(Action a, String element) {
-		return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionTextBtnWidth
-				+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getText(a) + "</" + element + ">";
+	public String getActionTextButtonHtml(Action a, String element, boolean placeHolder) {
+		if (placeHolder)
+			return "<div style='margin-right:12px;height:28px;width:" + actionTextBtnWidth + "px;' ></div>";
+		else
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionTextBtnWidth
+					+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getText(a) + "</" + element + ">";
+
 	}
 
 	public String getActionMenuItemHtml(Action a) {

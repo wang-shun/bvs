@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.model.CBSItem;
+import com.bizvisionsoft.service.model.CBSPeriod;
 import com.mongodb.BasicDBObject;
 
 public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
@@ -60,6 +61,11 @@ public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
 	@Override
 	public void delete(ObjectId _id) {
 		delete(_id, CBSItem.class);
+	}
+
+	@Override
+	public CBSPeriod insertCBSPeriod(CBSPeriod o) {
+		return insert(o, CBSPeriod.class);
 	}
 
 }

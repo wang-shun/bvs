@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.CBSItem;
+import com.bizvisionsoft.service.model.CBSPeriod;
 
 @Path("/cbs")
 public interface CBSService {
@@ -44,6 +45,7 @@ public interface CBSService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public CBSItem insertCBSItem(CBSItem o);
+
 	
 	@DELETE
 	@Path("/_id/{_id}")
@@ -51,5 +53,11 @@ public interface CBSService {
 	@Produces("application/json; charset=UTF-8")
 	@DataSet(DataSet.DELETE)
 	public void delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId _id);
+	
+	@POST
+	@Path("/period/")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public CBSPeriod insertCBSPeriod(CBSPeriod o);
 
 }

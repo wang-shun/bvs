@@ -3,6 +3,7 @@ package com.bizvisionsoft.pms.cbs.assembly;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
 import org.eclipse.rap.rwt.RWT;
@@ -44,16 +45,19 @@ public class BudgetCBS extends GridPart {
 	}
 	
 	@Override
-	protected void setupGridViewer(Grid grid) {
+	protected GridTreeViewer createGridViewer(Composite parent) {
+		GridTreeViewer viewer = new GridTreeViewer(parent, SWT.H_SCROLL|SWT.V_SCROLL);
+		viewer.setAutoExpandLevel(3);
+		viewer.setUseHashlookup(false);
+
+		Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);
 		grid.setFooterVisible(false);
 		grid.setLinesVisible(true);
-
-		viewer.setAutoExpandLevel(3);
-		viewer.setUseHashlookup(false);
 		UserSession.bruiToolkit().enableMarkup(grid);
-
 		grid.setData(RWT.FIXED_COLUMNS, 3);
+		
+		return viewer;
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class BudgetCBS extends GridPart {
 		Column c = new Column();
 		c.setName("id");
 		c.setText("±àºÅ");
-		c.setWidth(80);
+		c.setWidth(140);
 		c.setAlignment(SWT.LEFT);
 		c.setMoveable(false);
 		c.setResizeable(true);
@@ -127,7 +131,7 @@ public class BudgetCBS extends GridPart {
 			int i = start.get(Calendar.MONTH) + 1;
 			String month = String.format("%02d", i);
 			c = new Column();
-			c.setName(nYear + month);
+			c.setName(year + month);
 			c.setText(i + "ÔÂ");
 			c.setWidth(80);
 			c.setAlignment(SWT.RIGHT);

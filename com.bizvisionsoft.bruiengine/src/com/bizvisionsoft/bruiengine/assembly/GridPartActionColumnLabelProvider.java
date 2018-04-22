@@ -32,6 +32,8 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 			}
 			if (add)
 				html += UserSession.bruiToolkit().getActionHtml(action, "a");
+			else
+				html += UserSession.bruiToolkit().getActionPlaceholderHtml(action);
 		}
 		return html;
 

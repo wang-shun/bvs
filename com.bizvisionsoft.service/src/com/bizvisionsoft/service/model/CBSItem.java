@@ -66,7 +66,7 @@ public class CBSItem {
 	@WriteValue
 	private ObjectId scope_id;
 
-	@Behavior({ "CBS/删除", "CBS/编辑", "CBS/科目" })
+	@Behavior({ "CBS/删除", "CBS/编辑", "CBS/科目", "CBS/预算" })
 	private boolean behaviour() {
 		return !scopeRoot;
 		// TODO 传参数问题
