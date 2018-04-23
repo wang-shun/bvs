@@ -38,6 +38,8 @@ public class DateTimeField extends EditorField {
 		String type = fieldConfig.getDateType();
 		if (FormField.DATE_TYPE_YEAR.equals(type)) {
 			setting = DateTimeSetting.year();
+		} else if (FormField.DATE_TYPE_YEAR_MONTH.equals(type)) {
+			setting = DateTimeSetting.yearMonth();
 		} else if (FormField.DATE_TYPE_MONTH.equals(type)) {
 			setting = DateTimeSetting.month();
 		} else if (FormField.DATE_TYPE_TIME.equals(type)) {

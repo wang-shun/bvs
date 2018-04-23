@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -290,6 +291,13 @@ public class Util {
 		}
 
 		return subAryList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> void ifInstanceThen(Object obj, Class<T> clazz, Consumer<T> consumer) {
+		if (clazz.isAssignableFrom(obj.getClass())) {
+			consumer.accept((T) obj);
+		}
 	}
 
 }

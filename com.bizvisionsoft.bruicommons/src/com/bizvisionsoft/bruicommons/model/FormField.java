@@ -294,6 +294,9 @@ public class FormField extends ModelObject {
 
 	public static final String DATE_TYPE_DATETIME = "datetime";
 	
+	public static final String DATE_TYPE_YEAR_MONTH = "yearMonth";
+
+	
 	public String getDateType() {
 		return dateType;
 	}
@@ -429,6 +432,7 @@ public class FormField extends ModelObject {
 	public static final String TYPE_QUERY_DATETIME_RANGE = "日期时间范围（查询）";
 
 	public static final String TYPE_QUERY_SELECTION = "对象选择（查询）";
+
 	
 	public String getTextQueryType() {
 		return textQueryType;

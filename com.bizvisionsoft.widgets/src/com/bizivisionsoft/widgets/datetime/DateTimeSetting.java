@@ -12,6 +12,8 @@ public class DateTimeSetting {
 	public static final String TYPE_MONTH = "month";
 
 	public static final String FORMAT_MONTH = "MM";
+	
+	public static final String FORMAT_YEARMONTH = "yyyy-MM";
 
 	public static final String TYPE_DATE = "date";
 
@@ -153,6 +155,10 @@ public class DateTimeSetting {
 
 	public static DateTimeSetting month() {
 		return new DateTimeSetting().setType(TYPE_MONTH).setTheme("#3f51b5").setFormat(FORMAT_MONTH);
+	}
+	
+	public static DateTimeSetting yearMonth() {
+		return new DateTimeSetting().setType(TYPE_MONTH).setTheme("#3f51b5").setFormat(FORMAT_YEARMONTH);
 	}
 
 	public static DateTimeSetting dateTime() {

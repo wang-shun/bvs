@@ -45,7 +45,7 @@ public class CBSItem {
 	@ReadValue(ReadValue.TYPE)
 	@Exclude
 	private String typeName = "CBS";
-
+	
 	@Override
 	@Label
 	public String toString() {
@@ -116,5 +116,5 @@ public class CBSItem {
 		this.id = id;
 		return this;
 	}
-
+	
 }

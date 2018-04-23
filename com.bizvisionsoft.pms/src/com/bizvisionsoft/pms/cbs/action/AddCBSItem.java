@@ -22,14 +22,15 @@ public class AddCBSItem {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(parent -> {
-			Editor.create("成本项编辑器", context,
-					new CBSItem().setParent_id(((CBSItem) parent).get_id())
-							.setScope_id(((CBSItem) parent).getScope_id()).setScopeRoot(false),
-					true).setTitle("添加子项").ok((r, o) -> {
-						Services.get(CBSService.class).insertCBSItem(o);
-						IStructuredDataPart grid = (IStructuredDataPart) context.getContent();
-						grid.refresh(parent);
-					});
+			Editor.create("成本项编辑器", context, new CBSItem()//
+					.setParent_id(((CBSItem) parent).get_id())//
+					.setScope_id(((CBSItem) parent).getScope_id())//
+					.setScopeRoot(false)//
+			, true).setTitle("添加子项").ok((r, o) -> {
+				Services.get(CBSService.class).insertCBSItem(o);
+				IStructuredDataPart grid = (IStructuredDataPart) context.getContent();
+				grid.refresh(parent);
+			});
 
 		});
 	}

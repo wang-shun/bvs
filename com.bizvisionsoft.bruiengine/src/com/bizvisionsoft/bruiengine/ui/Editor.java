@@ -100,6 +100,8 @@ public class Editor<T> extends Popup {
 		// int maxHeight = 4*disb.height/5;
 		// size.x = size.x>maxWidth?maxWidth:size.x;
 		// size.y = size.y>maxHeight?maxHeight:size.y;
+		
+		
 
 		int minWidth = 960;
 		int minHeight = 600;
@@ -112,7 +114,15 @@ public class Editor<T> extends Popup {
 		int perfWidth = 2 * disb.width / 3;
 		int perfHeight = disb.height - 120;
 
-		return new Point(Math.max(minWidth, perfWidth), Math.max(minHeight, perfHeight));
+		
+		int w = Math.max(minWidth, perfWidth);
+		int h = Math.max(minHeight, perfHeight);
+		
+		if(getAssembly().isSmallEditor()) {
+			return new Point(2*w/3, 2*h/3);
+		}else {
+			return new Point(w, h);
+		}
 	}
 
 	public Object getResult() {

@@ -149,6 +149,9 @@ public class DateTime extends Composite {
 
 	private Date parseMonthValue(JsonObject dateValue) {
 		Calendar cal = Calendar.getInstance(RWT.getLocale());
+		int year = dateValue.get("year").asInt();
+		cal.set(Calendar.YEAR, year);
+		
 		int month = dateValue.get("month").asInt() - 1;
 		cal.set(Calendar.MONTH, month);
 

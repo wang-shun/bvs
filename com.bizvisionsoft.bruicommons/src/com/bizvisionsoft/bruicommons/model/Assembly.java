@@ -662,6 +662,16 @@ public class Assembly extends ModelObject {
 	public void setNullValueAllowedFields(String nullValueAllowedFields) {
 		this.nullValueAllowedFields = nullValueAllowedFields;
 	}
+	
+	private boolean smallEditor;
+	
+	public boolean isSmallEditor() {
+		return smallEditor;
+	}
+	
+	public void setSmallEditor(boolean smallEditor) {
+		this.smallEditor = smallEditor;
+	}
 
 
 }

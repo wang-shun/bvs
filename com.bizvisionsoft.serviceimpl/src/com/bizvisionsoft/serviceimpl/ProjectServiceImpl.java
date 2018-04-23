@@ -62,7 +62,9 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			CBSItem cbsRoot = new CBSItem()//
 					.set_id(cbsRoot_id)//
 					.setScope_id(project.get_id())//
-					.setParent_id(cbsParent_id).setName(project.getName()).setScopeRoot(true);// 区分这个节点是范围内的根节点
+					.setParent_id(cbsParent_id)//
+					.setName(project.getName())//
+					.setScopeRoot(true);// 区分这个节点是范围内的根节点
 
 			new CBSServiceImpl().insertCBSItem(cbsRoot);// 插入记录
 		} else {
