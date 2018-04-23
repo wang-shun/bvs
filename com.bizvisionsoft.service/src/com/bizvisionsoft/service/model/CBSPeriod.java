@@ -30,12 +30,7 @@ public class CBSPeriod {
 	private Double budget;
 
 	@ReadValue
-	@WriteValue
-	private String year;
-
-	@ReadValue
-	@WriteValue
-	private String month;
+	private String id;
 
 	@ReadValue
 	@WriteValue
@@ -50,8 +45,8 @@ public class CBSPeriod {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(period);
-		this.year = "" + cal.get(Calendar.YEAR);
-		this.month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+		this.id = "" + cal.get(Calendar.YEAR);
+		this.id += String.format("%02d", cal.get(Calendar.MONTH) + 1);
 	}
 
 	private void checkRange(Date period) {
