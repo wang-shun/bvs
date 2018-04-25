@@ -73,7 +73,7 @@ public class ActionPanelPart {
 		}
 
 		Action closeAction = null;
-		if (assembly.isClosable()) {
+		if (context.isCloseable()) {
 			closeAction = new Action();
 			closeAction.setName("close");
 			closeAction.setImage("/img/left.svg");

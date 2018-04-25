@@ -621,18 +621,6 @@ public class Assembly extends ModelObject {
 		this.selectorMultiSelection = selectorMultiSelection;
 	}
 
-	//
-	private boolean closable;
-
-	public boolean isClosable() {
-		return closable;
-	}
-
-	public void setClosable(boolean closable) {
-		this.closable = closable;
-	}
-	
-	
 	private String message;
 	
 	public String getMessage() {

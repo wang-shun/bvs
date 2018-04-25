@@ -120,6 +120,9 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Override
 	public ISelection getSelection() {
+		if(selectedItem==null) {
+			return StructuredSelection.EMPTY;
+		}
 		return new StructuredSelection(selectedItem);
 	}
 

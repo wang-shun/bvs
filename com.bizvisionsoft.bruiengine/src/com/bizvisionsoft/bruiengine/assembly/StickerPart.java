@@ -86,7 +86,7 @@ public class StickerPart {
 		}
 
 		Action closeAction = null;
-		if (assembly.isClosable() || context.isCloseable()) {
+		if (context.isCloseable()) {
 			closeAction = new Action();
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
@@ -112,11 +112,9 @@ public class StickerPart {
 			Action action = ((Action) e.data);
 			if ("close".equals(action.getName())) {
 				service.closeCurrentContent();
-			} else if (rightActions != null) {
+			} else if (rightActions != null && rightActions.indexOf(action)!=-1) {
 				int idx = rightActions.indexOf(action);
-				if (idx != -1) {
-					rightConsumers.get(idx).accept(context);
-				}
+				rightConsumers.get(idx).accept(context);
 			} else {
 				try {
 					BruiActionEngine.create(action, service).invokeExecute(e, context);
