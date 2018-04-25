@@ -53,7 +53,7 @@ public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSe
 		// TODO
 
 		List<ProjectSet> result = new ArrayList<ProjectSet>();
-		Service.col(ProjectSet.class).aggregate(pipeline).into(result);
+		c(ProjectSet.class).aggregate(pipeline).into(result);
 		return result;
 
 	}
@@ -62,11 +62,11 @@ public class ProjectSetServiceImpl extends BasicServiceImpl implements ProjectSe
 	@Deprecated
 	public long delete(ObjectId _id) {
 		// 如果有下级项目集不可被删除
-		if (Service.col(ProjectSet.class).count(new BasicDBObject("parent_id", _id)) > 0)
+		if (c(ProjectSet.class).count(new BasicDBObject("parent_id", _id)) > 0)
 			throw new ServiceException("不允许删除有下级项目集的项目集记录");
 
 		// 如果有项目引用了该项目集，不可删除
-		if (Service.col(Project.class).count(new BasicDBObject("projectSet_id", _id)) > 0)
+		if (c(Project.class).count(new BasicDBObject("projectSet_id", _id)) > 0)
 			throw new ServiceException("不允许删除有下级项目的项目集记录");
 
 		return delete(_id, ProjectSet.class);

@@ -21,6 +21,8 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class ActionMenu extends Part {
@@ -92,7 +94,7 @@ public class ActionMenu extends Part {
 				if (Boolean.TRUE.equals(value)) {
 					result.add(action);
 				}
-			}else {
+			} else {
 				result.add(action);
 			}
 		}
@@ -117,7 +119,7 @@ public class ActionMenu extends Part {
 	@Override
 	protected void createContents(Composite parent) {
 		this.parent = parent;
-		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		parent.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 
 		parent.setLayout(new FillLayout());
 		createPage();

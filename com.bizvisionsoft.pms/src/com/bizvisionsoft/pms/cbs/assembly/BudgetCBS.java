@@ -1,26 +1,25 @@
 package com.bizvisionsoft.pms.cbs.assembly;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
-import org.eclipse.nebula.widgets.grid.Grid;
-import org.eclipse.nebula.widgets.grid.GridColumnGroup;
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
-import com.bizvisionsoft.bruicommons.model.Column;
-import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
+import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.CBSService;
+import com.bizvisionsoft.service.model.CBSItem;
+import com.bizvisionsoft.service.model.CBSPeriod;
 import com.bizvisionsoft.service.model.ICBSScope;
+import com.bizvisionsoft.serviceconsumer.Services;
 
-public class BudgetCBS extends GridPart {
+public class BudgetCBS extends BudgetGrid {
 
 	@Inject
 	private BruiAssemblyContext context;
@@ -28,14 +27,14 @@ public class BudgetCBS extends GridPart {
 	@Inject
 	private IBruiService bruiService;
 
-	private ICBSScope input;
+	private ICBSScope scope;
 
 	@Init
 	public void init() {
 		setContext(context);
 		setConfig(context.getAssembly());
 		setBruiService(bruiService);
-		input = (ICBSScope) context.getRootInput();
+		scope = (ICBSScope) context.getRootInput();
 		super.init();
 	}
 
@@ -43,106 +42,64 @@ public class BudgetCBS extends GridPart {
 	public void createUI(Composite parent) {
 		super.createUI(parent);
 	}
-	
-	@Override
-	protected GridTreeViewer createGridViewer(Composite parent) {
-		GridTreeViewer viewer = new GridTreeViewer(parent, SWT.H_SCROLL|SWT.V_SCROLL);
-		viewer.setAutoExpandLevel(3);
-		viewer.setUseHashlookup(false);
 
-		Grid grid = viewer.getGrid();
-		grid.setHeaderVisible(true);
-		grid.setFooterVisible(false);
-		grid.setLinesVisible(true);
-		UserSession.bruiToolkit().enableMarkup(grid);
-		grid.setData(RWT.FIXED_COLUMNS, 3);
-		
-		return viewer;
+	public void addCBSItem(CBSItem parentCBSItem, CBSItem cbsItemData) {
+		CBSItem child = Services.get(CBSService.class).insertCBSItem(cbsItemData);
+		parentCBSItem.addChild(child);
+		viewer.refresh(parentCBSItem, true);
+	}
+
+	public void deleteCBSItem(CBSItem cbsItem) {
+		CBSItem parentCBSItem = cbsItem.getParent();
+		if (parentCBSItem == null) {
+			throw new RuntimeException("不允许删除CBS根节点。");
+		}
+		Services.get(CBSService.class).delete(cbsItem.get_id());
+		parentCBSItem.removeChild(cbsItem);
+		viewer.refresh(parentCBSItem, true);
+	}
+
+	public void updateCBSPeriodBudget(CBSItem cbsItem, CBSPeriod periodData) {
+		CBSItem parentCBSItem = cbsItem.getParent();
+		if (parentCBSItem == null) {
+			throw new RuntimeException("不允许更改CBS根节点预算。");
+		}
+		Services.get(CBSService.class).updateCBSPeriodBudget(periodData);
+		CBSItem newCbsItem = Services.get(CBSService.class).get(((CBSItem) cbsItem).get_id());
+		newCbsItem.setParent(cbsItem.getParent());
+		replaceItem(cbsItem, newCbsItem);
+		// viewer.update(cbsItem, null);
+		viewer.refresh();
 	}
 
 	@Override
-	protected void createColumns(Grid grid) {
+	protected Date[] getRange() {
+		return scope.getCBSRange();
+	}
 
-		/////////////////////////////////////////////////////////////////////////////////////
-		// 创建列
-		Column c = new Column();
-		c.setName("id");
-		c.setText("编号");
-		c.setWidth(140);
-		c.setAlignment(SWT.LEFT);
-		c.setMoveable(false);
-		c.setResizeable(true);
-		createColumn(grid, c);
-
-		c = new Column();
-		c.setName("name");
-		c.setText("名称");
-		c.setWidth(120);
-		c.setAlignment(SWT.LEFT);
-		c.setMoveable(false);
-		c.setResizeable(true);
-		createColumn(grid, c);
-
-		c = new Column();
-		c.setName("summary");
-		c.setText("合计");
-		c.setWidth(120);
-		c.setAlignment(SWT.RIGHT);
-		c.setMoveable(false);
-		c.setResizeable(true);
-		createColumn(grid, c);
-
-		Date[] range = input.getCBSRange();
-		Calendar start = Calendar.getInstance();
-		start.setTime(range[0]);
-		start.set(Calendar.DATE, 1);
-		start.set(Calendar.HOUR_OF_DAY, 0);
-		start.set(Calendar.MINUTE, 0);
-		start.set(Calendar.SECOND, 0);
-
-		Calendar end = Calendar.getInstance();
-		end.setTime(range[1]);
-
-		String year = null;
-		GridColumnGroup grp = null;
-		while (start.before(end)) {
-			String nYear = "" + start.get(Calendar.YEAR);
-			if (!nYear.equals(year)) {
-				// 创建合计列
-				if (grp != null) {
-					c = new Column();
-					c.setName("summary_" + (start.get(Calendar.YEAR) - 1));
-					c.setText("合计");
-					c.setWidth(100);
-					c.setAlignment(SWT.RIGHT);
-					c.setMoveable(false);
-					c.setResizeable(true);
-					c.setDetail(true);
-					c.setSummary(true);
-					createColumn(grp, c);
-				}
-
-				// 创建gruop
-				grp = new GridColumnGroup(grid, SWT.TOGGLE);
-				grp.setText(nYear);
-				grp.setExpanded(true);
-				year = nYear;
-			}
-			int i = start.get(Calendar.MONTH) + 1;
-			String month = String.format("%02d", i);
-			c = new Column();
-			c.setName(year + month);
-			c.setText(i + "月");
-			c.setWidth(80);
-			c.setAlignment(SWT.RIGHT);
-			c.setMoveable(false);
-			c.setResizeable(true);
-			c.setDetail(true);
-			c.setSummary(false);
-			createColumn(grp, c);
-			start.add(Calendar.MONTH, 1);
+	@Override
+	protected Color getNumberColor(Object item) {
+		if (((CBSItem) item).countSubCBSItems() == 0) {
+			return null;
+		} else {
+			return BruiColors.getColor(BruiColor.Grey_500);
 		}
 	}
 
+	@Override
+	protected String getBudgetTotalText(Object element) {
+		return Util.getGenericMoneyFormatText(((CBSItem) element).getBudgetSummary());
+	}
+
+	@Override
+	protected String getBudgetYearSummaryText(Object element, String year) {
+		return Util.getGenericMoneyFormatText(((CBSItem) element).getBudgetYearSummary(year));
+	}
+
+
+	@Override
+	protected String getBudgetText(Object element, String name) {
+		return Util.getGenericMoneyFormatText(((CBSItem) element).getBudget(name));
+	}
 
 }

@@ -30,12 +30,15 @@ import java.util.zip.GZIPOutputStream;
 import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
+import org.eclipse.rap.rwt.RWT;
 
 import com.bizvisionsoft.mongocodex.codec.CodexProvider;
 import com.mongodb.BasicDBObject;
 
 public class Util {
 
+	private static final String MONEY_NUMBER_FORMAT = "#,###.0";
+	
 	private static char[] array = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
 
 	/**
@@ -298,6 +301,13 @@ public class Util {
 		if (clazz.isAssignableFrom(obj.getClass())) {
 			consumer.accept((T) obj);
 		}
+	}
+
+	public static String getGenericMoneyFormatText(Double budget) {
+		if (budget == null || budget == 0d) {
+			return "";
+		}
+		return Util.getFormatText(budget, MONEY_NUMBER_FORMAT,RWT.getLocale());
 	}
 
 }

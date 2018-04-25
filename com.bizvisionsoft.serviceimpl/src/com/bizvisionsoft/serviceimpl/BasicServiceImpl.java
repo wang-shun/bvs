@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Field;
 import com.mongodb.client.model.UnwindOptions;
@@ -22,29 +24,29 @@ public class BasicServiceImpl {
 		update.remove("_id");
 		UpdateOptions option = new UpdateOptions();
 		option.upsert(false);
-		UpdateResult updateMany = Service.col(clazz).updateMany(filter, update, option);
+		UpdateResult updateMany = c(clazz).updateMany(filter, update, option);
 		long cnt = updateMany.getModifiedCount();
 		return cnt;
 	}
 
 	protected <T> T insert(T obj, Class<T> clazz) {
-		Service.col(clazz).insertOne(obj);
+		c(clazz).insertOne(obj);
 		return obj;
 	}
 
 	protected <T> T get(ObjectId _id, Class<T> clazz) {
-		T obj = Service.col(clazz).find(new BasicDBObject("_id", _id)).first();
+		T obj = c(clazz).find(new BasicDBObject("_id", _id)).first();
 		return Optional.ofNullable(obj).orElse(null);
 	}
 
 	protected <T> long delete(ObjectId _id, Class<T> clazz) {
-		return Service.col(clazz).deleteOne(new BasicDBObject("_id", _id)).getDeletedCount();
+		return c(clazz).deleteOne(new BasicDBObject("_id", _id)).getDeletedCount();
 	}
 
 	protected <T> long count(BasicDBObject filter, Class<T> clazz) {
 		if (filter != null)
-			return Service.col(clazz).count(filter);
-		return Service.col(clazz).count();
+			return c(clazz).count(filter);
+		return c(clazz).count();
 	}
 
 	protected <T> List<T> createDataSet(BasicDBObject condition, Class<T> clazz) {
@@ -67,7 +69,7 @@ public class BasicServiceImpl {
 			pipeline.add(Aggregates.limit(limit));
 
 		List<T> result = new ArrayList<T>();
-		Service.col(clazz).aggregate(pipeline).into(result);
+		c(clazz).aggregate(pipeline).into(result);
 		return result;
 	}
 
@@ -133,6 +135,14 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));
 
 		return pipeline;
+	}
+
+	protected <T> MongoCollection<T> c(Class<T> clazz) {
+		return Service.col(clazz);
+	}
+
+	protected MongoCollection<Document> c(String name) {
+		return Service.col(name);
 	}
 
 }

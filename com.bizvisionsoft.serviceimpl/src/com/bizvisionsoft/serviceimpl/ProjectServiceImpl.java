@@ -33,10 +33,11 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			ObjectId cbsParent_id = null;// 成本上级
 			if (projectSet_id != null) {
 				// 获得上级obs_id
-				Document doc = Service.col("projectSet").find(new BasicDBObject("_id", projectSet_id))
+				Document doc = c("projectSet").find(new BasicDBObject("_id", projectSet_id))
 						.projection(new BasicDBObject("obs_id", true).append("cbs_id", true)).first();
 				obsParent_id = Optional.ofNullable(doc).map(d -> d.getObjectId("obs_id")).orElse(null);
 				cbsParent_id = Optional.ofNullable(doc).map(d -> d.getObjectId("cbs_id")).orElse(null);
+				
 			}
 			/////////////////////////////////////////////////////////////////////////////
 			// 0. 创建项目
@@ -58,7 +59,6 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 			/////////////////////////////////////////////////////////////////////////////
 			// 2. 财务科目初始化
 			// 创建根
-
 			CBSItem cbsRoot = new CBSItem()//
 					.set_id(cbsRoot_id)//
 					.setScope_id(project.get_id())//
@@ -116,14 +116,14 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		appendUserInfo(pipeline, "pmId", "pmInfo");
 
 		List<Project> result = new ArrayList<Project>();
-		Service.col(Project.class).aggregate(pipeline).into(result);
+		c(Project.class).aggregate(pipeline).into(result);
 		return result;
 
 	}
 
 	@Override
 	public List<Date> getPlanDateRange(ObjectId _id) {
-		Project data = Service.col(Project.class).find(new BasicDBObject("_id", _id))
+		Project data = c(Project.class).find(new BasicDBObject("_id", _id))
 				.projection(new BasicDBObject().append("planStart", 1).append("planFinish", 1)).first();
 		ArrayList<Date> result = new ArrayList<Date>();
 		result.add(data.getPlanStart());

@@ -18,13 +18,14 @@ import com.bizvisionsoft.service.model.Equipment;
 import com.bizvisionsoft.service.model.ResourceType;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Field;
 
 public class CommonServiceImpl extends BasicServiceImpl implements CommonService {
 
 	@Override
 	public List<Certificate> getCertificates() {
 		List<Certificate> result = new ArrayList<>();
-		Service.col(Certificate.class).find().into(result);
+		c(Certificate.class).find().into(result);
 		return result;
 	}
 
@@ -48,14 +49,14 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	@Override
 	public List<String> getCertificateNames() {
 		ArrayList<String> result = new ArrayList<String>();
-		Service.col(Certificate.class).distinct("name", String.class).into(result);
+		c(Certificate.class).distinct("name", String.class).into(result);
 		return result;
 	}
 
 	@Override
 	public List<ResourceType> getResourceType() {
 		List<ResourceType> result = new ArrayList<>();
-		Service.col(ResourceType.class).find().into(result);
+		c(ResourceType.class).find().into(result);
 		return result;
 	}
 
@@ -88,7 +89,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 		appendOrgFullName(pipeline, "org_id", "orgFullName");
 
 		ArrayList<Equipment> result = new ArrayList<Equipment>();
-		Service.col(Equipment.class).aggregate(pipeline).into(result);
+		c(Equipment.class).aggregate(pipeline).into(result);
 		return result;
 	}
 
@@ -99,7 +100,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public long countERResources(ObjectId _id) {
-		return Service.col(Equipment.class).count(new BasicDBObject("resourceType_id", _id));
+		return c(Equipment.class).count(new BasicDBObject("resourceType_id", _id));
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	@Override
 	public List<Calendar> getCalendars() {
 		List<Calendar> result = new ArrayList<>();
-		Service.col(Calendar.class).find().into(result);
+		c(Calendar.class).find().into(result);
 		return result;
 	}
 
@@ -148,7 +149,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public void addCalendarWorktime(BasicDBObject r, ObjectId _cal_id) {
-		Service.col(Calendar.class).updateOne(new BasicDBObject("_id", _cal_id),
+		c(Calendar.class).updateOne(new BasicDBObject("_id", _cal_id),
 				new BasicDBObject("$addToSet", new BasicDBObject("workTime", r)));
 	}
 
@@ -160,20 +161,20 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	 */
 	@Override
 	public void updateCalendarWorkTime(BasicDBObject r) {
-		Service.col(Calendar.class).updateOne(new BasicDBObject("workTime._id", r.get("_id")),
+		c(Calendar.class).updateOne(new BasicDBObject("workTime._id", r.get("_id")),
 				new BasicDBObject("$set", new BasicDBObject("workTime.$", r)));
 	}
 
 	@Override
 	public void deleteCalendarWorkTime(ObjectId _id) {
-		Service.col(Calendar.class).updateOne(new BasicDBObject("workTime._id", _id),
+		c(Calendar.class).updateOne(new BasicDBObject("workTime._id", _id),
 				new BasicDBObject("$pull", new BasicDBObject("workTime", new BasicDBObject("_id", _id))));
 	}
 
 	@Override
 	public List<Dictionary> getDictionary() {
 		List<Dictionary> target = new ArrayList<Dictionary>();
-		Service.col(Dictionary.class).find().sort(new BasicDBObject("type", 1)).into(target);
+		c(Dictionary.class).find().sort(new BasicDBObject("type", 1)).into(target);
 		return target;
 	}
 
@@ -195,7 +196,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	@Override
 	public Map<String, String> getDictionary(String type) {
 		Map<String, String> result = new HashMap<String, String>();
-		Iterable<Document> itr = Service.col("dictionary").find(new BasicDBObject("type", type));
+		Iterable<Document> itr = c("dictionary").find(new BasicDBObject("type", type));
 		itr.forEach(d -> result.put(d.getString("name") + " [" + d.getString("id") + "]",
 				d.getString("id") + "#" + d.getString("name")));
 		return result;
@@ -208,15 +209,17 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public List<AccountItem> getAccoutItem(ObjectId parent_id) {
-		List<AccountItem> target = new ArrayList<AccountItem>();
-		Service.col(AccountItem.class).find(new BasicDBObject("parent_id", parent_id)).sort(new BasicDBObject("id", 1))
-				.into(target);
-		return target;
+		return queryAccountItem(new BasicDBObject("parent_id", parent_id));
 	}
 
 	@Override
 	public long countAccoutItem(ObjectId _id) {
 		return count(new BasicDBObject("parent_id", _id), AccountItem.class);
+	}
+
+	@Override
+	public long countAccoutItemRoot() {
+		return countAccoutItem(null);
 	}
 
 	@Override
@@ -232,6 +235,27 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 	@Override
 	public long updateAccountItem(BasicDBObject filterAndUpdate) {
 		return update(filterAndUpdate, AccountItem.class);
+	}
+
+	@Override
+	public List<AccountItem> queryAccountItem(BasicDBObject filter) {
+		List<Bson> pipeline = new ArrayList<Bson>();
+
+		if (filter != null) {
+			pipeline.add(Aggregates.match(filter));
+		}
+
+		pipeline.add(Aggregates.lookup("accountItem", "_id", "parent_id", "_children"));
+
+		pipeline.add(Aggregates.addFields(//
+				new Field<BasicDBObject>("children", new BasicDBObject("$map", new BasicDBObject()
+						.append("input", "$_children._id").append("as", "id").append("in", "$$id")))));
+
+		pipeline.add(Aggregates.project(new BasicDBObject("_children", false)));
+
+		pipeline.add(Aggregates.sort(new BasicDBObject("id", 1)));
+		
+		return c(AccountItem.class).aggregate(pipeline).into(new ArrayList<AccountItem>());
 	}
 
 }

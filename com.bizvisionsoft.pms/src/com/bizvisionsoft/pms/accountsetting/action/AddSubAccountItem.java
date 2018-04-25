@@ -24,8 +24,9 @@ public class AddSubAccountItem {
 		context.selected(parent -> {
 			Editor.create("财务科目编辑器", context, new AccountItem().setParent_id(((AccountItem) parent).get_id()), true)
 					.ok((r, o) -> {
-						Services.get(CommonService.class).insertAccountItem(o);
+						AccountItem item = Services.get(CommonService.class).insertAccountItem(o);
 						GridPart grid = (GridPart) context.getContent();
+						((AccountItem) parent).addChild(item);
 						grid.refresh(parent);
 					});
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -117,7 +118,11 @@ public class StickerPart {
 					rightConsumers.get(idx).accept(context);
 				}
 			} else {
-				BruiActionEngine.create(action, service).invokeExecute(e, context);
+				try {
+					BruiActionEngine.create(action, service).invokeExecute(e, context);
+				} catch (Exception e2) {
+					MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
+				}
 			}
 		});
 	}

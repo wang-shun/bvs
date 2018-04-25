@@ -74,7 +74,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 		appendUserInfo(pipeline,"managerId","managerInfo");
 
 		List<Organization> result = new ArrayList<Organization>();
-		Service.col(Organization.class).aggregate(pipeline).into(result);
+		c(Organization.class).aggregate(pipeline).into(result);
 		return result;
 	}
 
@@ -84,11 +84,11 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 	}
 
 	private long countOrganizations(BasicDBObject match) {
-		return Service.col(Organization.class).count(match);
+		return c(Organization.class).count(match);
 	}
 
 	public long countMember(ObjectId _id) {
-		return Service.col(User.class).count(new BasicDBObject("org_id", _id));
+		return c(User.class).count(new BasicDBObject("org_id", _id));
 	}
 
 	@Override
@@ -196,13 +196,13 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 		pipeline.add(Aggregates.sort(new BasicDBObject("userId",1)));
 
 		List<User> result = new ArrayList<User>();
-		Service.col(Role.class).aggregate(pipeline, User.class).into(result);
+		c(Role.class).aggregate(pipeline, User.class).into(result);
 		return result;
 	}
 
 	@Override
 	public long countUsersOfRole(ObjectId _id) {
-		Document doc = Service.col("role").find(new BasicDBObject("_id", _id)).first();
+		Document doc = c("role").find(new BasicDBObject("_id", _id)).first();
 		if (doc == null) {
 			throw new ServiceException("没有指定id的角色");
 		}

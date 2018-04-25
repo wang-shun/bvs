@@ -11,8 +11,8 @@ import com.bizvisionsoft.annotations.md.mongocodex.PersistenceCollection;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 
-@PersistenceCollection("cbsPeriod")
-public class CBSPeriod {
+@PersistenceCollection("cbsSubject")
+public class CBSSubject {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// 基本的一些字段
@@ -21,6 +21,10 @@ public class CBSPeriod {
 	@ReadValue
 	@WriteValue
 	private ObjectId _id;
+	
+	@ReadValue
+	@WriteValue
+	private String subjectNumber;
 
 	@ReadValue
 	@WriteValue
@@ -72,8 +76,28 @@ public class CBSPeriod {
 		budget = __budget;
 	}
 
-	public CBSPeriod setCBSItem_id(ObjectId cbsItem_id) {
+	public CBSSubject setCBSItem_id(ObjectId cbsItem_id) {
 		this.cbsItem_id = cbsItem_id;
+		return this;
+	}
+	
+	/**
+	 * 期间
+	 * @param id
+	 * @return
+	 */
+	public CBSSubject setId(String id) {
+		this.id = id;
+		return this;
+	}
+	
+	/**
+	 * 科目号
+	 * @param subjectNumber
+	 * @return 
+	 */
+	public CBSSubject setSubjectNumber(String subjectNumber) {
+		this.subjectNumber = subjectNumber;
 		return this;
 	}
 
@@ -119,5 +143,11 @@ public class CBSPeriod {
 	public String getId() {
 		return id;
 	}
+	
+	public String getSubjectNumber() {
+		return subjectNumber;
+	}
+	
+	
 
 }

@@ -34,7 +34,7 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 
 		appendUserInfoAndHeadPic(pipeline, "managerId", "managerInfo", "managerHeadPic");
 		appendSortBy(pipeline, "seq", 1);
-		Service.col(OBSItem.class).aggregate(pipeline).into(result);
+		c(OBSItem.class).aggregate(pipeline).into(result);
 		return result;
 	}
 
@@ -50,7 +50,7 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 
 	@Override
 	public long countSubOBSItem(ObjectId _id) {
-		return Service.col(OBSItem.class).count(new BasicDBObject("parent_id", _id));
+		return c(OBSItem.class).count(new BasicDBObject("parent_id", _id));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 
 	private ArrayList<String> getMemberUserId(ObjectId obs_id) {
 		ArrayList<String> result = new ArrayList<String>();
-		Service.col("obs").distinct("member", new BasicDBObject("_id", obs_id), String.class).into(result);
+		c("obs").distinct("member", new BasicDBObject("_id", obs_id), String.class).into(result);
 		return result;
 	}
 

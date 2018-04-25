@@ -492,7 +492,11 @@ public class GridPart implements IStructuredDataPart {
 
 	private void invoveAction(Event e, Object elem, Action action) {
 		if (action.getChildren() == null || action.getChildren().isEmpty()) {
-			BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
+			try {
+				BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
+			} catch (Exception e2) {
+				MessageDialog.openError(bruiService.getCurrentShell(), "系统错误", e2.getMessage());
+			}
 		} else {
 			// 显示菜单
 			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context)
@@ -500,7 +504,7 @@ public class GridPart implements IStructuredDataPart {
 		}
 	}
 
-	private void setViewerInput() {
+	public void setViewerInput() {
 		if (!disableDateSetEngine) {
 			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
 		}
@@ -578,6 +582,11 @@ public class GridPart implements IStructuredDataPart {
 
 	public void refresh(Object parent) {
 		viewer.refresh(parent);
+	}
+	
+	@Override
+	public void refreshAll() {
+		viewer.refresh();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -713,5 +722,6 @@ public class GridPart implements IStructuredDataPart {
 		}
 		return null;
 	}
+
 
 }

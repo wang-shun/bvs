@@ -185,4 +185,10 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 		return dataSetEngine.query(element);
 	}
 
+	@Override
+	public void refreshAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

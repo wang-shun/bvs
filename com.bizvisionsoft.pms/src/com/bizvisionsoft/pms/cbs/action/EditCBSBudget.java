@@ -8,10 +8,13 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.pms.cbs.assembly.BudgetCBS;
 import com.bizvisionsoft.service.model.CBSItem;
+import com.bizvisionsoft.service.model.CBSPeriod;
+import com.bizvisionsoft.service.model.ICBSScope;
 
-public class AddCBSItem {
+public class EditCBSBudget {
 
 	@Inject
 	private IBruiService bruiService;
@@ -20,11 +23,16 @@ public class AddCBSItem {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		context.selected(parent -> {
-			Editor.create("成本项编辑器", context, CBSItem.newSubItem((CBSItem) parent), true).setTitle("添加子项").ok((r, o) -> {
-				BudgetCBS cbsGrid = (BudgetCBS) context.getContent();
-				cbsGrid.addCBSItem((CBSItem) parent, o);
+			CBSPeriod period = new CBSPeriod()//
+					.setCBSItem_id(((CBSItem) parent).get_id());
+			Util.ifInstanceThen(context.getRootInput(), ICBSScope.class, r -> period.setRange(r.getCBSRange()));
+
+			Editor.create("期间预算编辑器", context, period, true).setTitle("编辑期间预算").ok((r, o) -> {
+				BudgetCBS grid = (BudgetCBS) context.getContent();
+				grid.updateCBSPeriodBudget(((CBSItem) parent),o);
 			});
 
 		});
 	}
+
 }
