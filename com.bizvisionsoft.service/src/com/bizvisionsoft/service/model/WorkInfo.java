@@ -261,7 +261,7 @@ public class WorkInfo {
 	@Persistence("planStart")
 	private Date start_date;
 
-	@WriteValue("创建甘特图工作编辑器/start_date")
+	@WriteValue({"甘特图总成工作编辑器/start_date","甘特图工作编辑器/start_date","甘特图阶段工作编辑器/end_date"})
 	public void setStart_date(Date start_date) {
 		checkDate(start_date, this.end_date, this.deadline);
 		this.start_date = start_date;
@@ -286,7 +286,7 @@ public class WorkInfo {
 	@Persistence("planFinish")
 	private Date end_date;
 
-	@WriteValue("创建甘特图工作编辑器/end_date")
+	@WriteValue({"甘特图总成工作编辑器/end_date","甘特图工作编辑器/end_date","甘特图阶段工作编辑器/end_date"})
 	public void setEnd_date(Date end_date) {
 		checkDate(this.start_date, end_date, this.deadline);
 		this.end_date = end_date;
@@ -399,9 +399,9 @@ public class WorkInfo {
 		}
 
 	}
-
+	
 	@SetValue("manageLevel")
-	private void setManageLevel(String level) {
+	public WorkInfo setManageLevel(String level) {
 		if ("1".equals(level)) {
 			barstyle = "level1_task";
 		} else if ("2".equals(level)) {
@@ -409,6 +409,7 @@ public class WorkInfo {
 		} else if ("3".equals(level)) {
 			barstyle = "level3_task";
 		}
+		return this;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -429,4 +429,8 @@ public class Project implements IOBSScope, ICBSScope {
 	public Date[] getCBSRange() {
 		return new Date[] { planStart, planFinish };
 	}
+	
+	public boolean isStageEnable() {
+		return stageEnable;
+	}
 }

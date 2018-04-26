@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -143,7 +144,11 @@ public class ActionMenu extends Part {
 			} else {
 				button.addListener(SWT.Selection, e -> {
 					close();
-					BruiActionEngine.create(a, service).invokeExecute(event, context);
+					try {
+						BruiActionEngine.create(a, service).invokeExecute(event, context);
+					} catch (Exception e2) {
+						MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
+					}
 				});
 			}
 		});

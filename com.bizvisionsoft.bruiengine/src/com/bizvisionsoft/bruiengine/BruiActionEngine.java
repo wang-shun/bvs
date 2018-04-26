@@ -68,11 +68,14 @@ public class BruiActionEngine extends BruiEngine {
 
 		if (bundle == null)
 			throw new RuntimeException("无法获得插件" + bundleId);
+
+		Class<?> loadClass;
 		try {
-			return new BruiActionEngine(bundle.loadClass(className));
+			loadClass = bundle.loadClass(className);
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			throw new RuntimeException("无法加载插件:" + bundleId + ", 类：" + className);
 		}
+		return new BruiActionEngine(loadClass);
 	}
 
 	public BruiActionEngine(Class<?> clazz) {

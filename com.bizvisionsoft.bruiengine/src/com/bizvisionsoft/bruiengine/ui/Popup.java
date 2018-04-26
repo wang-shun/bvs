@@ -31,6 +31,9 @@ public class Popup extends Part {
 		service = new BruiService(this);
 
 		this.assembly = assembly;
+		if(assembly ==null) {
+			throw new RuntimeException("×é¼şÅäÖÃÎª¿Õ");
+		}
 		setBlockOnOpen(true);
 		setShellStyle(SWT.TITLE | SWT.ON_TOP);
 		parentContext.add(context = createContext(parentContext).setAssembly(assembly));
