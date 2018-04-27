@@ -246,38 +246,57 @@
 		},
 
 		configLayout : function(config) {
-			this.gantt.config.layout = {
-				cols : [ {
-					width : config.grid_width,
-					min_width : 320,
-					rows : [ {
-						view : "grid",
-						scrollX : "gridScroll",
-						scrollable : true,
-						scrollY : "scrollVer"
+			if (config.grid_width != 0) {
+				this.gantt.config.layout = {
+					cols : [ {
+						width : config.grid_width,
+						min_width : 320,
+						rows : [ {
+							view : "grid",
+							scrollX : "gridScroll",
+							scrollable : true,
+							scrollY : "scrollVer"
+						}, {
+							view : "scrollbar",
+							id : "gridScroll",
+							group : "horizontal"
+						} ]
+					}, {
+						resizer : true,
+						width : 1
+					}, {
+						rows : [ {
+							view : "timeline",
+							scrollX : "scrollHor",
+							scrollY : "scrollVer"
+						}, {
+							view : "scrollbar",
+							id : "scrollHor",
+							group : "horizontal"
+						} ]
 					}, {
 						view : "scrollbar",
-						id : "gridScroll",
-						group : "horizontal"
+						id : "scrollVer"
 					} ]
-				}, {
-					resizer : true,
-					width : 1
-				}, {
-					rows : [ {
-						view : "timeline",
-						scrollX : "scrollHor",
-						scrollY : "scrollVer"
+				};
+			} else {
+				this.gantt.config.layout = {
+					cols : [ {
+						rows : [ {
+							view : "timeline",
+							scrollX : "scrollHor",
+							scrollY : "scrollVer"
+						}, {
+							view : "scrollbar",
+							id : "scrollHor",
+							group : "horizontal"
+						} ]
 					}, {
 						view : "scrollbar",
-						id : "scrollHor",
-						group : "horizontal"
+						id : "scrollVer"
 					} ]
-				}, {
-					view : "scrollbar",
-					id : "scrollVer"
-				} ]
-			};
+				};
+			}
 		},
 
 		configTaskStyle : function(config) {

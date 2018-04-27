@@ -39,13 +39,14 @@ public class ProjectGantt {
 		project = (Project) context.getRootInput();
 		workService = Services.get(WorkService.class);
 	}
+	
 
-	@DataSet("项目甘特图/data")
+	@DataSet({"项目甘特图/data","项目甘特图（无表格查看）/data"})
 	public List<WorkInfo> data() {
 		return workService.createGanttDataSet(new BasicDBObject("project_id", project.get_id()));
 	}
 
-	@DataSet("项目甘特图/links")
+	@DataSet({"项目甘特图/links","项目甘特图（无表格查看）/links"})
 	public List<WorkLinkInfo> links() {
 		return workService.createGanttLinkSet(new BasicDBObject("project_id", project.get_id()));
 	}
@@ -92,5 +93,6 @@ public class ProjectGantt {
 		workService.deleteLink(new ObjectId(e.id));
 		System.out.println(e.text);
 	}
+	
 
 }
