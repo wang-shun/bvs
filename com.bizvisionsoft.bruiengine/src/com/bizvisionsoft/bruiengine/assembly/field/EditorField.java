@@ -59,7 +59,9 @@ public abstract class EditorField {
 	}
 
 	public Composite createUI(Composite parent) {
-		editor.getContext().add(context = new BruiAssemblyContext().setParent(editor.getContext()));
+		if (editor != null) {
+			editor.getContext().add(context = new BruiAssemblyContext().setParent(editor.getContext()));
+		}
 
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);

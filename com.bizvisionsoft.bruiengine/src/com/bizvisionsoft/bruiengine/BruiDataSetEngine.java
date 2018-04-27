@@ -24,35 +24,35 @@ import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class BruiGridDataSetEngine extends BruiEngine {
+public class BruiDataSetEngine extends BruiEngine {
 
 	private Assembly assembly;
 
-	public BruiGridDataSetEngine(Class<?> clazz) {
+	public BruiDataSetEngine(Class<?> clazz) {
 		super(clazz);
 	}
 
-	public BruiGridDataSetEngine(Object serivce) {
+	public BruiDataSetEngine(Object serivce) {
 		super(serivce);
 	}
 
-	public BruiGridDataSetEngine(Class<?> clazz, Object serivce) {
+	public BruiDataSetEngine(Class<?> clazz, Object serivce) {
 		super(clazz, serivce);
 	}
 
-	public static BruiGridDataSetEngine create(Assembly grid, IServiceWithId... services) {
-		return (BruiGridDataSetEngine) load(grid)// load
+	public static BruiDataSetEngine create(Assembly grid, IServiceWithId... services) {
+		return (BruiDataSetEngine) load(grid)// load
 				.newInstance().init(services);
 	}
 
-	private static BruiGridDataSetEngine load(Assembly grid) {
+	private static BruiDataSetEngine load(Assembly grid) {
 		String bundleId = grid.getGridDataSetBundleId();
 		String className = grid.getGridDataSetClassName();
 
 		if (bundleId != null && !bundleId.isEmpty() && className != null && !className.isEmpty()) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
-				return new BruiGridDataSetEngine(bundle.loadClass(className)).setAssembly(grid);
+				return new BruiDataSetEngine(bundle.loadClass(className)).setAssembly(grid);
 			} catch (Exception e) {
 				throw new RuntimeException(e.getCause());
 			}
@@ -62,13 +62,13 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		if (serivceName != null) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
-				return new BruiGridDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
+				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
 			}
 		}
 		throw new RuntimeException(grid.getName() + "缺少数据源定义。请在BruiDesigner组件页面中定义基于插件的数据源或直接指定服务。");
 	}
 
-	public BruiGridDataSetEngine setAssembly(Assembly assembly) {
+	public BruiDataSetEngine setAssembly(Assembly assembly) {
 		this.assembly = assembly;
 		return this;
 	}
@@ -354,8 +354,8 @@ public class BruiGridDataSetEngine extends BruiEngine {
 		});
 	}
 	
-	public BruiGridDataSetEngine newInstance() {
-		return (BruiGridDataSetEngine) super.newInstance();
+	public BruiDataSetEngine newInstance() {
+		return (BruiDataSetEngine) super.newInstance();
 	}
 
 }

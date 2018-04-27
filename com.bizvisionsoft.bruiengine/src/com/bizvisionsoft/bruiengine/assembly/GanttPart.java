@@ -24,7 +24,7 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
-import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
+import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
@@ -46,7 +46,7 @@ public class GanttPart {
 
 	private Config ganttConfig;
 
-	private BruiGridDataSetEngine dataSetEngine;
+	private BruiDataSetEngine dataSetEngine;
 
 	private List<?> tasks;
 
@@ -62,7 +62,7 @@ public class GanttPart {
 
 	@Init
 	private void init() {
-		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
+		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 
 		eventEngine = BruiEventEngine.create(config, bruiService, context);
 

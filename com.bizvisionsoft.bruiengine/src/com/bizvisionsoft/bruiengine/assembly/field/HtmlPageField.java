@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class HtmlPageField extends EditorField {
@@ -22,7 +21,6 @@ public class HtmlPageField extends EditorField {
 
 	@Override
 	public Composite createUI(Composite parent) {
-		editor.getContext().add(context = new BruiAssemblyContext().setParent(editor.getContext()));
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();

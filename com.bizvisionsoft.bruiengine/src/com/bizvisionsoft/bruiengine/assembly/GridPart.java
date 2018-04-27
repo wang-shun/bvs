@@ -40,7 +40,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
-import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
+import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
@@ -69,7 +69,7 @@ public class GridPart implements IStructuredDataPart {
 
 	protected BruiGridRenderEngine renderEngine;
 
-	protected BruiGridDataSetEngine dataSetEngine;
+	protected BruiDataSetEngine dataSetEngine;
 
 	protected long count;
 
@@ -133,10 +133,10 @@ public class GridPart implements IStructuredDataPart {
 
 		// 注册数据集引擎
 		if (!disableDateSetEngine)
-			dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
+			dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 	}
 
-	public BruiGridDataSetEngine getDataSetEngine() {
+	public BruiDataSetEngine getDataSetEngine() {
 		return dataSetEngine;
 	}
 

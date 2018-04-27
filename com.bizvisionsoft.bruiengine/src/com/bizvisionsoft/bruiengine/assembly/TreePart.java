@@ -20,7 +20,7 @@ import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.BruiGridDataSetEngine;
+import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
@@ -42,7 +42,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	private ListenerList<ISelectionChangedListener> postSelectionChangedListeners = new ListenerList<>();
 
-	private BruiGridDataSetEngine dataSetEngine;
+	private BruiDataSetEngine dataSetEngine;
 
 	private Object selectedItem;
 
@@ -52,7 +52,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Init
 	private void init() {
-		dataSetEngine = BruiGridDataSetEngine.create(config, bruiService, context);
+		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 	}
 
 	private Composite createSticker(Composite parent) {
