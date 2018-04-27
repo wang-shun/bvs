@@ -160,52 +160,6 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="menu:com.bizvisionsoft.bruidesigner.view.AssyLibView?after=additions">
-         <command
-               commandId="bruidesigner.addAssemblyToLib"
-               icon="icons/add.png"
-               id="bruidesigner.addAssemblyToLib"
-               label="创建自定义组件"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.addStickerAssemblyToLib"
-               id="bruidesigner.addStickerAssemblyToLib"
-               label="创建带有标题栏的容器组件"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.addGridAssemblyToLib"
-               id="bruidesigner.addGridAssemblyToLib"
-               label="创建表格组件"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.addEditorAssemblyToLib"
-               id="bruidesigner.addEditorAssemblyToLib"
-               label="创建编辑器组件"
-               style="push">
-         </command>
-         <command
-               commandId="bruidesigner.addGanttAssemblyToLib"
-               id="bruidesigner.addGanttAssemblyToLib"
-               label="创建甘特图组件"
-               style="push">
-         </command>
-         <separator
-               name="com.bizvisionsoft.bruidesigner.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="bruidesigner.deleteAssemblyFromLib"
-               icon="icons/delete.gif"
-               id="bruidesigner.deleteAssemblyFromLib"
-               label="删除组件"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
             locationURI="popup:bruidesigner.folder">
          <command
                commandId="bruidesigner.createFolder"
@@ -251,7 +205,7 @@
          </separator>
          <command
                commandId="bruidesigner.addAssemblyToLib"
-               icon="icons/add.png"
+               icon="icons/assembly.png"
                id="bruidesigner.addAssemblyToLib"
                label="创建自定义组件"
                style="push">
@@ -270,7 +224,32 @@
             </visibleWhen>
          </command>
          <command
-               commandId="bruidesigner.addStickerAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/infopad.gif"
+               id="bruidesigner.addInfopadAssemblyToLib"
+               label="创建信息板组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="infopad">
+            </parameter>
+         </command>
+         <command
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/sticker.png"
                id="bruidesigner.addStickerAssemblyToLib"
                label="创建带有标题栏的容器组件"
                style="push">
@@ -287,9 +266,14 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="sticker">
+            </parameter>
          </command>
          <command
-               commandId="bruidesigner.addGridAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/table.png"
                id="bruidesigner.addGridAssemblyToLib"
                label="创建表格组件"
                style="push">
@@ -306,9 +290,14 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="grid">
+            </parameter>
          </command>
          <command
-               commandId="bruidesigner.addEditorAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/form.png"
                id="bruidesigner.addEditorAssemblyToLib"
                label="创建编辑器组件"
                style="push">
@@ -325,9 +314,14 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="editor">
+            </parameter>
          </command>
          <command
-               commandId="bruidesigner.addGanttAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/gantt.png"
                id="bruidesigner.addGanttAssemblyToLib"
                label="创建甘特图组件"
                style="push">
@@ -344,9 +338,14 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="gantt">
+            </parameter>
          </command>
          <command
-               commandId="bruidesigner.addTreeAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/tree.gif"
                id="bruidesigner.addTreeAssemblyToLib"
                label="创建树组件"
                style="push">
@@ -363,9 +362,14 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="tree">
+            </parameter>
          </command>
          <command
-               commandId="bruidesigner.addSelectorAssemblyToLib"
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/selector.png"
                id="bruidesigner.addSelectorAssemblyToLib"
                label="创建弹出式选择器组件"
                style="push">
@@ -382,6 +386,34 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="selector">
+            </parameter>
+         </command>
+         <command
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/actionpanel.png"
+               id="bruidesigner.addActionPadAssemblyToLib"
+               label="创建操作面板组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="actionpanel">
+            </parameter>
          </command>
          <separator
                name="com.bizvisionsoft.bruidesigner.separator1"
@@ -458,6 +490,10 @@
             defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateAssembly"
             id="bruidesigner.addAssemblyToLib"
             name="创建组件">
+         <commandParameter
+               id="assemblyType"
+               name="assemblyType">
+         </commandParameter>
       </command>
       <command
             id="bruidesigner.deleteAssemblyFromLib"
@@ -488,31 +524,6 @@
             name="删除目录">
       </command>
       <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateStickerAssembly"
-            id="bruidesigner.addStickerAssemblyToLib"
-            name="创建带有标题栏的容器组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateGridAssembly"
-            id="bruidesigner.addGridAssemblyToLib"
-            name="创建表格组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateEditorAssembly"
-            id="bruidesigner.addEditorAssemblyToLib"
-            name="创建编辑器组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateGanttAssembly"
-            id="bruidesigner.addGanttAssemblyToLib"
-            name="创建甘特图组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateSelectorAssembly"
-            id="bruidesigner.addSelectorAssemblyToLib"
-            name="创建弹出式选择器组件">
-      </command>
-      <command
             defaultHandler="com.bizvisionsoft.bruidesigner.command.AddAssemblyToFolder"
             id="bruidesigner.addAssemblyToFolder"
             name="添加组件到当前目录">
@@ -531,11 +542,6 @@
             defaultHandler="com.bizvisionsoft.bruidesigner.command.DuplicateAssembly"
             id="bruidesigner.duplicateAssembly"
             name="复制组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.CreateTreeAssembly"
-            id="bruidesigner.addTreeAssemblyToLib"
-            name="创建树组件">
       </command>
    </extension>
    <extension
@@ -672,7 +678,7 @@
       <editor
             class="com.bizvisionsoft.bruidesigner.editor.AssemblyActionPanelEditor"
             default="false"
-            icon="icons/selector.png"
+            icon="icons/actionpanel.png"
             id="bruidesigner.assemblyActionPanelEditor"
             name="操作面板组件">
       </editor>
@@ -682,6 +688,13 @@
             icon="icons/tree.gif"
             id="bruidesigner.assemblyTreeEditor"
             name="树组件">
+      </editor>
+      <editor
+            class="com.bizvisionsoft.bruidesigner.editor.AssemblyInfoPadEditor"
+            default="false"
+            icon="icons/infopad.gif"
+            id="bruidesigner.assemblyInfoPadEditor"
+            name="信息板组件">
       </editor>
    </extension>
 

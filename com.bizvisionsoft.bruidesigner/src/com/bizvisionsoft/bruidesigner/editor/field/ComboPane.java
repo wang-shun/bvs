@@ -28,7 +28,7 @@ public class ComboPane extends TypeSelectionPane {
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);
-		l.setText("您可以使用两种方式定义选项，系统按以下的顺序获取选项。\n1)直接设定选项文本和选项值。\n2)编辑的对象有注解为@ProvideOption的方法或属性。");
+		l.setText("您可以使用两种方式定义选项，系统按以下的顺序获取选项。\n1)直接设定选项文本和选项值。\n2)编辑的对象有注解为@ReadOption的方法或属性。");
 		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		editor.createTextField(parent, "选项文本（#分割）：", element, "optionText", SWT.BORDER);

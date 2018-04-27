@@ -31,7 +31,7 @@ public class BruiService implements IBruiService {
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getSessionUserInfo();
 	}
-	
+
 	public CreationInfo creationInfo() {
 		CreationInfo info = new CreationInfo();
 		User user = getCurrentUserInfo();
@@ -62,23 +62,23 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchContent(Assembly assembly, Object input) {
-		if(part instanceof View) {
-			((View)part).switchAssemblyInContentArea(assembly, input);
+		if (part instanceof View) {
+			((View) part).switchAssemblyInContentArea(assembly, input);
 		}
 	}
 
 	@Override
 	public void openContent(Assembly assembly, Object input) {
-		if(part instanceof View) {
-			((View)part).openAssemblyInContentArea(assembly, input);
+		if (part instanceof View) {
+			((View) part).openAssemblyInContentArea(assembly, input);
 		}
 	}
-	
+
 	@Override
 	public void closeCurrentContent() {
-		if(part instanceof View) {
-			((View)part).closeCurrentContent();
-		}		
+		if (part instanceof View) {
+			((View) part).closeCurrentContent();
+		}
 	}
 
 	@Override
@@ -89,6 +89,9 @@ public class BruiService implements IBruiService {
 	@Override
 	public void switchPage(String pageName, String inputUid) {
 		Page page = ModelLoader.site.getPageByName(pageName);
+		if (page == null) {
+			throw new RuntimeException("缺少页面定义。" + pageName);
+		}
 		switchPage(page, inputUid);
 	}
 
@@ -96,6 +99,5 @@ public class BruiService implements IBruiService {
 	public void switchPage(Page page, String inputUid) {
 		UserSession.current().getEntryPoint().switchPage(page, inputUid, true);
 	}
-
 
 }

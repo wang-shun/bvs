@@ -433,6 +433,8 @@ public class FormField extends ModelObject {
 
 	public static final String TYPE_QUERY_SELECTION = "对象选择（查询）";
 
+	public static final String TYPE_LABEL = "文本标签";
+
 	
 	public String getTextQueryType() {
 		return textQueryType;

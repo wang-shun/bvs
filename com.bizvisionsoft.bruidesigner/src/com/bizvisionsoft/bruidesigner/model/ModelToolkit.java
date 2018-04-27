@@ -133,6 +133,8 @@ public class ModelToolkit {
 		if (model instanceof Assembly) {
 			if (Assembly.TYPE_EDITOR.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/form.png");
+			if (Assembly.TYPE_INFOPAD.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/infopad.gif");
 			if (Assembly.TYPE_GANTT.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/gantt.png");
 			if (Assembly.TYPE_GRID.equals(((Assembly) model).getType()))
@@ -377,6 +379,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblySelectorEditor";
 					} else if (Assembly.TYPE_ACTION_PANEL.equals(type)) {
 						editorId = "bruidesigner.assemblyActionPanelEditor";
+					} else if (Assembly.TYPE_INFOPAD.equals(type)) {
+						editorId = "bruidesigner.assemblyInfoPadEditor";
 					} else {
 						editorId = "bruidesigner.assemblyEditor";
 					}

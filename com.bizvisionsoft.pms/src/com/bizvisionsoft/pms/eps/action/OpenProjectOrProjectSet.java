@@ -9,6 +9,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectSet;
+import com.bizvisionsoft.service.model.ProjectStatus;
 
 public class OpenProjectOrProjectSet {
 
@@ -22,7 +23,10 @@ public class OpenProjectOrProjectSet {
 			if (em instanceof ProjectSet) {
 
 			} else if (em instanceof Project) {
-				bruiService.switchPage("项目首页", ((Project) em).get_id().toHexString());
+				if(ProjectStatus.Created.equals(((Project) em).getStatus())) {
+					bruiService.switchPage("项目首页（启动）", ((Project) em).get_id().toHexString());
+				}
+				//TODO
 			}
 		});
 

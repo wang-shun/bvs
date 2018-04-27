@@ -130,7 +130,12 @@ public class Project implements IOBSScope, ICBSScope {
 	@WriteValue
 	@Persistence
 	private String securityLevel;
-
+	
+	
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private String status;
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// º∆ªÆ Ù–‘
 	/**
@@ -432,5 +437,14 @@ public class Project implements IOBSScope, ICBSScope {
 	
 	public boolean isStageEnable() {
 		return stageEnable;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	public Project setStatus(String status) {
+		this.status = status;
+		return this;
 	}
 }

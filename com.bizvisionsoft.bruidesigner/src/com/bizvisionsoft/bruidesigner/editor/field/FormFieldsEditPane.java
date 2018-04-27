@@ -268,7 +268,10 @@ public class FormFieldsEditPane extends Composite {
 
 			} else if (FormField.TYPE_TEXT.equals(fieldType)) {
 				new TextPane(element, editor, parent, type);
-			
+
+			} else if (FormField.TYPE_LABEL.equals(fieldType)) {
+				new LabelPane(element, editor, parent, type);
+				
 			} else if (FormField.TYPE_TEXT_MULTILINE.equals(fieldType)) {
 				new TextMultiLinePane(element, editor, parent, type);
 			

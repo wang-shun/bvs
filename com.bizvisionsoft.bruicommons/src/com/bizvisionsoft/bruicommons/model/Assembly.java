@@ -14,6 +14,8 @@ public class Assembly extends ModelObject {
 		String text = "组件";
 		if (TYPE_EDITOR.equals(type)) {
 			text += " - 编辑器";
+		} else if (TYPE_INFOPAD.equals(type)) {
+			text += " - 信息面板";
 		} else if (TYPE_SELECTOR.equals(type)) {
 			text += " - 弹出式选择器";
 		} else if (TYPE_STICKER.equals(type)) {
@@ -37,6 +39,8 @@ public class Assembly extends ModelObject {
 	}
 
 	public static final String TYPE_STICKER = "sticker";
+	
+	public static final String TYPE_INFOPAD = "infopad";
 
 	public static final String TYPE_GRID = "grid";
 	
