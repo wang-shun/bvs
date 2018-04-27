@@ -49,6 +49,12 @@ public class MultiCheckPane extends TypeSelectionPane {
 			editor.createTextField(parent, "字段显示文本（不超过120像素的宽度显示）：", element, "text", SWT.BORDER);
 
 			editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
+			editor.createComboField(parent,
+					new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+							FormField.RADIO_STYLE_VERTICAL },
+					new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+							FormField.RADIO_STYLE_VERTICAL },
+					"样式", element, "radioStyle", SWT.READ_ONLY | SWT.BORDER);
 
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));

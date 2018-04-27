@@ -44,17 +44,19 @@ public class TextField extends EditorField {
 
 		// 设置为必填
 
-		// 设置输入检验
-		Optional.ofNullable(getVerfifyListener()).ifPresent(listener -> control.addListener(SWT.Modify, listener));
+		if (!isReadOnly()) {
+			// 设置输入检验
+			Optional.ofNullable(getVerfifyListener()).ifPresent(listener -> control.addListener(SWT.Modify, listener));
 
-		// 设置修改
-		control.addListener(SWT.FocusOut, e -> {
-			try {
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
-			}
-		});
+			// 设置修改
+			control.addListener(SWT.FocusOut, e -> {
+				try {
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
+				}
+			});
+		}
 		return control;
 	}
 

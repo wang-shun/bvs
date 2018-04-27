@@ -18,9 +18,11 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
+import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
+import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.HtmlPageField;
@@ -46,28 +48,45 @@ public class InfopadPart {
 
 	private Map<FormField, EditorField> fields;
 
+	private BruiDataSetEngine dataSetEngine;
 
 	public InfopadPart(Assembly assembly) {
 		this.config = assembly;
 		fields = new HashMap<FormField, EditorField>();
 	}
 
+	@Init
+	private void init() {
+		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+	}
 
 	@CreateUI
 	private void createUI(Composite parent) {
-		input = context.getInput();
+		Object _list = dataSetEngine.query();
+		if (_list instanceof List<?> && ((List<?>) _list).size() > 0) {
+			input = ((List<?>) _list).get(0);
+		} else {
+			throw new RuntimeException("数据源list方法没有返回正确的类型。需要List类型");
+		}
+
+		Composite panel;
+		if (config.isHasTitlebar()) {
+			panel = createSticker(parent);
+		} else {
+			panel = parent;
+		}
 
 		FormLayout layout = new FormLayout();
 		layout.spacing = 8;
 		layout.marginWidth = 8;
 		layout.marginHeight = 8;
 
-		parent.setLayout(layout);
+		panel.setLayout(layout);
 		List<FormField> fields = config.getFields();
 		// 判断是否分标签页
 		Composite contentHolder;
 		if (FormField.TYPE_PAGE.equals(fields.get(0).getType())) {
-			TabFolder folder = new TabFolder(parent, SWT.TOP | SWT.BORDER);
+			TabFolder folder = new TabFolder(panel, SWT.TOP | SWT.BORDER);
 			fields.forEach(f -> {
 				Composite content = createTabItem(folder, f.getFieldText());
 				if (FormField.TYPE_PAGE_HTML.equals(f.getType())) {
@@ -80,7 +99,7 @@ public class InfopadPart {
 			});
 			contentHolder = folder;
 		} else {
-			ScrolledComposite sc = createPage(parent);
+			ScrolledComposite sc = createPage(panel);
 			Composite content = (Composite) sc.getContent();
 			createFields(content, fields);
 			contentHolder = sc;
@@ -92,6 +111,14 @@ public class InfopadPart {
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 		fd.bottom = new FormAttachment(100);
+	}
+
+	private Composite createSticker(Composite parent) {
+		StickerPart sticker = new StickerPart(config);
+		sticker.context = context;
+		sticker.service = bruiService;
+		sticker.createUI(parent);
+		return sticker.content;
 	}
 
 	private void createFields(Composite parent, List<FormField> formFields) {
@@ -127,8 +154,7 @@ public class InfopadPart {
 		} else {
 			fieldPart = new TextField();
 		}
-		fields.put(f, fieldPart.setCompact(true).setEditorConfig(config)
-				.setFieldConfig(f).setInput(input));
+		fields.put(f, fieldPart.setCompact(true).setEditorConfig(config).setFieldConfig(f).setInput(input));
 		fieldPart.createUI(parent)// 创建UI
 				.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
 		return fieldPart.getContainer();
@@ -147,14 +173,14 @@ public class InfopadPart {
 		Composite content = new Composite(sc, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
-			layout.marginBottom = 8;
-			layout.marginTop = 8;
-			layout.marginLeft = 4;
-			layout.marginRight = 4;
-			layout.marginWidth = 0;
-			layout.marginHeight = 0;
-			layout.verticalSpacing = 8;
-			layout.horizontalSpacing = 0;
+		layout.marginBottom = 8;
+		layout.marginTop = 8;
+		layout.marginLeft = 4;
+		layout.marginRight = 4;
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.verticalSpacing = 8;
+		layout.horizontalSpacing = 0;
 		content.setLayout(layout);
 
 		sc.setExpandVertical(true);
@@ -167,6 +193,5 @@ public class InfopadPart {
 		});
 		return sc;
 	}
-
 
 }

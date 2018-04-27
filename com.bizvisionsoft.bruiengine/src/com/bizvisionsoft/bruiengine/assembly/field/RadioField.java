@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -59,6 +60,7 @@ public class RadioField extends EditorField {
 			layout.type = SWT.VERTICAL;
 		} else {
 			layout.spacing = 0;
+			control.setLayout(new FillLayout());
 		}
 
 		buttons = new ArrayList<Button>();
@@ -88,16 +90,18 @@ public class RadioField extends EditorField {
 			}
 			item.setText(labels.get(i));
 			item.setData(choice.get(i));
-			item.addListener(SWT.Selection, e -> {
-				try {
-					this.value = e.widget.getData();
-					for (int j = 0; j < buttons.size(); j++)
-						buttons.get(j).setSelection(j == choice.indexOf(value));
-					writeToInput(false);
-				} catch (Exception e1) {
-					MessageDialog.openError(control.getShell(), "´íÎó", e1.getMessage());
-				}
-			});
+			if (!isReadOnly()) {
+				item.addListener(SWT.Selection, e -> {
+					try {
+						this.value = e.widget.getData();
+						for (int j = 0; j < buttons.size(); j++)
+							buttons.get(j).setSelection(j == choice.indexOf(value));
+						writeToInput(false);
+					} catch (Exception e1) {
+						MessageDialog.openError(control.getShell(), "´íÎó", e1.getMessage());
+					}
+				});
+			}
 			buttons.add(item);
 		}
 
@@ -119,8 +123,7 @@ public class RadioField extends EditorField {
 				labels.forEach(s -> choice.add(s.trim()));
 			}
 		} else {
-			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(),
-					fieldConfig.getName());
+			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
 			options.keySet().forEach(k -> {
 				labels.add(k);
 				choice.add(options.get(k));

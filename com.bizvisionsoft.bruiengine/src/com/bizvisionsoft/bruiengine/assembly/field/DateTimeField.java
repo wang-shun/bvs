@@ -71,14 +71,16 @@ public class DateTimeField extends EditorField {
 
 		control.setEnabled(!isReadOnly());
 
-		control.addListener(SWT.Modify, e -> {
-			try {
-				value = (Date) e.data;
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), "´íÎó", e1.getMessage());
-			}
-		});
+		if (!isReadOnly()) {
+			control.addListener(SWT.Modify, e -> {
+				try {
+					value = (Date) e.data;
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(), "´íÎó", e1.getMessage());
+				}
+			});
+		}
 		return control;
 	}
 

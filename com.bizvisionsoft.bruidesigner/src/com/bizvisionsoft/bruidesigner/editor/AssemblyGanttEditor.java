@@ -31,8 +31,8 @@ public class AssemblyGanttEditor extends ModelEditor {
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
 
 		createCheckboxField(parent, "根据列宽自动设置表格宽度：", inputData, "ganttGridWidthCalculate", SWT.CHECK);
-
-		createIntegerField(parent, "手动设置表格宽度：", inputData, "ganttGridWidth", SWT.BORDER, 200, 4000);
+		
+		createIntegerField(parent, "手动设置表格宽度：", inputData, "ganttGridWidth", SWT.BORDER, 0, 4000);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));

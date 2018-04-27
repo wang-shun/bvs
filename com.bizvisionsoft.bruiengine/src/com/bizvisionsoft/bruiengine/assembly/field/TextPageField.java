@@ -49,14 +49,17 @@ public class TextPageField extends EditorField {
 
 		// 设置为必填
 
-		// 设置修改
-		control.addListener(SWT.FocusOut, e -> {
-			try {
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
-			}
-		});
+		if (!isReadOnly()) {
+
+			// 设置修改
+			control.addListener(SWT.FocusOut, e -> {
+				try {
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
+				}
+			});
+		}
 		return control;
 	}
 

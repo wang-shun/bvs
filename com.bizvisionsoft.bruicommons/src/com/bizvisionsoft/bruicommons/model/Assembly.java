@@ -520,7 +520,7 @@ public class Assembly extends ModelObject {
 	}
 
 	private boolean ganttGridWidthCalculate;
-
+	
 	public boolean isGanttGridWidthCalculate() {
 		return ganttGridWidthCalculate;
 	}

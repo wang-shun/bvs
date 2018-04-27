@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -60,6 +61,8 @@ public class MultiCheckField extends EditorField {
 			layout.type = SWT.VERTICAL;
 		} else {
 			layout.spacing = 0;
+			control.setLayout(new FillLayout());
+
 		}
 
 		buttons = new ArrayList<Button>();
@@ -89,15 +92,17 @@ public class MultiCheckField extends EditorField {
 			}
 			item.setText(labels.get(i));
 			item.setData(choice.get(i));
-			item.addListener(SWT.Selection, e -> {
-				try {
-					value.clear();
-					buttons.stream().filter(b -> b.getSelection()).forEach(s -> value.add(s.getData()));
-					writeToInput(false);
-				} catch (Exception e1) {
-					MessageDialog.openError(control.getShell(), "´íÎó", e1.getMessage());
-				}
-			});
+			if (!isReadOnly()) {
+				item.addListener(SWT.Selection, e -> {
+					try {
+						value.clear();
+						buttons.stream().filter(b -> b.getSelection()).forEach(s -> value.add(s.getData()));
+						writeToInput(false);
+					} catch (Exception e1) {
+						MessageDialog.openError(control.getShell(), "´íÎó", e1.getMessage());
+					}
+				});
+			}
 			buttons.add(item);
 		}
 
@@ -119,8 +124,7 @@ public class MultiCheckField extends EditorField {
 				labels.forEach(s -> choice.add(s.trim()));
 			}
 		} else {
-			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(),
-					fieldConfig.getName());
+			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
 			options.keySet().forEach(k -> {
 				labels.add(k);
 				choice.add(options.get(k));
@@ -154,7 +158,7 @@ public class MultiCheckField extends EditorField {
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
 		// ±ØÌî¼ì²é
-		if (saveCheck &&  fieldConfig.isRequired() && (value == null || value.isEmpty())) {
+		if (saveCheck && fieldConfig.isRequired() && (value == null || value.isEmpty())) {
 			throw new Exception(fieldConfig.getFieldText() + "±ØÌî¡£");
 		}
 	}

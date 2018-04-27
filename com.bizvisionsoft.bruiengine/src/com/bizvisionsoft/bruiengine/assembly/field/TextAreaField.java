@@ -19,7 +19,7 @@ public class TextAreaField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		control = new Text(parent, SWT.BORDER|SWT.MULTI);
+		control = new Text(parent, SWT.BORDER | SWT.MULTI);
 
 		// 设置文本是否只读
 		control.setEditable(!isReadOnly());
@@ -32,18 +32,20 @@ public class TextAreaField extends EditorField {
 			control.setTextLimit(fieldConfig.getTextLimit());
 
 		// 设置为必填
+		if (!isReadOnly()) {
 
-		// 设置修改
-		control.addListener(SWT.FocusOut, e -> {
-			try {
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
-			}
-		});
+			// 设置修改
+			control.addListener(SWT.FocusOut, e -> {
+				try {
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
+				}
+			});
+		}
 		return control;
 	}
-	
+
 	@Override
 	protected Object getControlLayoutData() {
 		GridData gd = (GridData) super.getControlLayoutData();
@@ -79,6 +81,5 @@ public class TextAreaField extends EditorField {
 			throw new Exception(fieldConfig.getFieldText() + "必填。");
 		}
 	}
-
 
 }

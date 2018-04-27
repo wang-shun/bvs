@@ -35,6 +35,10 @@ public class CheckPane extends TypeSelectionPane {
 
 			editor.createTextField(parent, "ÃèÊö£º", element, "description", SWT.BORDER);
 			
+			editor.createComboField(parent,
+					new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC },
+					new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC }, "ÑùÊ½", element,
+					"checkStyle", SWT.READ_ONLY | SWT.BORDER);
 		}
 
 	}

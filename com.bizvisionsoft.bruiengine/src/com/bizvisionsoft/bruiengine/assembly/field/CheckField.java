@@ -22,7 +22,7 @@ public class CheckField extends EditorField {
 		if (FormField.CHECK_STYLE_SWITCH.equals(fieldConfig.getCheckStyle())) {
 			control = new Button(parent, SWT.CHECK);
 			control.setData(RWT.CUSTOM_VARIANT, "switch");
-		}else {
+		} else {
 			control = new Button(parent, SWT.CHECK);
 		}
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -30,15 +30,15 @@ public class CheckField extends EditorField {
 
 		// 设置文本是否只读
 		control.setEnabled(!isReadOnly());
-
-		control.addListener(SWT.Selection, e -> {
-			try {
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
-			}
-		});
-
+		if (!isReadOnly()) {
+			control.addListener(SWT.Selection, e -> {
+				try {
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
+				}
+			});
+		}
 		// 设置修改
 		return control;
 	}

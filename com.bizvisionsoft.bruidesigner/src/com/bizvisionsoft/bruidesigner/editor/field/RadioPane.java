@@ -50,6 +50,13 @@ public class RadioPane extends TypeSelectionPane {
 
 			editor.createTextField(parent, "ÃèÊö£º", element, "description", SWT.BORDER);
 
+			editor.createComboField(parent,
+					new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+							FormField.RADIO_STYLE_VERTICAL },
+					new String[] { FormField.RADIO_STYLE_SEGMENT, FormField.RADIO_STYLE_CLASSIC,
+							FormField.RADIO_STYLE_VERTICAL },
+					"ÑùÊ½", element, "radioStyle", SWT.READ_ONLY | SWT.BORDER);
+			
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			Label l = new Label(parent, SWT.NONE);

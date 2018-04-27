@@ -25,7 +25,7 @@ public class ComboField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		control = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+		control = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 
 		//////////////////////////////////////////////////////////////////////////////////////
 		// 读取配置进行设置
@@ -36,14 +36,15 @@ public class ComboField extends EditorField {
 		// 设置选项
 		setOptions();
 
-		control.addListener(SWT.Selection, e -> {
-			try {
-				writeToInput(false);
-			} catch (Exception e1) {
-				MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
-			}
-		});
-
+		if (!isReadOnly()) {
+			control.addListener(SWT.Selection, e -> {
+				try {
+					writeToInput(false);
+				} catch (Exception e1) {
+					MessageDialog.openError(control.getShell(), "错误", e1.getMessage());
+				}
+			});
+		}
 		// 设置修改
 		return control;
 	}
@@ -63,8 +64,7 @@ public class ComboField extends EditorField {
 			}
 			labels.forEach(s -> control.add(s));
 		} else {
-			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(),
-					fieldConfig.getName());
+			Map<String, Object> options = AUtil.readOptions(input, assemblyConfig.getName(), fieldConfig.getName());
 			options.keySet().forEach(k -> {
 				labels.add(k);
 				control.add(k);
