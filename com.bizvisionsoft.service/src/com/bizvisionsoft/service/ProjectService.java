@@ -60,16 +60,16 @@ public interface ProjectService {
 	public List<Date> getPlanDateRange(@PathParam("_id") ObjectId _id);
 
 	@GET
-	@Path("/_id/{_id}/action/start/{ignoreWarning}")
+	@Path("/_id/{_id}/action/start/{executeBy}/{ignoreWarning}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<Result> startProject(@PathParam("_id") ObjectId _id,
-			@PathParam("ignoreWarning") boolean ignoreWarning);
+	public List<Result> startProject(@PathParam("_id") ObjectId _id, @PathParam("ignoreWarning") boolean ignoreWarning,@PathParam("executeBy") String executeBy);
 
 	@GET
-	@Path("/_id/{_id}/check/start/{ignoreWarning}")
+	@Path("/_id/{_id}/action/distribute/{executeBy}/{ignoreWarning}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<Result> startProjectCheck(@PathParam("_id") ObjectId _id,
-			@PathParam("ignoreWarning") boolean ignoreWarning);
+	public List<Result> distributeProjectPlan(@PathParam("_id") ObjectId _id,
+			@PathParam("ignoreWarning") boolean ignoreWarning,@PathParam("executeBy") String executeBy);
+
 }

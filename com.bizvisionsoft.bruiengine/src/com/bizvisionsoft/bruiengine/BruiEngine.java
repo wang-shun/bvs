@@ -80,7 +80,7 @@ public class BruiEngine {
 			return method.invoke(getTarget(), args);
 		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 		} catch (InvocationTargetException e1) {
-//			e1.printStackTrace();
+			e1.getTargetException().printStackTrace();
 			throw new RuntimeException(e1.getTargetException().getMessage());
 		}
 		return null;

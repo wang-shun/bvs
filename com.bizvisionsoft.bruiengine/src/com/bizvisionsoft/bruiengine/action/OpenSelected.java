@@ -31,7 +31,8 @@ public class OpenSelected {
 			String message = Optional.ofNullable(AUtil.readTypeAndLabel(em)).orElse("");
 
 			Editor<Object> editor = new Editor<Object>(assembly, context).setEditable(editable)
-					.setTitle(editable ? ("±à¼­ " + message) : message);
+					// .setTitle(editable ? ("±à¼­ " + message) : message);
+					.setTitle(message);
 
 			if (editable) {
 				IStructuredDataPart grid = (IStructuredDataPart) context.getContent();

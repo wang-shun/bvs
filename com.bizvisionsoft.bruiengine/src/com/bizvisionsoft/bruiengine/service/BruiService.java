@@ -101,4 +101,9 @@ public class BruiService implements IBruiService {
 		UserSession.current().getEntryPoint().switchPage(page, inputUid, true);
 	}
 
+	@Override
+	public String getCurrentUserId() {
+		return getCurrentUserInfo().getUserId();
+	}
+
 }

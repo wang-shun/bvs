@@ -133,6 +133,7 @@ public class ActionPanelPart {
 			try {
 				BruiActionEngine.create(a, service).invokeExecute(e, context);
 			} catch (Exception e2) {
+				e2.printStackTrace();
 				MessageDialog.openError(parent.getShell(), "系统错误",
 						"组件:" + assembly.getName() + "操作:" + a.getName() + "\n" + e2.getMessage());
 			}

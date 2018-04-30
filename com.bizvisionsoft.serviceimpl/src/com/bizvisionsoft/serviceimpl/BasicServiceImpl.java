@@ -144,5 +144,6 @@ public class BasicServiceImpl {
 	protected MongoCollection<Document> c(String name) {
 		return Service.col(name);
 	}
+	
 
 }

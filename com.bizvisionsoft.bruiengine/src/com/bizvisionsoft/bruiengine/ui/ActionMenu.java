@@ -147,6 +147,7 @@ public class ActionMenu extends Part {
 					try {
 						BruiActionEngine.create(a, service).invokeExecute(event, context);
 					} catch (Exception e2) {
+						e2.printStackTrace();
 						MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
 					}
 				});

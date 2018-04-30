@@ -15,6 +15,8 @@ public interface IBruiService extends IServiceWithId {
 	public boolean closeCurrentPart();
 
 	public User getCurrentUserInfo();
+	
+	public String getCurrentUserId();
 
 	public void setCurrentUserInfo(User user);
 

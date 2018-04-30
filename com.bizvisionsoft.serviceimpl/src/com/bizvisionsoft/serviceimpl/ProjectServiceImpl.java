@@ -12,6 +12,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.CBSItem;
 import com.bizvisionsoft.service.model.Result;
+import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.OBSItem;
 import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectStatus;
@@ -24,6 +25,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 	@Override
 	public Project insert(Project input) {
+		// TODO 记录创建者
 		Project project;
 		if (input.getProjectTemplate_id() == null) {
 			/////////////////////////////////////////////////////////////////////////////
@@ -140,25 +142,30 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	}
 
 	@Override
-	public List<Result> startProject(ObjectId _id, boolean ignoreWarning) {
+	public List<Result> startProject(ObjectId _id, boolean ignoreWarning, String executeBy) {
 		List<Result> result = startProjectCheck(_id, ignoreWarning);
 		if (!result.isEmpty()) {
 			return result;
 		}
 
 		// 修改项目状态
-		UpdateResult ur = c(Project.class).updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set",
-				new BasicDBObject("status", ProjectStatus.Processing).append("actualStart", new Date())));
-		
+		UpdateResult ur = c(Project.class).updateOne(new BasicDBObject("_id", _id),
+				new BasicDBObject("$set", new BasicDBObject("status", ProjectStatus.Processing)
+						.append("actualStart", new Date()).append("startBy", executeBy)));
+
 		// 根据ur构造下面的结果
 		if (ur.getModifiedCount() == 0) {
 			result.add(Result.updateFailure());
+			return result;
 		}
+
+		// TODO 通知项目团队成员，项目已经启动
+
+		// TODO LOG
 		return result;
 	}
 
-	@Override
-	public List<Result> startProjectCheck(ObjectId _id, boolean ignoreWarning) {
+	private List<Result> startProjectCheck(ObjectId _id, boolean ignoreWarning) {
 		//////////////////////////////////////////////////////////////////////
 		// 须检查的信息
 		// 1. 检查是否创建了第一层的WBS，并有计划，如果没有，提示警告
@@ -169,6 +176,26 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		// 6. 预算没做完，警告
 		// 7. 预算没有分配，警告
 
+		return new ArrayList<Result>();
+	}
+
+	@Override
+	public List<Result> distributeProjectPlan(ObjectId _id, boolean ignoreWarning, String distributeBy) {
+		List<Result> result = startdistributeProjectPlan(_id, ignoreWarning);
+		if (!result.isEmpty()) {
+			return result;
+		}
+
+		c(WorkInfo.class).updateMany(
+				new Document("project_id", _id).append("parent_id", null).append("chargerId",
+						new Document("$ne", null)),
+				new Document("$set", new Document("distributed", true).append("distributeBy", distributeBy)
+						.append("distributeOn", new Date())));
+		return new ArrayList<Result>();
+	}
+
+	private List<Result> startdistributeProjectPlan(ObjectId _id, boolean ignoreWarning) {
+		// TODO 检查是否可以下达
 		return new ArrayList<Result>();
 	}
 

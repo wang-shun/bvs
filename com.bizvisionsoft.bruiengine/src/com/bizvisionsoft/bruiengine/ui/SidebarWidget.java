@@ -166,6 +166,7 @@ public class SidebarWidget {
 		try {
 			BruiActionEngine.create(action, service).invokeExecute(e, context);
 		} catch (Exception e2) {
+			e2.printStackTrace();
 			MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
 		}
 	}

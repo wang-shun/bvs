@@ -53,7 +53,7 @@ public class ProjectGantt {
 		return workService.createGanttLinkSet(new BasicDBObject("project_id", project_id));
 	}
 
-	@DataSet({"项目甘特图/initDateRange","项目甘特图（无表格查看）/links"})
+	@DataSet({"项目甘特图/initDateRange","项目甘特图（无表格查看）/initDateRange"})
 	public Date[] initDateRange() {
 		return Services.get(ProjectService.class).getPlanDateRange(project_id).toArray(new Date[0]);
 	}
