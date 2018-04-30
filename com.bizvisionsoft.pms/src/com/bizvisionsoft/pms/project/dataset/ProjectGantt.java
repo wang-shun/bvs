@@ -30,30 +30,32 @@ public class ProjectGantt {
 	@Inject
 	private IBruiService bruiService;
 
-	private Project project;
 
 	private WorkService workService;
 
+	private ObjectId project_id;
+
 	@Init
 	private void init() {
-		project = (Project) context.getRootInput();
+		project_id = ((Project) context.getRootInput()).get_id();
 		workService = Services.get(WorkService.class);
 	}
 	
 
 	@DataSet({"项目甘特图/data","项目甘特图（无表格查看）/data"})
 	public List<WorkInfo> data() {
-		return workService.createGanttDataSet(new BasicDBObject("project_id", project.get_id()));
+		return workService.createGanttDataSet(new BasicDBObject("project_id", project_id));
 	}
+	
 
 	@DataSet({"项目甘特图/links","项目甘特图（无表格查看）/links"})
 	public List<WorkLinkInfo> links() {
-		return workService.createGanttLinkSet(new BasicDBObject("project_id", project.get_id()));
+		return workService.createGanttLinkSet(new BasicDBObject("project_id", project_id));
 	}
 
-	@DataSet("项目甘特图/initDateRange")
+	@DataSet({"项目甘特图/initDateRange","项目甘特图（无表格查看）/links"})
 	public Date[] initDateRange() {
-		return Services.get(ProjectService.class).getPlanDateRange(project.get_id()).toArray(new Date[0]);
+		return Services.get(ProjectService.class).getPlanDateRange(project_id).toArray(new Date[0]);
 	}
 
 	@Listener("项目甘特图/onAfterTaskAdd")

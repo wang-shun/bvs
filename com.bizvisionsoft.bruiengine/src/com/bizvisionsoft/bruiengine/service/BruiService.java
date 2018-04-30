@@ -97,6 +97,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void switchPage(Page page, String inputUid) {
+		// TODO 解决禁止回退问题
 		UserSession.current().getEntryPoint().switchPage(page, inputUid, true);
 	}
 

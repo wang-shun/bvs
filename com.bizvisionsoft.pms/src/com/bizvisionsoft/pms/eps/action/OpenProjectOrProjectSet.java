@@ -23,10 +23,11 @@ public class OpenProjectOrProjectSet {
 			if (em instanceof ProjectSet) {
 
 			} else if (em instanceof Project) {
-				if(ProjectStatus.Created.equals(((Project) em).getStatus())) {
+				if (ProjectStatus.Created.equals(((Project) em).getStatus())) {
 					bruiService.switchPage("项目首页（启动）", ((Project) em).get_id().toHexString());
+				} else if (ProjectStatus.Processing.equals(((Project) em).getStatus())) {
+					bruiService.switchPage("项目首页（执行）", ((Project) em).get_id().toHexString());
 				}
-				//TODO
 			}
 		});
 

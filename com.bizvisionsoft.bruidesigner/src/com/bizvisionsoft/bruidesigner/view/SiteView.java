@@ -132,8 +132,9 @@ public class SiteView extends ViewPart implements PropertyChangeListener {
 		viewer.expandToLevel(ca, TreeViewer.ALL_LEVELS);
 	}
 
-	public void removeAssembly(Assembly assembly) {
-		TreeItem item = (TreeItem) viewer.testFindItem(assembly);
+	public void removeAssembly(AssemblyLink link) {
+		Assembly assembly = ModelToolkit.getAssembly(link.getId());
+		TreeItem item = (TreeItem) viewer.testFindItem(link);
 		ContentArea ca = (ContentArea) item.getParentItem().getData();
 		ModelToolkit.removeAssembly(ca, assembly);
 		viewer.refresh(ca);

@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
@@ -50,10 +51,9 @@ public class AssemblyInfoPadEditor extends ModelEditor {
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：UserService.list");
-		
-		
+
 		parent = createTabItemContent("容器设置");
-		
+
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
@@ -62,13 +62,12 @@ public class AssemblyInfoPadEditor extends ModelEditor {
 		createCheckboxField(parent, "是否在标题栏上显示根上下文传入对象名称：", inputData, "displayRootInputLabelInTitlebar", SWT.CHECK);
 
 		createCheckboxField(parent, "容器上边框：", inputData, "borderTop", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器右边框：", inputData, "borderRight", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器下边框：", inputData, "borderBottom", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器左边框：", inputData, "borderLeft", SWT.CHECK);
-		
 
 		parent = createTabItemContent("字段");
 		List<FormField> fields = ((Assembly) inputData).getFields();
@@ -76,11 +75,11 @@ public class AssemblyInfoPadEditor extends ModelEditor {
 			((Assembly) inputData).setFields(fields = new ArrayList<FormField>());
 		new FormFieldsEditPane(parent, fields, this, "info");
 
-		// parent = createTabItemContent("操作");
-		// List<Action> actions = ((Assembly) inputData).getActions();
-		// if (actions == null)
-		// ((Assembly) inputData).setActions(actions = new ArrayList<Action>());
-		// new ActionsEditPane(parent, actions, true, this);
+		parent = createTabItemContent("操作");
+		List<Action> actions = ((Assembly) inputData).getActions();
+		if (actions == null)
+			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
+		new ActionsEditPane(parent, actions, true, this);
 
 		addPartNamePropertyChangeListener("name");
 

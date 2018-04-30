@@ -11,11 +11,14 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.CBSItem;
+import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.OBSItem;
 import com.bizvisionsoft.service.model.Project;
+import com.bizvisionsoft.service.model.ProjectStatus;
 import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.result.UpdateResult;
 
 public class ProjectServiceImpl extends BasicServiceImpl implements ProjectService {
 
@@ -37,7 +40,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 						.projection(new BasicDBObject("obs_id", true).append("cbs_id", true)).first();
 				obsParent_id = Optional.ofNullable(doc).map(d -> d.getObjectId("obs_id")).orElse(null);
 				cbsParent_id = Optional.ofNullable(doc).map(d -> d.getObjectId("cbs_id")).orElse(null);
-				
+
 			}
 			/////////////////////////////////////////////////////////////////////////////
 			// 0. 创建项目
@@ -134,6 +137,39 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	@Override
 	public long update(BasicDBObject fu) {
 		return update(fu, Project.class);
+	}
+
+	@Override
+	public List<Result> startProject(ObjectId _id, boolean ignoreWarning) {
+		List<Result> result = startProjectCheck(_id, ignoreWarning);
+		if (!result.isEmpty()) {
+			return result;
+		}
+
+		// 修改项目状态
+		UpdateResult ur = c(Project.class).updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set",
+				new BasicDBObject("status", ProjectStatus.Processing).append("actualStart", new Date())));
+		
+		// 根据ur构造下面的结果
+		if (ur.getModifiedCount() == 0) {
+			result.add(Result.updateFailure());
+		}
+		return result;
+	}
+
+	@Override
+	public List<Result> startProjectCheck(ObjectId _id, boolean ignoreWarning) {
+		//////////////////////////////////////////////////////////////////////
+		// 须检查的信息
+		// 1. 检查是否创建了第一层的WBS，并有计划，如果没有，提示警告
+		// 2. 检查组织结构是否完成，如果只有根，警告
+		// 3. 检查第一层的WBS是否指定了必要的角色，如果没有负责人角色，提示警告。
+		// 4. 缺少干系人，警告
+		// 5. 没有做预算，警告
+		// 6. 预算没做完，警告
+		// 7. 预算没有分配，警告
+
+		return new ArrayList<Result>();
 	}
 
 }

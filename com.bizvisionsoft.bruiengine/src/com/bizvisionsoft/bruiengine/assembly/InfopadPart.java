@@ -62,11 +62,13 @@ public class InfopadPart {
 
 	@CreateUI
 	private void createUI(Composite parent) {
-		Object _list = dataSetEngine.query();
-		if (_list instanceof List<?> && ((List<?>) _list).size() > 0) {
-			input = ((List<?>) _list).get(0);
+		Object _data = dataSetEngine.query();
+		if (_data instanceof List<?> && ((List<?>) _data).size() > 0) {
+			input = ((List<?>) _data).get(0);
+		} else if (_data != null) {
+			input = _data;
 		} else {
-			throw new RuntimeException("数据源list方法没有返回正确的类型。需要List类型");
+			throw new RuntimeException("数据源list方法返回为空。");
 		}
 
 		Composite panel;

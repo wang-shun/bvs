@@ -1,6 +1,7 @@
 package com.bizvisionsoft.service.model;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
@@ -13,6 +14,7 @@ import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.ServicesLoader;
+import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
@@ -217,8 +219,8 @@ public class WorkInfo {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// index, 在gantt图中用于排序
-	@ReadValue("项目甘特图/index")
-	@WriteValue("项目甘特图/index")
+	@ReadValue
+	@WriteValue
 	@Persistence
 	private int index;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -357,6 +359,10 @@ public class WorkInfo {
 	@Persistence
 	private boolean summary;
 
+	@Persistence
+	private boolean stage;
+
+	
 	@ReadValue("type")
 	public String getType() {
 		if (milestone)
@@ -387,7 +393,7 @@ public class WorkInfo {
 	private String barstyle;
 
 	@GetValue("manageLevel")
-	private String getManagerLevel() {
+	private String getManageLevel() {
 		if ("level1_task".equals(barstyle)) {
 			return "1";
 		} else if ("level2_task".equals(barstyle)) {
@@ -434,6 +440,33 @@ public class WorkInfo {
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 工作角色
+	 */
+	@ReadValue
+	@WriteValue
+	@Persistence
+	private String chargerId;
+
+	@SetValue
+	@ReadValue
+	private String chargerInfo;
+
+	@WriteValue("charger")
+	private void setPM(User charger) {
+		this.chargerId = Optional.ofNullable(charger).map(o -> o.getUserId()).orElse(null);
+	}
+
+	@ReadValue("charger")
+	private User getPM() {
+		return Optional.ofNullable(chargerId).map(id -> ServicesLoader.get(UserService.class).get(id)).orElse(null);
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	
 	public WorkInfo set_id(ObjectId _id) {
 		this._id = _id;
 		return this;
@@ -507,6 +540,15 @@ public class WorkInfo {
 	
 	public boolean isMilestone() {
 		return milestone;
+	}
+	
+	public boolean isStage() {
+		return stage;
+	}
+	
+	public WorkInfo setStage(boolean stage) {
+		this.stage = stage;
+		return this;
 	}
 
 }

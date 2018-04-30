@@ -54,7 +54,7 @@ public class ActionMenu extends Part {
 	private IBruiContext context;
 	private int xUnit = 3;
 	private int yUnit = 3;
-	private int unitSize = 96;
+	private int unitSize = 120;
 	private int currentPage = 0;
 	private Composite parent;
 	private Composite page;
@@ -120,7 +120,7 @@ public class ActionMenu extends Part {
 	@Override
 	protected void createContents(Composite parent) {
 		this.parent = parent;
-		parent.setBackground(BruiColors.getColor(BruiColor.Grey_200));
+		parent.setBackground(BruiColors.getColor(BruiColor.Grey_50));
 
 		parent.setLayout(new FillLayout());
 		createPage();

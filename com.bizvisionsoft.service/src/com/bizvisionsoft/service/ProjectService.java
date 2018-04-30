@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.Project;
 import com.mongodb.BasicDBObject;
 
@@ -26,7 +27,7 @@ public interface ProjectService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public Project insert(Project project);
-	
+
 	@PUT
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
@@ -57,4 +58,18 @@ public interface ProjectService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public List<Date> getPlanDateRange(@PathParam("_id") ObjectId _id);
+
+	@GET
+	@Path("/_id/{_id}/action/start/{ignoreWarning}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Result> startProject(@PathParam("_id") ObjectId _id,
+			@PathParam("ignoreWarning") boolean ignoreWarning);
+
+	@GET
+	@Path("/_id/{_id}/check/start/{ignoreWarning}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Result> startProjectCheck(@PathParam("_id") ObjectId _id,
+			@PathParam("ignoreWarning") boolean ignoreWarning);
 }

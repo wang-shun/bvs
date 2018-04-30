@@ -294,7 +294,7 @@ public class ModelToolkit {
 	}
 
 	public static void removeAssembly(ContentArea ca, Assembly assembly) {
-		ca.getAssemblyLinks().removeIf(al -> al.getId() == assembly.getId());
+		ca.getAssemblyLinks().removeIf(al -> al.getId() .equals( assembly.getId()));
 	}
 
 	public static Assembly getAssembly(String assyId) {

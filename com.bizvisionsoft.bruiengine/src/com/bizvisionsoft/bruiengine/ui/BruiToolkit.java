@@ -214,7 +214,7 @@ public class BruiToolkit {
 		if (imageUrl != null) {
 			if ("block".equals(layoutStyle)) {// 块状布局
 				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
-						+ "' style='cursor:pointer;' width='24px' height='24px'></img>";
+						+ "' style='cursor:pointer;' width='32px' height='32px'></img>";
 			} else {// 行状布局
 				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
 						+ "' style='cursor:pointer;' width='20px' height='20px'></img>";
