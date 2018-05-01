@@ -89,6 +89,13 @@ public interface CBSService {
 	@Produces("application/json; charset=UTF-8")
 	public CBSSubject upsertCBSSubjectBudget(CBSSubject o);
 
+
+	@PUT
+	@Path("/_id/{_id}/allocate/{work_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public void allocateBudget(@PathParam("_id") ObjectId _id, @PathParam("work_id") ObjectId work_id);
+
 	
 
 }

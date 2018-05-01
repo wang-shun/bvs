@@ -142,8 +142,8 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	}
 
 	@Override
-	public List<Result> startProject(ObjectId _id, boolean ignoreWarning, String executeBy) {
-		List<Result> result = startProjectCheck(_id, ignoreWarning);
+	public List<Result> startProject(ObjectId _id, String executeBy) {
+		List<Result> result = startProjectCheck(_id, executeBy);
 		if (!result.isEmpty()) {
 			return result;
 		}
@@ -155,7 +155,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 		// 根据ur构造下面的结果
 		if (ur.getModifiedCount() == 0) {
-			result.add(Result.updateFailure());
+			result.add(Result.updateFailure("没有满足启动条件的项目。"));
 			return result;
 		}
 
@@ -165,7 +165,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		return result;
 	}
 
-	private List<Result> startProjectCheck(ObjectId _id, boolean ignoreWarning) {
+	private List<Result> startProjectCheck(ObjectId _id, String executeBy) {
 		//////////////////////////////////////////////////////////////////////
 		// 须检查的信息
 		// 1. 检查是否创建了第一层的WBS，并有计划，如果没有，提示警告
@@ -180,23 +180,41 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	}
 
 	@Override
-	public List<Result> distributeProjectPlan(ObjectId _id, boolean ignoreWarning, String distributeBy) {
-		List<Result> result = startdistributeProjectPlan(_id, ignoreWarning);
+	public List<Result> distributeProjectPlan(ObjectId _id, String distributeBy) {
+		List<Result> result = distributeProjectPlanCheck(_id, distributeBy);
 		if (!result.isEmpty()) {
 			return result;
 		}
 
-		c(WorkInfo.class).updateMany(
-				new Document("project_id", _id).append("parent_id", null).append("chargerId",
-						new Document("$ne", null)),
+		UpdateResult ur = c(WorkInfo.class).updateMany(
+				new Document("project_id", _id).append("parent_id", null).append("chargerId", new Document("$ne", null))
+						.append("distributed", new Document("$ne", true)),
 				new Document("$set", new Document("distributed", true).append("distributeBy", distributeBy)
 						.append("distributeOn", new Date())));
+
+		if (ur.getModifiedCount() == 0) {
+			result.add(Result.updateFailure("没有需要下达的计划。"));
+			return result;
+		}
+
 		return new ArrayList<Result>();
 	}
 
-	private List<Result> startdistributeProjectPlan(ObjectId _id, boolean ignoreWarning) {
+	private List<Result> distributeProjectPlanCheck(ObjectId _id, String distributeBy) {
 		// TODO 检查是否可以下达
 		return new ArrayList<Result>();
+	}
+
+	@Override
+	public List<WorkInfo> listStage(ObjectId _id) {
+		//TODO 排序
+		return new WorkServiceImpl().query(null, null, new BasicDBObject("project_id", _id).append("stage", true),
+				WorkInfo.class);
+	}
+
+	@Override
+	public long countStage(ObjectId _id) {
+		return c("work").count(new BasicDBObject("project_id", _id).append("stage", true));
 	}
 
 }

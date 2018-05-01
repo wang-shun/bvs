@@ -1,5 +1,7 @@
 package com.bizvisionsoft.pms.assembly;
 
+import java.util.Optional;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -8,15 +10,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
-import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.service.model.WorkInfo;
 
-public class SidebarHeaderL2Page {
+public class SidebarHeader4Work {
 
 	@Inject
 	private IBruiService bruiService;
@@ -48,30 +50,13 @@ public class SidebarHeaderL2Page {
 		pic.setText("<img alt='headpic' style='cursor:pointer;margin-top:8px;' src='" + url + "' width=" + 32
 				+ "px height=" + 32 + "px/>");
 
-		Object input = context.getParentContext().getInput();
-
-		String name = null, id = null;
-
-		if (input != null) {
-			name = AUtil.readLabel(input, com.bizvisionsoft.annotations.md.service.Label.NAME_LABEL);
-			id = AUtil.readLabel(input, com.bizvisionsoft.annotations.md.service.Label.ID_LABEL);
-		}
-
-		if (name == null) {
-			name = parent.getShell().getText();
-		}
-
-		if (id != null) {
-			title.setText(
-					"<div style='color:white;margin-left:2px;margin-top:4px;width:180px;'><div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
-							+ name + "</div>"
-							+ "<div style='font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
-							+ id + "</div>" + "</div>");
-		} else {
-			title.setText(
-					"<div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white;margin-left:2px;margin-top:12px;width:180px;'>"
-							+ name + "</div>");
-		}
+		WorkInfo input = (WorkInfo) context.getParentContext().getInput();
+		String pjName = Optional.ofNullable(input.getProject()).map(p -> p.getName()).orElse("");
+		title.setText(
+				"<div style='color:white;margin-left:2px;margin-top:4px;width:180px;'><div style='font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
+						+ input.getText() + "</div>"
+						+ "<div style='font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"
+						+ pjName + "</div>" + "</div>");
 		pic.addListener(SWT.MouseDown, e -> {
 			WidgetToolkit.execJS("history.back()");
 		});

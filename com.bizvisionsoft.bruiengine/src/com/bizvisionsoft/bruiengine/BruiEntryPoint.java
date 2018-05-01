@@ -23,6 +23,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
@@ -110,7 +111,10 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 	}
 
 	public void switchPage(Page page, String inputUid, boolean addHistory) {
-		String name = page.getName();
+		String name = page.getTitle();
+		if(Util.isEmptyOrNull(name)) {
+			name = page.getName();
+		}
 		View view;
 		String uid = "";
 		if (inputUid != null) {

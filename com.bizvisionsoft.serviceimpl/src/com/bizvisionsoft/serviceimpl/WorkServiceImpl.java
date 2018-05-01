@@ -75,4 +75,5 @@ public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 		return get(_id, WorkLinkInfo.class);
 	}
 
+
 }

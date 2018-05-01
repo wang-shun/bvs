@@ -34,12 +34,14 @@ public class DistributeProjectPlan {
 			if (!ok) {
 				return;
 			}
-			List<Result> result = Services.get(ProjectService.class).distributeProjectPlan(project.get_id(), true,
+			List<Result> result = Services.get(ProjectService.class).distributeProjectPlan(project.get_id(),
 					brui.getCurrentUserId());
 			if (result.isEmpty()) {
 				MessageDialog.openInformation(s, "下达项目阶段计划", "项目阶段计划下达完成。");
+			}else {
+				// TODO 显示多条错误信息的通用方法
+				MessageDialog.openError(s, "下达项目阶段计划", "项目阶段计划下达失败。</p>"+result.get(0).message);
 			}
-			// TODO 显示多条错误信息的通用方法
 		} else {
 			// TODO 不是按阶段推进的下达
 		}

@@ -13,10 +13,12 @@ import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.model.CBSItem;
 import com.bizvisionsoft.service.model.CBSPeriod;
 import com.bizvisionsoft.service.model.CBSSubject;
+import com.bizvisionsoft.service.model.WorkInfo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Field;
+import com.mongodb.client.result.UpdateResult;
 
 public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
 
@@ -184,6 +186,16 @@ public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
 	@Override
 	public List<CBSSubject> getSubjectBudget(ObjectId cbs_id) {
 		return c(CBSSubject.class).find(new BasicDBObject("cbsItem_id", cbs_id)).into(new ArrayList<CBSSubject>());
+	}
+
+	@Override
+	public void allocateBudget(ObjectId _id, ObjectId work_id) {
+		UpdateResult ur = c(WorkInfo.class).updateOne(new BasicDBObject("_id", work_id),
+				new BasicDBObject("$set", new BasicDBObject("cbs_id", _id)));
+		ur = c(CBSItem.class).updateOne(new BasicDBObject("_id", _id),
+				new BasicDBObject("$set", new BasicDBObject("scope_id", work_id).append("scopeRoot", true)));
+		//TODO ´íÎó·µ»Ø
+		System.out.println(ur);
 	}
 
 }

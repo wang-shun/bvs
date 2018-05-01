@@ -16,6 +16,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Result;
+import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.Project;
 import com.mongodb.BasicDBObject;
 
@@ -60,16 +61,28 @@ public interface ProjectService {
 	public List<Date> getPlanDateRange(@PathParam("_id") ObjectId _id);
 
 	@GET
-	@Path("/_id/{_id}/action/start/{executeBy}/{ignoreWarning}")
+	@Path("/_id/{_id}/stage/ds")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<Result> startProject(@PathParam("_id") ObjectId _id, @PathParam("ignoreWarning") boolean ignoreWarning,@PathParam("executeBy") String executeBy);
+	public List<WorkInfo> listStage(@PathParam("_id") ObjectId _id);
+	
+	@GET
+	@Path("/_id/{_id}/stage/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countStage(@PathParam("_id") ObjectId _id);
 
 	@GET
-	@Path("/_id/{_id}/action/distribute/{executeBy}/{ignoreWarning}")
+	@Path("/_id/{_id}/action/start/{executeBy}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public List<Result> distributeProjectPlan(@PathParam("_id") ObjectId _id,
-			@PathParam("ignoreWarning") boolean ignoreWarning,@PathParam("executeBy") String executeBy);
+	public List<Result> startProject(@PathParam("_id") ObjectId _id, @PathParam("executeBy") String executeBy);
+
+	@GET
+	@Path("/_id/{_id}/action/distribute/{executeBy}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Result> distributeProjectPlan(@PathParam("_id") ObjectId _id, @PathParam("executeBy") String executeBy);
+
 
 }

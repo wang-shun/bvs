@@ -15,10 +15,10 @@ public class Result {
 
 	public int type;
 
-	public static final Result updateFailure() {
+	public static final Result updateFailure(String message) {
 		Result e = new Result();
 		e.code = 0x301;
-		e.message = "¸üĞÂÊ§°Ü";
+		e.message = message;
 		e.type = Result.TYPE_ERROR;
 		return e;
 	};

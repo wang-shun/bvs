@@ -56,7 +56,7 @@ public class BasicServiceImpl {
 		return query(skip, limit, filter, clazz);
 	}
 
-	private <T> List<T> query(Integer skip, Integer limit, BasicDBObject filter, Class<T> clazz) {
+	<T> List<T> query(Integer skip, Integer limit, BasicDBObject filter, Class<T> clazz) {
 		ArrayList<Bson> pipeline = new ArrayList<Bson>();
 
 		if (filter != null)

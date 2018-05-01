@@ -86,11 +86,16 @@ public class BruiPageInputDataSetEngine extends BruiEngine {
 			try {
 				method.setAccessible(true);
 				return method.invoke(getTarget(), args);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-//				e.printStackTrace();
+			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
+			} catch (InvocationTargetException e) {
+				e.getTargetException().printStackTrace();
+				throw new RuntimeException(e.getTargetException().getMessage());
 			}
+		}else {
+			throw new RuntimeException(page.getName() + "的数据源没有注解DataSet值为 Input的方法。");
 		}
-		throw new RuntimeException(page.getName() + "的数据源没有注解DataSet值为 Input的方法。");
 	}
 
 }

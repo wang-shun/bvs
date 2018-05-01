@@ -31,7 +31,7 @@ public class StartProject {
 		if (!ok) {
 			return;
 		}
-		List<Result> result = Services.get(ProjectService.class).startProject(project.get_id(), true,
+		List<Result> result = Services.get(ProjectService.class).startProject(project.get_id(),
 				brui.getCurrentUserId());
 		if (result.isEmpty()) {
 			MessageDialog.openInformation(shell, "启动项目", "项目启动完成。");

@@ -13,6 +13,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.Strict;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
@@ -196,12 +197,12 @@ public class WorkInfo {
 	private ObjectId project_id;
 
 	@ReadValue("project")
-	public String getProject() {
+	public String getProjectId() {
 		return project_id == null ? null : project_id.toHexString();
 	}
 
 	@WriteValue("project")
-	public boolean setProject(String project_id) {
+	public boolean setProjectId(String project_id) {
 		ObjectId newId;
 		if (project_id instanceof String) {
 			newId = new ObjectId((String) project_id);
@@ -238,6 +239,7 @@ public class WorkInfo {
 	@ReadValue
 	@WriteValue
 	@Persistence("name")
+	@Label(Label.NAME_LABEL)
 	private String text;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -263,7 +265,7 @@ public class WorkInfo {
 	@Persistence("planStart")
 	private Date start_date;
 
-	@WriteValue({"甘特图总成工作编辑器/start_date","甘特图工作编辑器/start_date","甘特图阶段工作编辑器/end_date"})
+	@WriteValue({ "甘特图总成工作编辑器/start_date", "甘特图工作编辑器/start_date", "甘特图阶段工作编辑器/end_date" })
 	public void setStart_date(Date start_date) {
 		checkDate(start_date, this.end_date, this.deadline);
 		this.start_date = start_date;
@@ -288,7 +290,7 @@ public class WorkInfo {
 	@Persistence("planFinish")
 	private Date end_date;
 
-	@WriteValue({"甘特图总成工作编辑器/end_date","甘特图工作编辑器/end_date","甘特图阶段工作编辑器/end_date"})
+	@WriteValue({ "甘特图总成工作编辑器/end_date", "甘特图工作编辑器/end_date", "甘特图阶段工作编辑器/end_date" })
 	public void setEnd_date(Date end_date) {
 		checkDate(this.start_date, end_date, this.deadline);
 		this.end_date = end_date;
@@ -362,7 +364,6 @@ public class WorkInfo {
 	@Persistence
 	private boolean stage;
 
-	
 	@ReadValue("type")
 	public String getType() {
 		if (milestone)
@@ -405,7 +406,7 @@ public class WorkInfo {
 		}
 
 	}
-	
+
 	@SetValue("manageLevel")
 	public WorkInfo setManageLevel(String level) {
 		if ("1".equals(level)) {
@@ -440,7 +441,6 @@ public class WorkInfo {
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * 工作角色
@@ -465,8 +465,10 @@ public class WorkInfo {
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
-	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	public WorkInfo set_id(ObjectId _id) {
 		this._id = _id;
 		return this;
@@ -533,22 +535,31 @@ public class WorkInfo {
 		}
 
 	}
-	
+
 	public boolean isSummary() {
 		return summary;
 	}
-	
+
 	public boolean isMilestone() {
 		return milestone;
 	}
-	
+
 	public boolean isStage() {
 		return stage;
 	}
-	
+
 	public WorkInfo setStage(boolean stage) {
 		this.stage = stage;
 		return this;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public Project getProject() {
+		return Optional.ofNullable(project_id).map(_id -> ServicesLoader.get(ProjectService.class).get(_id))
+				.orElse(null);
 	}
 
 }

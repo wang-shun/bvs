@@ -28,7 +28,7 @@ public class ProjectGantt {
 	private BruiAssemblyContext context;
 
 	@Inject
-	private IBruiService bruiService;
+	private IBruiService brui;
 
 
 	private WorkService workService;
