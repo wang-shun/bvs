@@ -40,10 +40,10 @@ public class TypeSelectionPane {
 					FormField.TYPE_QUERY_COMBO,
 					FormField.TYPE_QUERY_TEXT_RANGE,
 					FormField.TYPE_QUERY_CHECK, 
-					FormField.TYPE_QUERY_DATETIME,//TODO
-					FormField.TYPE_QUERY_DATETIME_RANGE,//TODO
+					FormField.TYPE_QUERY_DATETIME,
+					FormField.TYPE_QUERY_DATETIME_RANGE,
 					FormField.TYPE_QUERY_SELECTION,
-					FormField.TYPE_QUERY_MULTI_SELECTION//TODO
+					FormField.TYPE_QUERY_MULTI_SELECTION
 					};
 		} else if (type.equals("info")) {
 			fields = new String[] {

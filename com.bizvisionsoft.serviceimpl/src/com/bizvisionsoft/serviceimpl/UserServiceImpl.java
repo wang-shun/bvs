@@ -105,8 +105,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
 		if (count(filter, Organization.class) != 0)
 			throw new ServiceException("不能删除在组织中担任管理者的用户。");
 
-		// TODO
-		// 有角色的需要清除
+		// TODO 有角色的需要清除
 
 		// TODO 其他检查
 		return delete(_id, User.class);

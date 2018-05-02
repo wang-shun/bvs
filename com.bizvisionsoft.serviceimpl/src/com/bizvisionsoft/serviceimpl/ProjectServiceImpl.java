@@ -73,7 +73,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 			new CBSServiceImpl().insertCBSItem(cbsRoot);// 插入记录
 		} else {
-			// TODO
+			// TODO 根据模板创建
 
 			project = insert(input, Project.class);
 		}
@@ -114,7 +114,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		if (limit != null)
 			pipeline.add(Aggregates.limit(limit));
 
-		// TODO
+		// TODO 补充pipeline
 		// 1. 承担组织
 		appendOrgFullName(pipeline, "impUnit_id", "impUnitOrgFullName");
 
@@ -161,7 +161,6 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 		// TODO 通知项目团队成员，项目已经启动
 
-		// TODO LOG
 		return result;
 	}
 

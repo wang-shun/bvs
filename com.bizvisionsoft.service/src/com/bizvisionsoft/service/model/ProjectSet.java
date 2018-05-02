@@ -133,28 +133,27 @@ public class ProjectSet {
 
 	@Structure("EPS和项目集选择/count")
 	public long countSubProjectSets() {
-		// 查下级
 		return ServicesLoader.get(ProjectSetService.class).count(new BasicDBObject("parent_id", _id));
 	}
 
 	@Behavior("EPS浏览/编辑项目集") // 控制action
 	private boolean enableEdit() {
-		return true;// 考虑权限 TODO
+		return true;//TODO 考虑权限 
 	}
 
 	@Behavior("EPS浏览/创建项目集") // 控制action
 	private boolean enableAdd() {
-		return true;// 考虑权限 TODO
+		return true;//TODO 考虑权限
 	}
 
 	@Behavior("EPS浏览/删除项目集") // 控制action
 	private boolean enableDelete() {
-		return true;// 考虑权限 TODO
+		return true;//TODO 考虑权限
 	}
 
 	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
-		return true;// 考虑权限 TODO
+		return true;//TODO 考虑权限
 	}
 
 	@Override

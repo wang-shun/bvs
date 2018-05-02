@@ -188,7 +188,7 @@ public class Project implements IOBSScope, ICBSScope {
 	private Date actualFinish;
 
 	/**
-	 * 计划工期 ///TODO
+	 * 计划工期 ///TODO 根据计划开始和完成自动计算
 	 */
 	@ReadValue
 	@WriteValue
@@ -196,7 +196,7 @@ public class Project implements IOBSScope, ICBSScope {
 	private Integer actualDuration;
 
 	/**
-	 * 计划工时 //TODO
+	 * 计划工时 //TODO 计划工时的计算
 	 */
 	@ReadValue
 	@WriteValue
@@ -354,7 +354,7 @@ public class Project implements IOBSScope, ICBSScope {
 
 	@Behavior("EPS浏览/打开") // 控制action
 	private boolean enableOpen() {
-		return true;// 考虑权限 TODO
+		return true;//TODO 考虑权限
 	}
 
 	@Persistence

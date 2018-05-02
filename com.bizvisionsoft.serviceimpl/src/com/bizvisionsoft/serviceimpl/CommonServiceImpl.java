@@ -36,7 +36,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public long deleteCertificate(ObjectId _id) {
-		// TODO
+		// TODO 考虑已经使用的任职资格
 
 		return delete(_id, Certificate.class);
 	}
@@ -67,7 +67,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public long deleteResourceType(ObjectId _id) {
-		// TODO
+		// TODO 考虑资源类型被使用的状况
 		return delete(_id, ResourceType.class);
 	}
 
@@ -115,7 +115,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public long deleteEquipment(ObjectId _id) {
-		// TODO
+		// TODO 完整性问题
 		return delete(_id, Equipment.class);
 	}
 
@@ -138,7 +138,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 
 	@Override
 	public long deleteCalendar(ObjectId _id) {
-		// TODO
+		// TODO 完整性问题
 		return delete(_id, Calendar.class);
 	}
 
@@ -254,7 +254,7 @@ public class CommonServiceImpl extends BasicServiceImpl implements CommonService
 		pipeline.add(Aggregates.project(new BasicDBObject("_children", false)));
 
 		pipeline.add(Aggregates.sort(new BasicDBObject("id", 1)));
-		
+
 		return c(AccountItem.class).aggregate(pipeline).into(new ArrayList<AccountItem>());
 	}
 

@@ -100,7 +100,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 		if (countMember(_id) > 0)
 			throw new ServiceException("不允许删除有成员的组织");
 
-		// TODO
+		// TODO 完整性问题
 		return delete(_id, Organization.class);
 	}
 
