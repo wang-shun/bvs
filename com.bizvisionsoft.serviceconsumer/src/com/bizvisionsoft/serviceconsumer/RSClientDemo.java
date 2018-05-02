@@ -25,9 +25,9 @@ public class RSClientDemo {
 
 	public static void testWorkService(ClientConfig config) {
 		WorkService service = ConsumerFactory.createConsumer("http://127.0.0.1:9158/services",config, WorkService.class);		
-		List<WorkInfo> ds = service.createGanttDataSet(new BasicDBObject());
+		List<WorkInfo> ds = service.createTaskDataSet(new BasicDBObject());
 		System.out.println(ds);
-		List<WorkLinkInfo> ls = service.createGanttLinkSet(new BasicDBObject());
+		List<WorkLinkInfo> ls = service.createLinkDataSet(new BasicDBObject());
 		System.out.println(ls);
 	}
 

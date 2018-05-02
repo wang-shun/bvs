@@ -49,6 +49,12 @@ public class BasicServiceImpl {
 		return c(clazz).count();
 	}
 
+	protected <T> long count(BasicDBObject filter, String colName) {
+		if (filter != null)
+			return c(colName).count(filter);
+		return c(colName).count();
+	}
+
 	protected <T> List<T> createDataSet(BasicDBObject condition, Class<T> clazz) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");
@@ -144,6 +150,5 @@ public class BasicServiceImpl {
 	protected MongoCollection<Document> c(String name) {
 		return Service.col(name);
 	}
-	
 
 }

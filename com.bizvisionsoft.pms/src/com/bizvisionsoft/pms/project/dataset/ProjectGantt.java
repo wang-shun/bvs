@@ -44,13 +44,13 @@ public class ProjectGantt {
 
 	@DataSet({"项目甘特图/data","项目甘特图（无表格查看）/data"})
 	public List<WorkInfo> data() {
-		return workService.createGanttDataSet(new BasicDBObject("project_id", project_id));
+		return workService.createTaskDataSet(new BasicDBObject("project_id", project_id));
 	}
 	
 
 	@DataSet({"项目甘特图/links","项目甘特图（无表格查看）/links"})
 	public List<WorkLinkInfo> links() {
-		return workService.createGanttLinkSet(new BasicDBObject("project_id", project_id));
+		return workService.createLinkDataSet(new BasicDBObject("project_id", project_id));
 	}
 
 	@DataSet({"项目甘特图/initDateRange","项目甘特图（无表格查看）/initDateRange"})

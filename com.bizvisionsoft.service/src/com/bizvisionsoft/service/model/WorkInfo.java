@@ -1,6 +1,7 @@
 package com.bizvisionsoft.service.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
@@ -12,6 +13,7 @@ import com.bizvisionsoft.annotations.md.mongocodex.SetValue;
 import com.bizvisionsoft.annotations.md.mongocodex.Strict;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ServicesLoader;
@@ -262,7 +264,7 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 计划开始日期, 编辑器保存时需要校验
-	@ReadValue
+	@ReadValue({"start_date","planStart"})
 	@Persistence("planStart")
 	private Date start_date;
 
@@ -287,7 +289,7 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 计划完成日期, 编辑器保存时需要校验
-	@ReadValue
+	@ReadValue({"end_date","planFinish"})
 	@Persistence("planFinish")
 	private Date end_date;
 
@@ -456,12 +458,12 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 	private String chargerInfo;
 
 	@WriteValue("charger")
-	private void setPM(User charger) {
+	private void setCharger(User charger) {
 		this.chargerId = Optional.ofNullable(charger).map(o -> o.getUserId()).orElse(null);
 	}
 
 	@ReadValue("charger")
-	private User getPM() {
+	private User getCharger() {
 		return Optional.ofNullable(chargerId).map(id -> ServicesLoader.get(UserService.class).get(id)).orElse(null);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -474,6 +476,17 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 	private ObjectId obs_id;
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	@Structure("list")
+	private List<WorkInfo> listChildren(){
+		return ServicesLoader.get(WorkService.class).listChildren(_id);
+	}
+
+	@Structure("count")
+	private long countChildren(){
+		return ServicesLoader.get(WorkService.class).countChildren(_id);
+	}
+
+	
 	public WorkInfo set_id(ObjectId _id) {
 		this._id = _id;
 		return this;

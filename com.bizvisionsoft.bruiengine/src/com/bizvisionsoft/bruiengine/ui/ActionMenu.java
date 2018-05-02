@@ -90,6 +90,7 @@ public class ActionMenu extends Part {
 		for (int i = 0; i < actions.size(); i++) {
 			Action action = actions.get(i);
 			if (action.isObjectBehavier() && input != null && assembly != null) {
+				//TODO ×¢Èë²ÎÊý
 				Object value = AUtil.read(input.getClass(), Behavior.class, input, assembly.getName(), action.getName(),
 						false, a -> a.value());
 				if (Boolean.TRUE.equals(value)) {

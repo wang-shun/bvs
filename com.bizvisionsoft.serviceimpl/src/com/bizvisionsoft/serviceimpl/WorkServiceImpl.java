@@ -15,17 +15,34 @@ import com.mongodb.BasicDBObject;
 public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 
 	@Override
-	public List<WorkInfo> createGanttDataSet(BasicDBObject condition) {
-		List<WorkInfo> result = new ArrayList<WorkInfo>();
-		c(WorkInfo.class).find(condition).into(result);
-		return result;
+	public List<WorkInfo> createTaskDataSet(BasicDBObject condition) {
+		// TODO
+		return c(WorkInfo.class).find(condition).into(new ArrayList<WorkInfo>());
 	}
 
 	@Override
-	public List<WorkLinkInfo> createGanttLinkSet(BasicDBObject condition) {
-		List<WorkLinkInfo> result = new ArrayList<WorkLinkInfo>();
-		c(WorkLinkInfo.class).find(condition).into(result);
-		return result;
+	public List<WorkLinkInfo> createLinkDataSet(BasicDBObject condition) {
+		return c(WorkLinkInfo.class).find(condition).into(new ArrayList<WorkLinkInfo>());
+	}
+
+	@Override
+	public List<WorkInfo> listProjectRootTask(ObjectId project_id) {
+		return createTaskDataSet(new BasicDBObject("project_id", project_id).append("parent_id", null));
+	}
+
+	@Override
+	public long countProjectRootTask(ObjectId project_id) {
+		return count(new BasicDBObject("project_id", project_id).append("parent_id", null), "work");
+	}
+
+	@Override
+	public List<WorkInfo> listChildren(ObjectId parent_id) {
+		return createTaskDataSet(new BasicDBObject("parent_id", parent_id));
+	}
+
+	@Override
+	public long countChildren(ObjectId parent_id) {
+		return count(new BasicDBObject("parent_id", parent_id), "work");
 	}
 
 	@Override
@@ -74,6 +91,5 @@ public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 	public WorkLinkInfo getLink(ObjectId _id) {
 		return get(_id, WorkLinkInfo.class);
 	}
-
 
 }

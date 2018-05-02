@@ -27,14 +27,14 @@ public interface WorkService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("data")
-	public List<WorkInfo> createGanttDataSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
+	public List<WorkInfo> createTaskDataSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
 
 	@POST
 	@Path("/gantt/links")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("links")
-	public List<WorkLinkInfo> createGanttLinkSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
+	public List<WorkLinkInfo> createLinkDataSet(@ServiceParam(ServiceParam.FILTER) BasicDBObject condition);
 
 	@POST
 	@Path("/tasks/nextwbsidx")
@@ -90,5 +90,29 @@ public interface WorkService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public WorkLinkInfo getLink(@PathParam("_id") ObjectId _id);
+
+	@GET
+	@Path("/project_id/{project_id}/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<WorkInfo> listProjectRootTask(@PathParam("project_id") ObjectId project_id);
+
+	@GET
+	@Path("/project_id/{project_id}/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countProjectRootTask(@PathParam("project_id") ObjectId project_id);
+
+	@GET
+	@Path("/parent_id/{parent_id}/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<WorkInfo> listChildren(@PathParam("parent_id") ObjectId parent_id);
+
+	@GET
+	@Path("/parent_id/{parent_id}/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public long countChildren(@PathParam("parent_id") ObjectId parent_id);
 
 }
