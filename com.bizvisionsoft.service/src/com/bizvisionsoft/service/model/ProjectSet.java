@@ -87,6 +87,9 @@ public class ProjectSet {
 	@Exclude
 	private String typeName = "ÏîÄ¿¼¯";
 
+	@Persistence
+	private ObjectId obs_id;
+
 	public ProjectSet setEps_id(ObjectId eps_id) {
 		this.eps_id = eps_id;
 		return this;
@@ -158,6 +161,10 @@ public class ProjectSet {
 	@Label
 	public String toString() {
 		return name + " [" + id + "]";
+	}
+
+	public ObjectId getOBS_id() {
+		return obs_id;
 	}
 
 }

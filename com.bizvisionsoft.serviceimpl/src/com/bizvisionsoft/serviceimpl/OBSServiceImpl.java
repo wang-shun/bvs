@@ -45,7 +45,22 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 
 	@Override
 	public List<OBSItem> getScopeOBS(ObjectId scope_id) {
-		return query(new BasicDBObject("scope_id", scope_id));
+		List<ObjectId> parentIds = c("obs").distinct("_id", new BasicDBObject("scope_id", scope_id), ObjectId.class)
+				.into(new ArrayList<ObjectId>());
+		List<ObjectId> ids = getDesentOBSItem(parentIds);
+		return query(new BasicDBObject("_id", new BasicDBObject("$in", ids)));
+	}
+
+	private List<ObjectId> getDesentOBSItem(List<ObjectId> ids) {
+		List<ObjectId> result = new ArrayList<ObjectId>();
+		if (ids != null && !ids.isEmpty()) {
+			result.addAll(ids);
+			List<ObjectId> childrenIds = c("obs")
+					.distinct("_id", new BasicDBObject("parent_id", new BasicDBObject("$in", ids)), ObjectId.class)
+					.into(new ArrayList<ObjectId>());
+			result.addAll(getDesentOBSItem(childrenIds));
+		}
+		return result;
 	}
 
 	@Override

@@ -22,9 +22,12 @@ import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.OrganizationService;
+import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.datatools.FilterAndUpdate;
+import com.mongodb.BasicDBObject;
 
 /**
  * 项目基本模型，用于创建和编辑
@@ -130,8 +133,7 @@ public class Project implements IOBSScope, ICBSScope {
 	@WriteValue
 	@Persistence
 	private String securityLevel;
-	
-	
+
 	@ReadValue
 	@WriteValue
 	@Persistence
@@ -434,17 +436,45 @@ public class Project implements IOBSScope, ICBSScope {
 	public Date[] getCBSRange() {
 		return new Date[] { planStart, planFinish };
 	}
-	
+
 	public boolean isStageEnable() {
 		return stageEnable;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public Project setStatus(String status) {
 		this.status = status;
 		return this;
+	}
+
+	@Override
+	public OBSItem newOBSScopeRoot() {
+
+		ObjectId obsParent_id = Optional.ofNullable(projectSet_id)
+				.map(pjset_id -> ServicesLoader.get(ProjectSetService.class).get(pjset_id)).map(ps -> ps.getOBS_id())
+				.orElse(null);
+
+		OBSItem obsRoot = new OBSItem()// 创建本项目的OBS根节点
+				.set_id(new ObjectId())// 设置_id与项目关联
+				.setScope_id(_id)// 设置scope_id表明该组织节点是该项目的组织
+				.setParent_id(obsParent_id)// 设置上级的id
+				.setName(getName() + "项目组")// 设置该组织节点的默认名称
+				.setRoleId(OBSItem.ID_PM)// 设置该组织节点的角色id
+				.setRoleName(OBSItem.NAME_PM)// 设置该组织节点的名称
+				.setManagerId(getPmId()) // 设置该组织节点的角色对应的人
+				.setScopeRoot(true);// 区分这个节点是范围内的根节点
+
+		return obsRoot;
+
+	}
+
+	@Override
+	public void updateOBSRootId(ObjectId obs_id) {
+		ServicesLoader.get(ProjectService.class).update(new FilterAndUpdate().filter(new BasicDBObject("_id", _id))
+				.set(new BasicDBObject("obs_id", obs_id)).bson());
+		this.obs_id = obs_id;
 	}
 }

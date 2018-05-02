@@ -4,10 +4,13 @@ import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.OperationHandler;
@@ -72,6 +75,16 @@ public class Diagram extends Composite {
 		this.data.addAll(data);
 
 		JsonArray inputData = transformToJsonInput(containerName, this.data);
+		// 根节点具有parent的情况
+		Set<String> parentCode = new HashSet<String>();
+		inputData.forEach(jv -> parentCode.add(jv.asObject().get("id").asString()));
+		inputData.forEach(jv -> {
+			JsonValue _parent = jv.asObject().get("parent");
+			if (_parent != null && _parent.isString() && !parentCode.contains(_parent.asString())) {
+				jv.asObject().remove("parent");
+			}
+		});
+
 		remoteObject.set("inputData", inputData);
 	}
 

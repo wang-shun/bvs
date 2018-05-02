@@ -26,6 +26,7 @@ public class DistributeCBSBudget {
 					.open(r -> {
 						// TODO 在CBS节点上显示分配到哪个阶段
 						// TODO 阶段选择器上显示分配情况
+						// TODO 控制哪些预算可以分配
 						// TODO 取消阶段的预算分配
 						Services.get(CBSService.class).allocateBudget(((CBSItem) parent).get_id(),
 								((WorkInfo) r.get(0)).get_id());

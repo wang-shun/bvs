@@ -35,6 +35,12 @@ public class OBSItem {
 	@Exclude
 	public static final String NAME_PM = "项目经理";
 
+	@Exclude
+	public static final String ID_CHARGER = "WM";
+
+	@Exclude
+	public static final String NAME_CHARGER = "负责人";
+
 	@Override
 	@Label
 	@ReadValue("项目团队/label")
@@ -62,7 +68,7 @@ public class OBSItem {
 
 	@Behavior({ "删除" })
 	public boolean behaviorEditOrDeleteItem() {
-		return parent_id != null;// 根节点能编辑和删除
+		return parent_id != null;// 根节点
 	}
 
 	@ReadValue(ReadValue.TYPE)
@@ -85,10 +91,10 @@ public class OBSItem {
 	@ReadValue
 	@WriteValue
 	private ObjectId scope_id;
-	
+
 	@ReadValue
 	private Integer seq;
-	
+
 	@WriteValue("seq")
 	public void writeSeq(String _seq) {
 		seq = Integer.parseInt(_seq);
@@ -213,9 +219,7 @@ public class OBSItem {
 	@ReadValue("组织结构图/title")
 	public String getDiagramTitle() {
 		String title = "";
-		if (!Util.isEmptyOrNull(roleName))
-			title += roleName;
-		else if (!Util.isEmptyOrNull(name))
+		if (!Util.isEmptyOrNull(name))
 			title += name;
 		return title;
 	}
@@ -227,11 +231,18 @@ public class OBSItem {
 
 	@ReadValue("组织结构图/text")
 	public String getDiagramText() {
+		String text = "";
+		if (!Util.isEmptyOrNull(roleName))
+			text += roleName;
+
 		if (!Util.isEmptyOrNull(managerInfo)) {
-			return managerInfo.substring(0, managerInfo.indexOf("["));
-		} else {
-			return "团队";
+			text += " " + managerInfo.substring(0, managerInfo.indexOf("["));
 		}
+		
+		if(text.isEmpty()) {
+			text += "组";
+		}
+		return text;
 	}
 
 	@ReadValue("组织结构图/parent")
@@ -243,9 +254,9 @@ public class OBSItem {
 	public String getDiagramImage() {
 		if (managerHeadPic != null) {
 			return managerHeadPic.getURL(ServicesLoader.url);
-		}else if(roleId!=null){
+		} else if (roleId != null) {
 			try {
-				return "/bvs/svg?text="+URLEncoder.encode(roleId, "utf-8")+"&color=ffffff";
+				return "/bvs/svg?text=" + URLEncoder.encode(roleId, "utf-8") + "&color=ffffff";
 			} catch (UnsupportedEncodingException e) {
 			}
 		}

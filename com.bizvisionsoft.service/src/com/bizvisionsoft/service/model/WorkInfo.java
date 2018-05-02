@@ -17,6 +17,7 @@ import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
 
@@ -140,7 +141,7 @@ gantt.<span class="me1">init</span><span class="br0">(</span><span class=
  */
 @PersistenceCollection("work")
 @Strict
-public class WorkInfo {
+public class WorkInfo implements ICBSScope, IOBSScope {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// id, 在gantt图中 使用String 类型传递，因此 ReadValue和WriteValue需要用方法重写
@@ -466,7 +467,11 @@ public class WorkInfo {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Persistence
+	private ObjectId cbs_id;
 
+	@Persistence
+	private ObjectId obs_id;
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public WorkInfo set_id(ObjectId _id) {
@@ -560,6 +565,50 @@ public class WorkInfo {
 	public Project getProject() {
 		return Optional.ofNullable(project_id).map(_id -> ServicesLoader.get(ProjectService.class).get(_id))
 				.orElse(null);
+	}
+
+	@Override
+	public ObjectId getScope_id() {
+		return _id;
+	}
+
+	@Override
+	public ObjectId getCBS_id() {
+		return cbs_id;
+	}
+
+	@Override
+	public Date[] getCBSRange() {
+		return ServicesLoader.get(ProjectService.class).getPlanDateRange(project_id).toArray(new Date[0]);
+	}
+
+	@Override
+	public ObjectId getOBS_id() {
+		return obs_id;
+	}
+
+	@Override
+	public OBSItem newOBSScopeRoot() {
+		ObjectId obsParent_id = Optional.ofNullable(getProject()).map(ps -> ps.getOBS_id()).orElse(null);
+
+		OBSItem obsRoot = new OBSItem()// 创建本项目的OBS根节点
+				.set_id(new ObjectId())// 设置_id与项目关联
+				.setScope_id(_id)// 设置scope_id表明该组织节点是该项目的组织
+				.setParent_id(obsParent_id)// 设置上级的id
+				.setName(text + "团队")// 设置该组织节点的默认名称
+				.setRoleId(OBSItem.ID_CHARGER)// 设置该组织节点的角色id
+				.setRoleName(OBSItem.NAME_CHARGER)// 设置该组织节点的名称
+				.setManagerId(chargerId) // 设置该组织节点的角色对应的人
+				.setScopeRoot(true);// 区分这个节点是范围内的根节点
+
+		return obsRoot;
+	}
+
+	@Override
+	public void updateOBSRootId(ObjectId obs_id) {
+		ServicesLoader.get(WorkService.class).updateWork(new FilterAndUpdate().filter(new BasicDBObject("_id", _id))
+				.set(new BasicDBObject("obs_id", obs_id)).bson());
+		this.obs_id = obs_id;
 	}
 
 }
