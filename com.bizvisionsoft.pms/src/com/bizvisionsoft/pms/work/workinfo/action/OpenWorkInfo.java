@@ -8,6 +8,7 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.service.model.ProjectStatus;
 import com.bizvisionsoft.service.model.WorkInfo;
 
 public class OpenWorkInfo {
@@ -21,7 +22,11 @@ public class OpenWorkInfo {
 		WorkInfo work = ((WorkInfo) ((GanttEvent) event).task);
 		if (work.isStage()) {
 			// TODO 区分状态，区分类型
-			bruiService.switchPage("阶段首页（启动）", work.get_id().toHexString());
+			if (ProjectStatus.Created.equals(work.getStatus())) {
+				bruiService.switchPage("阶段首页（启动）", work.get_id().toHexString());
+			} else if (ProjectStatus.Processing.equals(work.getStatus())) {
+				bruiService.switchPage("阶段首页（执行）", work.get_id().toHexString());
+			}
 		}
 	}
 

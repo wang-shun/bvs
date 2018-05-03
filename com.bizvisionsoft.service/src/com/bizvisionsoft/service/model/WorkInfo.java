@@ -366,6 +366,11 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 
 	@Persistence
 	private boolean stage;
+	
+	@Persistence
+	@ReadValue
+	@WriteValue
+	private String status;
 
 	@ReadValue("type")
 	public String getType() {
@@ -624,4 +629,8 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 		this.obs_id = obs_id;
 	}
 
+	
+	public String getStatus() {
+		return status;
+	}
 }

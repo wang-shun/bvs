@@ -1,6 +1,7 @@
 package com.bizvisionsoft.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,9 +9,12 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.model.ProjectStatus;
+import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.WorkLinkInfo;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.result.UpdateResult;
 
 public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 
@@ -90,6 +94,43 @@ public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 	@Override
 	public WorkLinkInfo getLink(ObjectId _id) {
 		return get(_id, WorkLinkInfo.class);
+	}
+
+	@Override
+	public List<Result> start(ObjectId _id, String executeBy) {
+		List<Result> result = startWorkCheck(_id, executeBy);
+		if (!result.isEmpty()) {
+			return result;
+		}
+
+		// 修改状态
+		UpdateResult ur = c(WorkInfo.class).updateOne(new BasicDBObject("_id", _id),
+				new BasicDBObject("$set", new BasicDBObject("status", ProjectStatus.Processing)
+						.append("actualStart", new Date()).append("startBy", executeBy)));
+
+		// 根据ur构造下面的结果
+		if (ur.getModifiedCount() == 0) {
+			result.add(Result.updateFailure("没有满足启动条件的工作。"));
+			return result;
+		}
+
+		// TODO 通知团队成员，工作已经启动
+
+		return result;
+	}
+	
+	private List<Result> startWorkCheck(ObjectId _id, String executeBy) {
+		//////////////////////////////////////////////////////////////////////
+		// 须检查的信息
+		// 1. 检查是否创建了第一层的WBS，并有计划，如果没有，提示警告
+		// 2. 检查组织结构是否完成，如果只有根，警告
+		// 3. 检查第一层的WBS是否指定了必要的角色，如果没有负责人角色，提示警告。
+		// 4. 缺少干系人，警告
+		// 5. 没有做预算，警告
+		// 6. 预算没做完，警告
+		// 7. 预算没有分配，警告
+
+		return new ArrayList<Result>();
 	}
 
 }

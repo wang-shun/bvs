@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.WorkLinkInfo;
 import com.mongodb.BasicDBObject;
@@ -114,5 +115,11 @@ public interface WorkService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public long countChildren(@PathParam("parent_id") ObjectId parent_id);
+
+	@GET
+	@Path("/_id/{_id}/action/start/{executeBy}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public List<Result> start(@PathParam("_id") ObjectId _id, @PathParam("executeBy") String executeBy);
 
 }
