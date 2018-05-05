@@ -79,6 +79,7 @@ public class Organization {
 
 	@ReadValue("managerInfo")
 	@WriteValue("managerInfo")
+	@Exclude
 	private String managerInfo;
 
 	@WriteValue("manager")

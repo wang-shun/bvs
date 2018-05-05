@@ -55,6 +55,7 @@ public class EPSServiceImpl extends BasicServiceImpl implements EPSService {
 			throw new ServiceException("不允许删除有下级节点的EPS记录");
 		}
 
+		//TODO 即便下面没有节点同样也需要考虑是否有其他数据（比如，绩效等等）
 		return delete(_id, EPS.class);
 	}
 
