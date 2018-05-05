@@ -16,6 +16,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.service.model.Result;
+import com.bizvisionsoft.service.model.Stockholder;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.Project;
 import com.mongodb.BasicDBObject;
@@ -65,7 +66,7 @@ public interface ProjectService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public List<WorkInfo> listStage(@PathParam("_id") ObjectId _id);
-	
+
 	@GET
 	@Path("/_id/{_id}/stage/count")
 	@Consumes("application/json; charset=UTF-8")
@@ -84,5 +85,25 @@ public interface ProjectService {
 	@Produces("application/json; charset=UTF-8")
 	public List<Result> distributeProjectPlan(@PathParam("_id") ObjectId _id, @PathParam("executeBy") String executeBy);
 
+	@POST
+	@Path("/_id/{_id}/stockholder/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("项目干系人/list")
+	public List<Stockholder> getStockholders(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition,
+			@ServiceParam(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID) @PathParam("_id") ObjectId _id);
 
+	@POST
+	@Path("/_id/{_id}/stockholder/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("项目干系人/count")
+	public long countStockholders(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter,
+			@ServiceParam(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID) @PathParam("_id") ObjectId _id);
+
+	@POST
+	@Path("/stockholder")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public Stockholder insertStockholder(Stockholder c);
 }

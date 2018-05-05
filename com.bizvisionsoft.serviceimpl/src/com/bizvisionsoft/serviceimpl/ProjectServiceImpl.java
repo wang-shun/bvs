@@ -12,6 +12,7 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.CBSItem;
 import com.bizvisionsoft.service.model.Result;
+import com.bizvisionsoft.service.model.Stockholder;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.OBSItem;
 import com.bizvisionsoft.service.model.Project;
@@ -206,7 +207,7 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 
 	@Override
 	public List<WorkInfo> listStage(ObjectId _id) {
-		//TODO ≈≈–Ú
+		// TODO ≈≈–Ú
 		return new WorkServiceImpl().query(null, null, new BasicDBObject("project_id", _id).append("stage", true),
 				WorkInfo.class);
 	}
@@ -214,6 +215,28 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	@Override
 	public long countStage(ObjectId _id) {
 		return c("work").count(new BasicDBObject("project_id", _id).append("stage", true));
+	}
+
+	@Override
+	public List<Stockholder> getStockholders(BasicDBObject condition, ObjectId _id) {
+		BasicDBObject filter = (BasicDBObject) condition.get("filter");
+		if (filter == null) {
+			filter = new BasicDBObject();
+			condition.put("filter", filter);
+		}
+		filter.append("project_id", _id);
+		return createDataSet(condition, Stockholder.class);
+	}
+
+	@Override
+	public long countStockholders(BasicDBObject filter, ObjectId _id) {
+		filter.append("project_id", _id);
+		return count(filter, Stockholder.class);
+	}
+
+	@Override
+	public Stockholder insertStockholder(Stockholder c) {
+		return insert(c, Stockholder.class);
 	}
 
 }
