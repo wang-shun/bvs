@@ -965,7 +965,8 @@
               }
             ],
             "editorAssemblyEditable": false,
-            "objectBehavier": false
+            "objectBehavier": false,
+            "type": "customized"
           },
           {
             "id": "1628decc6f8",
@@ -1468,42 +1469,8 @@
             "type": "switch"
           },
           {
-            "id": "1631b47e1fd",
-            "name": "进度计划",
-            "openContent": false,
-            "propagate": false,
-            "forceText": false,
-            "children": [
-              {
-                "id": "1631b6d4e7b",
-                "name": "进度计划表",
-                "switchContentToAssemblyId": "1631b7ee056",
-                "openContent": false,
-                "propagate": false,
-                "forceText": false,
-                "editorAssemblyEditable": false,
-                "objectBehavier": false,
-                "type": "switch"
-              },
-              {
-                "id": "1631b6d896d",
-                "name": "进度计划甘特图",
-                "switchContentToAssemblyId": "1628f2f73ab",
-                "openContent": false,
-                "propagate": false,
-                "forceText": false,
-                "editorAssemblyEditable": false,
-                "objectBehavier": false,
-                "type": "switch"
-              }
-            ],
-            "editorAssemblyEditable": false,
-            "objectBehavier": false,
-            "type": "customized"
-          },
-          {
             "id": "1631ac46b97",
-            "name": "阶段团队",
+            "name": "组织管理",
             "openContent": false,
             "propagate": false,
             "forceText": false,
@@ -1540,6 +1507,40 @@
             "type": "customized"
           },
           {
+            "id": "1631b47e1fd",
+            "name": "进度计划",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "1631b6d4e7b",
+                "name": "进度计划表",
+                "switchContentToAssemblyId": "1631b7ee056",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "switch"
+              },
+              {
+                "id": "1631b6d896d",
+                "name": "进度计划甘特图",
+                "switchContentToAssemblyId": "1628f2f73ab",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "switch"
+              }
+            ],
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
             "id": "1631b4793f8",
             "name": "阶段预算",
             "switchContentToAssemblyId": "162ec7a411c",
@@ -1556,6 +1557,300 @@
             "openContent": false,
             "propagate": false,
             "forceText": false,
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          }
+        ]
+      },
+      "footbar": {
+        "behavior": true,
+        "enabled": false
+      },
+      "contentArea": {
+        "typeName": "内容区",
+        "behavior": true,
+        "assemblyLinks": [
+          {
+            "typeName": "组件链接",
+            "behavior": true,
+            "id": "1631ac3637f",
+            "defaultAssembly": true
+          }
+        ]
+      },
+      "home": false,
+      "checkLogin": false,
+      "forceCheckLogin": false,
+      "inputDataSetService": "com.bizvisionsoft.service.WorkService"
+    },
+    {
+      "typeName": "页面",
+      "id": "16324c38e82",
+      "name": "阶段首页（执行）",
+      "title": "阶段首页",
+      "behavior": true,
+      "headbar": {
+        "behavior": true,
+        "enabled": false
+      },
+      "sidebar": {
+        "behavior": true,
+        "enabled": true,
+        "width": 240,
+        "header": "1631b43cace",
+        "toolbarItems": [
+          {
+            "id": "16324d248b3",
+            "name": "下达计划",
+            "description": "下达计划",
+            "tooltips": "下达计划",
+            "image": "/img/tolowlevel_w.svg",
+            "openContent": false,
+            "propagate": false,
+            "forceText": true,
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          }
+        ],
+        "sidebarItems": [
+          {
+            "id": "16324c595d5",
+            "name": "概览",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
+            "id": "16324c59e18",
+            "name": "组织管理",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "16324c5a2fa",
+                "name": "阶段团队",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5a84f",
+                "name": "组织结构图",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              }
+            ],
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
+            "id": "16324c5b264",
+            "name": "进度管理",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "16324c5b799",
+                "name": "进度计划",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5bc6b",
+                "name": "进度计划甘特图",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5c1f2",
+                "name": "设计进度监控",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5c6e4",
+                "name": "采购计划监控",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5cc18",
+                "name": "生产计划监控",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5d3d6",
+                "name": "进度绩效指标",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              }
+            ],
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
+            "id": "16324c5d832",
+            "name": "资源管理",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "16324c5dd98",
+                "name": "资源计划",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5e259",
+                "name": "资源用量",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              }
+            ],
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
+            "id": "16324c5e79e",
+            "name": "成本管理",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "16324c5ecd3",
+                "name": "阶段预算",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5f1a2",
+                "name": "阶段成本",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c5f6eb",
+                "name": "成本绩效指标",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              }
+            ],
+            "editorAssemblyEditable": false,
+            "objectBehavier": false,
+            "type": "customized"
+          },
+          {
+            "id": "16324c5fc1c",
+            "name": "质量管理",
+            "openContent": false,
+            "propagate": false,
+            "forceText": false,
+            "children": [
+              {
+                "id": "16324c6011e",
+                "name": "外购件检验",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c60dcf",
+                "name": "自制件检验",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324c61389",
+                "name": "厂检",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              },
+              {
+                "id": "16324d19f77",
+                "name": "军检",
+                "openContent": false,
+                "propagate": false,
+                "forceText": false,
+                "editorAssemblyEditable": false,
+                "objectBehavier": false,
+                "type": "customized"
+              }
+            ],
             "editorAssemblyEditable": false,
             "objectBehavier": false,
             "type": "customized"
@@ -1749,6 +2044,7 @@
         "gridPageControl": false,
         "gridAutoColumnWidth": false,
         "actions": [],
+        "rowActions": [],
         "borderTop": false,
         "borderRight": false,
         "borderBottom": false,
@@ -1840,6 +2136,7 @@
         "gridPageControl": false,
         "gridAutoColumnWidth": false,
         "actions": [],
+        "rowActions": [],
         "borderTop": false,
         "borderRight": false,
         "borderBottom": false,
@@ -1877,6 +2174,7 @@
         "gridPageControl": false,
         "gridAutoColumnWidth": false,
         "actions": [],
+        "rowActions": [],
         "borderTop": false,
         "borderRight": false,
         "borderBottom": false,
@@ -1914,6 +2212,7 @@
         "gridPageControl": false,
         "gridAutoColumnWidth": false,
         "actions": [],
+        "rowActions": [],
         "borderTop": false,
         "borderRight": false,
         "borderBottom": false,
@@ -3130,6 +3429,7 @@
         "gridPageControl": false,
         "gridAutoColumnWidth": false,
         "actions": [],
+        "rowActions": [],
         "borderTop": false,
         "borderRight": false,
         "borderBottom": false,
@@ -4728,6 +5028,7 @@
             "propagate": false,
             "forceText": false,
             "style": "normal",
+            "children": [],
             "editorAssemblyEditable": false,
             "objectBehavier": true,
             "type": "customized"
@@ -7189,7 +7490,7 @@
             "id": "1622353f017",
             "name": "headPics",
             "text": "头像",
-            "type": "文件选择框",
+            "type": "多个文件选择框",
             "formFields": [],
             "hasInfoLabel": false,
             "textPasswordStyle": false,
@@ -7429,77 +7730,62 @@
         ],
         "fields": [
           {
-            "id": "1622d68f151",
-            "name": "查询条件",
-            "text": "查询条件",
-            "type": "标签页",
-            "formFields": [
-              {
-                "id": "1622d6990eb",
-                "name": "userId",
-                "text": "账号",
-                "type": "文本输入框（查询）",
-                "formFields": [],
-                "hasInfoLabel": false,
-                "textPasswordStyle": false,
-                "readOnly": false,
-                "required": false,
-                "textLimit": 0,
-                "maxFileSize": 0,
-                "timeLimit": 0,
-                "textQueryType": "字符串"
-              },
-              {
-                "id": "1623122bf59",
-                "name": "name",
-                "text": "姓名",
-                "type": "文本输入框（查询）",
-                "formFields": [],
-                "hasInfoLabel": false,
-                "textPasswordStyle": false,
-                "readOnly": false,
-                "required": false,
-                "textLimit": 0,
-                "maxFileSize": 0,
-                "timeLimit": 0,
-                "textQueryType": "字符串"
-              },
-              {
-                "id": "16236b38381",
-                "name": "orgIds",
-                "text": "组织",
-                "type": "多个对象选择框（查询）",
-                "formFields": [],
-                "hasInfoLabel": false,
-                "textPasswordStyle": false,
-                "readOnly": false,
-                "required": false,
-                "textLimit": 0,
-                "selectorAssemblyId": "1621d403c8b",
-                "maxFileSize": 0,
-                "timeLimit": 0
-              },
-              {
-                "id": "1623124fb98",
-                "name": "activated",
-                "text": "激活",
-                "type": "复选框（查询）",
-                "formFields": [],
-                "hasInfoLabel": false,
-                "textPasswordStyle": false,
-                "readOnly": false,
-                "required": false,
-                "textLimit": 0,
-                "checkStyle": "开关（默认）",
-                "maxFileSize": 0,
-                "timeLimit": 0
-              }
-            ],
+            "id": "1622d6990eb",
+            "name": "userId",
+            "text": "账号",
+            "type": "文本输入框（查询）",
+            "formFields": [],
             "hasInfoLabel": false,
             "textPasswordStyle": false,
             "readOnly": false,
             "required": false,
             "textLimit": 0,
+            "maxFileSize": 0,
+            "timeLimit": 0,
+            "textQueryType": "字符串"
+          },
+          {
+            "id": "1623122bf59",
+            "name": "name",
+            "text": "姓名",
+            "type": "文本输入框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "maxFileSize": 0,
+            "timeLimit": 0,
+            "textQueryType": "字符串"
+          },
+          {
+            "id": "16236b38381",
+            "name": "orgIds",
+            "text": "组织",
+            "type": "多个对象选择框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "selectorAssemblyId": "1621d403c8b",
+            "maxFileSize": 0,
+            "timeLimit": 0
+          },
+          {
+            "id": "1623124fb98",
+            "name": "activated",
+            "text": "激活",
+            "type": "复选框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "checkStyle": "开关（默认）",
             "maxFileSize": 0,
             "timeLimit": 0
           }
