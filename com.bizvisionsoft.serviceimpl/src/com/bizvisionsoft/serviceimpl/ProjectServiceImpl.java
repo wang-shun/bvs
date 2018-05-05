@@ -241,15 +241,24 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	}
 
 	@Override
-	public List<Project> getMyProject(BasicDBObject condition) {//, ObjectId _id) {
+	public List<Project> getPMProject(BasicDBObject condition, String userid) {
 		Integer skip = (Integer) condition.get("skip");
 		Integer limit = (Integer) condition.get("limit");
 		BasicDBObject filter = (BasicDBObject) condition.get("filter");
+		if (filter == null) {
+			filter = new BasicDBObject();
+			condition.put("filter", filter);
+		}
+		filter.put("pmId", userid);
 		return query(skip, limit, filter);
 	}
 
 	@Override
-	public long countMyProject(BasicDBObject filter) {
+	public long countPMProject(BasicDBObject filter, String userid) {
+		if(filter == null) {
+			filter = new BasicDBObject();
+		}
+		filter.put("pmId", userid);
 		return count(filter, Project.class);
 	}
 

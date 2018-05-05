@@ -109,25 +109,25 @@ public interface ProjectService {
 	public Stockholder insertStockholder(Stockholder c);
 
 	@POST
-	@Path("/project/ds")
+	@Path("/userid/{userid}/ds")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("我的项目/list")
-	public List<Project> getMyProject(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition);// ,
-	// @ServiceParam(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID) @PathParam("_id")
-	// ObjectId _id);
+	public List<Project> getPMProject(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition,
+			@ServiceParam(ServiceParam.CURRENT_USER_ID) @PathParam("userid") String userid);
 
 	@POST
-	@Path("/project/count/")
+	@Path("/userid/{userid}/count")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("我的项目/count")
-	public long countMyProject(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter);
+	public long countPMProject(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter,
+			@ServiceParam(ServiceParam.CURRENT_USER_ID) @PathParam("userid") String userid);
 
 	@DELETE
-	@Path("/_id/{_id}")
+	@Path("/id/{_id}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	@DataSet("我的项目/"+DataSet.DELETE)
-	public long delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId get_id);
+	@DataSet("我的项目/" + DataSet.DELETE)
+	public long delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId id);
 }

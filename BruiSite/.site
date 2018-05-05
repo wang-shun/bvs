@@ -15775,7 +15775,7 @@
         "gridHideIndentionImage": false,
         "gridAutoHeight": false,
         "gridFix": 3,
-        "gridPageControl": false,
+        "gridPageControl": true,
         "gridDataSetService": "com.bizvisionsoft.service.ProjectService",
         "columns": [
           {
@@ -15801,40 +15801,6 @@
             "text": "名称",
             "alignment": 16384,
             "width": 320,
-            "minimumWidth": 0,
-            "moveable": false,
-            "resizeable": true,
-            "detail": false,
-            "summary": false,
-            "expanded": false,
-            "columns": [],
-            "markupEnabled": false,
-            "sort": 0,
-            "hide": false
-          },
-          {
-            "id": "1632e711f0b",
-            "name": "_elementType",
-            "text": "类型",
-            "alignment": 16384,
-            "width": 80,
-            "minimumWidth": 0,
-            "moveable": false,
-            "resizeable": true,
-            "detail": false,
-            "summary": false,
-            "expanded": false,
-            "columns": [],
-            "markupEnabled": false,
-            "sort": 0,
-            "hide": false
-          },
-          {
-            "id": "1632e717b2e",
-            "name": "pmInfo",
-            "text": "项目经理",
-            "alignment": 16384,
-            "width": 120,
             "minimumWidth": 0,
             "moveable": false,
             "resizeable": true,
@@ -16088,35 +16054,67 @@
             "hide": false
           }
         ],
-        "fields": [],
+        "fields": [
+          {
+            "id": "1632f063e7b",
+            "name": "id",
+            "text": "编号",
+            "type": "文本输入框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "maxFileSize": 0,
+            "timeLimit": 0
+          },
+          {
+            "id": "1632f06d065",
+            "name": "name",
+            "text": "名称",
+            "type": "文本输入框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "maxFileSize": 0,
+            "timeLimit": 0
+          },
+          {
+            "id": "1632f085696",
+            "name": "status",
+            "text": "状态",
+            "type": "下拉选择框（查询）",
+            "formFields": [],
+            "hasInfoLabel": false,
+            "textPasswordStyle": false,
+            "readOnly": false,
+            "required": false,
+            "textLimit": 0,
+            "optionText": "已创建#进行中#收尾中#已关闭#已暂停#已中止",
+            "maxFileSize": 0,
+            "timeLimit": 0
+          }
+        ],
         "gridAutoColumnWidth": false,
-        "actions": [],
-        "rowActions": [
+        "actions": [
           {
-            "id": "1632eae89bc",
-            "name": "编辑项目",
-            "image": "/img/edit_w.svg",
+            "id": "1632f054ced",
+            "name": "查询项目",
+            "image": "/img/search_w.svg",
             "openContent": false,
             "propagate": false,
             "forceText": false,
-            "style": "normal",
-            "editorAssemblyId": "162d2bfa73e",
-            "editorAssemblyEditable": true,
-            "objectBehavier": true,
-            "type": "edit"
-          },
-          {
-            "id": "1632eafb392",
-            "name": "删除项目",
-            "image": "/img/minus_16_w.svg",
-            "openContent": false,
-            "propagate": false,
-            "forceText": false,
-            "style": "warning",
+            "style": "info",
             "editorAssemblyEditable": false,
-            "objectBehavier": true,
-            "type": "delete"
-          },
+            "objectBehavier": false,
+            "type": "query"
+          }
+        ],
+        "rowActions": [
           {
             "id": "1632eb0c047",
             "name": "打开",
