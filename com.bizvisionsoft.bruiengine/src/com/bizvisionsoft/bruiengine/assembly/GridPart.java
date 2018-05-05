@@ -178,7 +178,7 @@ public class GridPart implements IStructuredDataPart {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
-		if (config.isHasTitlebar()) {
+		if (config.isHasTitlebar()&& itemSelector == null) {
 			panel = createSticker(parent);
 		} else {
 			panel = parent;
