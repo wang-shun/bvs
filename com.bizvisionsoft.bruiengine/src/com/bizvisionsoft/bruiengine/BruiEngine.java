@@ -2,9 +2,7 @@ package com.bizvisionsoft.bruiengine;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -46,44 +44,16 @@ public class BruiEngine {
 	final protected <T extends Annotation> Object invokeMethodInjectParams(Class<T> methodAnnotation,
 			Object[] parameters, String[] paramAnnotations, Object defaultValueForNoMethod) {
 		return AUtil.getMethod(clazz, methodAnnotation).map(method -> {
-			return invokeMethodInjectParams(method, parameters, paramAnnotations, MethodParam.class, m -> m.value());
+			return invokeMethodInjectParams(method, parameters, paramAnnotations, MethodParam.class,
+					m -> m.value());
 		}).orElse(defaultValueForNoMethod);
 	}
 
-	protected <T extends Annotation> Object invokeMethodInjectParams(Method method, Object[] parameterValues,
-			String[] paramemterNames, Class<T> parameterAnnotationClass,
+	protected <T extends Annotation> Object invokeMethodInjectParams(Method method, Object[] parameters,
+			String[] paramAnnotations, Class<T> parameterAnnotationClass,
 			Function<T, String> howToGetParameterNameFromAnnotation) {
-		Object[] args;
-		if (paramemterNames == null) {
-			args = parameterValues;
-		} else {
-			args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				T emp = para[i].getAnnotation(parameterAnnotationClass);
-				if (emp != null) {
-					String paramName = howToGetParameterNameFromAnnotation.apply(emp);
-					int idx = -1;
-					for (int j = 0; j < paramemterNames.length; j++) {
-						if (paramemterNames[j].equals(paramName)) {
-							idx = j;
-							break;
-						}
-					}
-					if (idx != -1)
-						args[i] = parameterValues[idx];
-				}
-			}
-		}
-		try {
-			method.setAccessible(true);
-			return method.invoke(getTarget(), args);
-		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-		} catch (InvocationTargetException e1) {
-			e1.getTargetException().printStackTrace();
-			throw new RuntimeException(e1.getTargetException().getMessage());
-		}
-		return null;
+		return AUtil.invokeMethodInjectParams(getTarget(), method, parameters, paramAnnotations, MethodParam.class,
+				m -> m.value());
 	}
 
 	// final protected <T extends Annotation> Object getFieldValue(Class<T>

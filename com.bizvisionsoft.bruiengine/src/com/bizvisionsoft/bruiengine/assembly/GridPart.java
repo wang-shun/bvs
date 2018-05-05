@@ -373,7 +373,7 @@ public class GridPart implements IStructuredDataPart {
 			col.setData("fixedRight", true);
 
 			GridViewerColumn vcol = new GridViewerColumn(viewer, col);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, actions));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, actions,context));
 			grid.addListener(SWT.Selection, e -> {
 				actions.stream().filter(a -> a.getId().equals(e.text)).findFirst().ifPresent(action -> {
 					Object elem = e.item.getData();
@@ -395,7 +395,7 @@ public class GridPart implements IStructuredDataPart {
 			a.setText(itemSelector.label);
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a })));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }),context));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}

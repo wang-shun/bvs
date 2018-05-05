@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -405,4 +406,40 @@ public class AUtil {
 		return message;
 	}
 
+	
+	public static <T extends Annotation> Object invokeMethodInjectParams(Object target,Method method, Object[] parameterValues,
+			String[] paramemterNames, Class<T> parameterAnnotationClass,
+			Function<T, String> howToGetParameterNameFromAnnotation) {
+		Object[] args;
+		if (paramemterNames == null) {
+			args = parameterValues;
+		} else {
+			args = new Object[method.getParameterCount()];
+			Parameter[] para = method.getParameters();
+			for (int i = 0; i < para.length; i++) {
+				T emp = para[i].getAnnotation(parameterAnnotationClass);
+				if (emp != null) {
+					String paramName = howToGetParameterNameFromAnnotation.apply(emp);
+					int idx = -1;
+					for (int j = 0; j < paramemterNames.length; j++) {
+						if (paramemterNames[j].equals(paramName)) {
+							idx = j;
+							break;
+						}
+					}
+					if (idx != -1)
+						args[i] = parameterValues[idx];
+				}
+			}
+		}
+		try {
+			method.setAccessible(true);
+			return method.invoke(target, args);
+		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+		} catch (InvocationTargetException e1) {
+			e1.getTargetException().printStackTrace();
+			throw new RuntimeException(e1.getTargetException().getMessage());
+		}
+		return null;
+	}
 }
