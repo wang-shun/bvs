@@ -52,8 +52,8 @@ public class BruiEngine {
 	protected <T extends Annotation> Object invokeMethodInjectParams(Method method, Object[] parameters,
 			String[] paramAnnotations, Class<T> parameterAnnotationClass,
 			Function<T, String> howToGetParameterNameFromAnnotation) {
-		return AUtil.invokeMethodInjectParams(getTarget(), method, parameters, paramAnnotations, MethodParam.class,
-				m -> m.value());
+		return AUtil.invokeMethodInjectParams(getTarget(), method, parameters, paramAnnotations, parameterAnnotationClass,
+				howToGetParameterNameFromAnnotation);
 	}
 
 	// final protected <T extends Annotation> Object getFieldValue(Class<T>

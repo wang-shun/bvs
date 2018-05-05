@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.assembly;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
@@ -54,8 +55,11 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 						Object input = context.getInput();
 						Object rootInput = context.getRootInput();
 						User user = Brui.sessionManager.getSessionUserInfo();
-						Object[] parameterValues = new Object[] { input, Util.getBson(input).get("_id"), rootInput,
-								Util.getBson(rootInput).get("_id"), user, user.getUserId() };
+						Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+						Object rootInputId = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id"))
+								.orElse(null);
+						Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
+								user.getUserId() };
 						Object value = AUtil.invokeMethodInjectParams(element, m, parameterValues, paramemterNames,
 								ServiceParam.class, f1 -> f1.value());
 						add = Boolean.TRUE.equals(value);
