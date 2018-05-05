@@ -98,12 +98,12 @@ public class ActionMenu extends Part {
 						ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
 						ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
 						ServiceParam.CURRENT_USER_ID };
-				Object input = context.getInput();
+				Object contextInput = context.getInput();
 				Object rootInput = context.getRootInput();
 				User user = Brui.sessionManager.getSessionUserInfo();
-				Object inputid = Optional.ofNullable(input).map(m -> Util.getBson(m).get("_id")).orElse(null);
-				Object rootInputId = Optional.ofNullable(input).map(m -> Util.getBson(m).get("_id")).orElse(null);
-				Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
+				Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
+				Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
+				Object[] parameterValues = new Object[] { contextInput, inputid, rootInput, rootInputId, user,
 						user.getUserId() };
 
 				boolean value = AUtil.readBehavior(input, assembly.getName(), action.getName(), parameterValues,
