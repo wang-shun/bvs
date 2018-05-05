@@ -481,12 +481,12 @@ public class WorkInfo implements ICBSScope, IOBSScope {
 	private ObjectId obs_id;
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	@Structure("list")
+	@Structure("项目进度计划表/list")
 	private List<WorkInfo> listChildren(){
 		return ServicesLoader.get(WorkService.class).listChildren(_id);
 	}
 
-	@Structure("count")
+	@Structure("项目进度计划表/count")
 	private long countChildren(){
 		return ServicesLoader.get(WorkService.class).countChildren(_id);
 	}
