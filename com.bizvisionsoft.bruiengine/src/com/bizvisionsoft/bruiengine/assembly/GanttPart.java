@@ -145,8 +145,8 @@ public class GanttPart {
 		gantt.setInitDateRange(from, to);
 
 		// 查询数据
-		tasks = dataSetEngine.getGanntInputData(new BasicDBObject());
-		links = dataSetEngine.getGanntInputLink(new BasicDBObject());
+		tasks = dataSetEngine.getGanntInputData(new BasicDBObject(),context);
+		links = dataSetEngine.getGanntInputLink(new BasicDBObject(),context);
 
 		// 设置为gantt输入
 		gantt.setInputData(tasks, links);

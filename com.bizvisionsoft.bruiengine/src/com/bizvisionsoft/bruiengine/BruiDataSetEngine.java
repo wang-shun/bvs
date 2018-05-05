@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -216,58 +215,53 @@ public class BruiDataSetEngine extends BruiEngine {
 				a -> a.value());
 	}
 
-	public List<?> getGanntInputLink(BasicDBObject linkFilter) {
+	public List<?> getGanntInputLink(BasicDBObject linkFilter, IBruiContext context) {
 		Method method;
 		method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
-				if (ServiceParam.FILTER.equals(sp.value())) {
-					args[i] = linkFilter;
-				} else {
-					args[i] = null;
-				}
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			if (linkFilter != null) {
+				names.add(ServiceParam.FILTER);
+				values.add(linkFilter);
 			}
 
-			//TODO
-			try {
-				method.setAccessible(true);
-				return (List<?>) method.invoke(getTarget(), args);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			}
-		} else {
+			injectContextInputParameters(context, names, values);
+
+			injectRootContextInputParameters(context, names, values);
+
+			injectUserParameters(names, values);
+
+			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
+					ServiceParam.class, t -> t.value());
+
 		}
 		return null;
 	}
 
-	public List<?> getGanntInputData(BasicDBObject workFilter) {
+	public List<?> getGanntInputData(BasicDBObject workFilter, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
-			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
-				if (ServiceParam.FILTER.equals(sp.value())) {
-					args[i] = workFilter;
-				} else {
-					args[i] = null;
-				}
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			if (workFilter != null) {
+				names.add(ServiceParam.FILTER);
+				values.add(workFilter);
 			}
-			//TODO
 
-			try {
-				method.setAccessible(true);
-				return (List<?>) method.invoke(getTarget(), args);
-			} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-			}
+			injectContextInputParameters(context, names, values);
+
+			injectRootContextInputParameters(context, names, values);
+
+			injectUserParameters(names, values);
+
+			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
+					ServiceParam.class, t -> t.value());
 		} else {
 			throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 data的方法。");
 		}
-		return null;
 	}
 
 	public void replace(Object element, BasicDBObject data) {
