@@ -21,6 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -92,29 +93,12 @@ public class BruiDataSetEngine extends BruiEngine {
 			values.add(new BasicDBObject().append("skip", skip).append("limit", limit).append("filter", filter));
 
 			if (context != null) {
-				Object input = context.getInput();
-				if (input != null) {
-					names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
-					values.add(input);
+				injectContextInputParameters(context, names, values);
 
-					Object _id = Util.getBson(input).get("_id");
-					if (_id != null) {
-						names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
-						values.add(_id);
-					}
-				}
-				input = context.getRootInput();
-				if (input != null) {
-					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
-					values.add(input);
-
-					Object _id = Util.getBson(input).get("_id");
-					if (_id != null) {
-						names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
-						values.add(_id);
-					}
-				}
+				injectRootContextInputParameters(context, names, values);
 			}
+
+			injectUserParameters(names, values);
 
 			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), ServiceParam.class,
 					t -> t.value());
@@ -145,35 +129,62 @@ public class BruiDataSetEngine extends BruiEngine {
 			names.add(ServiceParam.FILTER);
 			values.add(filter);
 
-			if (context != null) {
-				Object input = context.getInput();
-				if (input != null) {
-					names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
-					values.add(input);
+			injectContextInputParameters(context, names, values);
 
-					Object _id = Util.getBson(input).get("_id");
-					if (_id != null) {
-						names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
-						values.add(_id);
-					}
-				}
-				input = context.getRootInput();
-				if (input != null) {
-					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
-					values.add(input);
+			injectRootContextInputParameters(context, names, values);
 
-					Object _id = Util.getBson(input).get("_id");
-					if (_id != null) {
-						names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
-						values.add(_id);
-					}
-				}
-			}
+			injectUserParameters(names, values);
 
-			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), ServiceParam.class,
-					t -> t.value());
+			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
+					ServiceParam.class, t -> t.value());
 		}
 		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 count的方法。");
+	}
+
+	private void injectContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getInput();
+			if (input != null) {
+				names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = Util.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
+	private void injectRootContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getRootInput();
+			if (input != null) {
+				names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = Util.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
+	private void injectUserParameters(List<String> names, List<Object> values) {
+		try {
+			User user = Brui.sessionManager.getSessionUserInfo();
+			if (user != null) {
+				names.add(ServiceParam.CURRENT_USER);
+				values.add(user);
+
+				names.add(ServiceParam.CURRENT_USER_ID);
+				values.add(user.getUserId());
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	public Object query() {
@@ -221,6 +232,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				}
 			}
 
+			//TODO
 			try {
 				method.setAccessible(true);
 				return (List<?>) method.invoke(getTarget(), args);
@@ -245,6 +257,7 @@ public class BruiDataSetEngine extends BruiEngine {
 					args[i] = null;
 				}
 			}
+			//TODO
 
 			try {
 				method.setAccessible(true);
@@ -353,7 +366,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			}
 		});
 	}
-	
+
 	public BruiDataSetEngine newInstance() {
 		return (BruiDataSetEngine) super.newInstance();
 	}
