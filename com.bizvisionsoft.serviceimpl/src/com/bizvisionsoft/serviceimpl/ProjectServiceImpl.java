@@ -13,6 +13,7 @@ import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.model.CBSItem;
 import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.Stockholder;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.OBSItem;
 import com.bizvisionsoft.service.model.Project;
@@ -237,6 +238,34 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 	@Override
 	public Stockholder insertStockholder(Stockholder c) {
 		return insert(c, Stockholder.class);
+	}
+
+	@Override
+	public List<Project> getPMProject(BasicDBObject condition, String userid) {
+		Integer skip = (Integer) condition.get("skip");
+		Integer limit = (Integer) condition.get("limit");
+		BasicDBObject filter = (BasicDBObject) condition.get("filter");
+		if (filter == null) {
+			filter = new BasicDBObject();
+			condition.put("filter", filter);
+		}
+		filter.put("pmId", userid);
+		return query(skip, limit, filter);
+	}
+
+	@Override
+	public long countPMProject(BasicDBObject filter, String userid) {
+		if(filter == null) {
+			filter = new BasicDBObject();
+		}
+		filter.put("pmId", userid);
+		return count(filter, Project.class);
+	}
+
+	@Override
+	public long delete(ObjectId _id) {
+		// TODO É¾³ý¼ì²é
+		return delete(_id, Project.class);
 	}
 
 }

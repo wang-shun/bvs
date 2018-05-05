@@ -352,8 +352,18 @@ public class Project implements IOBSScope, ICBSScope {
 	@Exclude
 	private String typeName = "项目";
 
-	@Behavior("EPS浏览/打开") // 控制action
+	@Behavior({ "EPS浏览/打开", "我的项目/打开" }) // 控制action
 	private boolean enableOpen() {
+		return true;// TODO 考虑权限
+	}
+	
+	@Behavior("我的项目/编辑项目") // 控制action
+	private boolean enableEdit() {
+		return true;//TODO 考虑权限 
+	}
+
+	@Behavior("我的项目/删除项目") // 控制action
+	private boolean enableDelete() {
 		return true;//TODO 考虑权限
 	}
 
