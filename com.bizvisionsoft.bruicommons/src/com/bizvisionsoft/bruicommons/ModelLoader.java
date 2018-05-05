@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruicommons;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -26,7 +27,13 @@ public class ModelLoader implements BundleActivator {
 	}
 
 	public static void loadSite() throws FileNotFoundException {
-		site = new GsonBuilder().create().fromJson(new FileReader(new File(ModelLoader.sitePath)), Site.class);
+		FileReader reader = new FileReader(new File(ModelLoader.sitePath));
+		site = new GsonBuilder().create().fromJson(reader, Site.class);
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void stop(BundleContext context) throws Exception {

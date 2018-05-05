@@ -26,7 +26,9 @@ public class SiteLoader {
 			site = ModelToolkit.createSite();
 			saveSite(file);
 		} else {
-			site = new GsonBuilder().create().fromJson(new FileReader(file), Site.class);
+			FileReader reader = new FileReader(file);
+			site = new GsonBuilder().create().fromJson(reader, Site.class);
+			reader.close();
 		}
 	}
 
@@ -39,9 +41,11 @@ public class SiteLoader {
 			Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 		String json = new GsonBuilder().setPrettyPrinting().create().toJson(site);
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter bw = new BufferedWriter(fw);
 		bw.write(json.toCharArray()); // Ð´ÈëcharÊý×é
 		bw.close();
+		fw.close();
 	}
 
 }
