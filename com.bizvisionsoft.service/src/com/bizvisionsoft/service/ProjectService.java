@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -106,4 +107,28 @@ public interface ProjectService {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public Stockholder insertStockholder(Stockholder c);
+	
+
+	@POST
+	@Path("/userid/{userid}/ds")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("我的项目/list")
+	public List<Project> getPMProject(@ServiceParam(ServiceParam.CONDITION) BasicDBObject condition,
+			@ServiceParam(ServiceParam.CURRENT_USER_ID) @PathParam("userid") String userid);
+
+	@POST
+	@Path("/userid/{userid}/count")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("我的项目/count")
+	public long countPMProject(@ServiceParam(ServiceParam.FILTER) BasicDBObject filter,
+			@ServiceParam(ServiceParam.CURRENT_USER_ID) @PathParam("userid") String userid);
+
+	@DELETE
+	@Path("/id/{_id}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	@DataSet("我的项目/" + DataSet.DELETE)
+	public long delete(@PathParam("_id") @ServiceParam(ServiceParam._ID) ObjectId id);
 }
