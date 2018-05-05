@@ -42,6 +42,10 @@ public @interface ServiceParam {
 
 	String CONTEXT_INPUT_OBJECT_ID = "context_input_object_id";
 
+	String CURRENT_USER = "current_user";
+
+	String CURRENT_USER_ID = "current_user_id";
+
 	String value();
 
 }
