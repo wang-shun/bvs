@@ -35,6 +35,7 @@ public class StartStage {
 				brui.getCurrentUserId());
 		if (result.isEmpty()) {
 			MessageDialog.openInformation(shell, "启动阶段", "阶段启动完成。");
+			
 			brui.switchPage("阶段首页（执行）", ((WorkInfo) stage).get_id().toHexString());
 		}
 		// TODO 显示多条错误信息的通用方法

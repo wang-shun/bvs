@@ -219,6 +219,13 @@ public class Project implements IOBSScope, ICBSScope {
 	@Persistence
 	private boolean stageEnable;
 
+	/**
+	 * 阶段
+	 */
+	@ReadValue
+	@SetValue
+	private WorkInfo stage;
+
 	@Persistence
 	private ObjectId projectTemplate_Id;
 
@@ -356,15 +363,15 @@ public class Project implements IOBSScope, ICBSScope {
 	private boolean enableOpen() {
 		return true;// TODO 考虑权限
 	}
-	
+
 	@Behavior("我的项目/编辑项目") // 控制action
 	private boolean enableEdit() {
-		return true;//TODO 考虑权限 
+		return true;// TODO 考虑权限
 	}
 
 	@Behavior("我的项目/删除项目") // 控制action
 	private boolean enableDelete() {
-		return true;//TODO 考虑权限
+		return true;// TODO 考虑权限
 	}
 
 	@Persistence

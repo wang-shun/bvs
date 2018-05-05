@@ -177,6 +177,8 @@ public class Column extends ModelObject {
 	 */
 	private boolean hide;
 
+	private boolean element;
+
 	public boolean isHide() {
 		return hide;
 	}
@@ -193,6 +195,14 @@ public class Column extends ModelObject {
 	public void setSort(int sort) {
 		this.sort = sort;
 
+	}
+
+	public boolean isElement() {
+		return this.element;
+	}
+	
+	public void setElement(boolean element) {
+		this.element = element;
 	}
 
 }

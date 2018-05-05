@@ -32,6 +32,7 @@ import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
 import org.eclipse.rap.rwt.RWT;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.mongocodex.codec.CodexProvider;
 import com.mongodb.BasicDBObject;
 
@@ -99,6 +100,8 @@ public class Util {
 			text = (boolean) value ? "ÊÇ" : "·ñ";
 		} else if (value instanceof String) {
 			text = (String) value;
+		} else if (value instanceof Object) {
+			text = Optional.ofNullable(AUtil.readLabel(value)).orElse("");
 		} else {
 			text = "";
 		}

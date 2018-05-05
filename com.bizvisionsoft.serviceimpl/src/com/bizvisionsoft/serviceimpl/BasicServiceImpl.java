@@ -91,6 +91,12 @@ public class BasicServiceImpl {
 		pipeline.add(Aggregates.project(new BasicDBObject(tempField, false)));//
 	}
 
+	protected void appendStage(ArrayList<Bson> pipeline, String inputField, String outputField) {
+		pipeline.add(Aggregates.lookup("work", inputField, "_id", outputField));
+
+		pipeline.add(Aggregates.unwind("$" + outputField, new UnwindOptions().preserveNullAndEmptyArrays(true)));
+	}
+
 	protected void appendUserInfo(List<Bson> pipeline, String useIdField, String userInfoField) {
 		String tempField = "_user_" + useIdField;
 
@@ -149,6 +155,18 @@ public class BasicServiceImpl {
 
 	protected MongoCollection<Document> c(String name) {
 		return Service.col(name);
+	}
+
+	protected List<ObjectId> getDesentItems(List<ObjectId> inputIds, String cName, String key) {
+		List<ObjectId> result = new ArrayList<ObjectId>();
+		if (inputIds != null && !inputIds.isEmpty()) {
+			result.addAll(inputIds);
+			List<ObjectId> childrenIds = c(cName)
+					.distinct("_id", new BasicDBObject(key, new BasicDBObject("$in", inputIds)), ObjectId.class)
+					.into(new ArrayList<ObjectId>());
+			result.addAll(getDesentItems(childrenIds, cName, key));
+		}
+		return result;
 	}
 
 }

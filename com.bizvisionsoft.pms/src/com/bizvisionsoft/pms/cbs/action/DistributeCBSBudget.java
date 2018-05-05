@@ -28,8 +28,9 @@ public class DistributeCBSBudget {
 						// TODO 阶段选择器上显示分配情况
 						// TODO 控制哪些预算可以分配
 						// TODO 取消阶段的预算分配
+						WorkInfo workInfo = (WorkInfo) r.get(0);
 						Services.get(CBSService.class).allocateBudget(((CBSItem) parent).get_id(),
-								((WorkInfo) r.get(0)).get_id());
+								workInfo.get_id(),workInfo.toString());
 						// TODO 错误返回
 						// TODO 成功提示
 					});

@@ -120,6 +120,8 @@ public class ProjectServiceImpl extends BasicServiceImpl implements ProjectServi
 		appendOrgFullName(pipeline, "impUnit_id", "impUnitOrgFullName");
 
 		appendUserInfo(pipeline, "pmId", "pmInfo");
+		
+		appendStage(pipeline,"stage_id","stage");
 
 		List<Project> result = new ArrayList<Project>();
 		c(Project.class).aggregate(pipeline).into(result);

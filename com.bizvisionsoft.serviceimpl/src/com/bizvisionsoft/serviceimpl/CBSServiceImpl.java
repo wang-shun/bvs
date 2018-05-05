@@ -189,12 +189,13 @@ public class CBSServiceImpl extends BasicServiceImpl implements CBSService {
 	}
 
 	@Override
-	public void allocateBudget(ObjectId _id, ObjectId work_id) {
+	public void allocateBudget(ObjectId _id, ObjectId work_id, String workname) {
 		UpdateResult ur = c(WorkInfo.class).updateOne(new BasicDBObject("_id", work_id),
 				new BasicDBObject("$set", new BasicDBObject("cbs_id", _id)));
 		ur = c(CBSItem.class).updateOne(new BasicDBObject("_id", _id),
 				new BasicDBObject("$set", new BasicDBObject("scope_id", work_id).append("scopeRoot", true)));
-		//TODO ´íÎó·µ»Ø
+
+		// TODO ´íÎó·µ»Ø
 		System.out.println(ur);
 	}
 

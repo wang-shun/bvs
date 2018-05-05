@@ -91,10 +91,10 @@ public interface CBSService {
 
 
 	@PUT
-	@Path("/_id/{_id}/allocate/{work_id}")
+	@Path("/_id/{_id}/allocate/{work_id}/{workname}")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public void allocateBudget(@PathParam("_id") ObjectId _id, @PathParam("work_id") ObjectId work_id);
+	public void allocateBudget(@PathParam("_id") ObjectId _id, @PathParam("work_id") ObjectId work_id, @PathParam("workname") String workname);
 
 	
 

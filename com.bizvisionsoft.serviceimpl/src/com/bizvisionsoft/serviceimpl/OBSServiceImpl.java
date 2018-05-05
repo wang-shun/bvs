@@ -52,15 +52,7 @@ public class OBSServiceImpl extends BasicServiceImpl implements OBSService {
 	}
 
 	private List<ObjectId> getDesentOBSItem(List<ObjectId> ids) {
-		List<ObjectId> result = new ArrayList<ObjectId>();
-		if (ids != null && !ids.isEmpty()) {
-			result.addAll(ids);
-			List<ObjectId> childrenIds = c("obs")
-					.distinct("_id", new BasicDBObject("parent_id", new BasicDBObject("$in", ids)), ObjectId.class)
-					.into(new ArrayList<ObjectId>());
-			result.addAll(getDesentOBSItem(childrenIds));
-		}
-		return result;
+		return  getDesentItems(ids, "obs", "parent_id");
 	}
 
 	@Override

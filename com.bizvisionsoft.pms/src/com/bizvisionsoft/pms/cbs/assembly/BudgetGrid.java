@@ -58,6 +58,16 @@ public abstract class BudgetGrid extends GridPart {
 		c.setMoveable(false);
 		c.setResizeable(true);
 		createColumn(grid, c).getColumn().setFooterText("CBS×ÜÔ¤Ëã");
+		
+
+		c = new Column();
+		c.setName("scope");
+		c.setText("·¶Î§");
+		c.setWidth(120);
+		c.setAlignment(SWT.LEFT);
+		c.setMoveable(false);
+		c.setResizeable(true);
+		createColumn(grid, c);
 
 		c = new Column();
 		c.setName("budgetTotal");

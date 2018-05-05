@@ -9,10 +9,12 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.ProjectStatus;
 import com.bizvisionsoft.service.model.Result;
 import com.bizvisionsoft.service.model.WorkInfo;
 import com.bizvisionsoft.service.model.WorkLinkInfo;
+import com.bizvisionsoft.serviceimpl.exception.ServiceException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.result.UpdateResult;
 
@@ -110,15 +112,22 @@ public class WorkServiceImpl extends BasicServiceImpl implements WorkService {
 
 		// 根据ur构造下面的结果
 		if (ur.getModifiedCount() == 0) {
-			result.add(Result.updateFailure("没有满足启动条件的工作。"));
-			return result;
+			throw new ServiceException("没有满足启动条件的工作。");
+		}
+
+		ObjectId project_id = c("work").distinct("project_id", new BasicDBObject("_id", _id), ObjectId.class).first();
+		ur = c(Project.class).updateOne(new BasicDBObject("_id", project_id),
+				new BasicDBObject("$set", new BasicDBObject("stage_id", _id)));
+		// 根据ur构造下面的结果
+		if (ur.getModifiedCount() == 0) {
+			throw new ServiceException("无法更新项目当前状态。");
 		}
 
 		// TODO 通知团队成员，工作已经启动
 
 		return result;
 	}
-	
+
 	private List<Result> startWorkCheck(ObjectId _id, String executeBy) {
 		//////////////////////////////////////////////////////////////////////
 		// 须检查的信息

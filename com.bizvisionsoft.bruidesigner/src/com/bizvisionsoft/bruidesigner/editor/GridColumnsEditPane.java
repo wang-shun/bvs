@@ -284,6 +284,8 @@ public class GridColumnsEditPane extends Composite {
 			editor.createCheckboxField(parent, "是否展开（仅适用于列组）：", element, "expanded", SWT.CHECK);
 
 			editor.createTextField(parent, "默认的单元格数据显示格式:", element, "format", SWT.BORDER);
+			
+			editor.createCheckboxField(parent, "显示Input元素：", element, "element", SWT.CHECK);
 
 			editor.createIntegerField(parent, "表格按本列排序（-1逆序，0不排序，1顺序）：", element, "sort", SWT.BORDER, -1, 1);
 
