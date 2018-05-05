@@ -29,7 +29,7 @@ public class CreateSubOrg {
 				new Editor<Organization>(bruiService.getAssembly("组织编辑器"), context).setTitle("创建组织")
 
 						.setInput(org)
-
+						
 						.ok((r, t) -> {
 							Organization result = Services.get(OrganizationService.class).insert(t);
 							GridPart grid = (GridPart) context.getContent();

@@ -161,6 +161,7 @@ public class OrganizationServiceImpl extends BasicServiceImpl implements Organiz
 
 	@Override
 	public long deleteRole(ObjectId _id) {
+		//TODO 完整性问题
 		return delete(_id, Role.class);
 	}
 

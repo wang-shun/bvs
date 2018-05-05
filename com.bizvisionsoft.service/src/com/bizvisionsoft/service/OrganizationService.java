@@ -25,27 +25,27 @@ public interface OrganizationService {
 
 	@POST
 	@Path("/")
-	@Consumes("application/json")
+	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织管理/" + DataSet.INSERT)
 	public Organization insert(@ServiceParam(ServiceParam.OBJECT) Organization orgInfo);
 
 	@POST
 	@Path("/role/")
-	@Consumes("application/json")
+	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@DataSet("组织角色/" + DataSet.INSERT)
 	public Role insertRole(@ServiceParam(ServiceParam.OBJECT) Role role);
 
 	@GET
 	@Path("/{_id}")
-	@Consumes("application/json")
+	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public Organization get(@PathParam("_id") ObjectId _id);
 
 	@GET
 	@Path("/role/{_id}")
-	@Consumes("application/json")
+	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public Role getRole(@PathParam("_id") ObjectId _id);
 
