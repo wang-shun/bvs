@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
@@ -15,9 +16,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.Behavior;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -25,6 +27,7 @@ import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.model.User;
 
 public class ActionMenu extends Part {
 
@@ -90,9 +93,22 @@ public class ActionMenu extends Part {
 		for (int i = 0; i < actions.size(); i++) {
 			Action action = actions.get(i);
 			if (action.isObjectBehavier() && input != null && assembly != null) {
-				//TODO ×¢Èë²ÎÊý
-				Object value = AUtil.read(input.getClass(), Behavior.class, input, assembly.getName(), action.getName(),
-						false, a -> a.value());
+
+				String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
+						ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
+						ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
+						ServiceParam.CURRENT_USER_ID };
+				Object input = context.getInput();
+				Object rootInput = context.getRootInput();
+				User user = Brui.sessionManager.getSessionUserInfo();
+				Object inputid = Optional.ofNullable(input).map(m -> Util.getBson(m).get("_id")).orElse(null);
+				Object rootInputId = Optional.ofNullable(input).map(m -> Util.getBson(m).get("_id")).orElse(null);
+				Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
+						user.getUserId() };
+
+				boolean value = AUtil.readBehavior(input, assembly.getName(), action.getName(), parameterValues,
+						paramemterNames);
+
 				if (Boolean.TRUE.equals(value)) {
 					result.add(action);
 				}

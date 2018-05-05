@@ -1,14 +1,11 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -36,35 +33,19 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 		for (Action action : actions) {
 			boolean add = true;
 			if (action.isObjectBehavier()) {
-				Field f = AUtil.getContainerField(element.getClass(), Behavior.class, config.getName(),
-						action.getName(), a -> a.value()).orElse(null);
-				if (f != null) {
-					f.setAccessible(true);
-					try {
-						add = Boolean.TRUE.equals(f.get(element));
-					} catch (IllegalArgumentException | IllegalAccessException e) {
-					}
-				} else {
-					Method m = AUtil.getContainerMethod(element.getClass(), Behavior.class, config.getName(),
-							action.getName(), a -> a.value()).orElse(null);
-					if (m != null) {
-						String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
-								ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
-								ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
-								ServiceParam.CURRENT_USER_ID };
-						Object input = context.getInput();
-						Object rootInput = context.getRootInput();
-						User user = Brui.sessionManager.getSessionUserInfo();
-						Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
-						Object rootInputId = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id"))
-								.orElse(null);
-						Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
-								user.getUserId() };
-						Object value = AUtil.invokeMethodInjectParams(element, m, parameterValues, paramemterNames,
-								ServiceParam.class, f1 -> f1.value());
-						add = Boolean.TRUE.equals(value);
-					}
-				}
+				String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
+						ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
+						ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
+						ServiceParam.CURRENT_USER_ID };
+				Object input = context.getInput();
+				Object rootInput = context.getRootInput();
+				User user = Brui.sessionManager.getSessionUserInfo();
+				Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+				Object rootInputId = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+				Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
+						user.getUserId() };
+
+				add = AUtil.readBehavior(element, config.getName(), action.getName(), parameterValues, paramemterNames);
 			}
 			if (add)
 				html += UserSession.bruiToolkit().getActionHtml(action, "a");

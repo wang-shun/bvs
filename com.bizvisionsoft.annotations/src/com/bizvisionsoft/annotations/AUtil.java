@@ -11,11 +11,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.google.gson.GsonBuilder;
@@ -406,9 +408,8 @@ public class AUtil {
 		return message;
 	}
 
-	
-	public static <T extends Annotation> Object invokeMethodInjectParams(Object target,Method method, Object[] parameterValues,
-			String[] paramemterNames, Class<T> parameterAnnotationClass,
+	public static <T extends Annotation> Object invokeMethodInjectParams(Object target, Method method,
+			Object[] parameterValues, String[] paramemterNames, Class<T> parameterAnnotationClass,
 			Function<T, String> howToGetParameterNameFromAnnotation) {
 		Object[] args;
 		if (paramemterNames == null) {
@@ -441,5 +442,26 @@ public class AUtil {
 			throw new RuntimeException(e1.getTargetException().getMessage());
 		}
 		return null;
+	}
+
+	public static boolean readBehavior(Object element, String cName, String fName, Object[] parameterValues,
+			String[] paramemterNames) {
+		Field f = getContainerField(element.getClass(), Behavior.class, cName, fName, a -> a.value()).orElse(null);
+		if (f != null) {
+			f.setAccessible(true);
+			try {
+				return Boolean.TRUE.equals(f.get(element));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+			}
+		} else {
+			Method m = AUtil.getContainerMethod(element.getClass(), Behavior.class, cName, fName, a -> a.value())
+					.orElse(null);
+			if (m != null) {
+				Object value = invokeMethodInjectParams(element, m, parameterValues, paramemterNames,
+						ServiceParam.class, f1 -> f1.value());
+				return Boolean.TRUE.equals(value);
+			}
+		}
+		return false;
 	}
 }
