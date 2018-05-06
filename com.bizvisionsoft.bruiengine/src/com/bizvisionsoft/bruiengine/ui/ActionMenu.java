@@ -151,6 +151,12 @@ public class ActionMenu extends Part {
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		page.setLayout(layout);
+		
+		
+		if(pagedAction.size()<=currentPage) {
+			MessageDialog.openInformation(parent.getShell(), "提示", "没有可执行的操作。");
+			return;
+		}
 		pagedAction.get(currentPage).forEach(a -> {
 			Button button = UserSession.bruiToolkit().createButton(page, a, "block");
 			button.setLayoutData(new GridData(unitSize, unitSize));
