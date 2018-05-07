@@ -89,8 +89,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 	}
 
 	protected void start() {
-		BrowserNavigation service = RWT.getClient().getService(BrowserNavigation.class);
-		service.addBrowserNavigationListener(event -> {
+		RWT.getClient().getService(BrowserNavigation.class).addBrowserNavigationListener(event -> {
 			String state = event.getState();
 			if (state.isEmpty()) {
 				switchPage(ModelLoader.site.getHomePage(), null, false);
