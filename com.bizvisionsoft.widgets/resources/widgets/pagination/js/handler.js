@@ -9,7 +9,7 @@
 
 		destructor : "destroy",
 
-		properties : [ "count", "limit", "layouts", "groups", "theme" ]
+		properties : ["count", "limit", "layouts", "groups", "theme" ]
 
 	});
 

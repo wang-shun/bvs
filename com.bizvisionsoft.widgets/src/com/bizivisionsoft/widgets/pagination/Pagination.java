@@ -63,7 +63,9 @@ public class Pagination extends Composite {
 		WidgetToolkit.requireWidgetHandlerJs("pagination");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
-		remoteObject.set("parent", getId(this));
+		String id = getId(this);
+		System.out.println(id);
+		remoteObject.set("parent", id);
 //		remoteObject.set("theme","#3f51b5");
 
 		if ((SWT.LONG & style) != 0) {
@@ -166,6 +168,14 @@ public class Pagination extends Composite {
 
 	public long getGroups() {
 		return groups;
+	}
+	
+	@Override
+	public void dispose() {
+	    if( !isDisposed() ) {
+	        remoteObject.destroy();
+	      }
+	    super.dispose();
 	}
 
 }

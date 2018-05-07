@@ -113,12 +113,21 @@ public class Gantt extends Composite {
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
 		// WidgetToolkit.requireWidgetJs(widgetName,
 		// "codebase/ext/dhtmlxgantt_smart_rendering.js");
-//		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_tooltip.js");
+		// WidgetToolkit.requireWidgetJs(widgetName,
+		// "codebase/ext/dhtmlxgantt_tooltip.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/locale/locale_cn.js");
 
+	}
+
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
 	}
 
 	public Config getConfig() {

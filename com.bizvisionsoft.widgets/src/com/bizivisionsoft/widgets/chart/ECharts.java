@@ -54,4 +54,12 @@ public class ECharts extends Composite {
 		remoteObject.set("option", option);
 	}
 
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
+	}
+
 }

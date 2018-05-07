@@ -12,17 +12,25 @@ public class Container extends Composite {
 	private static final String REMOTE_TYPE = "bizvision.container";
 	private RemoteObject remoteObject;
 
-	public Container(Composite parent,int style,String target) {
-		super(parent,style);
-		
+	public Container(Composite parent, int style, String target) {
+		super(parent, style);
+
 		setData("excludeLayout", true);
-		
+
 		String name = WidgetUtil.getId(this);
 		setHtmlAttribute("name", name);
 		WidgetToolkit.requireWidgetHandlerJs("container");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("name", name);
 		remoteObject.set("target", target);
+	}
+
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
 	}
 
 }

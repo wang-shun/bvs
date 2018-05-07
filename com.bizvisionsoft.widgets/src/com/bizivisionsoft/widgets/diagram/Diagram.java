@@ -153,4 +153,12 @@ public class Diagram extends Composite {
 
 	}
 
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
+	}
+
 }

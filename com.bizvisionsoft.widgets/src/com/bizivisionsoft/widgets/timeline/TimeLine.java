@@ -21,31 +21,30 @@ public class TimeLine extends ScrolledComposite {
 	private RemoteObject remoteObject;
 
 	private JsonArray renderSetting;
-	
+
 	private final OperationHandler operationHandler = new AbstractOperationHandler() {
 
 		@Override
 		public void handleCall(String method, JsonObject parameters) {
 			int width = parameters.get("width").asInt();
 			int height = parameters.get("height").asInt();
-			getContent().setSize(width,height);
+			getContent().setSize(width, height);
 			setMinSize(width, height);
 		}
 	};
 
-
 	public TimeLine(Composite parent, int style) {
-		super(parent, SWT.V_SCROLL|SWT.BORDER);
+		super(parent, SWT.V_SCROLL | SWT.BORDER);
 		setHtmlAttribute("name", "timeline");
 		setExpandHorizontal(true);
 		setExpandVertical(true);
-		Composite content = new Composite(this,SWT.NONE);
+		Composite content = new Composite(this, SWT.NONE);
 		setContent(content);
 		parent.addListener(SWT.Resize, e -> {
 			setMinSize(parent.getSize());
 			remoteObject.set("renderSetting", renderSetting);
 		});
-		
+
 		WidgetToolkit.requireWidgetHandlerJs("timeline");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.set("parent", getId(content));
@@ -58,6 +57,14 @@ public class TimeLine extends ScrolledComposite {
 		renderSetting.add(new JsonObject().add("title", title).add("content", content));
 		remoteObject.set("renderSetting", renderSetting);
 		return this;
+	}
+
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
 	}
 
 }

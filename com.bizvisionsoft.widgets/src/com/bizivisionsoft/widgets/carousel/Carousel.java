@@ -154,4 +154,12 @@ public class Carousel extends Composite {
 		return this;
 	}
 
+	@Override
+	public void dispose() {
+		if (!isDisposed()) {
+			remoteObject.destroy();
+		}
+		super.dispose();
+	}
+
 }
