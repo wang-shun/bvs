@@ -64,7 +64,6 @@ public class Pagination extends Composite {
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		String id = getId(this);
-		System.out.println(id);
 		remoteObject.set("parent", id);
 //		remoteObject.set("theme","#3f51b5");
 
