@@ -143,6 +143,8 @@ public class ModelToolkit {
 				return Activator.getImageDescriptor("icons/tree.gif");
 			if (Assembly.TYPE_ACTION_PANEL.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/actionpanel.png");
+			if (Assembly.TYPE_MESSENGER.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/mail.png");
 			if (Assembly.TYPE_STICKER.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/sticker.png");
 			if (Assembly.TYPE_SELECTOR.equals(((Assembly) model).getType()))
@@ -377,6 +379,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyGanttEditor";
 					} else if (Assembly.TYPE_SELECTOR.equals(type)) {
 						editorId = "bruidesigner.assemblySelectorEditor";
+					} else if (Assembly.TYPE_MESSENGER.equals(type)) {
+						editorId = "bruidesigner.assemblyMessengerEditor";
 					} else if (Assembly.TYPE_ACTION_PANEL.equals(type)) {
 						editorId = "bruidesigner.assemblyActionPanelEditor";
 					} else if (Assembly.TYPE_INFOPAD.equals(type)) {

@@ -415,6 +415,30 @@
                   value="actionpanel">
             </parameter>
          </command>
+         <command
+               commandId="bruidesigner.addAssemblyToLib"
+               icon="icons/mail.png"
+               id="bruidesigner.addMessengerAssemblyToLib"
+               label="创建消息收件箱组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="assemblyType"
+                  value="messenger">
+            </parameter>
+         </command>
          <separator
                name="com.bizvisionsoft.bruidesigner.separator1"
                visible="true">
@@ -695,6 +719,13 @@
             icon="icons/infopad.gif"
             id="bruidesigner.assemblyInfoPadEditor"
             name="信息板组件">
+      </editor>
+      <editor
+            class="com.bizvisionsoft.bruidesigner.editor.AssemblyMessengerEditor"
+            default="false"
+            icon="icons/mail.png"
+            id="bruidesigner.assemblyMessengerEditor"
+            name="消息收件箱组件">
       </editor>
    </extension>
 

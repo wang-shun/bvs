@@ -28,6 +28,8 @@ public class Assembly extends ModelObject {
 			text += " - 甘特图";
 		} else if (TYPE_ACTION_PANEL.equals(type)) {
 			text += " - 操作面板";
+		} else if (TYPE_MESSENGER.equals(type)) {
+			text += " - 消息收件箱";
 		}
 		return text;
 	}
@@ -53,6 +55,9 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_SELECTOR = "selector";
 
 	public static final String TYPE_ACTION_PANEL = "actionpanel";
+	
+	public static final String TYPE_MESSENGER = "messenger";
+
 
 	private String id;
 

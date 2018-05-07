@@ -111,8 +111,12 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 	}
 
 	public void switchPage(Page page, String inputUid, boolean addHistory) {
+		if (currentView != null && !currentView.isDisposed()) {
+			currentView.dispose();
+		}
+				
 		String name = page.getTitle();
-		if(Util.isEmptyOrNull(name)) {
+		if (Util.isEmptyOrNull(name)) {
 			name = page.getName();
 		}
 		View view;
@@ -126,9 +130,6 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 			view = View.create(page, null);
 		}
 
-		if (currentView != null && !currentView.isDisposed()) {
-			currentView.dispose();
-		}
 		currentView = view;
 		view.open();
 
