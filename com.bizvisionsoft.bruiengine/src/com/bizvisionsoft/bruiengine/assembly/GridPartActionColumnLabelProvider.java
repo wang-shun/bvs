@@ -41,7 +41,7 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 				Object rootInput = context.getRootInput();
 				User user = Brui.sessionManager.getSessionUserInfo();
 				Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
-				Object rootInputId = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+				Object rootInputId = Optional.ofNullable(rootInput).map(i -> Util.getBson(i).get("_id")).orElse(null);
 				Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
 						user.getUserId() };
 
