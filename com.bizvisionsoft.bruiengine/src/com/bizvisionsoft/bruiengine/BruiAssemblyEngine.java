@@ -17,13 +17,13 @@ import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.InfopadPart;
 import com.bizvisionsoft.bruiengine.assembly.MessengerInboxPart;
+import com.bizvisionsoft.bruiengine.assembly.SchedulerPart;
 import com.bizvisionsoft.bruiengine.assembly.SelectorPart;
 import com.bizvisionsoft.bruiengine.assembly.StickerPart;
 import com.bizvisionsoft.bruiengine.assembly.TreePart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 
 public class BruiAssemblyEngine extends BruiEngine {
-
 
 	private BruiAssemblyEngine(Class<?> clazz) {
 		super(clazz);
@@ -49,9 +49,11 @@ public class BruiAssemblyEngine extends BruiEngine {
 		} else if (Assembly.TYPE_GRID.equals(type)) {
 			brui = new BruiAssemblyEngine(new GridPart(assembly));
 		} else if (Assembly.TYPE_GANTT.equals(type)) {
-			brui = new BruiAssemblyEngine(new GanttPart(assembly));
+			brui = new BruiAssemblyEngine(new GanttPart());
+		} else if (Assembly.TYPE_SCHEDULER.equals(type)) {
+			brui = new BruiAssemblyEngine(new SchedulerPart());
 		} else if (Assembly.TYPE_TREE.equals(type)) {
-			brui = new BruiAssemblyEngine(new TreePart(assembly));
+			brui = new BruiAssemblyEngine(new TreePart());
 		} else if (Assembly.TYPE_EDITOR.equals(type)) {
 			brui = new BruiAssemblyEngine(new EditorPart(assembly));
 		} else if (Assembly.TYPE_INFOPAD.equals(type)) {

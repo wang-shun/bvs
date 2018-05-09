@@ -26,6 +26,8 @@ public class Assembly extends ModelObject {
 			text += " - 树";
 		} else if (TYPE_GANTT.equals(type)) {
 			text += " - 甘特图";
+		} else if (TYPE_SCHEDULER.equals(type)) {
+			text += " - 日程表";
 		} else if (TYPE_ACTION_PANEL.equals(type)) {
 			text += " - 操作面板";
 		} else if (TYPE_MESSENGER.equals(type)) {
@@ -51,6 +53,8 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_EDITOR = "editor";
 
 	public static final String TYPE_GANTT = "gantt";
+	
+	public static final String TYPE_SCHEDULER = "scheduler";
 
 	public static final String TYPE_SELECTOR = "selector";
 
