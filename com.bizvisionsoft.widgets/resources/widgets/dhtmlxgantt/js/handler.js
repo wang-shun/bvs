@@ -491,7 +491,7 @@
 			this.element.style.top = area[1] + "px";
 			this.element.style.width = area[2] + "px";
 			this.element.style.height = area[3] + "px";
-			gantt.setSizes();
+			this.gantt.setSizes();
 		},
 
 		addListener : function(event) {

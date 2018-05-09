@@ -56,12 +56,11 @@ public class GanttPart {
 
 	private boolean highlightCriticalPath;
 
-	public GanttPart(Assembly config) {
-		this.config = config;
-	}
 
 	@Init
 	private void init() {
+		this.config = context.getAssembly();
+
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 
 		eventEngine = BruiEventEngine.create(config, bruiService, context);

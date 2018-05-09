@@ -1,3 +1,14 @@
+/*
+@license
+dhtmlxScheduler v.4.4.9 Professional
+
+This software can be used only as part of dhtmlx.com site.
+You are not allowed to use it on any other site
+
+(c) Dinamenta, UAB.
+
+
+*/
 function dtmlXMLLoaderObject(e,t,i,r){return this.xmlDoc="","undefined"!=typeof i?this.async=i:this.async=!0,this.onloadAction=e||null,this.mainObject=t||null,this.waitCall=null,this.rSeed=r||!1,this}function callerFunction(e,t){return this.handler=function(i){return i||(i=window.event),e(i,t),!0},this.handler}function getAbsoluteLeft(e){return getOffset(e).left}function getAbsoluteTop(e){return getOffset(e).top}function getOffsetSum(e){for(var t=0,i=0;e;)t+=parseInt(e.offsetTop),i+=parseInt(e.offsetLeft),
 e=e.offsetParent;return{top:t,left:i}}function getOffsetRect(e){var t=e.getBoundingClientRect(),i=0,r=0;if(/Mobi/.test(navigator.userAgent)){var s=document.createElement("div");s.style.position="absolute",s.style.left="0px",s.style.top="0px",s.style.width="1px",s.style.height="1px",document.body.appendChild(s);var a=s.getBoundingClientRect();i=t.top-a.top,r=t.left-a.left,s.parentNode.removeChild(s)}else{var n=document.body,d=document.documentElement,o=window.pageYOffset||d.scrollTop||n.scrollTop,l=window.pageXOffset||d.scrollLeft||n.scrollLeft,h=d.clientTop||n.clientTop||0,_=d.clientLeft||n.clientLeft||0;
 i=t.top+o-h,r=t.left+l-_}return{top:Math.round(i),left:Math.round(r)}}function getOffset(e){return e.getBoundingClientRect?getOffsetRect(e):getOffsetSum(e)}function convertStringToBoolean(e){switch("string"==typeof e&&(e=e.toLowerCase()),e){case"1":case"true":case"yes":case"y":case 1:case!0:return!0;default:return!1}}function getUrlSymbol(e){return-1!=e.indexOf("?")?"&":"?"}function dhtmlDragAndDropObject(){return window.dhtmlDragAndDrop?window.dhtmlDragAndDrop:(this.lastLanding=0,this.dragNode=0,

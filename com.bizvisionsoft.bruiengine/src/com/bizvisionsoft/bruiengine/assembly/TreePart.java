@@ -46,12 +46,9 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	private Object selectedItem;
 
-	public TreePart(Assembly config) {
-		this.config = config;
-	}
-
 	@Init
 	private void init() {
+		config = context.getAssembly();
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 	}
 

@@ -137,6 +137,8 @@ public class ModelToolkit {
 				return Activator.getImageDescriptor("icons/infopad.gif");
 			if (Assembly.TYPE_GANTT.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/gantt.png");
+			if (Assembly.TYPE_SCHEDULER.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/scheduler.png");
 			if (Assembly.TYPE_GRID.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/table.png");
 			if (Assembly.TYPE_TREE.equals(((Assembly) model).getType()))
@@ -373,6 +375,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyGridEditor";
 					} else if (Assembly.TYPE_TREE.equals(type)) {
 						editorId = "bruidesigner.assemblyTreeEditor";
+					} else if (Assembly.TYPE_SCHEDULER.equals(type)) {
+						editorId = "bruidesigner.assemblySchedulerEditor";
 					} else if (Assembly.TYPE_EDITOR.equals(type)) {
 						editorId = "bruidesigner.assemblyEditorEditor";
 					} else if (Assembly.TYPE_GANTT.equals(type)) {

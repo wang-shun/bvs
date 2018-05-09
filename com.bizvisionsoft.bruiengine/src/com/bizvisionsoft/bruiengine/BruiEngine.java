@@ -137,10 +137,12 @@ public class BruiEngine {
 					try {
 						f.setAccessible(true);
 						f.set(target, value);
+					} catch (NullPointerException e) {
+						throw new RuntimeException("注入字段"+f.getName()+"时目标对象空指针异常。", e);
 					} catch (IllegalAccessException e) {
-						throw new RuntimeException("注解为" + Inject.class + "的字段或方法无法访问。", e);
-					} catch (IllegalArgumentException e1) {
-						throw new RuntimeException("注解为" + Inject.class + "的字段或方法参数错误。", e1);
+						throw new RuntimeException("注入字段"+f.getName()+"时目标对象无法访问。", e);
+					} catch (IllegalArgumentException e) {
+						throw new RuntimeException("注入字段"+f.getName()+"时目标对象参数错误。", e);
 					}
 				}
 			}
