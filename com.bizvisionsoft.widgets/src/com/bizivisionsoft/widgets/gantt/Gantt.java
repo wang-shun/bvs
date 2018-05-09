@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -178,7 +180,20 @@ public class Gantt extends Composite {
 		this.links = new ArrayList<Object>();
 		this.links.addAll(links);
 
-		setInputData(transformToJsonInput(containerName, tasks, links, convertor));
+		JsonObject inputDataObject = transformToJsonInput(containerName, tasks, links, convertor);
+		
+		JsonArray inputData =(JsonArray) inputDataObject.get("data");
+				
+		Set<String> parentCode = new HashSet<String>();
+		inputData.forEach(jv -> parentCode.add(jv.asObject().get("id").asString()));
+		inputData.forEach(jv -> {
+			JsonValue _parent = jv.asObject().get("parent");
+			if (_parent != null && _parent.isString() && !parentCode.contains(_parent.asString())) {
+				jv.asObject().remove("parent");
+			}
+		});
+		
+		setInputData(inputDataObject);
 	}
 
 	Object findTask(String id) {

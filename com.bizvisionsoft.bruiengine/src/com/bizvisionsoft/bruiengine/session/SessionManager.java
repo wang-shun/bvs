@@ -69,6 +69,11 @@ public class SessionManager {
 		HttpSession hs = RWT.getRequest().getSession();
 		return (User) hs.getAttribute(ATT_USRINFO);
 	}
+	
+	public String getSessionId() {
+		HttpSession hs = RWT.getRequest().getSession();
+		return hs.getId();
+	}
 
 	/**
 	 * 保存当前http进程中用户信息
