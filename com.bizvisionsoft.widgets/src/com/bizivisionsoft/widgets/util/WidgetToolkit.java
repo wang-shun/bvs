@@ -46,9 +46,13 @@ public class WidgetToolkit {
 	}
 
 	public static void requireWidgetHandlerJs(String widgetName) {
+		requireWidgetHandlerJs(widgetName, "handler.js");
+	}
+	
+	public static void requireWidgetHandlerJs(String widgetName,String jsName) {
 		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
 		String uri = getSiteRoot();
-		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/js/handler.js");
+		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/js/"+jsName);
 	}
 
 	public static void requireWidgetJs(String widgetName, String path) {

@@ -27,6 +27,9 @@ public class AssemblySchedulerEditor extends ModelEditor {
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
+		createComboField(parent, new String[] { "日程表", "时间线" }, new String[] { "scheduler", "timeline" }, "样式",
+				inputData, "schedulerType", SWT.READ_ONLY | SWT.BORDER);
+
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);
@@ -45,7 +48,7 @@ public class AssemblySchedulerEditor extends ModelEditor {
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
-		
+
 		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
 		createCheckboxField(parent, "是否在标题栏上显示根上下文传入对象名称：", inputData, "displayRootInputLabelInTitlebar", SWT.CHECK);
 

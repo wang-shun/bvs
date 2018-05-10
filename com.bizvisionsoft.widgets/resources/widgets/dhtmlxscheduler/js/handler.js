@@ -22,6 +22,8 @@
 	bizvision.dhtmlxscheduler = function(properties) {
 		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy" ]);
 		this.parent = rap.getObject(properties.parent);
+		this.type = properties.type;
+
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
 		this.element.style.height = "100%";
@@ -77,11 +79,10 @@
 		dhx_cal_data.className = "dhx_cal_data";
 		this.element.append(dhx_cal_data);
 
-		this.parent.addListener("Dispose", this.destroy);
-		this.parent.addListener("Resize", this.layout);
-
 		this.scheduler = Scheduler.getSchedulerInstance()
 
+		this.parent.addListener("Dispose", this.destroy);
+		this.parent.addListener("Resize", this.layout);
 		rap.on("render", this.onRender);
 	};
 
@@ -90,33 +91,38 @@
 		onRender : function() {
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
-
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 初始配置
-				this.scheduler.config.readonly = true;
-				this.scheduler.config.xml_date = "%Y-%m-%d %H:%i";
-				this.scheduler.config.first_hour = 7;
-				this.scheduler.config.last_hour = 19;
-				this.scheduler.config.start_on_monday = false;
-				this.scheduler.config.full_day = true;
-				this.scheduler.config.multi_day = true;
-				this.scheduler.xy.nav_height = 48;
-
-				var ro = rap.getRemoteObject(this);
-				this.scheduler.attachEvent("onClick", function(id, e) {
-					ro.call("onClick", {
-						"id" : id,
-						"event" : e
-					});
-					return true;
-				});
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 初始化并加载数据
-				this.scheduler.init(this.element, new Date(), "month");
-				this.scheduler.parse(this.events, "json");
+				if (this.type == "schedule") {
+					renderSchedule();
+				}
 			}
 		},
 
+		renderSchedule:function(){
+			// ////////////////////////////////////////////////////////////////////////////////
+			// 初始配置
+			this.scheduler.config.readonly = true;
+			this.scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+			this.scheduler.config.first_hour = 7;
+			this.scheduler.config.last_hour = 19;
+			this.scheduler.config.start_on_monday = false;
+			this.scheduler.config.full_day = true;
+			this.scheduler.config.multi_day = true;
+			this.scheduler.xy.nav_height = 48;
+
+			var ro = rap.getRemoteObject(this);
+			this.scheduler.attachEvent("onClick", function(id, e) {
+				ro.call("onClick", {
+					"id" : id,
+					"event" : e
+				});
+				return true;
+			});
+			// ////////////////////////////////////////////////////////////////////////////////
+			// 初始化并加载数据
+			this.scheduler.init(this.element, new Date(), "month");
+			this.scheduler.parse(this.events, "json");
+		},
+		
 		setInputData : function(inputData) {
 			this.events = inputData.data;
 		},

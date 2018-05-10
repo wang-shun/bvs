@@ -674,5 +674,16 @@ public class Assembly extends ModelObject {
 		this.smallEditor = smallEditor;
 	}
 
+	//scheduler的属性, schedule, timeline两种
+	
+	private String schedulerType;
+	
+	public void setSchedulerType(String schedulerType) {
+		this.schedulerType = schedulerType;
+	}
+	
+	public String getSchedulerType() {
+		return schedulerType;
+	}
 
 }

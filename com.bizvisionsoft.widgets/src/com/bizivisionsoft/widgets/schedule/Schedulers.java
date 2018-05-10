@@ -49,8 +49,8 @@ public class Schedulers extends Composite {
 	private String containerName;
 
 	private JsonObject inputData;
-
-	public Schedulers(Composite parent) {
+	
+	public Schedulers(Composite parent,String type) {
 		super(parent, SWT.NONE);
 
 		loadJsLibAndCSS();
@@ -58,6 +58,7 @@ public class Schedulers extends Composite {
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
+		remoteObject.set("type", type);
 	}
 
 	private void select(JsonObject jo) {

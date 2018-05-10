@@ -70,7 +70,7 @@ public class SchedulerPart implements IPostSelectionProvider {
 		}
 
 		panel.setLayout(new FillLayout());
-		schedulers = new Schedulers(panel).setContainer(config.getName());
+		schedulers = (Schedulers) new Schedulers(panel,config.getSchedulerType()).setContainer(config.getName());
 
 		// ²éÑ¯Êý¾Ý
 		List<?> input = (List<?>) dataSetEngine.query(null, null, null, context);
