@@ -73,8 +73,7 @@ public class GanttPart {
 
 		ganttConfig.columns = new ArrayList<>();
 		// 配置列和表格宽度
-		int gridWidth = 0;
-		config.getColumns();
+		int gridWidth = 8;
 		for (int i = 0; i < config.getColumns().size(); i++) {
 			Column c = config.getColumns().get(i);
 
@@ -99,6 +98,7 @@ public class GanttPart {
 			}
 			if (c.isHide()) {
 				colConf.hide = c.isHide();
+			}else {
 				gridWidth += c.getWidth();
 			}
 		}

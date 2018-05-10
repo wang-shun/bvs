@@ -90,7 +90,7 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 初始化并加载数据
-				this.gantt.init(this.element, this.initFrom, this.initTo);
+				this.gantt.init(this.element);//, this.initFrom, this.initTo);
 				this.gantt.parse(this.inputData);
 
 			}
