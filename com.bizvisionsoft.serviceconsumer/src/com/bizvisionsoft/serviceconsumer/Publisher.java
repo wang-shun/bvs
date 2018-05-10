@@ -11,6 +11,7 @@ import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
+import com.bizvisionsoft.service.WorkSpaceService;
 import com.bizvisionsoft.service.provider.BsonProvider;
 import com.eclipsesource.jaxrs.consumer.ConsumerPublisher;
 import org.osgi.service.component.ComponentContext;
@@ -46,7 +47,9 @@ public class Publisher {
 
 						ProjectTemplateService.class,
 
-						EPSService.class
+						EPSService.class,
+						
+						WorkSpaceService.class
 
 				},
 
