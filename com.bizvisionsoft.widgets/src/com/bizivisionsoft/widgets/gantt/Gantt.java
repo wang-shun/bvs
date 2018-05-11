@@ -352,11 +352,11 @@ public class Gantt extends Composite {
 				event.doit = false;
 			}
 		} else if (GanttEventCode.onAfterTaskAutoSchedule.name().equals(eventCode)) {
-			event.task = findTask(jo.get("task").asObject().get("id").asString());
-			event.link = findLink(jo.get("link").asObject().get("id").asString());
-			event.startDate = jo.get("start").asString();
-			event.predecessor = jo.get("predecessor").toString();// TODO
-
+			// event.task = findTask(jo.get("task").asObject().get("id").asString());
+			// event.link = findLink(jo.get("link").asObject().get("id").asString());
+			// event.startDate = jo.get("start").asString();
+			// event.predecessor = jo.get("predecessor").toString();
+			// ²»±Øµ¥¶À¿¼ÂÇ
 		} else if (GanttEventCode.onAutoScheduleCircularLink.name().equals(eventCode)) {
 			event.groups = new ArrayList<GanttGroup>();
 			jo.get("groups").asArray().forEach(jv -> {
