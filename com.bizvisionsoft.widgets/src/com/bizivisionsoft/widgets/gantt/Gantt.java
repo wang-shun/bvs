@@ -181,9 +181,9 @@ public class Gantt extends Composite {
 		this.links.addAll(links);
 
 		JsonObject inputDataObject = transformToJsonInput(containerName, tasks, links, convertor);
-		
-		JsonArray inputData =(JsonArray) inputDataObject.get("data");
-				
+
+		JsonArray inputData = (JsonArray) inputDataObject.get("data");
+
 		Set<String> parentCode = new HashSet<String>();
 		inputData.forEach(jv -> parentCode.add(jv.asObject().get("id").asString()));
 		inputData.forEach(jv -> {
@@ -192,7 +192,7 @@ public class Gantt extends Composite {
 				jv.asObject().remove("parent");
 			}
 		});
-		
+
 		setInputData(inputDataObject);
 	}
 
@@ -289,7 +289,7 @@ public class Gantt extends Composite {
 		} else if (GanttEventCode.onAfterAutoSchedule.name().equals(eventCode)) {
 			event.taskId = jo.get("taskId").asString();
 			ArrayList<String> data = new ArrayList<>();
-			jo.get("e").asArray().forEach(v -> data.add(v.asString()));
+			jo.get("updatedTasks").asArray().forEach(v -> data.add(v.asString()));
 			event.updatedTasks = data;
 			// TODO
 		} else if (GanttEventCode.onAfterLinkAdd.name().equals(eventCode)) {
@@ -338,7 +338,8 @@ public class Gantt extends Composite {
 			} else {
 				event.doit = false;
 			}
-		} else if (GanttEventCode.onAfterTaskUpdate.name().equals(eventCode)) {
+		} else if (GanttEventCode.onAfterTaskUpdate.name().equals(eventCode)
+				|| GanttEventCode.onAfterTaskProgress.name().equals(eventCode)) {
 			if (id.isString()) {
 				event.id = id.asString();
 				Object task = findTask(event.id);

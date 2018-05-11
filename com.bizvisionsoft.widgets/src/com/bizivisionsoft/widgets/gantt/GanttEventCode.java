@@ -198,6 +198,10 @@ public enum GanttEventCode {
 	onGridRowMenuClick, 
 	
 	
-	onTaskLinkBefore,
+	onTaskLinkBefore, 
+	
+	onAfterTaskProgress,
+	
+	
 
 }
