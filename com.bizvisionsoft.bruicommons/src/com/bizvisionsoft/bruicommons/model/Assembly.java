@@ -527,6 +527,16 @@ public class Assembly extends ModelObject {
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
 	}
+	
+	private String ganttTimeScaleType;
+	
+	public void setGanttTimeScaleType(String ganttTimeScaleType) {
+		this.ganttTimeScaleType = ganttTimeScaleType;
+	}
+	
+	public String getGanttTimeScaleType() {
+		return ganttTimeScaleType;
+	}
 
 	private boolean ganttGridWidthCalculate;
 	

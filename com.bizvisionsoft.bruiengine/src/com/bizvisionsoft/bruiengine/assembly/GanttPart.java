@@ -56,7 +56,6 @@ public class GanttPart {
 
 	private boolean highlightCriticalPath;
 
-
 	@Init
 	private void init() {
 		this.config = context.getAssembly();
@@ -98,7 +97,7 @@ public class GanttPart {
 			}
 			if (c.isHide()) {
 				colConf.hide = c.isHide();
-			}else {
+			} else {
 				gridWidth += c.getWidth();
 			}
 		}
@@ -111,6 +110,9 @@ public class GanttPart {
 		} else {
 			ganttConfig.grid_width = config.getGanttGridWidth();
 		}
+		
+		//设置默认的时间刻度
+		ganttConfig.brui_initScaletype = config.getGanttTimeScaleType();
 
 	}
 
@@ -133,6 +135,7 @@ public class GanttPart {
 
 		panel.setLayout(new FillLayout());
 		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
+
 		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
 		if (dateRange != null && dateRange.length == 2) {
 			gantt.setInitDateRange(dateRange[0], dateRange[1]);
@@ -144,12 +147,12 @@ public class GanttPart {
 		gantt.setInitDateRange(from, to);
 
 		// 查询数据
-		tasks = dataSetEngine.getGanntInputData(new BasicDBObject(),context);
-		links = dataSetEngine.getGanntInputLink(new BasicDBObject(),context);
+		tasks = dataSetEngine.getGanntInputData(new BasicDBObject(), context);
+		links = dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
 
 		// 设置为gantt输入
 		gantt.setInputData(tasks, links);
-
+		
 		// 设置必须的事件侦听
 		addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
 		addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));
@@ -200,7 +203,8 @@ public class GanttPart {
 	}
 
 	private void showHeadMenu(Event e) {
-		new ActionMenu(bruiService).setAssembly(config).setContext(context).setActions(config.getHeadActions()).setEvent(e).open();
+		new ActionMenu(bruiService).setAssembly(config).setContext(context).setActions(config.getHeadActions())
+				.setEvent(e).open();
 	}
 
 	public void addGanttEventListener(String eventCode, Listener listener) {

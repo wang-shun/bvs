@@ -58,7 +58,17 @@
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置刻度
-				this.configScale_0(this.config);
+				var type = this.config.brui_initScaletype;
+				if (type == "year-month-week") {
+					this.configScale_1(this.config);
+				} else if (type == "year-month") {
+					this.configScale_2(this.config);
+				} else if (type == "month-week") {
+					this.configScale_3(this.config);
+				} else {
+					// "month-week-date"
+					this.configScale_0(this.config);
+				}
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置布局
@@ -71,10 +81,6 @@
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置周末
 				this.configHolidays(this.config);
-
-				// ////////////////////////////////////////////////////////////////////////////////
-				// 自动控制任务类型
-				// this.handleTaskType();
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 接受服务端配置
@@ -107,7 +113,6 @@
 			this.gantt.config.correct_work_time = true;
 
 			this.gantt.config.fit_tasks = true;
-			this.gantt.config.drag_project = true;
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
 
@@ -125,6 +130,20 @@
 			this.gantt.config.links.finish_to_start = "FS";
 			this.gantt.config.links.start_to_finish = "SF";
 			this.gantt.config.links.finish_to_finish = "FF";
+
+			if (config.readonly) {
+				this.gantt.config.drag_project = false;
+				this.gantt.config.drag_links = false;
+				this.gantt.config.drag_move = false;
+				this.gantt.config.drag_progress = false;
+				this.gantt.config.drag_resize = false;
+			} else {
+				this.gantt.config.drag_project = true;
+				this.gantt.config.drag_links = true;
+				this.gantt.config.drag_move = true;
+				this.gantt.config.drag_progress = true;
+				this.gantt.config.drag_resize = true;
+			}
 		},
 
 		configGridMenu : function(config) {
@@ -674,9 +693,9 @@
 				this.configScale_0(this.gantt.config);
 			} else if (type == "year-month-week") {
 				this.configScale_1(this.gantt.config);
-			} else if (type = "year-month") {
+			} else if (type == "year-month") {
 				this.configScale_2(this.gantt.config);
-			} else if (type = "month-week") {
+			} else if (type == "month-week") {
 				this.configScale_3(this.gantt.config);
 			}
 			this.gantt.render();

@@ -798,6 +798,8 @@ public class Config {
 	public boolean brui_HeadMenuEnable;
 
 	public boolean brui_RowMenuEnable;
+	
+	public String brui_initScaletype;
 
 	public Config setReadonly(boolean b) {
 		readonly = b;

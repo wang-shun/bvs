@@ -30,8 +30,12 @@ public class AssemblyGanttEditor extends ModelEditor {
 
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
 
+		createComboField(parent, new String[] { "年月 - 周次 - 日期", "年份 - 月份 - 周次", "年份 - 月份", "年月 - 周次" },
+				new String[] { "month-week-date", "year-month-week", "year-month", "month-week" }, "时间刻度", inputData,
+				"ganttTimeScaleType", SWT.READ_ONLY | SWT.BORDER);
+
 		createCheckboxField(parent, "根据列宽自动设置表格宽度：", inputData, "ganttGridWidthCalculate", SWT.CHECK);
-		
+
 		createIntegerField(parent, "手动设置表格宽度：", inputData, "ganttGridWidth", SWT.BORDER, 0, 4000);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
@@ -62,7 +66,7 @@ public class AssemblyGanttEditor extends ModelEditor {
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
-		
+
 		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
 		createCheckboxField(parent, "是否在标题栏上显示根上下文传入对象名称：", inputData, "displayRootInputLabelInTitlebar", SWT.CHECK);
 
