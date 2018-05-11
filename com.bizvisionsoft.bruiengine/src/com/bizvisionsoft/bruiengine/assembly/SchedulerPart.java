@@ -70,13 +70,19 @@ public class SchedulerPart implements IPostSelectionProvider {
 		}
 
 		panel.setLayout(new FillLayout());
-		schedulers = (Schedulers) new Schedulers(panel,config.getSchedulerType()).setContainer(config.getName());
+		schedulers = (Schedulers) new Schedulers(panel, config.getSchedulerType()).setContainer(config.getName());
 
 		// ²éÑ¯Êý¾Ý
-		List<?> input = (List<?>) dataSetEngine.query(null, null, null, context);
-
+		List<?> input = (List<?>) dataSetEngine.query(null, context, "list");
 		schedulers.setInput(input);
-		
+		if ("timeline".equals(config.getSchedulerType())) {
+			try {
+				List<?> sections = (List<?>) dataSetEngine.query(null, context, "section");
+				schedulers.setSection(sections);
+			} catch (Exception e2) {
+			}
+		}
+
 		context.setSelectionProvider(this);
 
 		List<Action> rowActions = config.getRowActions();
@@ -98,7 +104,7 @@ public class SchedulerPart implements IPostSelectionProvider {
 
 	@Override
 	public ISelection getSelection() {
-		if(selectedItem==null) {
+		if (selectedItem == null) {
 			return StructuredSelection.EMPTY;
 		}
 		return new StructuredSelection(selectedItem);
@@ -121,6 +127,5 @@ public class SchedulerPart implements IPostSelectionProvider {
 	public void removePostSelectionChangedListener(ISelectionChangedListener listener) {
 		postSelectionChangedListeners.remove(listener);
 	}
-
 
 }

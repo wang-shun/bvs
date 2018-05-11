@@ -46,11 +46,15 @@ public class Schedulers extends Composite {
 
 	List<Object> data;
 
+	List<Object> section;
+
 	private String containerName;
 
 	private JsonObject inputData;
-	
-	public Schedulers(Composite parent,String type) {
+
+	private JsonObject sectionData;
+
+	public Schedulers(Composite parent, String type) {
 		super(parent, SWT.NONE);
 
 		loadJsLibAndCSS();
@@ -69,7 +73,7 @@ public class Schedulers extends Composite {
 		event.text = id;
 		Arrays.asList(getListeners(SWT.Selection)).forEach(l -> l.handleEvent(event));
 	}
-	
+
 	private Object findItem(String id) {
 		return this.data.stream().filter(o -> {
 			return id.equals(AUtil.readValue(o, containerName, "id", null));
@@ -83,6 +87,7 @@ public class Schedulers extends Composite {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载插件
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxscheduler_container_autoresize.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxscheduler_timeline.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale
@@ -112,6 +117,15 @@ public class Schedulers extends Composite {
 		remoteObject.set("inputData", inputData);
 	}
 
+	private void setSectionData(JsonObject sectionData) {
+		if (sectionData == null)
+			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+
+		checkWidget();
+		this.sectionData = sectionData;
+		remoteObject.set("sectionData", sectionData);
+	}
+
 	public Schedulers setInput(List<?> tasks) {
 		this.data = new ArrayList<Object>();
 		this.data.addAll(tasks);
@@ -122,6 +136,13 @@ public class Schedulers extends Composite {
 			return v;
 		}));
 
+		return this;
+	}
+
+	public Schedulers setSection(List<?> section) {
+		this.section = new ArrayList<Object>();
+		this.section.addAll(section);
+		setSectionData(transformToJsonInput(containerName, section, null));
 		return this;
 	}
 
@@ -140,4 +161,9 @@ public class Schedulers extends Composite {
 	public JsonObject getInputData() {
 		return inputData;
 	}
+
+	public JsonObject getSectionData() {
+		return sectionData;
+	}
+
 }

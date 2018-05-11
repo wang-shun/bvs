@@ -9,7 +9,7 @@
 
 		destructor : "destroy",
 
-		properties : [ "inputData" ],
+		properties : [ "inputData", "sectionData" ],
 
 		methods : [ "addListener", "removeListener" ]
 
@@ -20,7 +20,8 @@
 	}
 
 	bizvision.dhtmlxscheduler = function(properties) {
-		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy","renderScheduler" ]);
+		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
+				"renderScheduler" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.type = properties.type;
 
@@ -68,6 +69,14 @@
 		month_tab.setAttribute("name", "month_tab");
 		month_tab.style.right = "76px";
 		dhx_cal_navline.append(month_tab);
+		
+		if(this.type == "timeline"){
+			var timeline_tab = document.createElement("div");
+			timeline_tab.className = "dhx_cal_tab";
+			timeline_tab.setAttribute("name", "timeline_tab");
+			timeline_tab.style.right = "10px";
+			dhx_cal_navline.append(timeline_tab);
+		}
 
 		this.element.append(dhx_cal_navline);
 
@@ -93,45 +102,54 @@
 				rap.off("render", this.onRender);
 				if (this.type == "scheduler") {
 					this.renderScheduler();
-				}else if(this.type == "timeline"){
+				} else if (this.type == "timeline") {
 					this.renderTimeline();
 				}
 			}
 		},
-		
-		renderScheduler:function(){
+
+		renderTimeline : function() {
 			var scheduler = this.scheduler;
-			scheduler.attachEvent("onTemplatesReady", function(){
-				scheduler.xy.scale_height = 50;
-			});
-			
-			var view_name = "timeline";
-			scheduler.createTimelineView({
-				name: view_name,
-				x_unit: "day",
-				x_date: "%D<br><b>%j</b>",
-				x_step: 1,
-				x_size: 31,
-				section_autoheight: false,
-				y_unit:   sections,
-				y_property: "section_id",
-				render:"bar",
-				round_position:true,
-				dy:60
+
+			scheduler.locale.labels.timeline_tab = "表格";
+			scheduler.config.readonly = true;
+			scheduler.locale.labels.section_custom = "Section";
+			scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+
+			scheduler.attachEvent("onTemplatesReady", function() {
+				scheduler.xy.scale_height = 32;
 			});
 
-			scheduler.attachEvent("onBeforeViewChange", function(old_mode,old_date,mode,date){
+			var view_name = "timeline";
+			scheduler.createTimelineView({
+				name : view_name,
+				x_unit : "day",
+				x_date : "%D<br><b>%j</b>",
+				x_step : 1,
+				x_size : 31,
+				section_autoheight : true,
+				y_unit : this.sections,
+				y_property : "section_id",
+				render : "bar",
+				round_position : true,
+				dy : 40
+			});
+
+			scheduler.attachEvent("onBeforeViewChange", function(old_mode,
+					old_date, mode, date) {
 				var year = date.getFullYear();
-				var month= (date.getMonth() + 1);
+				var month = (date.getMonth() + 1);
 				var d = new Date(year, month, 0);
-				scheduler.matrix[view_name].x_size = d.getDate();//number of days in month;
+				scheduler.matrix[view_name].x_size = d.getDate();// number of
+																	// days in
+																	// month;
 				return true;
 			});
-			
-			scheduler.date['add_' + view_name] = function(date, step){
-				if(step > 0){
+
+			scheduler.date['add_' + view_name] = function(date, step) {
+				if (step > 0) {
 					step = 1;
-				}else if(step < 0){
+				} else if (step < 0) {
 					step = -1;
 				}
 				return scheduler.date.add(date, step, "month")
@@ -142,7 +160,7 @@
 			scheduler.parse(this.events, "json");
 		},
 
-		renderScheduler:function(){
+		renderScheduler : function() {
 			// ////////////////////////////////////////////////////////////////////////////////
 			// 初始配置
 			this.scheduler.config.readonly = true;
@@ -167,9 +185,13 @@
 			this.scheduler.init(this.element, new Date(), "month");
 			this.scheduler.parse(this.events, "json");
 		},
-		
+
 		setInputData : function(inputData) {
 			this.events = inputData.data;
+		},
+
+		setSectionData : function(sectionData) {
+			this.sections = sectionData.data;
 		},
 
 		onSend : function() {

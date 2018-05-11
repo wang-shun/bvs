@@ -216,39 +216,26 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public List<?> getGanntInputLink(BasicDBObject linkFilter, IBruiContext context) {
-		Method method;
-		method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "links", a -> a.value())
-				.orElse(null);
-		if (method != null) {
-			List<String> names = new ArrayList<String>();
-			List<Object> values = new ArrayList<Object>();
-			if (linkFilter != null) {
-				names.add(ServiceParam.FILTER);
-				values.add(linkFilter);
-			}
-
-			injectContextInputParameters(context, names, values);
-
-			injectRootContextInputParameters(context, names, values);
-
-			injectUserParameters(names, values);
-
-			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
-					ServiceParam.class, t -> t.value());
-
+		try {
+			return query(linkFilter, context, "links");
+		} catch (Exception e) {
 		}
 		return null;
 	}
-
+	
 	public List<?> getGanntInputData(BasicDBObject workFilter, IBruiContext context) {
-		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), "data", a -> a.value())
+		return query(workFilter, context, "data");
+	}
+
+	public List<?> query(BasicDBObject filter, IBruiContext context, String fName) {
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), fName, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
-			if (workFilter != null) {
+			if (filter != null) {
 				names.add(ServiceParam.FILTER);
-				values.add(workFilter);
+				values.add(filter);
 			}
 
 			injectContextInputParameters(context, names, values);
@@ -259,11 +246,11 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
 					ServiceParam.class, t -> t.value());
-		} else {
-			throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 data的方法。");
-		}
-	}
 
+		}
+		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 " + fName + "的方法。");
+	}
+	
 	public void replace(Object element, BasicDBObject data) {
 		Method method = AUtil
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.UPDATE, a -> a.value())
