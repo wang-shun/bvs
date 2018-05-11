@@ -579,7 +579,6 @@
 					|| eventCode == "onTaskUnselected"
 					|| eventCode == "onTaskRowClick") {
 				gantt.attachEvent(eventCode, function(id, e) {
-					console.log(gantt.getTask(id));
 					ro.call(eventCode, {
 						"id" : id
 					});
