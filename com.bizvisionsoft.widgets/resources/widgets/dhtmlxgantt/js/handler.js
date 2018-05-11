@@ -426,7 +426,7 @@
 
 			gantt.attachEvent("onAfterTaskAdd", function onAfterTaskAdd(id) {
 				gantt.batchUpdate(function() {
-					checkParents(id)
+					checkParents(id);
 				});
 			});
 
@@ -440,7 +440,7 @@
 					id, task) {
 				if (delTaskParent != gantt.config.root_id) {
 					gantt.batchUpdate(function() {
-						checkParents(delTaskParent)
+						checkParents(delTaskParent);
 					});
 				}
 			});
