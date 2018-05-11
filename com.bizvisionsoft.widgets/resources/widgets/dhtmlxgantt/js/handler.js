@@ -534,6 +534,7 @@
 		addListener : function(event) {
 			var eventCode = event.name;
 			var ro = rap.getRemoteObject(this);
+			var gantt = this.gantt;
 			if (eventCode == "onAfterAutoSchedule"
 					|| eventCode == "onAfterLinkAdd"
 					|| eventCode == "onAfterLinkDelete"
@@ -547,13 +548,13 @@
 				// 统一处理同步,不能单独添加，否者可能在未更新模型前触发侦听程序，导致不一致的数据
 
 			} else if (eventCode == "onAutoScheduleCircularLink") {
-				this.gantt.attachEvent(eventCode, function(groups) {
+				gantt.attachEvent(eventCode, function(groups) {
 					ro.call(eventCode, {
 						"groups" : groups
 					});
 				});
 			} else if (eventCode == "onCircularLinkError") {
-				this.gantt.attachEvent(eventCode, function(link, group) {
+				gantt.attachEvent(eventCode, function(link, group) {
 					ro.call(eventCode, {
 						"link" : link,
 						"group" : group
@@ -561,11 +562,11 @@
 				});
 			} else if (eventCode == "onEmptyClick"
 					|| eventCode == "onMultiSelect") {
-				this.gantt.attachEvent(eventCode, function(e) {
+				gantt.attachEvent(eventCode, function(e) {
 					ro.call(eventCode, {});
 				});
 			} else if (eventCode == "onError") {
-				this.gantt.attachEvent(eventCode, function(errorMessage) {
+				gantt.attachEvent(eventCode, function(errorMessage) {
 					ro.call(eventCode, {
 						"errorMessage" : errorMessage
 					});
@@ -577,26 +578,27 @@
 					|| eventCode == "onTaskSelected"
 					|| eventCode == "onTaskUnselected"
 					|| eventCode == "onTaskRowClick") {
-				this.gantt.attachEvent(eventCode, function(id, e) {
+				gantt.attachEvent(eventCode, function(id, e) {
+					console.log(gantt.getTask(id));
 					ro.call(eventCode, {
 						"id" : id
 					});
 					return true;
 				});
 			} else if (eventCode == "onLinkValidation") {
-				this.gantt.attachEvent(eventCode, function(link) {
+				gantt.attachEvent(eventCode, function(link) {
 					ro.call(eventCode, {
 						"link" : link
 					});
 				});
 			} else if (eventCode == "onScaleClick") {
-				this.gantt.attachEvent(eventCode, function(e, date) {
+				gantt.attachEvent(eventCode, function(e, date) {
 					ro.call(eventCode, {
 						"date" : date
 					});
 				});
 			} else if (eventCode == "onTaskMultiSelect") {
-				this.gantt.attachEvent(eventCode, function(id, state, e) {
+				gantt.attachEvent(eventCode, function(id, state, e) {
 					ro.call(eventCode, {
 						"id" : id,
 						"state" : state
@@ -613,7 +615,7 @@
 			} else if (eventCode == "onAfterTaskResize") {// 自定义的事件
 			} else if (eventCode == "onAfterTaskProgress") {// 自定义的事件
 			} else {
-				this.gantt.attachEvent(eventCode, function() {
+				gantt.attachEvent(eventCode, function() {
 					ro.call(eventCode, {});
 				});
 			}

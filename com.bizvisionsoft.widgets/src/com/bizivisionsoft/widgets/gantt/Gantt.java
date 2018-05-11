@@ -287,7 +287,10 @@ public class Gantt extends Composite {
 				event.doit = false;
 			}
 		} else if (GanttEventCode.onAfterAutoSchedule.name().equals(eventCode)) {
-			event.taskId = jo.get("taskId").asString();
+			JsonValue jv = jo.get("taskId");
+			if (jv != null && jv.isString()) {
+				event.taskId = jv.asString();
+			}
 			ArrayList<String> data = new ArrayList<>();
 			jo.get("updatedTasks").asArray().forEach(v -> data.add(v.asString()));
 			event.updatedTasks = data;
