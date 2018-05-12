@@ -202,7 +202,7 @@ public class GanttColumnsEditPane extends Composite {
 					//系统字段
 					"text","start_date","end_date","duration","progress","$target","$level",
 					//扩展字段
-					"plan_start","plan_finish","charger","deadline"
+					"plan_start","plan_finish","charger"
 			};
 			editor.createComboField(parent,names , names, "列名称（选择系统字段）：", element, "name", SWT.BORDER|SWT.READ_ONLY);
 
