@@ -2636,6 +2636,9 @@ public class SWT {
    * behavior (value is 1&lt;&lt;4).
    */
   public static final int ICON_WORKING = 1 << 4;
+  
+  public static final int ICON_FINISHED = 1 << 5;
+
 
   /**
    * The style constant for "search" icon. This style constant is

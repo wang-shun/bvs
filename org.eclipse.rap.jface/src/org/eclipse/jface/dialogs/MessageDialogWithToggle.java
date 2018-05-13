@@ -177,6 +177,12 @@ public class MessageDialogWithToggle extends MessageDialog {
             boolean toggleState, IPreferenceStore store, String key) {
     	return open(INFORMATION, parent, title, message, toggleMessage, toggleState, store, key, SWT.NONE);
     }
+    
+    public static MessageDialogWithToggle openFinished(Shell parent,
+            String title, String message, String toggleMessage,
+            boolean toggleState, IPreferenceStore store, String key) {
+    	return open(FINISHED, parent, title, message, toggleMessage, toggleState, store, key, SWT.NONE);
+    }
 
     /**
      * Convenience method to open a simple confirm (OK/Cancel) dialog.

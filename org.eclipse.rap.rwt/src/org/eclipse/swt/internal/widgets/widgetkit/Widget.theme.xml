@@ -107,6 +107,14 @@
         Also returned by Display#getSystemImage().
       </description>
     </property>
+    
+     <property name="rwt-finished-image">
+      <description>
+        The image used for MessageBoxes with style SWT#ICON_WARNING.
+        Also returned by Display#getSystemImage().
+      </description>
+    </property>
+    
 
     <property name="rwt-fontlist">
       <description>

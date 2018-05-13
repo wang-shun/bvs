@@ -1560,7 +1560,10 @@ public class Display extends Device implements Adaptable {
         result = createSystemImage( "rwt-warning-image" );
       break;
       case SWT.ICON_WORKING:
-        result = createSystemImage( "rwt-working-image" );
+          result = createSystemImage( "rwt-working-image" );
+      break;
+      case SWT.ICON_FINISHED:
+          result = createSystemImage( "rwt-finished-image" );
       break;
     }
     return result;

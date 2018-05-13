@@ -59,6 +59,9 @@ public class MessageDialog extends IconAndMessageDialog {
 	 * @see #open(int, Shell, String, String, int)
 	 */
 	public final static int INFORMATION = 2;
+	
+	public final static int FINISHED = 7;
+
 
 	/**
 	 * Constant for the question image, or a simple dialog with the question image
@@ -189,6 +192,10 @@ public class MessageDialog extends IconAndMessageDialog {
 		}
 		case INFORMATION: {
 			this.image = getInfoImage();
+			break;
+		}
+		case FINISHED: {
+			this.image = getFinishedImage();
 			break;
 		}
 		case QUESTION:
@@ -384,6 +391,7 @@ public class MessageDialog extends IconAndMessageDialog {
 		switch (kind) {
 		case ERROR:
 		case INFORMATION:
+		case FINISHED:
 		case WARNING: {
 			dialogButtonLabels = new String[] { IDialogConstants.get().OK_LABEL };
 			break;
@@ -417,6 +425,7 @@ public class MessageDialog extends IconAndMessageDialog {
 		switch (kind) {
 		case ERROR:
 		case INFORMATION:
+		case FINISHED:
 		case WARNING: {
 			dialogButtonLabels = new String[] { "normal" };
 			break;
@@ -482,6 +491,10 @@ public class MessageDialog extends IconAndMessageDialog {
 	 */
 	public static void openInformation(Shell parent, String title, String message) {
 		open(INFORMATION, parent, title, message, SWT.NONE);
+	}
+	
+	public static void openFinished(Shell parent, String title, String message) {
+		open(FINISHED, parent, title, message, SWT.NONE);
 	}
 
 	/**

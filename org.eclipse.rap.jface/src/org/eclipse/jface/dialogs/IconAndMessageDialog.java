@@ -234,6 +234,10 @@ public abstract class IconAndMessageDialog extends Dialog {
 	public Image getErrorImage() {
 		return getSWTImage(SWT.ICON_ERROR);
 	}
+	
+	public Image getFinishedImage() {
+		return getSWTImage(SWT.ICON_FINISHED);
+	}
 
 	/**
 	 * Return the <code>Image</code> to be used when displaying a warning.

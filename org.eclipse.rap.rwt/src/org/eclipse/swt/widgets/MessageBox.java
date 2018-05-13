@@ -199,7 +199,9 @@ public class MessageBox extends Dialog {
     } else if( ( style & SWT.ICON_WARNING ) != 0 ) {
       systemImageId = SWT.ICON_WARNING;
     } else if( ( style & SWT.ICON_WORKING ) != 0 ) {
-      systemImageId = SWT.ICON_WORKING;
+        systemImageId = SWT.ICON_WORKING;
+    } else if( ( style & SWT.ICON_FINISHED ) != 0 ) {
+        systemImageId = SWT.ICON_FINISHED;
     }
     if( systemImageId != -1 ) {
       image = parent.getDisplay().getSystemImage( systemImageId );
