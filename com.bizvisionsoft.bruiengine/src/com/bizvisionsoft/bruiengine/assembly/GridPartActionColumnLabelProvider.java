@@ -33,19 +33,7 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 		for (Action action : actions) {
 			boolean add = true;
 			if (action.isObjectBehavier()) {
-				String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
-						ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
-						ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
-						ServiceParam.CURRENT_USER_ID };
-				Object input = context.getInput();
-				Object rootInput = context.getRootInput();
-				User user = Brui.sessionManager.getSessionUserInfo();
-				Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
-				Object rootInputId = Optional.ofNullable(rootInput).map(i -> Util.getBson(i).get("_id")).orElse(null);
-				Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user,
-						user.getUserId() };
-
-				add = AUtil.readBehavior(element, config.getName(), action.getName(), parameterValues, paramemterNames);
+				add = isAcceptableBehavior(element, action);
 			}
 			if (add)
 				html += UserSession.bruiToolkit().getActionHtml(action, "a");
@@ -54,6 +42,20 @@ public class GridPartActionColumnLabelProvider extends ColumnLabelProvider {
 		}
 		return html;
 
+	}
+
+	private boolean isAcceptableBehavior(Object element, Action action) {
+		String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
+				ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
+				ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER, ServiceParam.CURRENT_USER_ID };
+		Object input = context.getInput();
+		Object rootInput = context.getRootInput();
+		User user = Brui.sessionManager.getSessionUserInfo();
+		Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+		Object rootInputId = Optional.ofNullable(rootInput).map(i -> Util.getBson(i).get("_id")).orElse(null);
+		Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user, user.getUserId() };
+
+		return AUtil.readBehavior(element, config.getName(), action.getName(), parameterValues, paramemterNames);
 	}
 
 }

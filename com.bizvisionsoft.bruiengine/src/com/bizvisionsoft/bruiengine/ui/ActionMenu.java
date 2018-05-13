@@ -106,10 +106,7 @@ public class ActionMenu extends Part {
 				Object[] parameterValues = new Object[] { contextInput, inputid, rootInput, rootInputId, user,
 						user.getUserId() };
 
-				boolean value = AUtil.readBehavior(input, assembly.getName(), action.getName(), parameterValues,
-						paramemterNames);
-
-				if (Boolean.TRUE.equals(value)) {
+				if (AUtil.readBehavior(input, assembly.getName(), action.getName(), parameterValues, paramemterNames)) {
 					result.add(action);
 				}
 			} else {
@@ -151,9 +148,8 @@ public class ActionMenu extends Part {
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		page.setLayout(layout);
-		
-		
-		if(pagedAction.size()<=currentPage) {
+
+		if (pagedAction.size() <= currentPage) {
 			MessageDialog.openInformation(parent.getShell(), "提示", "没有可执行的操作。");
 			return;
 		}
