@@ -346,7 +346,12 @@
 		},
 
 		configComparable : function(config) {
+			if(!config.brui_enableGanttCompare){
+				return;
+			}
 			var gantt = this.gantt;
+			gantt.config.row_height = 52;
+			
 			gantt.addTaskLayer(function draw_planned(task) {
 				if (task.start_date1 && task.end_date1) {
 					var sizes = gantt.getTaskPosition(task, task.start_date1,
@@ -379,6 +384,19 @@
 						"xml_date");
 				return true;
 			});
+			
+			gantt.templates.rightside_text = function (start, end, task) {
+				if (task.end_date1) {
+					var overdue = Math.ceil(Math.abs((end.getTime() - task.end_date1.getTime()) / (24 * 60 * 60 * 1000)));
+					if (end.getTime() > task.end_date1.getTime()) {
+						var text = "<b>+" + overdue + "d</b>";
+						return text;
+					}else if(end.getTime() < task.end_date1.getTime()){
+						var text = "<b>-" + overdue + "d</b>";
+						return text;
+					}
+				}
+			};
 		},
 
 		acceptServerConfig : function(config) {
