@@ -120,6 +120,10 @@ public class ActionMenu extends Part {
 		ArrayList<Action> _actions = new ArrayList<Action>();
 		int units = xUnit * yUnit;
 		int count = actions.size();
+		if (count < xUnit) {
+			xUnit = count;
+		}
+
 		for (int i = 1; i <= count; i++) {
 			_actions.add(actions.get(i - 1));
 			if (i == units - 1 && i != count || i > units - 1 && (i - units + 1) % (units - 2) == 0 && i != count) {
