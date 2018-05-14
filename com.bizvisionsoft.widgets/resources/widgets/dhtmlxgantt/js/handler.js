@@ -26,8 +26,8 @@
 				"genericConfig", "configGridMenu", "configScale_0",
 				"configScale_1", "configScale_2", "configScale_3",
 				"configLayout", "configTaskStyle", "configHolidays",
-				"acceptServerConfig", "onGridMenuClick", "onGridRowMenuClick",
-				"_getHolidayStyle", "handleTaskModify" ]);
+				"configComparable", "acceptServerConfig", "onGridMenuClick",
+				"onGridRowMenuClick", "_getHolidayStyle", "handleTaskModify" ]);
 		this.parent = rap.getObject(properties.parent);
 		this.element = document.createElement("div");
 		this.element.style.width = "100%";
@@ -81,6 +81,10 @@
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置周末
 				this.configHolidays(this.config);
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置对比甘特图
+				this.configComparable(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 接受服务端配置
@@ -339,6 +343,42 @@
 			if (this.dateCell && !this.gantt.isWorkTime(date))
 				return "week_end";
 			return "";
+		},
+
+		configComparable : function(config) {
+			var gantt = this.gantt;
+			gantt.addTaskLayer(function draw_planned(task) {
+				if (task.start_date1 && task.end_date1) {
+					var sizes = gantt.getTaskPosition(task, task.start_date1,
+							task.end_date1);
+					var el = document.createElement('div');
+					el.className = 'baseline';
+					el.style.left = sizes.left + 'px';
+					el.style.width = sizes.width + 'px';
+					el.style.top = sizes.top + gantt.config.task_height + 13
+							+ 'px';
+					return el;
+				}
+				return false;
+			});
+
+			gantt.templates.task_class = function(start, end, task) {
+				if (task.end_date1) {
+					var classes = [ 'has-baseline' ];
+					if (end.getTime() > task.end_date1.getTime()) {
+						classes.push('overdue');
+					}
+					return classes.join(' ');
+				}
+			};
+
+			gantt.attachEvent("onTaskLoading", function(task) {
+				task.start_date1 = gantt.date.parseDate(task.start_date1,
+						"xml_date");
+				task.end_date1 = gantt.date.parseDate(task.end_date1,
+						"xml_date");
+				return true;
+			});
 		},
 
 		acceptServerConfig : function(config) {

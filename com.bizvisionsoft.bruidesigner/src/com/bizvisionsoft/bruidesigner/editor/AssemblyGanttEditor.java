@@ -30,6 +30,9 @@ public class AssemblyGanttEditor extends ModelEditor {
 
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
 
+		createCheckboxField(parent, "启动对比甘特图（将对比start_date1, end_date1注解的字段）：", inputData, "enableGanttCompare",
+				SWT.CHECK);
+
 		createComboField(parent, new String[] { "年月 - 周次 - 日期", "年份 - 月份 - 周次", "年份 - 月份", "年月 - 周次" },
 				new String[] { "month-week-date", "year-month-week", "year-month", "month-week" }, "时间刻度", inputData,
 				"ganttTimeScaleType", SWT.READ_ONLY | SWT.BORDER);

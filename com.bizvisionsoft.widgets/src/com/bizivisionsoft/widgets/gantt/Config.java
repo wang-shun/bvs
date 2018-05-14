@@ -801,6 +801,8 @@ public class Config {
 	
 	public String brui_initScaletype;
 
+	public boolean brui_enableGanttCompare;
+
 	public Config setReadonly(boolean b) {
 		readonly = b;
 		return this;

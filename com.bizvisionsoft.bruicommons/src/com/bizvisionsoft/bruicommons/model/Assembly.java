@@ -519,6 +519,8 @@ public class Assembly extends ModelObject {
 	 * now, only gantt used£¡£¡£¡
 	 */
 	private boolean readonly;
+	
+	private boolean enableGanttCompare;
 
 	public boolean isReadonly() {
 		return readonly;
@@ -526,6 +528,14 @@ public class Assembly extends ModelObject {
 
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
+	}
+	
+	public boolean isEnableGanttCompare() {
+		return enableGanttCompare;
+	}
+	
+	public void setEnableGanttCompare(boolean enableGanttCompare) {
+		this.enableGanttCompare = enableGanttCompare;
 	}
 	
 	private String ganttTimeScaleType;

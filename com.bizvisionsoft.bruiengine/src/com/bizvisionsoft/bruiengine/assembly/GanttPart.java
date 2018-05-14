@@ -113,6 +113,9 @@ public class GanttPart {
 		
 		//设置默认的时间刻度
 		ganttConfig.brui_initScaletype = config.getGanttTimeScaleType();
+		
+		//设置是否为对比甘特图
+		ganttConfig.brui_enableGanttCompare = config.isEnableGanttCompare();
 
 	}
 
