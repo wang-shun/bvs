@@ -87,6 +87,10 @@
 				this.configComparable(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置甘特图显示信息
+				this.configSideContent(this.config);
+
+				// ////////////////////////////////////////////////////////////////////////////////
 				// 接受服务端配置
 				this.acceptServerConfig(this.config);
 
@@ -345,13 +349,40 @@
 			return "";
 		},
 
+		configSideContent : function(config) {
+
+			if (config.grid_width == 0) {
+				var gantt = this.gantt;
+				var formatFunc = gantt.date.date_to_str("%n/%j");
+
+				gantt.templates.rightside_text = function(start, end, task) {
+					var text = formatFunc(end);
+					if (task.end_date1) {
+						var overdue = Math.ceil(Math
+								.abs((end.getTime() - task.end_date1.getTime())
+										/ (24 * 60 * 60 * 1000)));
+						if (end.getTime() > task.end_date1.getTime()) {
+							text += " <b>+" + overdue + "d</b>";
+						} else if (end.getTime() < task.end_date1.getTime()) {
+							text += " <b>-" + overdue + "d</b>";
+						}
+					}
+					return text;
+				};
+
+				gantt.templates.leftside_text = function(start, end, task) {
+					return formatFunc(start);
+				};
+			}
+		},
+
 		configComparable : function(config) {
-			if(!config.brui_enableGanttCompare){
+			if (!config.brui_enableGanttCompare) {
 				return;
 			}
 			var gantt = this.gantt;
 			gantt.config.row_height = 52;
-			
+
 			gantt.addTaskLayer(function draw_planned(task) {
 				if (task.start_date1 && task.end_date1) {
 					var sizes = gantt.getTaskPosition(task, task.start_date1,
@@ -362,6 +393,7 @@
 					el.style.width = sizes.width + 'px';
 					el.style.top = sizes.top + gantt.config.task_height + 13
 							+ 'px';
+					el.innerHTML = task.text;
 					return el;
 				}
 				return false;
@@ -384,14 +416,16 @@
 						"xml_date");
 				return true;
 			});
-			
-			gantt.templates.rightside_text = function (start, end, task) {
+
+			gantt.templates.rightside_text = function(start, end, task) {
 				if (task.end_date1) {
-					var overdue = Math.ceil(Math.abs((end.getTime() - task.end_date1.getTime()) / (24 * 60 * 60 * 1000)));
+					var overdue = Math.ceil(Math
+							.abs((end.getTime() - task.end_date1.getTime())
+									/ (24 * 60 * 60 * 1000)));
 					if (end.getTime() > task.end_date1.getTime()) {
 						var text = "<b>+" + overdue + "d</b>";
 						return text;
-					}else if(end.getTime() < task.end_date1.getTime()){
+					} else if (end.getTime() < task.end_date1.getTime()) {
 						var text = "<b>-" + overdue + "d</b>";
 						return text;
 					}

@@ -132,11 +132,13 @@ public class StickerPart {
 
 	private void setToolbarActions() {
 		final List<Action> actions = new ArrayList<Action>();
-		assembly.getActions().forEach(action -> {
-			if (!action.isObjectBehavier() || isAcceptableBehavior(context.getInput(), action)) {
-				actions.add(action);
-			}
-		});
+		List<Action> list = assembly.getActions();
+		if (list != null)
+			list.forEach(action -> {
+				if (!action.isObjectBehavier() || isAcceptableBehavior(context.getInput(), action)) {
+					actions.add(action);
+				}
+			});
 		bar.setActions(actions);
 	}
 

@@ -936,7 +936,7 @@ Shell-CloseButton,Shell-CloseButton:hover,Shell-CloseButton:inactive,Shell-Close
 
 
 Shell.menu {
-  animation: none;
+  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
   border: none;
   border-radius: 2px;
   background-color: transparent;

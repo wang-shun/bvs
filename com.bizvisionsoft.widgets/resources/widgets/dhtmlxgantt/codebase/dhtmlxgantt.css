@@ -11,17 +11,25 @@
 }
 
 .baseline {
-			position: absolute;
-			border-radius: 20px;
-			opacity: 0.6;
-			margin-top: -6px;
-			height: 18px;
-			background: #ffd180;
-			border: 1px solid rgb(255, 153, 0);
-		}
-		.has-baseline {
-			margin-top: -12px;
-		}		
+	position: absolute;
+	border-radius: 20px;
+	opacity: 0.6;
+	margin-top: -4px;
+	height: 18px;
+	background: #ffd180;
+	border: 1px solid rgb(255, 153, 0);
+	font-size: 14px;
+	width: 100%;
+	top: 0;
+	cursor: pointer;
+	position: absolute;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.has-baseline {
+	margin-top: -12px;
+}		
 
 /* colors for items with inline styles assigned (task.color, link.color)*/
 .gridHoverStyle {
