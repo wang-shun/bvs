@@ -11,4 +11,5 @@ Require-Bundle: org.eclipse.osgi,
 Bundle-Activator: com.bizvisionsoft.mongocodex.Activator
 Import-Package: org.osgi.framework;version="[1.5.0,2.0.0)"
 Export-Package: com.bizvisionsoft.mongocodex,
- com.bizvisionsoft.mongocodex.codec
+ com.bizvisionsoft.mongocodex.codec,
+ com.bizvisionsoft.mongocodex.tools

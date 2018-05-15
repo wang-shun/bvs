@@ -1,7 +1,7 @@
 package com.bizvisionsoft.annotations.md.mongocodex;
 
-public interface IAutoGenerator {
+public interface IAutoGenerator<T> {
 
-	Object generate(String name, String key, Class<?> type);
+	Object generate(T model, String name, String key, Class<?> t);
 
 }

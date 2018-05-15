@@ -322,7 +322,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 		if (key.equals(Generator.DEFAULT_KEY)) {
 			key = clazz.getSimpleName();
 		}
-		final Object value = generator.generate(a.name(), key, t);
+		final Object value = generator.generate(model,a.name(), key, t);
 
 		if (f != null) {
 			f.set(model, value);
@@ -330,12 +330,13 @@ public class Codex<T> implements CollectibleCodec<T> {
 
 		final String callback = a.callback();
 		if (!Generator.NONE_CALLBACK.equals(callback)) {
-			Arrays.asList(clazz.getMethods()).parallelStream().filter(m -> m.getName().equals(callback)).findFirst()
+			Arrays.asList(clazz.getDeclaredMethods()).parallelStream().filter(m -> m.getName().equals(callback)).findFirst()
 					.ifPresent(m -> {
 						try {
 							m.setAccessible(true);
 							m.invoke(model, value);
 						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					});
 		}

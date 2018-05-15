@@ -1,6 +1,5 @@
 package com.bizvisionsoft.mongocodex.tools;
 
-
 import org.bson.Document;
 
 import com.bizvisionsoft.annotations.md.mongocodex.IAutoGenerator;
@@ -10,10 +9,10 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 
-public abstract class SNGen implements IAutoGenerator {
+public abstract class SNGen implements IAutoGenerator<Object> {
 
 	@Override
-	public Object generate(String name, String key, Class<?> type) {
+	public Object generate(Object model, String name, String key, Class<?> type) {
 		Number typedValue = new Long(1);
 		if (Integer.class.isAssignableFrom(type)) {
 			typedValue = typedValue.intValue();
