@@ -178,7 +178,7 @@ public class GridPart implements IStructuredDataPart {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
-		if (config.isHasTitlebar()&& itemSelector == null) {
+		if (config.isHasTitlebar() && itemSelector == null) {
 			panel = createSticker(parent);
 		} else {
 			panel = parent;
@@ -373,7 +373,7 @@ public class GridPart implements IStructuredDataPart {
 			col.setData("fixedRight", true);
 
 			GridViewerColumn vcol = new GridViewerColumn(viewer, col);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, actions,context));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, actions, context));
 			grid.addListener(SWT.Selection, e -> {
 				actions.stream().filter(a -> a.getId().equals(e.text)).findFirst().ifPresent(action -> {
 					Object elem = e.item.getData();
@@ -395,7 +395,8 @@ public class GridPart implements IStructuredDataPart {
 			a.setText(itemSelector.label);
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
-			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }),context));
+			vcol.setLabelProvider(
+					new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }), context));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}
@@ -476,7 +477,7 @@ public class GridPart implements IStructuredDataPart {
 
 		if (config.getGridFix() > 0)
 			grid.setData(RWT.FIXED_COLUMNS, config.getGridFix());
-		
+
 		return viewer;
 	}
 
@@ -584,7 +585,7 @@ public class GridPart implements IStructuredDataPart {
 	public void refresh(Object parent) {
 		viewer.refresh(parent);
 	}
-	
+
 	@Override
 	public void refreshAll() {
 		viewer.refresh();
@@ -709,11 +710,14 @@ public class GridPart implements IStructuredDataPart {
 	public void doCreate(Object parent, Object element) {
 		if (dataSetEngine != null) {
 			Object newElement = dataSetEngine.insert(parent, element);
-			if (parent == null) {
-				insert(newElement);
-			} else {
-				refresh(parent);
-			}
+			insert(newElement);
+		}
+	}
+
+	public void doCreateSubItem(Object parent, Object element) {
+		if (dataSetEngine != null) {
+			dataSetEngine.insert(parent, element);
+			refresh(parent);
 		}
 	}
 
@@ -723,6 +727,5 @@ public class GridPart implements IStructuredDataPart {
 		}
 		return null;
 	}
-
 
 }

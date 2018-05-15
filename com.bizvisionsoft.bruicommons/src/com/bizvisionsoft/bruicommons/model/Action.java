@@ -17,6 +17,8 @@ public class Action extends ModelObject {
 	public static final String TYPE_SWITCHCONTENT = "switch";
 
 	public static final String TYPE_OPENPAGE = "openpage";
+
+	public static final String TYPE_INSERT_SUBITEM = "insertsub";
 	
 	private String id;
 

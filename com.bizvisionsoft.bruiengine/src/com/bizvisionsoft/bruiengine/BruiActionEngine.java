@@ -7,7 +7,8 @@ import org.osgi.framework.Bundle;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruiengine.action.CreateRoot;
+import com.bizvisionsoft.bruiengine.action.CreateItem;
+import com.bizvisionsoft.bruiengine.action.CreateSelectedSubItem;
 import com.bizvisionsoft.bruiengine.action.DeleteSelected;
 import com.bizvisionsoft.bruiengine.action.OpenPage;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
@@ -27,8 +28,12 @@ public class BruiActionEngine extends BruiEngine {
 			String editorId = action.getEditorAssemblyId();
 			String bid = action.getCreateActionNewInstanceBundleId();
 			String cla = action.getCreateActionNewInstanceClassName();
-			brui = new BruiActionEngine(new CreateRoot(ModelLoader.site.getAssembly(editorId), bid, cla));
-
+			brui = new BruiActionEngine(new CreateItem(ModelLoader.site.getAssembly(editorId), bid, cla));
+		} else if (Action.TYPE_INSERT_SUBITEM.equals(type)) {
+			String editorId = action.getEditorAssemblyId();
+			String bid = action.getCreateActionNewInstanceBundleId();
+			String cla = action.getCreateActionNewInstanceClassName();
+			brui = new BruiActionEngine(new CreateSelectedSubItem(ModelLoader.site.getAssembly(editorId), bid, cla));
 		} else if (Action.TYPE_EDIT.equals(type)) {
 			String editorId = action.getEditorAssemblyId();
 			brui = new BruiActionEngine(

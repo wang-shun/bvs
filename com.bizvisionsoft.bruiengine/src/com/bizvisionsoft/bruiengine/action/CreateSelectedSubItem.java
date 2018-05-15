@@ -14,7 +14,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 
-public class CreateRoot {
+public class CreateSelectedSubItem {
 
 	@Inject
 	private IBruiService bruiService;
@@ -25,7 +25,7 @@ public class CreateRoot {
 
 	private String className;
 
-	public CreateRoot(Assembly assembly, String bundleId, String className) {
+	public CreateSelectedSubItem(Assembly assembly, String bundleId, String className) {
 		this.assembly = assembly;
 		this.bundleId = bundleId;
 		this.className = className;
@@ -41,7 +41,7 @@ public class CreateRoot {
 			editor.setTitle("´´½¨ " + message);
 			editor.ok((r, o) -> {
 				GridPart grid = (GridPart) context.getContent();
-				grid.doCreate(parent, o);
+				grid.doCreateSubItem(parent, o);
 			});
 
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {

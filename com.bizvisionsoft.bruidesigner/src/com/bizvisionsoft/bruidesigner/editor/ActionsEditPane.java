@@ -244,6 +244,13 @@ public class ActionsEditPane extends SashForm {
 		});
 
 		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("创建选中对象的下级对象（适用于表格组件）");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_INSERT_SUBITEM));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
 		item.setText("编辑或打开选择中对象（适用于表格组件）");
 		item.addListener(SWT.Selection, e -> {
 			actions.add(ModelToolkit.createAction(Action.TYPE_EDIT));
@@ -299,9 +306,11 @@ public class ActionsEditPane extends SashForm {
 		if (action != null) {
 
 			editor.createComboField(parent,
-					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "自定义操作" },
+					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询",
+							"自定义操作" },
 					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT,
-							Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY, Action.TYPE_CUSTOMIZED },
+							Action.TYPE_INSERT_SUBITEM, Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY,
+							Action.TYPE_CUSTOMIZED },
 					"操作类型：", action, "type", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "唯一标识符:", action, "id", SWT.READ_ONLY);
@@ -346,7 +355,8 @@ public class ActionsEditPane extends SashForm {
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_INSERT.equals(action.getType())) {
 				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
-				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId", SWT.BORDER);
+				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId",
+						SWT.BORDER);
 				editor.createTextField(parent, "新对象的完整类名:", action, "createActionNewInstanceClassName", SWT.BORDER);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////

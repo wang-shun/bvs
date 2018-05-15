@@ -69,7 +69,7 @@ public abstract class Part implements Serializable {
 	 * @return the shell
 	 */
 	protected final Shell createShell() {
-		// CreateRoot the shell
+		// CreateItem the shell
 		Shell newShell = new Shell(parentShell, getShellStyle());
 		newShell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		// Set the layout
