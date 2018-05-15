@@ -95,8 +95,8 @@ public class StickerPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
 		}
-		bar = new StickerTitlebar(parent, closeAction, rightActions);
-		bar.setText(text).setActions(assembly.getActions());
+		bar = new StickerTitlebar(parent, closeAction, rightActions).setText(text);
+		setToolbarActions();
 		FormData fd = new FormData();
 		bar.setLayoutData(fd);
 		fd.left = new FormAttachment(0);
@@ -120,9 +120,6 @@ public class StickerPart {
 				int idx = rightActions.indexOf(action);
 				rightConsumers.get(idx).accept(context);
 			} else {
-				if (action.isObjectBehavier() && !isAcceptableBehavior(context.getInput(), action)) {
-					return;
-				}
 				try {
 					BruiActionEngine.create(action, service).invokeExecute(e, context);
 				} catch (Exception e2) {
@@ -131,6 +128,16 @@ public class StickerPart {
 				}
 			}
 		});
+	}
+
+	private void setToolbarActions() {
+		final List<Action> actions = new ArrayList<Action>();
+		assembly.getActions().forEach(action -> {
+			if (!action.isObjectBehavier() || isAcceptableBehavior(context.getInput(), action)) {
+				actions.add(action);
+			}
+		});
+		bar.setActions(actions);
 	}
 
 	private boolean isAcceptableBehavior(Object element, Action action) {
