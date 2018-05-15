@@ -262,10 +262,8 @@
 			gantt.config.min_column_width = 40;
 			gantt.config.scale_height = 90;
 			var weekScaleTemplate = function(date) {
-				var dateToStr = gantt.date.date_to_str("%n月%j日");
-				var endDate = gantt.date.add(gantt.date.add(date, 1, "week"),
-						-1, "day");
-				return dateToStr(date) + " - " + dateToStr(endDate);
+				var dateToStr = gantt.date.date_to_str("%n/%j");
+				return dateToStr(date);
 			};
 			gantt.config.subscales = [ {
 				unit : "week",
