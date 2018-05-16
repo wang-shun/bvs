@@ -211,7 +211,7 @@ public class BruiToolkit {
 		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
 
 		String text = "";
-		if (imageUrl != null) {
+		if (imageUrl != null && !imageUrl.isEmpty()) {
 			if ("block".equals(layoutStyle)) {// ¿é×´²¼¾Ö
 				text += "<img alter='" + a.getName() + "' src='" + getResourceURL(a.getImage())
 						+ "' style='cursor:pointer;' width='32px' height='32px'></img>";

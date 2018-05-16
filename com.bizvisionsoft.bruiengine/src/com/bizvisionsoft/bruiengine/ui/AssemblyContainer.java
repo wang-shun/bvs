@@ -132,8 +132,7 @@ public class AssemblyContainer {
 		// 创建子部件
 		layout.getAssemblys().forEach(al -> // 迭代
 		new AssemblyContainer((Composite) content, context)// 创建嵌套AssemblyContainer
-				.setInput(input)
-				.setAssembly(ModelLoader.site.getAssembly(al.getId()))// 设置组件
+				.setInput(input).setAssembly(ModelLoader.site.getAssembly(al.getId()))// 设置组件
 				.setContextName(al.getLayoutName())// 设置命名
 				.setServices(services)// 传递服务
 				.create()// 创建
@@ -177,7 +176,11 @@ public class AssemblyContainer {
 	}
 
 	public void setCloseable(boolean closeable) {
-		this.context.setCloseable( closeable);
+		this.context.setCloseable(closeable);
+	}
+
+	public BruiAssemblyContext getContext() {
+		return context;
 	}
 
 }
