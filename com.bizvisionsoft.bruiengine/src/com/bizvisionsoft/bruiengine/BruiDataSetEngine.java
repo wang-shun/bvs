@@ -222,7 +222,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 		return null;
 	}
-	
+
 	public List<?> getGanntInputData(BasicDBObject workFilter, IBruiContext context) {
 		return query(workFilter, context, "data");
 	}
@@ -250,7 +250,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 " + fName + "的方法。");
 	}
-	
+
 	public void replace(Object element, BasicDBObject data) {
 		Method method = AUtil
 				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.UPDATE, a -> a.value())

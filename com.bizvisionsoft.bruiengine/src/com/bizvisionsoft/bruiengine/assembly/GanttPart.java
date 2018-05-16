@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -110,11 +111,11 @@ public class GanttPart {
 		} else {
 			ganttConfig.grid_width = config.getGanttGridWidth();
 		}
-		
-		//设置默认的时间刻度
+
+		// 设置默认的时间刻度
 		ganttConfig.brui_initScaletype = config.getGanttTimeScaleType();
-		
-		//设置是否为对比甘特图
+
+		// 设置是否为对比甘特图
 		ganttConfig.brui_enableGanttCompare = config.isEnableGanttCompare();
 
 	}
@@ -150,12 +151,16 @@ public class GanttPart {
 		gantt.setInitDateRange(from, to);
 
 		// 查询数据
-		tasks = dataSetEngine.getGanntInputData(new BasicDBObject(), context);
-		links = dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
+		try {
+			tasks = dataSetEngine.getGanntInputData(new BasicDBObject(), context);
+			links = dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
+			// 设置为gantt输入
+			gantt.setInputData(tasks, links);
+		} catch (Exception e) {
+			MessageDialog.openError(parent.getShell(), "系统错误", e.getMessage());
+		}
 
-		// 设置为gantt输入
-		gantt.setInputData(tasks, links);
-		
+
 		// 设置必须的事件侦听
 		addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
 		addGanttEventListener(GanttEventCode.onGridRowMenuClick.name(), e -> showRowMenu(e));

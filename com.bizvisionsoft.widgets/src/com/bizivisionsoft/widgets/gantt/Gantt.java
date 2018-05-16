@@ -175,10 +175,12 @@ public class Gantt extends Composite {
 
 	public void setInputData(List<?> tasks, List<?> links) {
 		this.tasks = new ArrayList<Object>();
-		this.tasks.addAll(tasks);
+		if (tasks != null)
+			this.tasks.addAll(tasks);
 
 		this.links = new ArrayList<Object>();
-		this.links.addAll(links);
+		if (links != null)
+			this.links.addAll(links);
 
 		JsonObject inputDataObject = transformToJsonInput(containerName, tasks, links, convertor);
 
