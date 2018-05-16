@@ -27,9 +27,9 @@ public class SwitchContentToAssembly {
 	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
 		if(openContent) {
-			bruiService.openContent(assembly, context.getFristElement());
+			bruiService.openContent(assembly, context.getFirstElement());
 		}else {
-			bruiService.switchContent(assembly, context.getFristElement());
+			bruiService.switchContent(assembly, context.getFirstElement());
 		}
 	}
 	

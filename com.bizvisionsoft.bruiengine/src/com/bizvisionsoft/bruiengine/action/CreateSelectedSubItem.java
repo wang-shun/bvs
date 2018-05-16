@@ -33,7 +33,7 @@ public class CreateSelectedSubItem {
 
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
-		Object parent = context.getFristElement();
+		Object parent = context.getFirstElement();
 		try {
 			Object input = Platform.getBundle(bundleId).loadClass(className).newInstance();
 			String message = Optional.ofNullable(AUtil.readType(input)).orElse("");

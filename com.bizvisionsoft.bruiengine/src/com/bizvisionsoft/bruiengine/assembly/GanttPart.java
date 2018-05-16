@@ -6,7 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.IPostSelectionProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -24,15 +31,15 @@ import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
-import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
+import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart {
+public class GanttPart implements IPostSelectionProvider {
 
 	@Inject
 	private IBruiService bruiService;
@@ -56,6 +63,10 @@ public class GanttPart {
 	private BruiEventEngine eventEngine;
 
 	private boolean highlightCriticalPath;
+	
+	private ListenerList<ISelectionChangedListener> postSelectionChangedListeners = new ListenerList<ISelectionChangedListener>();
+
+	private ISelection selection;
 
 	@Init
 	private void init() {
@@ -198,6 +209,7 @@ public class GanttPart {
 		// testEvent(e1));
 		//
 		// addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
+		context.setSelectionProvider(this);
 
 	}
 
@@ -206,6 +218,7 @@ public class GanttPart {
 	// }
 
 	private void showRowMenu(Event e) {
+		setSelection(new StructuredSelection(((GanttEvent) e).task));
 		new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(((GanttEvent) e).task)
 				.setActions(config.getRowActions()).setEvent(e).open();
 	}
@@ -262,6 +275,47 @@ public class GanttPart {
 
 	public void setScaleType(String type) {
 		gantt.setScaleType(type);
+	}
+
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.add(listener);
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return selection;
+	}
+
+	@Override
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.remove(listener);
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
+
+	public void addPostSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.add(listener);
+	}
+
+	@Override
+	public void removePostSelectionChangedListener(ISelectionChangedListener listener) {
+		postSelectionChangedListeners.remove(listener);
+	}
+	
+	protected void firePostSelectionChanged(final SelectionChangedEvent event) {
+		Object[] listeners = postSelectionChangedListeners.getListeners();
+		for (int i = 0; i < listeners.length; ++i) {
+			final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+			SafeRunnable.run(new SafeRunnable() {
+				public void run() {
+					l.selectionChanged(event);
+				}
+			});
+		}
 	}
 
 }

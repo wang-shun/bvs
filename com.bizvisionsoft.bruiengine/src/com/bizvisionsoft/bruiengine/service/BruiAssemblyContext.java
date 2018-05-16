@@ -106,7 +106,7 @@ public class BruiAssemblyContext implements IBruiContext {
 				.orElse(StructuredSelection.EMPTY);
 	}
 
-	public Object getFristElement() {
+	public Object getFirstElement() {
 		return getSelection().getFirstElement();
 	}
 

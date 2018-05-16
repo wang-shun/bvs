@@ -20,7 +20,7 @@ public interface IBruiContext extends IServiceWithId{
 	
 	StructuredSelection getSelection();
 
-	Object getFristElement();
+	Object getFirstElement();
 
 	<T> void selected(Consumer<T> consumer) ;
 
