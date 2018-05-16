@@ -115,6 +115,7 @@
 			scheduler.config.readonly = true;
 			scheduler.locale.labels.section_custom = "Section";
 			scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+			scheduler.xy.nav_height = 48;
 
 			scheduler.attachEvent("onTemplatesReady", function() {
 				scheduler.xy.scale_height = 32;
