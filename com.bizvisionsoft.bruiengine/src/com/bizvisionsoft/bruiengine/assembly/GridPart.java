@@ -653,7 +653,7 @@ public class GridPart implements IStructuredDataPart {
 		new Editor<Object>(queryConfig, context).setInput(true, input).ok((r, t) -> doQuery(r));
 	}
 
-	private void doQuery(BasicDBObject result) {
+	public void doQuery(BasicDBObject result) {
 		filter = result;
 		if (pageEnabled()) {
 			currentPage = 0;
