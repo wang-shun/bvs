@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.SafeRunnable;
@@ -63,7 +64,7 @@ public class GanttPart implements IPostSelectionProvider {
 	private BruiEventEngine eventEngine;
 
 	private boolean highlightCriticalPath;
-	
+
 	private ListenerList<ISelectionChangedListener> postSelectionChangedListeners = new ListenerList<ISelectionChangedListener>();
 
 	private ISelection selection;
@@ -73,6 +74,7 @@ public class GanttPart implements IPostSelectionProvider {
 		this.config = context.getAssembly();
 
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
 
 		eventEngine = BruiEventEngine.create(config, bruiService, context);
 
@@ -170,7 +172,6 @@ public class GanttPart implements IPostSelectionProvider {
 		} catch (Exception e) {
 			MessageDialog.openError(parent.getShell(), "系统错误", e.getMessage());
 		}
-
 
 		// 设置必须的事件侦听
 		addGanttEventListener(GanttEventCode.onGridHeaderMenuClick.name(), e -> showHeadMenu(e));
@@ -305,7 +306,7 @@ public class GanttPart implements IPostSelectionProvider {
 	public void removePostSelectionChangedListener(ISelectionChangedListener listener) {
 		postSelectionChangedListeners.remove(listener);
 	}
-	
+
 	protected void firePostSelectionChanged(final SelectionChangedEvent event) {
 		Object[] listeners = postSelectionChangedListeners.getListeners();
 		for (int i = 0; i < listeners.length; ++i) {

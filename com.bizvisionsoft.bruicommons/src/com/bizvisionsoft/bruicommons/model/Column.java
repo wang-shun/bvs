@@ -179,6 +179,8 @@ public class Column extends ModelObject {
 
 	private boolean element;
 
+	private boolean noToggleGridColumnGroup;
+
 	public boolean isHide() {
 		return hide;
 	}
@@ -205,4 +207,11 @@ public class Column extends ModelObject {
 		this.element = element;
 	}
 
+	public boolean isNoToggleGridColumnGroup() {
+		return noToggleGridColumnGroup;
+	}
+	
+	public void setNoToggleGridColumnGroup(boolean noToggleGridColumnGroup) {
+		this.noToggleGridColumnGroup = noToggleGridColumnGroup;
+	}
 }

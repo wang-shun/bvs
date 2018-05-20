@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
@@ -58,6 +59,7 @@ public class InfopadPart {
 	@Init
 	private void init() {
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
 	}
 
 	@CreateUI

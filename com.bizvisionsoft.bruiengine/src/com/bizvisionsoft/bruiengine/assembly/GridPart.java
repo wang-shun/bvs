@@ -134,6 +134,10 @@ public class GridPart implements IStructuredDataPart {
 		// 注册数据集引擎
 		if (!disableDateSetEngine)
 			dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+
+		if (dataSetEngine == null)
+			disableDateSetEngine();
+
 	}
 
 	public BruiDataSetEngine getDataSetEngine() {
@@ -518,15 +522,16 @@ public class GridPart implements IStructuredDataPart {
 		viewer.setInput(input);
 	}
 
-	private GridColumnGroup createGroup(Grid grid, Column colConfig) {
-		GridColumnGroup grp = new GridColumnGroup(grid, colConfig.getAlignment() | SWT.TOGGLE);
-		if (colConfig.isMarkupEnabled()) {
+	private GridColumnGroup createGroup(Grid grid, Column cc) {
+		int style = cc.isNoToggleGridColumnGroup() ? cc.getAlignment() : (cc.getAlignment() | SWT.TOGGLE);
+		GridColumnGroup grp = new GridColumnGroup(grid, style);
+		if (cc.isMarkupEnabled()) {
 			UserSession.bruiToolkit().enableMarkup(grp);
 		}
-		grp.setText(colConfig.getText());
-		grp.setExpanded(colConfig.isExpanded());
+		grp.setText(cc.getText());
+		grp.setExpanded(cc.isExpanded());
 
-		colConfig.getColumns().forEach(c -> {
+		cc.getColumns().forEach(c -> {
 			createColumn(grp, c);
 		});
 		return grp;

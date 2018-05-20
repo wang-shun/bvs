@@ -220,7 +220,7 @@ public class CssImage implements CssValue, ThemeResource {
 
 	private static Size readImageSize(String path, ResourceLoader loader) throws IOException {
 		if (path.toLowerCase().endsWith(".svg")) {
-			return new Size(64, 64);
+			return new Size(128, 128);
 		}
 		InputStream inputStream = loader.getResourceAsStream(path);
 		if (inputStream != null) {

@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
@@ -50,6 +51,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	private void init() {
 		config = context.getAssembly();
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+		Assert.isNotNull(dataSetEngine,config.getName()+ "组件缺少数据集定义");
 	}
 
 	private Composite createSticker(Composite parent) {

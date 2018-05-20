@@ -41,8 +41,10 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public static BruiDataSetEngine create(Assembly grid, IServiceWithId... services) {
-		return (BruiDataSetEngine) load(grid)// load
-				.newInstance().init(services);
+		BruiDataSetEngine eng = (BruiDataSetEngine) load(grid);// load
+		if (eng != null)
+			return (BruiDataSetEngine) eng.newInstance().init(services);
+		return null;
 	}
 
 	private static BruiDataSetEngine load(Assembly grid) {
@@ -54,7 +56,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			try {
 				return new BruiDataSetEngine(bundle.loadClass(className)).setAssembly(grid);
 			} catch (Exception e) {
-				throw new RuntimeException(e.getCause());
+				throw new RuntimeException(grid.getName() + "数据源定义错误。");
 			}
 		}
 
@@ -65,7 +67,8 @@ public class BruiDataSetEngine extends BruiEngine {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
 			}
 		}
-		throw new RuntimeException(grid.getName() + "缺少数据源定义。请在BruiDesigner组件页面中定义基于插件的数据源或直接指定服务。");
+
+		return null;
 	}
 
 	public BruiDataSetEngine setAssembly(Assembly assembly) {

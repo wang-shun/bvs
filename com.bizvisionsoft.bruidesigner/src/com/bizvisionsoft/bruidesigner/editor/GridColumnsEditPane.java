@@ -282,6 +282,8 @@ public class GridColumnsEditPane extends Composite {
 			editor.createCheckboxField(parent, "列组收起时是否显示：", element, "summary", SWT.CHECK);
 
 			editor.createCheckboxField(parent, "是否展开（仅适用于列组）：", element, "expanded", SWT.CHECK);
+			
+			editor.createCheckboxField(parent, "是否不允许展开（仅适用于列组）：", element, "noToggleGridColumnGroup", SWT.CHECK);
 
 			editor.createTextField(parent, "默认的单元格数据显示格式:", element, "format", SWT.BORDER);
 			

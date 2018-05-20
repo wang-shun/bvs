@@ -1,8 +1,11 @@
 package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
@@ -65,6 +68,8 @@ public class ActionMenu extends Part {
 	private Object input;
 	private Assembly assembly;
 	private IBruiService service;
+
+	private Map<String, Function<Action, Boolean>> listener = new HashMap<String, Function<Action, Boolean>>();
 
 	public ActionMenu(IBruiService service) {
 		super(UserSession.current().getShell());
@@ -167,6 +172,10 @@ public class ActionMenu extends Part {
 			} else {
 				button.addListener(SWT.Selection, e -> {
 					close();
+					Function<Action, Boolean> lis = listener.get(a.getName());
+					if (lis != null && !Boolean.TRUE.equals(lis.apply(a))) {
+						return;
+					}
 					try {
 						BruiActionEngine.create(a, service).invokeExecute(event, context);
 					} catch (Exception e2) {
@@ -207,6 +216,11 @@ public class ActionMenu extends Part {
 
 	public ActionMenu setEvent(Event event) {
 		this.event = event;
+		return this;
+	}
+
+	public ActionMenu handleActionExecute(String actionName, Function<Action, Boolean> func) {
+		listener.put(actionName, func);
 		return this;
 	}
 

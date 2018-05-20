@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
@@ -85,6 +86,7 @@ public class MessengerInboxPart {
 	@Init
 	protected void init() {
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
 	}
 
 	public BruiDataSetEngine getDataSetEngine() {

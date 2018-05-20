@@ -92,13 +92,13 @@ SystemMessage-DisplayOverlay {
 }
 
 ErrorBox-Titlebar {
-  font: bold 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
-  color: white;
-  background-color: #406796;
+  font: 24px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
 }
 
 ErrorBox {
-  border: 1px solid #3B5998;
+  border: 1px solid #e6e6e6;
   font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
   color: #4a4a4a;
   background-color: white;

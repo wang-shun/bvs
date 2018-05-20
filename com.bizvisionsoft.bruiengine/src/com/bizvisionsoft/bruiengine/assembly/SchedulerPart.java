@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -48,6 +49,7 @@ public class SchedulerPart implements IPostSelectionProvider {
 	private void init() {
 		this.config = context.getAssembly();
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
+		Assert.isNotNull(dataSetEngine,config.getName()+ "组件缺少数据集定义");
 	}
 
 	private Composite createSticker(Composite parent) {
