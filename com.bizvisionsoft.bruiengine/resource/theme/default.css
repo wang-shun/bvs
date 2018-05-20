@@ -87,8 +87,8 @@ Display {
 }
 
 SystemMessage-DisplayOverlay {
-  background-color: rgba( 128, 128, 128, 0.6);
-  background-image: url(resource/widget/rap/display/oval.svg);
+  background-color: transparent;
+  background-image: url(resource/widget/rap/display/loading.svg);
 }
 
 ErrorBox-Titlebar {
