@@ -7,6 +7,10 @@
             alias="/resource"
             base-name="resource">
       </resource>
+      <resource
+            alias="/bruik.appcache"
+            base-name="resource/bruik.appcache">
+      </resource>
    </extension>
    <extension
          point="org.eclipse.equinox.http.registry.servlets">
