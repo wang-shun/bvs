@@ -49,7 +49,7 @@ public class Editor<T> extends Popup {
 
 	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
-		return new BruiEditorContext();
+		return new BruiEditorContext();// 编辑器应当考虑可在各种不同的上下文中使用，不应连接到父上下文
 	}
 
 	public Editor<T> setEditable(boolean editable) {
@@ -57,10 +57,10 @@ public class Editor<T> extends Popup {
 		return this;
 	}
 
-//	public Editor<T> setIgnoreNull(boolean ignoreNull) {
-//		getContext().setIgnoreNull(ignoreNull);
-//		return this;
-//	}
+	// public Editor<T> setIgnoreNull(boolean ignoreNull) {
+	// getContext().setIgnoreNull(ignoreNull);
+	// return this;
+	// }
 
 	public Editor<T> setInput(boolean modifyInput, T input) {
 		if (!modifyInput) {
@@ -100,8 +100,6 @@ public class Editor<T> extends Popup {
 		// int maxHeight = 4*disb.height/5;
 		// size.x = size.x>maxWidth?maxWidth:size.x;
 		// size.y = size.y>maxHeight?maxHeight:size.y;
-		
-		
 
 		int minWidth = 960;
 		int minHeight = 600;
@@ -114,13 +112,12 @@ public class Editor<T> extends Popup {
 		int perfWidth = 2 * disb.width / 3;
 		int perfHeight = disb.height - 120;
 
-		
 		int w = Math.max(minWidth, perfWidth);
 		int h = Math.max(minHeight, perfHeight);
-		
-		if(getAssembly().isSmallEditor()) {
-			return new Point(2*w/3, 2*h/3);
-		}else {
+
+		if (getAssembly().isSmallEditor()) {
+			return new Point(2 * w / 3, 2 * h / 3);
+		} else {
 			return new Point(w, h);
 		}
 	}

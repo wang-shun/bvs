@@ -25,7 +25,7 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private String name;
 
-	private Object input;
+	protected Object input;
 
 	private boolean closeable;
 
@@ -49,8 +49,12 @@ public class BruiAssemblyContext implements IBruiContext {
 	}
 
 	public void dispose() {
-		children.forEach(c -> c.dispose());
+		for (int i = 0; i < children.size(); i++)
+			children.get(i).dispose();
 		children = null;
+		if (parentContext != null) {
+			parentContext.remove(this);
+		}
 	}
 
 	public IBruiContext setEngine(BruiAssemblyEngine engine) {
@@ -113,7 +117,7 @@ public class BruiAssemblyContext implements IBruiContext {
 	@SuppressWarnings("unchecked")
 	public <T> void selected(Consumer<T> consumer) {
 		Optional.ofNullable(selectionProvider).map(sp -> (StructuredSelection) sp.getSelection())
-				.map(sel -> sel.getFirstElement()).map(m->(T)m).ifPresent((Consumer<T>) consumer);
+				.map(sel -> sel.getFirstElement()).map(m -> (T) m).ifPresent((Consumer<T>) consumer);
 	}
 
 	public IBruiContext getParentContext() {
@@ -160,7 +164,7 @@ public class BruiAssemblyContext implements IBruiContext {
 	public boolean isCloseable() {
 		return closeable;
 	}
-	
+
 	public Assembly getAssembly() {
 		return assembly;
 	}

@@ -35,6 +35,7 @@ public class CreateItem {
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		Object parent = context.getFirstElement();
 		try {
+			//ÏÈ¼ì²é×¢½â
 			Object input = Platform.getBundle(bundleId).loadClass(className).newInstance();
 			String message = Optional.ofNullable(AUtil.readType(input)).orElse("");
 			Editor<?> editor = new Editor<Object>(assembly, context).setInput(input);

@@ -3,14 +3,12 @@ package com.bizvisionsoft.bruiengine.service;
 public class BruiEditorContext extends BruiAssemblyContext implements IBruiEditorContext {
 
 	private boolean editable;
-	private Object input;
-//	private boolean ignoreNull;
+	
 	private boolean embedded;
 
 	public BruiEditorContext() {
 		super();
 		editable = true;
-//		ignoreNull = true;
 	}
 
 	public BruiEditorContext setEditable(boolean editable) {

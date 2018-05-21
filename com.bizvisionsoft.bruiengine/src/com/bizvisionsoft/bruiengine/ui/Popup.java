@@ -74,6 +74,7 @@ public class Popup extends Part {
 
 	@Override
 	public boolean close() {
+		context.dispose();
 		// 6. before close
 		boolean result = super.close();
 		// 7. after close
