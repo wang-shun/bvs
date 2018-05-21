@@ -37,7 +37,7 @@ public @interface Generator {
 	 * 生成器
 	 * @return
 	 */
-	Class<? extends IAutoGenerator> generator();
+	Class<? extends IAutoGenerator<?>> generator();
 	
 	/**
 	 * 生成后的结果回调的方法名称，大小写敏感

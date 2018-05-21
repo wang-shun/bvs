@@ -361,7 +361,7 @@ public final class ExternalActionManager {
 					final String message = MessageFormat.format(Util
 							.translateString(RESOURCE_BUNDLE,
 									"undefinedCommand.WarningMessage", null), //$NON-NLS-1$
-							new String[] { command.getId() });
+							command.getId() );
 					IStatus status = new Status(IStatus.ERROR,
 							"org.eclipse.jface", //$NON-NLS-1$
 							0, message, new Exception());

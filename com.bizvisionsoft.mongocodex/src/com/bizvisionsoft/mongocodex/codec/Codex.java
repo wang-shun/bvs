@@ -291,7 +291,6 @@ public class Codex<T> implements CollectibleCodec<T> {
 		return document;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Object generateValue(T model, String name) throws InstantiationException, IllegalAccessException {
 		Generator a = null;
 		Class<?> t = null;
@@ -318,7 +317,8 @@ public class Codex<T> implements CollectibleCodec<T> {
 			return null;
 		}
 
-		IAutoGenerator<T> generator = a.generator().newInstance();
+		@SuppressWarnings("unchecked")
+		IAutoGenerator<T> generator = (IAutoGenerator<T>) a.generator().newInstance();
 		String key = a.key();
 		if (key.equals(Generator.DEFAULT_KEY)) {
 			key = clazz.getSimpleName();

@@ -112,7 +112,7 @@ public TableEditor (Table table) {
 	// To be consistent with older versions of SWT, grabVertical defaults to true
 	grabVertical = true;
 }
-Rectangle computeBounds () {
+ protected Rectangle computeBounds () {
 	if (item == null || column == -1 || item.isDisposed()) return new Rectangle(0, 0, 0, 0);
 	Rectangle cell = item.getBounds(column);
 	Rectangle rect = item.getImageBounds(column);

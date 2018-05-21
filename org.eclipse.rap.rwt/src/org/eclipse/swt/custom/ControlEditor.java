@@ -146,7 +146,7 @@ public class ControlEditor implements SerializableCompatibility {
     }
   }
 
-  Rectangle computeBounds() {
+  protected Rectangle computeBounds() {
     Rectangle clientArea = parent.getClientArea();
     Rectangle editorRect = new Rectangle( clientArea.x,
                                           clientArea.y,

@@ -26,7 +26,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.internal.graphics.ImageFactory;
 
 /**
  * An ImageDescriptor that gets its information from a URL. This class is not
@@ -37,7 +36,7 @@ class URLImageDescriptor extends ImageDescriptor {
 	/**
 	 * Constant for the file protocol for optimized loading
 	 */ 
-	private static final String FILE_PROTOCOL = "file";  //$NON-NLS-1$
+//	private static final String FILE_PROTOCOL = "file";  //$NON-NLS-1$
     private URL url;
 
     /**

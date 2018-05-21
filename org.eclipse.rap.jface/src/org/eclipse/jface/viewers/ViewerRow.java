@@ -15,7 +15,6 @@ package org.eclipse.jface.viewers;
 
 import java.io.Serializable;
 
-import org.eclipse.jface.util.Policy;
 //import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -49,11 +48,11 @@ public abstract class ViewerRow implements Cloneable, Serializable {
 	 */
 	public static final int BELOW = 2;
 	
-	private static final String KEY_TEXT_LAYOUT = Policy.JFACE + "styled_label_key_"; //$NON-NLS-1$
+//	private static final String KEY_TEXT_LAYOUT = Policy.JFACE + "styled_label_key_"; //$NON-NLS-1$
 
-	private static final String KEY_TEXT_LAYOUT_0 = Policy.JFACE + "styled_label_key_0"; //$NON-NLS-1$
+//	private static final String KEY_TEXT_LAYOUT_0 = Policy.JFACE + "styled_label_key_0"; //$NON-NLS-1$
 
-	private static String[] cachedDataKeys;
+//	private static String[] cachedDataKeys;
 	
 	/**
 	 * Get the bounds of the entry at the columnIndex,

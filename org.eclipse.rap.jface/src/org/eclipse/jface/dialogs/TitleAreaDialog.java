@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -111,9 +110,9 @@ public class TitleAreaDialog extends TrayDialog {
 
 	private Image titleAreaImage;
 
-	private int xTrim;
+//	private int xTrim;
 
-	private int yTrim;
+//	private int yTrim;
 
 	/**
 	 * Instantiate a new title area dialog.
@@ -152,10 +151,10 @@ public class TitleAreaDialog extends TrayDialog {
 		dialogArea = createDialogArea(workArea);
 		buttonBar = createButtonBar(workArea);
 		
-		// computing trim for later
-		Rectangle rect = messageLabel.computeTrim(0, 0, 100, 100);
-		xTrim = rect.width - 100;
-		yTrim = rect.height - 100;
+//		// computing trim for later
+//		Rectangle rect = messageLabel.computeTrim(0, 0, 100, 100);
+//		xTrim = rect.width - 100;
+//		yTrim = rect.height - 100;
 		
 		// need to react to new size of title area
 		getShell().addListener(SWT.Resize, new Listener() {

@@ -13,7 +13,6 @@ package org.eclipse.jface.fieldassist;
 import java.io.Serializable;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -65,7 +64,7 @@ public class DecoratedField implements Serializable {
 	/**
 	 * Cached platform flags for dealing with platform-specific issues.
 	 */
-	private static boolean MAC = Util.isMac();
+//	private static boolean MAC = Util.isMac();
 
 	/**
 	 * Constants describing the array indices used to hold the decorations in

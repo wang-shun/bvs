@@ -109,7 +109,7 @@ public class WizardDialog extends TitleAreaDialog implements IWizardContainer2,
 	 * 
 	 * @since 1.3
 	 */
-	private long timeWhenLastJobFinished= -1;
+//	private long timeWhenLastJobFinished= -1;
 
 	// Tells whether a subclass provided the progress monitor part
 	private boolean useCustomProgressMonitorPart= true;
@@ -162,7 +162,7 @@ public class WizardDialog extends TitleAreaDialog implements IWizardContainer2,
 	 * 
 	 * @since 1.3
 	 */
-	private static final int RESTORE_ENTER_DELAY= 500;
+//	private static final int RESTORE_ENTER_DELAY= 500;
 
 	private boolean lockedUI = false;
 
@@ -1024,7 +1024,7 @@ public class WizardDialog extends TitleAreaDialog implements IWizardContainer2,
 			}
 			// Stop if this is the last one
 			if (state != null) {
-				timeWhenLastJobFinished= System.currentTimeMillis();
+//				timeWhenLastJobFinished= System.currentTimeMillis();
 				stopped(state);
 			}
 			activeRunningOperations--;

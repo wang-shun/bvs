@@ -12,7 +12,6 @@
 package org.eclipse.jface.bindings.keys.formatting;
 
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import org.eclipse.jface.bindings.keys.IKeyLookup;
 import org.eclipse.jface.bindings.keys.KeyLookupFactory;
@@ -51,7 +50,7 @@ public final class NativeKeyFormatter extends AbstractKeyFormatter {
 	 * The resource bundle used by <code>format()</code> to translate formal
 	 * string representations by locale.
 	 */
-	private final static ResourceBundle RESOURCE_BUNDLE;
+//	private final static ResourceBundle RESOURCE_BUNDLE;
 
 	/**
 	 * The key into the internationalization resource bundle for the delimiter
@@ -60,7 +59,7 @@ public final class NativeKeyFormatter extends AbstractKeyFormatter {
 	private final static String WIN32_KEY_STROKE_DELIMITER_KEY = "WIN32_KEY_STROKE_DELIMITER"; //$NON-NLS-1$
 
 	static {
-		RESOURCE_BUNDLE = ResourceBundle.getBundle(NativeKeyFormatter.class.getName());
+//		RESOURCE_BUNDLE = ResourceBundle.getBundle(NativeKeyFormatter.class.getName());
 
 		final String carbonBackspace = "\u232B"; //$NON-NLS-1$
 		CARBON_KEY_LOOK_UP.put(IKeyLookup.BS_NAME, carbonBackspace);
