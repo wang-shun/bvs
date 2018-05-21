@@ -9,6 +9,7 @@ import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
+import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
@@ -38,6 +39,8 @@ public class Publisher {
 						OBSService.class,
 						
 						CBSService.class,
+						
+						RiskService.class,
 
 						WorkService.class,
 						
