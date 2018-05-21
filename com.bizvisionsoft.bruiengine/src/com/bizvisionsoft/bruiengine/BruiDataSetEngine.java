@@ -267,8 +267,10 @@ public class BruiDataSetEngine extends BruiEngine {
 				data.removeField("_id");
 				BasicDBObject filterAndUpdate = new FilterAndUpdate().filter(new BasicDBObject("_id", _id)).set(data)
 						.bson();
+				method.setAccessible(true);
 				method.invoke(getTarget(), filterAndUpdate);
 			} catch (IllegalAccessException | IllegalArgumentException e) {
+				e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getTargetException().getMessage());
 			}
