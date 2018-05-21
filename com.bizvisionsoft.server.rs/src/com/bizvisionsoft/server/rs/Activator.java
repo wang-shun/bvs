@@ -16,6 +16,7 @@ import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
+import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
@@ -29,6 +30,7 @@ import com.bizvisionsoft.serviceimpl.OrganizationServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectSetServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectTemplateServiceImpl;
+import com.bizvisionsoft.serviceimpl.RiskServiceImpl;
 import com.bizvisionsoft.serviceimpl.UserServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkSpaceServiceImpl;
@@ -58,7 +60,7 @@ public class Activator implements BundleActivator {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 下面开始注册服务
 		regs.add(bc.registerService(FileService.class.getName(), new FileServiceImpl(), null));
-		
+
 		regs.add(bc.registerService(CommonService.class.getName(), new CommonServiceImpl(), null));
 
 		regs.add(bc.registerService(UserService.class.getName(), new UserServiceImpl(), null));
@@ -68,17 +70,19 @@ public class Activator implements BundleActivator {
 		regs.add(bc.registerService(WorkService.class.getName(), new WorkServiceImpl(), null));
 
 		regs.add(bc.registerService(EPSService.class.getName(), new EPSServiceImpl(), null));
-		
+
 		regs.add(bc.registerService(OBSService.class.getName(), new OBSServiceImpl(), null));
-		
+
 		regs.add(bc.registerService(CBSService.class.getName(), new CBSServiceImpl(), null));
+
+		regs.add(bc.registerService(RiskService.class.getName(), new RiskServiceImpl(), null));
 
 		regs.add(bc.registerService(ProjectService.class.getName(), new ProjectServiceImpl(), null));
 
 		regs.add(bc.registerService(ProjectSetService.class.getName(), new ProjectSetServiceImpl(), null));
-		
+
 		regs.add(bc.registerService(ProjectTemplateService.class.getName(), new ProjectTemplateServiceImpl(), null));
-		
+
 		regs.add(bc.registerService(WorkSpaceService.class.getName(), new WorkSpaceServiceImpl(), null));
 
 	}
