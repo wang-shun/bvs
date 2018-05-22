@@ -165,6 +165,7 @@ public class BruiAssemblyContext implements IBruiContext {
 		return closeable;
 	}
 
+	@Override
 	public Assembly getAssembly() {
 		return assembly;
 	}

@@ -496,6 +496,7 @@ public class GridPart implements IStructuredDataPart {
 	}
 
 	private void invoveAction(Event e, Object elem, Action action) {
+		e.data = action;
 		if (action.getChildren() == null || action.getChildren().isEmpty()) {
 			try {
 				BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
@@ -716,6 +717,7 @@ public class GridPart implements IStructuredDataPart {
 		if (dataSetEngine != null) {
 			Object newElement = dataSetEngine.insert(parent, element);
 			insert(newElement);
+			viewer.setSelection(new StructuredSelection(newElement), true);
 		}
 	}
 
@@ -723,6 +725,9 @@ public class GridPart implements IStructuredDataPart {
 		if (dataSetEngine != null) {
 			dataSetEngine.insert(parent, element);
 			refresh(parent);
+			if(!viewer.getExpandedState(parent)) {
+				viewer.expandToLevel(parent, 1);
+			}
 		}
 	}
 

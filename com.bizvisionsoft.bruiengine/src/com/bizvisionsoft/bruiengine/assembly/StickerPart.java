@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -13,19 +12,14 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
-import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.service.model.User;
 
 public class StickerPart {
 
@@ -120,12 +114,7 @@ public class StickerPart {
 				int idx = rightActions.indexOf(action);
 				rightConsumers.get(idx).accept(context);
 			} else {
-				try {
-					BruiActionEngine.create(action, service).invokeExecute(e, context);
-				} catch (Exception e2) {
-					e2.printStackTrace();
-					MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
-				}
+				UserSession.bruiToolkit().runAction(action, service, context);
 			}
 		});
 	}
@@ -135,25 +124,11 @@ public class StickerPart {
 		List<Action> list = assembly.getActions();
 		if (list != null)
 			list.forEach(action -> {
-				if (!action.isObjectBehavier() || isAcceptableBehavior(context.getInput(), action)) {
+				if (UserSession.bruiToolkit().isAcceptableBehavior(context.getInput(), context, assembly, action)) {
 					actions.add(action);
 				}
 			});
 		bar.setActions(actions);
-	}
-
-	private boolean isAcceptableBehavior(Object element, Action action) {
-		String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
-				ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
-				ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER, ServiceParam.CURRENT_USER_ID };
-		Object input = context.getInput();
-		Object rootInput = context.getRootInput();
-		User user = Brui.sessionManager.getSessionUserInfo();
-		Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
-		Object rootInputId = Optional.ofNullable(rootInput).map(i -> Util.getBson(i).get("_id")).orElse(null);
-		Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user, user.getUserId() };
-
-		return AUtil.readBehavior(element, assembly.getName(), action.getName(), parameterValues, paramemterNames);
 	}
 
 }

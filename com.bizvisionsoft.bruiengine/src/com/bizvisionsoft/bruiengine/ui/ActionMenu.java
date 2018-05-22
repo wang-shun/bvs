@@ -58,8 +58,8 @@ public class ActionMenu extends Part {
 	private List<Action> actions;
 	private List<List<Action>> pagedAction;
 	private IBruiContext context;
-	private int xUnit = 3;
-	private int yUnit = 3;
+	private int colCount = 3;
+	private int rowCount = 3;
 	private int unitSize = 120;
 	private int currentPage = 0;
 	private Composite parent;
@@ -122,13 +122,17 @@ public class ActionMenu extends Part {
 	}
 
 	private void arrangeActions() {
-		ArrayList<Action> _actions = new ArrayList<Action>();
-		int units = xUnit * yUnit;
 		int count = actions.size();
-		if (count < xUnit) {
-			xUnit = count;
+		if (count <= colCount) {
+			colCount = count;
+		} else if (count < colCount * rowCount) {
+			// 总数小于行列数的时候，尝试矩形布局
+			colCount = (int) Math.ceil(Math.sqrt(count));
 		}
 
+		int units = colCount * rowCount;
+
+		ArrayList<Action> _actions = new ArrayList<Action>();
 		for (int i = 1; i <= count; i++) {
 			_actions.add(actions.get(i - 1));
 			if (i == units - 1 && i != count || i > units - 1 && (i - units + 1) % (units - 2) == 0 && i != count) {
@@ -151,7 +155,7 @@ public class ActionMenu extends Part {
 
 	private void createPage() {
 		page = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(xUnit, true);
+		GridLayout layout = new GridLayout(colCount, true);
 		layout.horizontalSpacing = 1;
 		layout.verticalSpacing = 1;
 		layout.marginHeight = 0;
@@ -177,7 +181,11 @@ public class ActionMenu extends Part {
 						return;
 					}
 					try {
-						BruiActionEngine.create(a, service).invokeExecute(event, context);
+						Event ne = new Event();
+						ne.data = a;
+						ne.item = event.item;
+						ne.widget = event.widget;
+						BruiActionEngine.create(a, service).invokeExecute(ne, context);
 					} catch (Exception e2) {
 						e2.printStackTrace();
 						MessageDialog.openError(service.getCurrentShell(), "系统错误", e2.getMessage());

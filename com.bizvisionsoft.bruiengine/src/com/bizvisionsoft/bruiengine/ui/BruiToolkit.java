@@ -4,18 +4,30 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Optional;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.BruiActionEngine;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.model.User;
 
 public class BruiToolkit {
 
@@ -247,6 +259,42 @@ public class BruiToolkit {
 			btn.setData(RWT.CUSTOM_VARIANT, style);
 		}
 		return btn;
+	}
+
+	public void runAction(Action action, IBruiService service, IBruiContext context) {
+		Assembly assembly = context.getAssembly();
+		Event event = new Event();
+		event.data = action;
+		List<Action> ca = action.getChildren();
+		if (Util.isEmptyOrNull(ca)) {
+			try {
+				BruiActionEngine.create(action, service).invokeExecute(event, context);
+			} catch (Exception e) {
+				e.printStackTrace();
+				MessageDialog.openError(service.getCurrentShell(), "系统错误", e.getMessage());
+			}
+		} else {
+			// 显示菜单
+			new ActionMenu(service).setAssembly(assembly).setInput(context.getInput()).setContext(context)
+					.setActions(ca).setEvent(event).open();
+		}
+	}
+
+	public boolean isAcceptableBehavior(Object element, IBruiContext context, Assembly assembly, Action action) {
+		if (!action.isObjectBehavier()) {
+			return true;
+		}
+		String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
+				ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
+				ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER, ServiceParam.CURRENT_USER_ID };
+		Object input = context.getInput();
+		Object rootInput = context.getRootInput();
+		User user = Brui.sessionManager.getSessionUserInfo();
+		Object inputid = Optional.ofNullable(input).map(i -> Util.getBson(i).get("_id")).orElse(null);
+		Object rootInputId = Optional.ofNullable(rootInput).map(i -> Util.getBson(i).get("_id")).orElse(null);
+		Object[] parameterValues = new Object[] { input, inputid, rootInput, rootInputId, user, user.getUserId() };
+
+		return AUtil.readBehavior(element, assembly.getName(), action.getName(), parameterValues, paramemterNames);
 	}
 
 }

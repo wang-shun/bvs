@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import com.bizvisionsoft.bruicommons.model.Assembly;
+
 public interface IBruiContext extends IServiceWithId{
 
 	public static String Id = "com.bizvisionsoft.service.contextService";
@@ -43,5 +45,7 @@ public interface IBruiContext extends IServiceWithId{
 	void setCloseable(boolean closeable);
 
 	boolean isCloseable();
+
+	Assembly getAssembly();
 
 }

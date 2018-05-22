@@ -100,13 +100,7 @@ public class ActionPanelPart {
 			if ("close".equals(action.getName())) {
 				service.closeCurrentContent();
 			} else {
-				try {
-					BruiActionEngine.create(action, service).invokeExecute(e, context);
-				} catch (Exception e2) {
-					e2.printStackTrace();
-					MessageDialog.openError(parent.getShell(), "系统错误",
-							"组件:" + assembly.getName() + "操作:" + action.getName() + "\n" + e2.getMessage());
-				}
+				toolkit.runAction(action,  service, context);
 			}
 		});
 
