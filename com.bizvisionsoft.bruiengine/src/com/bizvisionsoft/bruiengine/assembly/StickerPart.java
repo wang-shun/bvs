@@ -114,7 +114,7 @@ public class StickerPart {
 				int idx = rightActions.indexOf(action);
 				rightConsumers.get(idx).accept(context);
 			} else {
-				UserSession.bruiToolkit().runAction(action, service, context);
+				UserSession.bruiToolkit().runAction(action,e, service, context);
 			}
 		});
 	}

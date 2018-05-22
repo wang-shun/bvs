@@ -12,8 +12,10 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Execute {
 
-	public final static String PARAM_CONTEXT = "context";
+	String PARAM_CONTEXT = "context";
 
-	public final static String PARAM_EVENT = "event";
+	String PARAM_EVENT = "event";
+
+	String PARAM_ACTION = "action";
 
 }

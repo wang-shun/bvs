@@ -3,13 +3,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="lay_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="128px" height="128px" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve">
-<path fill="RGBA(0,0,0,0.8)" d="M128,117.333c0,5.892-4.775,10.667-10.667,10.667H10.666C4.776,128,0,123.225,0,117.333V10.666
+<path fill="rgba(0,0,0,0.7)" d="M128,117.333c0,5.892-4.775,10.667-10.667,10.667H10.666C4.776,128,0,123.225,0,117.333V10.666
 	C0,4.776,4.776,0,10.666,0h106.666C123.225,0,128,4.776,128,10.666V117.333z"/>
-
-		<circle fill="none" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.5" cx="64" cy="64" r="48"/>
-		<path fill="none" stroke="#FFFFFF" stroke-width="2" d="M111,63c0-26.506-21.495-48-48-48		">
+<circle fill="none" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.5" cx="64" cy="64" r="32"/>
+<path fill="none" stroke="#FFFFFF" stroke-width="2" d="M96,64c0-17.67-14.33-32-32-32">
 <animateTransform  type="rotate" fill="remove" attributeName="transform" from="0 64 64" to="360 64 64" dur="1s" repeatCount="indefinite" accumulate="none" additive="replace" calcMode="linear" restart="always">
-				</animateTransform>
-		</path>
-
+		</animateTransform>
+</path>
 </svg>

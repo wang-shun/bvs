@@ -97,9 +97,9 @@ public class BruiActionEngine extends BruiEngine {
 	 * @param event
 	 * @param context
 	 */
-	public void invokeExecute(Event event, IBruiContext context) {
-		invokeMethodInjectParams(Execute.class, new Object[] { event, context },
-				new String[] { Execute.PARAM_EVENT, Execute.PARAM_CONTEXT }, null);
+	public void invokeExecute(Action action,Event event, IBruiContext context) {
+		invokeMethodInjectParams(Execute.class, new Object[] {action, event, context },
+				new String[] {Execute.PARAM_ACTION,  Execute.PARAM_EVENT, Execute.PARAM_CONTEXT }, null);
 	}
 
 }

@@ -261,14 +261,12 @@ public class BruiToolkit {
 		return btn;
 	}
 
-	public void runAction(Action action, IBruiService service, IBruiContext context) {
+	public void runAction(Action action,Event event, IBruiService service, IBruiContext context) {
 		Assembly assembly = context.getAssembly();
-		Event event = new Event();
-		event.data = action;
 		List<Action> ca = action.getChildren();
 		if (Util.isEmptyOrNull(ca)) {
 			try {
-				BruiActionEngine.create(action, service).invokeExecute(event, context);
+				BruiActionEngine.create(action, service).invokeExecute(action, event, context);
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e.getMessage());

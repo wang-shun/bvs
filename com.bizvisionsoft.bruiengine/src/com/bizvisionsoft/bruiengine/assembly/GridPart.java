@@ -496,10 +496,9 @@ public class GridPart implements IStructuredDataPart {
 	}
 
 	private void invoveAction(Event e, Object elem, Action action) {
-		e.data = action;
 		if (action.getChildren() == null || action.getChildren().isEmpty()) {
 			try {
-				BruiActionEngine.create(action, bruiService).invokeExecute(e, context);
+				BruiActionEngine.create(action, bruiService).invokeExecute(action,e, context);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				MessageDialog.openError(bruiService.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());

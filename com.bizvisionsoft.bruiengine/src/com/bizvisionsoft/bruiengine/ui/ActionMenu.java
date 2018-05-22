@@ -181,11 +181,7 @@ public class ActionMenu extends Part {
 						return;
 					}
 					try {
-						Event ne = new Event();
-						ne.data = a;
-						ne.item = event.item;
-						ne.widget = event.widget;
-						BruiActionEngine.create(a, service).invokeExecute(ne, context);
+						BruiActionEngine.create(a, service).invokeExecute(a,event, context);
 					} catch (Exception e2) {
 						e2.printStackTrace();
 						MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());

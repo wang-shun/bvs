@@ -100,7 +100,7 @@ public class ActionPanelPart {
 			if ("close".equals(action.getName())) {
 				service.closeCurrentContent();
 			} else {
-				toolkit.runAction(action,  service, context);
+				toolkit.runAction(action, e, service, context);
 			}
 		});
 
@@ -131,7 +131,7 @@ public class ActionPanelPart {
 		Label btn = createButton(parent, a);
 		btn.addListener(SWT.MouseDown, e -> {
 			try {
-				BruiActionEngine.create(a, service).invokeExecute(e, context);
+				BruiActionEngine.create(a, service).invokeExecute(a, e, context);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				MessageDialog.openError(parent.getShell(), "ÏµÍ³´íÎó",
