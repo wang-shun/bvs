@@ -116,7 +116,7 @@ public class Editor<T> extends Popup {
 		int h = Math.max(minHeight, perfHeight);
 
 		if (getAssembly().isSmallEditor()) {
-			return new Point(2 * w / 3, 2 * h / 3);
+			return new Point(2 * w / 3, 3 * h / 4);
 		} else {
 			return new Point(w, h);
 		}
