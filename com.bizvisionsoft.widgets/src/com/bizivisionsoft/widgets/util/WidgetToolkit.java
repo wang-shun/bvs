@@ -34,6 +34,10 @@ public class WidgetToolkit {
 		execJS("rap.getObject( '", id, "' ).", $el, ".attr( '", attr, "', '", value + "' );");
 	}
 
+	public static void showMessage(String msg) {
+		execJS("layer.msg('" + msg + "')");
+	}
+
 	public static void execJS(String... strings) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("try{");
@@ -48,11 +52,11 @@ public class WidgetToolkit {
 	public static void requireWidgetHandlerJs(String widgetName) {
 		requireWidgetHandlerJs(widgetName, "handler.js");
 	}
-	
-	public static void requireWidgetHandlerJs(String widgetName,String jsName) {
+
+	public static void requireWidgetHandlerJs(String widgetName, String jsName) {
 		ClientFileLoader jsLoader = RWT.getClient().getService(ClientFileLoader.class);
 		String uri = getSiteRoot();
-		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/js/"+jsName);
+		jsLoader.requireJs(uri + "bvs/widgets/" + widgetName + "/js/" + jsName);
 	}
 
 	public static void requireWidgetJs(String widgetName, String path) {
