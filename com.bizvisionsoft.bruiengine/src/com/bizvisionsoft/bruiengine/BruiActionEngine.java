@@ -97,9 +97,21 @@ public class BruiActionEngine extends BruiEngine {
 	 * @param event
 	 * @param context
 	 */
-	public void invokeExecute(Action action,Event event, IBruiContext context) {
-		invokeMethodInjectParams(Execute.class, new Object[] {action, event, context },
-				new String[] {Execute.PARAM_ACTION,  Execute.PARAM_EVENT, Execute.PARAM_CONTEXT }, null);
+	public void invokeExecute(Action action, Event event, IBruiContext context) {
+		Object[] parameters = new Object[] { 
+				action, 
+				event, 
+				context, 
+				context.getInput(), 
+				context.getRootInput(),
+				Brui.sessionManager.getSessionUserInfo()};
+		String[] paramAnnotations = new String[] { 
+				Execute.PARAM_ACTION, 
+				Execute.PARAM_EVENT, 
+				Execute.PARAM_CONTEXT,
+				Execute.CONTEXT_INPUT_OBJECT,
+				Execute.ROOT_CONTEXT_INPUT_OBJECT};
+		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
 	}
 
 }

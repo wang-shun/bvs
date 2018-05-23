@@ -17,5 +17,13 @@ public @interface Execute {
 	String PARAM_EVENT = "event";
 
 	String PARAM_ACTION = "action";
+	
+	String ROOT_CONTEXT_INPUT_OBJECT = "root_context_input_object";
+
+	String CONTEXT_INPUT_OBJECT = "context_input_object";
+
+	String CURRENT_USER = "current_user";
+
+	String CURRENT_USER_ID = "current_user_id";
 
 }
