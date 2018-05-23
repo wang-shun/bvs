@@ -153,23 +153,23 @@ public class Codex<T> implements CollectibleCodec<T> {
 	@Override
 	public void encode(BsonWriter writer, final T model, EncoderContext encoderContext) {
 		preEncoding(model);
-
 		writer.writeStartDocument();
-
 		beforeFields(writer, model, encoderContext);
 		getGetNames(encodingType).forEach(name -> {
 			if (!skipField(encoderContext, name)) {
 				Object value = valueForRead(model, name);
-				if (value == null) {
-					try {
-						value = generateValue(model, name);
-					} catch (Exception e) {
+				try {
+					if (encoderContext.isEncodingCollectibleDocument()) {
+						if (value == null || value.equals("")) {// TODO 需要考虑空字符串的问题
+							value = generateValue(model, name);
+						}
 					}
+				} catch (Exception e) {
 				}
 
 				if (value == null || (value instanceof List && ((List<?>) value).isEmpty())
 						|| (value instanceof Map && ((Map<?, ?>) value).isEmpty())) {
-					if(!encoderContext.isEncodingCollectibleDocument()) {
+					if (!encoderContext.isEncodingCollectibleDocument()) {
 						writer.writeName(name);
 						writeValue(writer, encoderContext, null);
 					}
@@ -323,7 +323,7 @@ public class Codex<T> implements CollectibleCodec<T> {
 		if (key.equals(Generator.DEFAULT_KEY)) {
 			key = clazz.getSimpleName();
 		}
-		final Object value = generator.generate(model,a.name(), key, t);
+		final Object value = generator.generate(model, a.name(), key, t);
 
 		if (f != null) {
 			f.set(model, value);
@@ -331,8 +331,8 @@ public class Codex<T> implements CollectibleCodec<T> {
 
 		final String callback = a.callback();
 		if (!Generator.NONE_CALLBACK.equals(callback)) {
-			Arrays.asList(clazz.getDeclaredMethods()).parallelStream().filter(m -> m.getName().equals(callback)).findFirst()
-					.ifPresent(m -> {
+			Arrays.asList(clazz.getDeclaredMethods()).parallelStream().filter(m -> m.getName().equals(callback))
+					.findFirst().ifPresent(m -> {
 						try {
 							m.setAccessible(true);
 							m.invoke(model, value);

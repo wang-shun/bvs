@@ -111,13 +111,15 @@ public class ActionPanelPart {
 		layout.horizontalSpacing = 32;
 		layout.verticalSpacing = 32;
 		layout.marginHeight = 32;
-		layout.marginWidth = 128;
+		layout.marginWidth = 32;
 		parent.setLayout(layout);
 
 		String message = assembly.getMessage();
 		if (!Util.isEmptyOrNull(message)) {
-			Label label = toolkit.newStyledControl(Label.class, parent, SWT.NONE, BruiToolkit.CSS_TEXT_HEADLINE);
-			label.setText(message);
+			Label label = toolkit.newStyledControl(Label.class, parent, SWT.NONE, BruiToolkit.CSS_TEXT_SUBHEAD);
+			toolkit.enableMarkup(label);
+			label.setText("<blockquote class=\"layui-elem-quote\">"+message+"</blockquote>");
+
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, assembly.getActionPanelColumnCount(), 1);
 			label.setLayoutData(gd);
 		}
@@ -129,7 +131,10 @@ public class ActionPanelPart {
 	private void createAction(Composite parent, Action a) {
 		Label btn = createButton(parent, a);
 		btn.addListener(SWT.MouseDown, e -> BruiActionEngine.execute(a, e, context, service));
-		btn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+		gd.widthHint = 256	;
+		gd.heightHint = 256;
+		btn.setLayoutData(gd);
 	}
 
 	public Label createButton(Composite parent, Action a) {
