@@ -48,4 +48,12 @@ public interface IBruiContext extends IServiceWithId{
 
 	Assembly getAssembly();
 
+	BruiAssemblyContext setContentPage(boolean contentPage);
+
+	boolean isContentPage();
+
+	IBruiContext getContentPageContext();
+
+	Object getContentPageInput();
+
 }

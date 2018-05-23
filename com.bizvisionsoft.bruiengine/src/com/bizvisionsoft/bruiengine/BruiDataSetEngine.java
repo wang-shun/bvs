@@ -96,6 +96,8 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			if (context != null) {
 				injectContextInputParameters(context, names, values);
+				
+				injectPageContextInputParameters(context, names, values);
 
 				injectRootContextInputParameters(context, names, values);
 			}
@@ -132,6 +134,8 @@ public class BruiDataSetEngine extends BruiEngine {
 			values.add(filter);
 
 			injectContextInputParameters(context, names, values);
+			
+			injectPageContextInputParameters(context, names, values);
 
 			injectRootContextInputParameters(context, names, values);
 
@@ -158,6 +162,23 @@ public class BruiDataSetEngine extends BruiEngine {
 			}
 		}
 	}
+	
+	private void injectPageContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getContentPageInput();
+			if (input != null) {
+				names.add(ServiceParam.PAGE_CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = Util.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(ServiceParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
 
 	private void injectRootContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
 		if (context != null) {

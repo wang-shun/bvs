@@ -31,7 +31,7 @@ public class AssemblyContainer {
 
 	public AssemblyContainer(Composite parent, BruiAssemblyContext parentContext) {
 		this.parent = parent;
-		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
+		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext).setContentPage(true));
 	}
 
 	public AssemblyContainer setAssembly(Assembly assembly) {

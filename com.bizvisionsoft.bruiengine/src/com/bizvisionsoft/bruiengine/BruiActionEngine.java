@@ -103,6 +103,7 @@ public class BruiActionEngine extends BruiEngine {
 				event, 
 				context, 
 				context.getInput(), 
+				context.getContentPageInput(),
 				context.getRootInput(),
 				Brui.sessionManager.getSessionUserInfo()};
 		String[] paramAnnotations = new String[] { 
@@ -110,6 +111,7 @@ public class BruiActionEngine extends BruiEngine {
 				Execute.PARAM_EVENT, 
 				Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT,
+				Execute.PAGE_CONTEXT_INPUT_OBJECT,
 				Execute.ROOT_CONTEXT_INPUT_OBJECT};
 		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
 	}

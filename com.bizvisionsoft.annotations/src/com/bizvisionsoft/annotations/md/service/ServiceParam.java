@@ -36,9 +36,13 @@ public @interface ServiceParam {
 
 	String ROOT_CONTEXT_INPUT_OBJECT = "root_context_input_object";
 
+	String PAGE_CONTEXT_INPUT_OBJECT = "page_context_input_object";
+
 	String CONTEXT_INPUT_OBJECT = "context_input_object";
 
 	String ROOT_CONTEXT_INPUT_OBJECT_ID = "root_context_input_object_id";
+	
+	String PAGE_CONTEXT_INPUT_OBJECT_ID = "page_context_input_object_id";
 
 	String CONTEXT_INPUT_OBJECT_ID = "context_input_object_id";
 

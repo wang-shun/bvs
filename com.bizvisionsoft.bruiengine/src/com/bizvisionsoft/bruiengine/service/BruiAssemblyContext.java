@@ -29,6 +29,8 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private boolean closeable;
 
+	private boolean contentPage;
+
 	public BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
@@ -152,6 +154,18 @@ public class BruiAssemblyContext implements IBruiContext {
 		return Optional.ofNullable(parentContext).map(p -> p.getRoot()).orElse(this);
 	}
 
+	public IBruiContext getContentPageContext() {
+		if (isContentPage()) {
+			return this;
+		} else {
+			return Optional.ofNullable(parentContext).map(p -> p.getContentPageContext()).orElse(null);
+		}
+	}
+
+	public Object getContentPageInput() {
+		return Optional.ofNullable(getContentPageContext()).map(p -> p.getInput()).orElse(null);
+	}
+
 	@Override
 	public Object getRootInput() {
 		return getRoot().getInput();
@@ -168,6 +182,15 @@ public class BruiAssemblyContext implements IBruiContext {
 	@Override
 	public Assembly getAssembly() {
 		return assembly;
+	}
+
+	public BruiAssemblyContext setContentPage(boolean contentPage) {
+		this.contentPage = contentPage;
+		return this;
+	}
+
+	public boolean isContentPage() {
+		return contentPage;
 	}
 
 }
