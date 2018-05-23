@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.Optional;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
@@ -129,17 +128,8 @@ public class ActionPanelPart {
 
 	private void createAction(Composite parent, Action a) {
 		Label btn = createButton(parent, a);
-		btn.addListener(SWT.MouseDown, e -> {
-			try {
-				BruiActionEngine.create(a, service).invokeExecute(a, e, context);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-				MessageDialog.openError(parent.getShell(), "系统错误",
-						"组件:" + assembly.getName() + "操作:" + a.getName() + "\n" + e2.getMessage());
-			}
-		});
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		btn.setLayoutData(gd);
+		btn.addListener(SWT.MouseDown, e -> BruiActionEngine.execute(a, e, context, service));
+		btn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	}
 
 	public Label createButton(Composite parent, Action a) {

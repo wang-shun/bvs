@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
@@ -261,16 +260,11 @@ public class BruiToolkit {
 		return btn;
 	}
 
-	public void runAction(Action action,Event event, IBruiService service, IBruiContext context) {
+	public void runAction(Action action, Event event, IBruiService service, IBruiContext context) {
 		Assembly assembly = context.getAssembly();
 		List<Action> ca = action.getChildren();
 		if (Util.isEmptyOrNull(ca)) {
-			try {
-				BruiActionEngine.create(action, service).invokeExecute(action, event, context);
-			} catch (Exception e) {
-				e.printStackTrace();
-				MessageDialog.openError(service.getCurrentShell(), "系统错误", e.getMessage());
-			}
+			BruiActionEngine.execute(action, event, context, service);
 		} else {
 			// 显示菜单
 			new ActionMenu(service).setAssembly(assembly).setInput(context.getInput()).setContext(context)

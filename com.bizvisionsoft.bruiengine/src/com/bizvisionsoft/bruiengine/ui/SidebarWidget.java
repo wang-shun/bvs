@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.List;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -163,12 +162,7 @@ public class SidebarWidget {
 	}
 
 	private void run(Action action, Event e) {
-		try {
-			BruiActionEngine.create(action, service).invokeExecute(action, e, context);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-			MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
-		}
+		BruiActionEngine.execute(action, e, context, service);
 	}
 
 	private Control createHeader(Composite parent) {

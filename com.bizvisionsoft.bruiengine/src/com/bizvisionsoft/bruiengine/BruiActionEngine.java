@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
@@ -20,8 +21,20 @@ import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiActionEngine extends BruiEngine {
 
-	public static BruiActionEngine create(Action action, IServiceWithId... services) {
-		BruiEngine brui;
+	private Action action;
+
+	public static void execute(Action action, Event event, IBruiContext context, IServiceWithId... services) {
+		try {
+			BruiActionEngine eng = create(action, services);
+			eng.invokeExecute(event, context);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Layer.message("运行错误<br/>操作:" + action.getName() + "<br/>" + "错误信息:" + e.getMessage(), Layer.ICON_CANCEL);
+		}
+	}
+
+	private static BruiActionEngine create(Action action, IServiceWithId... services) {
+		BruiActionEngine brui;
 		String type = action.getType();
 
 		if (Action.TYPE_INSERT.equals(type)) {
@@ -46,7 +59,7 @@ public class BruiActionEngine extends BruiEngine {
 			brui = new BruiActionEngine(new QueryInGrid());
 
 		} else if (Action.TYPE_CUSTOMIZED.equals(type)) {
-			brui = load(action.getBundleId(), action.getClassName())// load
+			brui = (BruiActionEngine) load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
 
 		} else if (Action.TYPE_SWITCHCONTENT.equals(type)) {
@@ -57,11 +70,11 @@ public class BruiActionEngine extends BruiEngine {
 			String pageName = action.getOpenPageName();
 			brui = new BruiActionEngine(new OpenPage(pageName));
 		} else {
-			brui = load(action.getBundleId(), action.getClassName())// load
+			brui = (BruiActionEngine) load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
 
 		}
-
+		brui.action = action;
 		return (BruiActionEngine) brui.init(services);
 	}
 
@@ -97,23 +110,13 @@ public class BruiActionEngine extends BruiEngine {
 	 * @param event
 	 * @param context
 	 */
-	public void invokeExecute(Action action, Event event, IBruiContext context) {
-		Object[] parameters = new Object[] { 
-				action, 
-				event, 
-				context, 
-				context.getInput(), 
-				context.getContentPageInput(),
-				context.getRootInput(),
-				Brui.sessionManager.getSessionUserInfo()};
-		String[] paramAnnotations = new String[] { 
-				Execute.PARAM_ACTION, 
-				Execute.PARAM_EVENT, 
-				Execute.PARAM_CONTEXT,
-				Execute.CONTEXT_INPUT_OBJECT,
-				Execute.PAGE_CONTEXT_INPUT_OBJECT,
-				Execute.ROOT_CONTEXT_INPUT_OBJECT};
+	private void invokeExecute(Event event, IBruiContext context) {
+		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
+				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
+
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -181,12 +180,7 @@ public class ActionMenu extends Part {
 					if (lis != null && !Boolean.TRUE.equals(lis.apply(a))) {
 						return;
 					}
-					try {
-						BruiActionEngine.create(a, service).invokeExecute(a,event, context);
-					} catch (Exception e2) {
-						e2.printStackTrace();
-						MessageDialog.openError(service.getCurrentShell(), "ÏµÍ³´íÎó", e2.getMessage());
-					}
+					BruiActionEngine.execute(a, event, context, service);
 				});
 			}
 		});

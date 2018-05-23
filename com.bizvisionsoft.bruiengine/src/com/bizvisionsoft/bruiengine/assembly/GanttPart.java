@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import com.bizivisionsoft.widgets.gantt.Config;
 import com.bizivisionsoft.widgets.gantt.Gantt;
 import com.bizivisionsoft.widgets.gantt.GanttEvent;
 import com.bizivisionsoft.widgets.gantt.GanttEventCode;
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
@@ -74,7 +74,7 @@ public class GanttPart implements IPostSelectionProvider {
 		this.config = context.getAssembly();
 
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
-		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
+		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 
 		eventEngine = BruiEventEngine.create(config, bruiService, context);
 
@@ -170,7 +170,7 @@ public class GanttPart implements IPostSelectionProvider {
 			// 设置为gantt输入
 			gantt.setInputData(tasks, links);
 		} catch (Exception e) {
-			MessageDialog.openError(parent.getShell(), "系统错误", e.getMessage());
+			Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 		}
 
 		// 设置必须的事件侦听

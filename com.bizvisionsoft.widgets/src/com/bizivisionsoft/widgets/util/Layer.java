@@ -22,7 +22,7 @@ public class Layer {
 		WidgetToolkit.execJS("layer.msg(\"" + msg + "\")");
 	}
 	
-	public static void showMessage(String msg,int icon) {
+	public static void message(String msg,int icon) {
 		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {icon: "+icon+"})");
 	}
 	
