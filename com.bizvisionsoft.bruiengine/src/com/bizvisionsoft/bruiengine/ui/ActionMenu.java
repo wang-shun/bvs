@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.model.Action;
@@ -163,7 +164,7 @@ public class ActionMenu extends Part {
 		page.setLayout(layout);
 
 		if (pagedAction.size() <= currentPage) {
-			MessageDialog.openInformation(parent.getShell(), "提示", "没有可执行的操作。");
+			Layer.message("没有可执行的操作。");
 			return;
 		}
 		pagedAction.get(currentPage).forEach(a -> {

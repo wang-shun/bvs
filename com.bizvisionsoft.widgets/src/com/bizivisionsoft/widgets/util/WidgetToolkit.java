@@ -34,10 +34,6 @@ public class WidgetToolkit {
 		execJS("rap.getObject( '", id, "' ).", $el, ".attr( '", attr, "', '", value + "' );");
 	}
 
-	public static void showMessage(String msg) {
-		execJS("layer.msg('" + msg + "')");
-	}
-
 	public static void execJS(String... strings) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("try{");
