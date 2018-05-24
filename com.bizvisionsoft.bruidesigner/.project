@@ -25,11 +25,4 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>.site</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/brickui/.site</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
