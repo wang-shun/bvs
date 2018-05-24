@@ -23,7 +23,6 @@ public class AssemblyActionPanelEditor extends ModelEditor {
 
 		createTextField(parent, "描述:", inputData, "description", SWT.BORDER);
 
-
 		createTextField(parent, "标题栏文本:", inputData, "stickerTitle", SWT.BORDER);
 
 		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
@@ -38,7 +37,7 @@ public class AssemblyActionPanelEditor extends ModelEditor {
 
 		createCheckboxField(parent, "左边框：", inputData, "borderLeft", SWT.CHECK);
 
-		createTextField(parent, "文本区内容:", inputData, "message", SWT.BORDER);
+		createTextField(parent, "文本区内容:", inputData, "message", SWT.BORDER|SWT.MULTI);
 
 		createIntegerField(parent, "列数：", inputData, "actionPanelColumnCount", SWT.BORDER, 1, 20);
 		
