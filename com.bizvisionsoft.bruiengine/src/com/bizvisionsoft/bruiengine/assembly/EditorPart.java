@@ -388,6 +388,8 @@ public class EditorPart {
 
 		// 如果表格有查询字段定义
 		grid.setQueryOn(gridConfig.getFields() != null && !gridConfig.getFields().isEmpty());
+		
+		grid.setVertialQueryPanel(config.isSmallEditor());
 
 		// 2. 设置表格项的选择
 		grid.addItemSelector(new ToolItemDescriptor("选择", e -> {

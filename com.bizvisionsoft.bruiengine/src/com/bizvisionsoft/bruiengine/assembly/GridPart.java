@@ -107,6 +107,8 @@ public class GridPart implements IStructuredDataPart {
 
 	private int actionColWidth;
 
+	private boolean vertialQueryPanel;
+
 	public GridPart() {
 	}
 
@@ -179,6 +181,11 @@ public class GridPart implements IStructuredDataPart {
 		return this;
 	}
 
+	public GridPart setVertialQueryPanel(boolean vertialQueryPanel) {
+		this.vertialQueryPanel = vertialQueryPanel;
+		return this;
+	}
+
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
@@ -192,6 +199,52 @@ public class GridPart implements IStructuredDataPart {
 		Control grid = createGridControl(panel);
 		Control pagec = createToolbar(panel);
 
+		
+		if(vertialQueryPanel) {
+			layoutVertiacal(panel, queryPanel, grid, pagec);
+		}else {
+			layoutHorizontal(panel, queryPanel, grid, pagec);
+		}
+		setViewerInput();
+	}
+	
+	private void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {
+		Label sep = null;
+		if (queryPanel != null) {
+			FormData fd = new FormData();
+			queryPanel.setLayoutData(fd);
+			fd.top = new FormAttachment();
+			fd.left = new FormAttachment();
+			fd.right = new FormAttachment(100);
+			fd.bottom = new FormAttachment(30);
+
+			sep = new Label(panel, SWT.HORIZONTAL | SWT.SEPARATOR);
+			fd = new FormData();
+			sep.setLayoutData(fd);
+			fd.top = new FormAttachment(queryPanel);
+			fd.left = new FormAttachment(0);
+			fd.right = new FormAttachment(100);
+			fd.height = 1;
+		}
+
+		FormData fd = new FormData();
+		grid.setLayoutData(fd);
+		fd.top = new FormAttachment(sep);
+		fd.left = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+
+		if (pagec != null) {
+			fd.bottom = new FormAttachment(pagec);
+			fd = new FormData();
+			pagec.setLayoutData(fd);
+			fd.height = 48;
+			fd.left = new FormAttachment(0);
+			fd.right = new FormAttachment(100);
+		}
+		fd.bottom = new FormAttachment(100);
+	}
+
+	private void layoutHorizontal(Composite panel, Control queryPanel, Control grid, Control pagec) {
 		Label sep = null;
 		if (queryPanel != null) {
 			FormData fd = new FormData();
@@ -225,8 +278,6 @@ public class GridPart implements IStructuredDataPart {
 			fd.right = new FormAttachment(100);
 		}
 		fd.bottom = new FormAttachment(100);
-
-		setViewerInput();
 	}
 
 	private Composite createSticker(Composite parent) {
