@@ -1,18 +1,12 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
-import java.util.Optional;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
@@ -29,7 +23,7 @@ public class ActionPanelPart {
 	@Inject
 	IBruiService service;
 
-	private Assembly assembly;
+	private Assembly config;
 
 	@Inject
 	IBruiContext context;
@@ -37,94 +31,51 @@ public class ActionPanelPart {
 	private BruiToolkit toolkit;
 
 	public ActionPanelPart(Assembly assembly) {
-		this.assembly = assembly;
+		this.config = assembly;
 	}
 
 	@CreateUI
 	public void createUI(Composite parent) {
 		toolkit = UserSession.bruiToolkit();
-
-		parent.setLayout(new FormLayout());
-
-		String cssClass = "";
-		if (assembly.isBorderTop()) {
-			cssClass += " brui_borderTop";
-		}
-		if (assembly.isBorderRight()) {
-			cssClass += " brui_borderRight";
-		}
-		if (assembly.isBorderBottom()) {
-			cssClass += " brui_borderBottom";
-		}
-		if (assembly.isBorderLeft()) {
-			cssClass += " brui_borderLeft";
+		
+		Composite panel;
+		if (config.isHasTitlebar()) {
+			panel = createSticker(parent);
+		} else {
+			panel = parent;
 		}
 
-		parent.setHtmlAttribute("class", cssClass);
-
-		String text = assembly.getStickerTitle();
-		if (assembly.isDisplayInputLabelInTitlebar()) {
-			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
-					.orElse("");
-		} else if (assembly.isDisplayRootInputLabelInTitlebar()) {
-			text += Optional.ofNullable(context.getRootInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
-					.orElse("");
-		}
-
-		Action closeAction = null;
-		if (context.isCloseable()) {
-			closeAction = new Action();
-			closeAction.setName("close");
-			closeAction.setImage("/img/left.svg");
-		}
-		StickerTitlebar bar = new StickerTitlebar(parent, closeAction, null);
-		bar.setText(text);
-		FormData fd = new FormData();
-		bar.setLayoutData(fd);
-		fd.left = new FormAttachment(0);
-		fd.top = new FormAttachment(0);
-		fd.right = new FormAttachment(100);
-		fd.height = 48;
-
-		Composite content = UserSession.bruiToolkit().newContentPanel(parent);
-		fd = new FormData();
-		content.setLayoutData(fd);
-		fd.left = new FormAttachment(0, 12);
-		fd.top = new FormAttachment(bar, 12);
-		fd.right = new FormAttachment(100, -12);
-		fd.bottom = new FormAttachment(100, -12);
-
-		bar.addListener(SWT.Selection, e -> {
-			Action action = ((Action) e.data);
-			if ("close".equals(action.getName())) {
-				service.closeCurrentContent();
-			} else {
-				toolkit.runAction(action, e, service, context);
-			}
-		});
-
-		createContent(content);
+		panel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		createContent(panel);
+	}
+	
+	private Composite createSticker(Composite parent) {
+		StickerPart sticker = new StickerPart(config);
+		sticker.context = context;
+		sticker.service = service;
+		sticker.createUI(parent);
+		return sticker.content;
 	}
 
 	private void createContent(Composite parent) {
-		GridLayout layout = new GridLayout(assembly.getActionPanelColumnCount(), true);
+		GridLayout layout = new GridLayout(config.getActionPanelColumnCount(), true);
 		layout.horizontalSpacing = 32;
 		layout.verticalSpacing = 32;
 		layout.marginHeight = 32;
 		layout.marginWidth = 32;
 		parent.setLayout(layout);
 
-		String message = assembly.getMessage();
+		String message = config.getMessage();
 		if (!Util.isEmptyOrNull(message)) {
 			Label label = toolkit.newStyledControl(Label.class, parent, SWT.NONE, BruiToolkit.CSS_TEXT_SUBHEAD);
 			toolkit.enableMarkup(label);
 			label.setText("<blockquote class=\"layui-elem-quote\">"+message+"</blockquote>");
 
-			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, assembly.getActionPanelColumnCount(), 1);
+			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, config.getActionPanelColumnCount(), 1);
 			label.setLayoutData(gd);
 		}
 
-		assembly.getActions().forEach(a -> createAction(parent, a));
+		config.getRowActions().forEach(a -> createAction(parent, a));
 
 	}
 

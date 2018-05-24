@@ -23,6 +23,8 @@ public class AssemblyActionPanelEditor extends ModelEditor {
 
 		createTextField(parent, "描述:", inputData, "description", SWT.BORDER);
 
+		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
+		
 		createTextField(parent, "标题栏文本:", inputData, "stickerTitle", SWT.BORDER);
 
 		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);
@@ -41,12 +43,20 @@ public class AssemblyActionPanelEditor extends ModelEditor {
 
 		createIntegerField(parent, "列数：", inputData, "actionPanelColumnCount", SWT.BORDER, 1, 20);
 		
+		parent = createTabItemContent("面板操作");
+		List<Action>  actions = ((Assembly) inputData).getRowActions();
+		if (actions == null)
+			((Assembly) inputData).setRowActions(actions = new ArrayList<Action>());
+		new ActionsEditPane(parent, actions, true, this);
+
 		parent = createTabItemContent("操作");
-		List<Action> actions = ((Assembly) inputData).getActions();
+		actions = ((Assembly) inputData).getActions();
 		if (actions == null)
 			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
 
+
+		
 		addPartNamePropertyChangeListener("name");
 	}
 
