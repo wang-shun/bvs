@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 import com.bizvisionsoft.bruicommons.model.Site;
 import com.google.gson.GsonBuilder;
@@ -33,13 +31,13 @@ public class SiteLoader {
 	}
 
 	public static void saveSite(File file) throws IOException {
-		if (file.exists()) {
-			File backupFolder = new File(file.getParent() + "/backup/");
-			if (!backupFolder.isDirectory())
-				backupFolder.mkdirs();
-			File target = new File(file.getParent() + "/backup/" + ModelToolkit.generateId() + file.getName());
-			Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		}
+//		if (file.exists()) {
+//			File backupFolder = new File(file.getParent() + "/backup/");
+//			if (!backupFolder.isDirectory())
+//				backupFolder.mkdirs();
+//			File target = new File(file.getParent() + "/backup/" + ModelToolkit.generateId() + file.getName());
+//			Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//		}
 		String json = new GsonBuilder().setPrettyPrinting().create().toJson(site);
 		FileWriter fw = new FileWriter(file);
 		BufferedWriter bw = new BufferedWriter(fw);
