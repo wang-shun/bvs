@@ -131,7 +131,7 @@ public class GridPart implements IStructuredDataPart {
 	@Init
 	protected void init() {
 		// ×¢²áäÖÈ¾Æ÷
-		renderEngine = BruiGridRenderEngine.create(config, bruiService);
+		renderEngine = BruiGridRenderEngine.create(config, bruiService, context);
 
 		// ×¢²áÊý¾Ý¼¯ÒýÇæ
 		if (!disableDateSetEngine)
@@ -206,6 +206,8 @@ public class GridPart implements IStructuredDataPart {
 			layoutHorizontal(panel, queryPanel, grid, pagec);
 		}
 		setViewerInput();
+		
+		renderEngine.uiCreated();
 	}
 	
 	private void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {

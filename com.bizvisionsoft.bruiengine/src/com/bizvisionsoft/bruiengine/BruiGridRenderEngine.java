@@ -11,6 +11,7 @@ import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHeader;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderCompare;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderConfig;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderInput;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderUICreated;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderUpdateCell;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
@@ -71,9 +72,9 @@ public class BruiGridRenderEngine extends BruiEngine {
 		Object element = cell.getElement();
 		Object value = getColumnValue(element, column);
 		Object image = getColumnImageUrl(element, column);
-		
+
 		if (defaultRender != null) {
-			defaultRender.renderCell(cell, column, value,image);
+			defaultRender.renderCell(cell, column, value, image);
 		} else {
 			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
@@ -81,7 +82,6 @@ public class BruiGridRenderEngine extends BruiEngine {
 					element.toString());
 		}
 	}
-
 
 	public void renderHeaderText(GridColumn col, Column c) {
 		if (defaultRender != null) {
@@ -104,19 +104,25 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private Object getColumnValue(Object element, Column column) {
-		return AUtil.readValue(element, config.getName(), column.getName(), column.isElement()?element:null);
+		return AUtil.readValue(element, config.getName(), column.getName(), column.isElement() ? element : null);
 	}
-	
+
 	private Object getColumnImageUrl(Object element, Column column) {
 		return AUtil.readImageUrl(element, config.getName(), column.getName(), element);
 	}
 
 	public int compare(Column column, Object e1, Object e2) {
 		if (defaultRender != null) {
-			return defaultRender.compare(column,e1, e2);
+			return defaultRender.compare(column, e1, e2);
 		} else {
 			return (int) invokeMethodInjectParams(GridRenderCompare.class, new Object[] { e1, e2 },
 					new String[] { GridRenderCompare.PARAM_ELEMENT1, GridRenderCompare.PARAM_ELEMENT2 }, null);
+		}
+	}
+
+	public void uiCreated() {
+		if (defaultRender == null) {
+			invokeMethod(GridRenderUICreated.class);
 		}
 	}
 

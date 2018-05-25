@@ -130,3 +130,53 @@
 	color: #ffffff;
 }
 
+
+.label_button {
+  font-size: 14px;
+}
+
+.label_menu {
+  font-size: 14px;
+}
+
+.label_caption {
+  font-size: 12px;
+}
+
+.label_body1 {
+  font-size: 14px;
+}
+
+.label_body2 {
+  font-size: 14px;
+}
+
+.label_subhead {
+  font-size: 16px;
+}
+
+.label_title {
+  font-size: 20px;
+}
+
+.label_headline {
+  font-size: 24px;
+}
+
+.label_display1 {
+  font-size: 34px;
+}
+
+.label_display2 {
+  font-size: 45px;
+}
+
+.label_display3 {
+  font-size: 56px;
+}
+
+.label_display4 {
+  font-size: 112px;
+  font-weight: lighter;
+}
+

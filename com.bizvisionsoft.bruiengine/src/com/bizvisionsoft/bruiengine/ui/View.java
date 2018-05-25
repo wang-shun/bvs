@@ -65,9 +65,13 @@ public class View extends Part {
 	}
 
 	public int open() {
-		if (page.isForceCheckLogin() || (page.isCheckLogin() && service.getCurrentUserInfo() == null))
+		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
+			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
+					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("登录").open());
+		} else if (page.isForceCheckLogin()) {
 			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
 					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("请验证您的身份").open());
+		}
 
 		int result = super.open();
 
@@ -101,7 +105,7 @@ public class View extends Part {
 			public RuntimeException get() {
 				return new RuntimeException("缺少内容区组件");
 			}
-			
+
 		};
 		Assembly assembly = ModelLoader.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
 				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(s).getId());
@@ -179,7 +183,7 @@ public class View extends Part {
 	public void switchAssemblyInContentArea(Assembly assembly, Object input) {
 		contentWidget.switchAssembly(assembly, input, false);
 	}
-	
+
 	public Page getPage() {
 		return page;
 	}

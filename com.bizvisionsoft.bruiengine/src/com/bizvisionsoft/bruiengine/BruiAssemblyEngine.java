@@ -1,9 +1,12 @@
 package com.bizvisionsoft.bruiengine;
 
+import java.lang.reflect.Field;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
@@ -126,8 +129,16 @@ public class BruiAssemblyEngine extends BruiEngine {
 		if (name.equals("this")) {
 			return target;
 		}
-		Object value = getValue(GetContent.class);
-		return value;
+		Field f = AUtil.getField(target.getClass(), GetContent.class, name, t -> t.value()).orElse(null);
+		if (f != null) {
+			f.setAccessible(true);
+			try {
+				return f.get(target);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	@Override
