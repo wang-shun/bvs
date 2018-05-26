@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.service;
 
 import java.util.Date;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -103,6 +104,11 @@ public class BruiService implements IBruiService {
 	@Override
 	public String getCurrentUserId() {
 		return getCurrentUserInfo().getUserId();
+	}
+
+	@Override
+	public boolean confirm(String title, String message) {
+		return MessageDialog.openConfirm(getCurrentShell(), title, message);
 	}
 
 }

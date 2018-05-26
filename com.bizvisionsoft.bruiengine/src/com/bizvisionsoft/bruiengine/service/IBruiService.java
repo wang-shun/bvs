@@ -46,5 +46,7 @@ public interface IBruiService extends IServiceWithId {
 
 	CreationInfo creationInfo();
 
+	public boolean confirm(String title, String message);
+
 
 }
