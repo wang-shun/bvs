@@ -6,8 +6,9 @@ import org.eclipse.swt.graphics.RGB;
 
 public class BruiColors {
 
-	public static BruiColor[] deepColor = new BruiColor[] { BruiColor.Blue_Grey_900, BruiColor.Indigo_900, BruiColor.Grey_900,
-			BruiColor.Teal_900 };
+	public static BruiColor[] deepColor = new BruiColor[] {  BruiColor.Indigo_900,
+			BruiColor.Teal_900, BruiColor.cyan_900, BruiColor.deep_Purple_900, BruiColor.Red_900,
+			BruiColor.Pink_900, BruiColor.Purple_900 };
 
 	public enum BruiColor {
 
@@ -51,7 +52,17 @@ public class BruiColors {
 
 		Grey_50(0xfa, 0xfa, 0xfa),
 
-		;
+		Red_900(0xb0, 0x12, 0x0a),
+
+		Pink_900(0x88, 0x0e, 0x4f),
+
+		Purple_900(0x4a, 0x14, 0x8c),
+
+		deep_Purple_900(0x31, 0x1b, 0x92),
+
+		cyan_900(0x00, 0x60, 0x64),
+
+		brown_900(0x3e, 0x27, 0x23);
 
 		private RGB rgb;
 
