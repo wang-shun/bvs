@@ -15,7 +15,12 @@ import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.StartupParameters;
 import org.eclipse.rap.rwt.internal.lifecycle.RWTLifeCycle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.annotations.AUtil;
@@ -62,7 +67,30 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 	}
 
 	private void setBackground() {
-		shell.setStyleAttribute("backgroundImage", "resource/image/bg/bg0" + (new Random().nextInt(4) + 1) + ".jpg");
+		shell.setLayout(new FormLayout());
+		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		Label title = new Label(shell,SWT.NONE);
+		title.setData(RWT.MARKUP_ENABLED, true);
+		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		title.setStyleAttribute("backgroundImage", "resource/image/logo_w.svg");
+		title.setStyleAttribute("background-repeat" ,"no-repeat");
+		FormData fd = new FormData(150, 60);
+		fd.left = new FormAttachment(0,16);
+		fd.top = new FormAttachment(0,16);
+		title.setLayoutData(fd);
+		
+		
+		Label foot = new Label(shell,SWT.NONE);
+		foot.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		foot.setText("系统状态  |  使用条款  |  许可协议  |  关于我们");
+		fd = new FormData();
+		fd.right = new FormAttachment(100,-16);
+		fd.bottom = new FormAttachment(100,-16);
+//		fd.left = new FormAttachment(0,16);
+		fd.height = 24;
+		foot.setLayoutData(fd);
+		
+		shell.setStyleAttribute("backgroundImage", "resource/image/bg/bg0" + (new Random().nextInt(3) + 1) + ".jpg");
 		shell.setStyleAttribute("background-size", "100% 100%");
 	}
 

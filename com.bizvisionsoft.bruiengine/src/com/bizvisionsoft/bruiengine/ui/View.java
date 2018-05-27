@@ -67,10 +67,10 @@ public class View extends Part {
 	public int open() {
 		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
 			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("登录").open());
+					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("登录PMS").open());
 		} else if (page.isForceCheckLogin()) {
 			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("请验证您的身份").open());
+					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("您的操作需再次验证身份").open());
 		}
 
 		int result = super.open();
