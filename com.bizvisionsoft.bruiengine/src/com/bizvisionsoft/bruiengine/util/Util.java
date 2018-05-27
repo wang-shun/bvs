@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -39,7 +40,7 @@ import com.mongodb.BasicDBObject;
 public class Util {
 
 	private static final String MONEY_NUMBER_FORMAT = "#,###.0";
-	
+
 	private static char[] array = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
 
 	/**
@@ -310,7 +311,132 @@ public class Util {
 		if (budget == null || budget == 0d) {
 			return "";
 		}
-		return Util.getFormatText(budget, MONEY_NUMBER_FORMAT,RWT.getLocale());
+		return Util.getFormatText(budget, MONEY_NUMBER_FORMAT, RWT.getLocale());
 	}
+
+	public static String getRandomHTMLDarkColor() {
+		int idx = new Random().nextInt(BruiColors.deepColor.length - 1 - 0);
+		return BruiColors.getHtmlColor(BruiColors.deepColor[idx].getRgb());
+	}
+	
+	// i, u, v都不做声母, 跟随前面的字母
+
+	private static char[] alphatable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+			'H', 'I',
+
+			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+			'W', 'X', 'Y', 'Z' };
+
+	// private static char[] alphatable = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+	// 'h', 'i',
+	//
+	// 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+	// 'x', 'y', 'z' };
+
+	// 初始化
+	private static int[] alphatable_code = { 45217, 45253, 45761, 46318, 46826,
+			47010, 47297, 47614, 47614, 48119, 49062, 49324, 49896, 50371,
+			50614, 50622, 50906, 51387, 51446, 52218, 52218, 52218, 52698,
+			52980, 53689, 54481, 55289 };
+
+	
+	/**
+	 * 根据一个包含汉字的字符串返回一个汉字拼音首字母的字符串
+	 * 
+	 * @param String
+	 *            SourceStr 包含一个汉字的字符串
+	 */
+	public static String getAlphaString(String SourceStr) {
+
+		String Result = ""; //$NON-NLS-1$
+		int StrLength = SourceStr.length();
+		int i;
+		try {
+			for (i = 0; i < StrLength; i++) {
+				Result += char2Alpha(SourceStr.charAt(i));
+			}
+		} catch (Exception e) {
+			Result = ""; //$NON-NLS-1$
+		}
+		return Result;
+	}
+
+	/**
+	 * 主函数,输入字符,得到他的声母, 英文字母返回对应的字母 其他非简体汉字返回 '0'
+	 * 
+	 * @param char ch 汉字拼音首字母的字符
+	 */
+	public static char char2Alpha(char ch) {
+
+		if (ch >= 'a' && ch <= 'z')
+			// return (char) (ch - 'a' + 'A');
+			return ch;
+		if (ch >= 'A' && ch <= 'Z')
+			return ch;
+		if (ch >= '0' && ch <= '9')
+			return ch;
+
+		int gb = getCodeValue(ch, "GB2312"); //$NON-NLS-1$
+		if (gb < alphatable_code[0])
+			return '0';
+
+		int i;
+		for (i = 0; i < 26; ++i) {
+			if (alphaCodeMatch(i, gb))
+				break;
+		}
+
+		if (i >= 26)
+			return '0';
+		else
+			return alphatable[i];
+	}
+
+	/**
+	 * 判断字符是否于table数组中的字符想匹配
+	 * 
+	 * @param i
+	 *            table数组中的位置
+	 * @param gb
+	 *            中文编码
+	 * @return
+	 */
+	private static boolean alphaCodeMatch(int i, int gb) {
+
+		if (gb < alphatable_code[i])
+			return false;
+
+		int j = i + 1;
+
+		// 字母Z使用了两个标签
+		while (j < 26 && (alphatable_code[j] == alphatable_code[i]))
+			++j;
+
+		if (j == 26)
+			return gb <= alphatable_code[j];
+		else
+			return gb < alphatable_code[j];
+
+	}
+
+	/**
+	 * 取出汉字的编码
+	 * 
+	 * @param char ch 汉字拼音首字母的字符
+	 */
+	private static int getCodeValue(char ch, String charsetName) {
+
+		String str = new String();
+		str += ch;
+		try {
+			byte[] bytes = str.getBytes(charsetName);
+			if (bytes.length < 2)
+				return 0;
+			return (bytes[0] << 8 & 0xff00) + (bytes[1] & 0xff);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
 
 }
