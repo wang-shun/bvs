@@ -784,5 +784,9 @@ public class GridPart implements IStructuredDataPart {
 		}
 		return null;
 	}
+	
+	public GridTreeViewer getViewer() {
+		return viewer;
+	}
 
 }
