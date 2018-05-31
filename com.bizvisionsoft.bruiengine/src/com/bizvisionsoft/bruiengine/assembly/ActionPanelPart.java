@@ -1,9 +1,14 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.Optional;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -37,7 +42,7 @@ public class ActionPanelPart {
 	@CreateUI
 	public void createUI(Composite parent) {
 		toolkit = UserSession.bruiToolkit();
-		
+
 		Composite panel;
 		if (config.isHasTitlebar()) {
 			panel = createSticker(parent);
@@ -48,7 +53,7 @@ public class ActionPanelPart {
 		panel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		createContent(panel);
 	}
-	
+
 	private Composite createSticker(Composite parent) {
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
@@ -58,34 +63,39 @@ public class ActionPanelPart {
 	}
 
 	private void createContent(Composite parent) {
-		GridLayout layout = new GridLayout(config.getActionPanelColumnCount(), true);
-		layout.horizontalSpacing = 32;
-		layout.verticalSpacing = 32;
-		layout.marginHeight = 32;
-		layout.marginWidth = 32;
-		parent.setLayout(layout);
 
-		String message = config.getMessage();
-		if (!Util.isEmptyOrNull(message)) {
-			Label label = toolkit.newStyledControl(Label.class, parent, SWT.NONE, BruiToolkit.CSS_TEXT_SUBHEAD);
-			toolkit.enableMarkup(label);
-			label.setText("<blockquote class=\"layui-elem-quote\">"+message+"</blockquote>");
+		parent.setLayout(new FormLayout());
 
-			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, config.getActionPanelColumnCount(), 1);
-			label.setLayoutData(gd);
-		}
+		String message = Optional.ofNullable(config.getMessage()).orElse("");
+		Label label = toolkit.newStyledControl(Label.class, parent, SWT.NONE, BruiToolkit.CSS_TEXT_SUBHEAD);
+		toolkit.enableMarkup(label);
+		label.setText("<blockquote class=\"layui-elem-quote\">" + message + "</blockquote>");
 
-		config.getRowActions().forEach(a -> createAction(parent, a));
+		FormData fd = new FormData();
+		label.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 32);
+		fd.top = new FormAttachment(0, 32);
+		fd.right = new FormAttachment(100, -32);
+
+		Composite panel = new Composite(parent,SWT.NONE);
+		fd = new FormData();
+		panel.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 32);
+		fd.top = new FormAttachment(label, 32);
+		fd.right = new FormAttachment(100, -32);
+		fd.bottom = new FormAttachment(100,-32);
+		
+		RowLayout layout = new RowLayout();
+		layout.spacing = 32;
+		panel.setLayout(layout);
+		config.getRowActions().forEach(a -> createAction(panel, a));
 
 	}
 
 	private void createAction(Composite parent, Action a) {
 		Label btn = createButton(parent, a);
 		btn.addListener(SWT.MouseDown, e -> BruiActionEngine.execute(a, e, context, service));
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
-		gd.widthHint = 256	;
-		gd.heightHint = 256;
-		btn.setLayoutData(gd);
+		btn.setLayoutData(new RowData(128	, 128));
 	}
 
 	public Label createButton(Composite parent, Action a) {
@@ -112,18 +122,18 @@ public class ActionPanelPart {
 			}
 			if (a.isForceText()) {
 				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText
+						+ "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
 						+ "</div>";
 			} else {
 				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:18px;font-weight:lighter;margin-top:8px;'>" + buttonText
+						+ "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
 						+ "</div>";
 			}
 
 			String desc = a.getTooltips();
 			if (!Util.isEmptyOrNull(desc)) {
 				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:13px;font-weight:lighter;margin-top:8px;'>" + desc + "</div>";
+						+ "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc + "</div>";
 			}
 
 			btn.setText(text);
