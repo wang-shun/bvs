@@ -143,7 +143,7 @@ var appearances = {
       var result = {};
       var path = rwt.remote.Connection.RESOURCE_PATH + "widget/rap/";
       if( states.loading ) {
-        result.backgroundImage = [ path + "tree/loading.svg", 32, 32 ];
+        result.backgroundImage = [ path + "tree/loading.gif", 32, 32 ];
       } else {
         var source = path + "arrows/chevron-";
         source += states.expanded ? "left" : "right";
