@@ -117,9 +117,6 @@
 			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
 
-			this.gantt.config.work_time = true;
-			this.gantt.config.correct_work_time = true;
-
 			this.gantt.config.fit_tasks = true;
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
@@ -338,7 +335,6 @@
 
 		configHolidays : function(config) {
 			this.gantt.templates.task_cell_class = this._getHolidayStyle;
-			this.gantt.config.work_time = true;
 		},
 
 		_getHolidayStyle : function(task, date) {
