@@ -19,7 +19,7 @@ public class GridPartDefaultRender {
 
 	protected Assembly config;
 
-	private Locale locale;
+	protected Locale locale;
 
 	public GridPartDefaultRender() {
 		locale = RWT.getLocale();
@@ -38,9 +38,9 @@ public class GridPartDefaultRender {
 		String text = Util.getFormatText(value, format, locale);
 		if (image instanceof Image) {
 			cell.setImage((Image) image);
-		} else if (image instanceof String && config.isGridMarkupEnabled()) {
-			 GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
-			 int size = gridItem.getHeight()-16;
+		} else if (image instanceof String) {
+			GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
+			int size = gridItem.getHeight() - 16;
 			text = "<img src='" + BruiToolkit.getResourceURL((String) image) + "' style='margin-right:8px;' width='"
 					+ size + "px' height='" + size + "px'></img>" + text;
 		}

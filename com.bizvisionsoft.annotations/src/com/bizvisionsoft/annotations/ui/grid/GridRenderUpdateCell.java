@@ -3,6 +3,7 @@ package com.bizvisionsoft.annotations.ui.grid;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -14,12 +15,15 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target({ METHOD })
+@Inherited
 public @interface GridRenderUpdateCell {
 
-	public final static String PARAM_CELL = "格控件";
+	String PARAM_CELL = "格控件";
 
-	public final static String PARAM_COLUMN = "列定义";
+	String PARAM_COLUMN = "列定义";
 
-	public final static String PARAM_VALUE = "已取值";
+	String PARAM_VALUE = "已取值";
+
+	String PARAM_IMAGE = "已取图片";
 
 }

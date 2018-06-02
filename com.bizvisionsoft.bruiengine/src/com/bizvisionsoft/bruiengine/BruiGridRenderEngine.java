@@ -76,9 +76,9 @@ public class BruiGridRenderEngine extends BruiEngine {
 		if (defaultRender != null) {
 			defaultRender.renderCell(cell, column, value, image);
 		} else {
-			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value },
+			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value ,image},
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
-							GridRenderUpdateCell.PARAM_VALUE },
+							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE },
 					element.toString());
 		}
 	}
@@ -115,8 +115,10 @@ public class BruiGridRenderEngine extends BruiEngine {
 		if (defaultRender != null) {
 			return defaultRender.compare(column, e1, e2);
 		} else {
-			return (int) invokeMethodInjectParams(GridRenderCompare.class, new Object[] { e1, e2 },
-					new String[] { GridRenderCompare.PARAM_ELEMENT1, GridRenderCompare.PARAM_ELEMENT2 }, null);
+			return (int) invokeMethodInjectParams(GridRenderCompare.class, new Object[] { column, e1, e2 },
+					new String[] { GridRenderCompare.PARAM_COLUMN, GridRenderCompare.PARAM_ELEMENT1,
+							GridRenderCompare.PARAM_ELEMENT2 },
+					null);
 		}
 	}
 
