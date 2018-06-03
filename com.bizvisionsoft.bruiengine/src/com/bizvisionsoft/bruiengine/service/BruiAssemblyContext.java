@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 
@@ -191,6 +192,19 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	public boolean isContentPage() {
 		return contentPage;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getInput(Class<T> clas, boolean nullAble) {
+		if (nullAble && input == null) {
+			return null;
+		} else if (!nullAble && input == null) {
+			throw new RuntimeException("组件" + assembly.getName() + "的输入为空。");
+		} else if (clas.isAssignableFrom(input.getClass())) {
+			return (T) input;
+		} else {
+			throw new RuntimeException("组件" + assembly.getName() + "的输入类型不匹配，要求是" + AUtil.readType(input));
+		}
 	}
 
 }

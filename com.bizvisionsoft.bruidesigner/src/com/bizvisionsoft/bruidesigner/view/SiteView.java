@@ -89,7 +89,7 @@ public class SiteView extends ViewPart implements PropertyChangeListener {
 		viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL| SWT.FULL_SELECTION);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(ModelToolkit.createLabelProvider());
-		viewer.setAutoExpandLevel(3);
+		viewer.setAutoExpandLevel(2);
 		viewer.setInput(new Site[] { SiteLoader.site });
 		viewer.addDoubleClickListener(
 				e -> ModelToolkit.openEditor(((IStructuredSelection) e.getSelection()).getFirstElement(), null));

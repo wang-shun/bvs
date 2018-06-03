@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
 
-public interface IBruiContext extends IServiceWithId{
+public interface IBruiContext extends IServiceWithId {
 
 	public static String Id = "com.bizvisionsoft.service.contextService";
 
@@ -19,12 +19,12 @@ public interface IBruiContext extends IServiceWithId{
 	IBruiContext getChildContextByAssemblyName(String name);
 
 	Object getContent();
-	
+
 	StructuredSelection getSelection();
 
 	Object getFirstElement();
 
-	<T> void selected(Consumer<T> consumer) ;
+	<T> void selected(Consumer<T> consumer);
 
 	IBruiContext getParentContext();
 
@@ -39,7 +39,7 @@ public interface IBruiContext extends IServiceWithId{
 	Object getInput();
 
 	IBruiContext getRoot();
-	
+
 	Object getRootInput();
 
 	void setCloseable(boolean closeable);
@@ -55,5 +55,7 @@ public interface IBruiContext extends IServiceWithId{
 	IBruiContext getContentPageContext();
 
 	Object getContentPageInput();
+
+	<T> T getInput(Class<T> checkClass, boolean checkNullAble);
 
 }
