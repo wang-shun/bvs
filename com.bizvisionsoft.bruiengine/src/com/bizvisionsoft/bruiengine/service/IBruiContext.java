@@ -56,6 +56,9 @@ public interface IBruiContext extends IServiceWithId {
 
 	Object getContentPageInput();
 
-	<T> T getInput(Class<T> checkClass, boolean checkNullAble);
+	<T> T getInput(Class<T> checkClass, boolean nullAble);
+	
+	<T> T getRootInput(Class<T> checkClass, boolean nullAble);
+
 
 }
