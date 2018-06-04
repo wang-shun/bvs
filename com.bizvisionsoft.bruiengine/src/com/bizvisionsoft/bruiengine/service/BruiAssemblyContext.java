@@ -172,6 +172,10 @@ public class BruiAssemblyContext implements IBruiContext {
 		return getRoot().getInput();
 	}
 
+	public <T> T getRootInput(Class<T> clas, boolean nullAble) {
+		return getRoot().getInput(clas, nullAble);
+	}
+
 	public void setCloseable(boolean closeable) {
 		this.closeable = closeable;
 	}
