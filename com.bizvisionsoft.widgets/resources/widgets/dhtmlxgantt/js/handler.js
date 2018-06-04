@@ -166,7 +166,7 @@
 				if (config.brui_RowMenuEnable) {
 					colContent = function(task) {
 						return ("<div class='gantt_row_btn_menu' onclick='bizvision.dhtmlxgantt.prototype.onGridRowMenuClick(\""
-								+ remoteId + "\"," + JSON.stringify(task) + ")'></div>");
+								+ remoteId + "\"," + JSON.stringify(task.id) + ")'></div>");
 					};
 				} else {
 					colContent = function(task) {
@@ -592,11 +592,10 @@
 			rap.getRemoteObject(cObj).call("onGridHeaderMenuClick", {});
 		},
 
-		onGridRowMenuClick : function(id, task) {
+		onGridRowMenuClick : function(id, taskId) {
 			var cObj = rap.getObject(id);
 			rap.getRemoteObject(cObj).call("onGridRowMenuClick", {
-				"id" : task.id,
-				"task" : task
+				"id" : taskId
 			});
 		},
 
