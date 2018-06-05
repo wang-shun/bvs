@@ -697,6 +697,8 @@ public class Assembly extends ModelObject {
 	//scheduler的属性, schedule, timeline两种
 	
 	private String schedulerType;
+
+	private boolean addToParentContext;
 	
 	public void setSchedulerType(String schedulerType) {
 		this.schedulerType = schedulerType;
@@ -704,6 +706,14 @@ public class Assembly extends ModelObject {
 	
 	public String getSchedulerType() {
 		return schedulerType;
+	}
+
+	public boolean isAddToParentContext() {
+		return addToParentContext;
+	}
+	
+	public void setAddToParentContext(boolean addToParentContext) {
+		this.addToParentContext = addToParentContext;
 	}
 
 }
