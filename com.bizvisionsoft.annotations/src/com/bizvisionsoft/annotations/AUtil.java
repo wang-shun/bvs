@@ -106,9 +106,8 @@ public class AUtil {
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException(
-						"容器：" + cName + "，字段：" + fName + "，注解：" + annoClass.getSimpleName() + "，的调用错误。",
-						e.getTargetException());
+				throw createTargetException(e,
+						"容器：" + cName + "，字段：" + fName + "，注解：" + annoClass.getSimpleName() + "，的调用错误。");
 			}
 
 		return defaultValue;
@@ -141,8 +140,15 @@ public class AUtil {
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e.getTargetException().getMessage());
+				throw createTargetException(e, e.getTargetException().getMessage());
 			}
+	}
+
+	private static RuntimeException createTargetException(InvocationTargetException e, String message) {
+		Throwable target = e.getTargetException();
+		RuntimeException re = new RuntimeException(message, target);
+		re.setStackTrace(target.getStackTrace());
+		return re;
 	}
 
 	public static <T extends Annotation> Optional<Field> getContainerField(Class<?> clazz, Class<T> annoClass,
@@ -359,7 +365,7 @@ public class AUtil {
 		} catch (IllegalArgumentException e1) {
 			throw new RuntimeException("注解为" + annoClass + "的方法参数错误。", e1);
 		} catch (InvocationTargetException e2) {
-			throw new RuntimeException("注解为" + annoClass + "调用目标错误。", e2);
+			throw createTargetException(e2, "注解为" + annoClass + "调用目标错误。");
 		}
 	}
 
@@ -438,8 +444,7 @@ public class AUtil {
 			return method.invoke(target, args);
 		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 		} catch (InvocationTargetException e1) {
-			e1.getTargetException().printStackTrace();
-			throw new RuntimeException(e1.getTargetException().getMessage());
+			throw createTargetException(e1, null);
 		}
 		return null;
 	}

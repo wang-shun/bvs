@@ -49,7 +49,11 @@ public class Editor<T> extends Popup {
 
 	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
-		return new BruiEditorContext();// 编辑器应当考虑可在各种不同的上下文中使用，不应连接到父上下文
+		BruiEditorContext c = new BruiEditorContext();// 编辑器考虑可在各种不同的上下文中使用，默认不应连接到父上下文
+		if (assembly.isAddToParentContext()) {
+			c.setParent(parentContext);
+		}
+		return c;
 	}
 
 	public Editor<T> setEditable(boolean editable) {

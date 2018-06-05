@@ -29,6 +29,8 @@ public class AssemblyEditorEditor extends ModelEditor {
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
 		createCheckboxField(parent, "小尺寸（显示为标准尺寸的2/3）：", inputData, "smallEditor", SWT.CHECK);
+		
+		createCheckboxField(parent, "加入到父上下文（选择类型字段数据集需获取根上下文时需要选中）：", inputData, "addToParentContext", SWT.CHECK);
 
 		createTextField(parent, "保存时不能忽略null值的字段名（#分割）：", inputData, "nullValueAllowedFields", SWT.BORDER);
 
