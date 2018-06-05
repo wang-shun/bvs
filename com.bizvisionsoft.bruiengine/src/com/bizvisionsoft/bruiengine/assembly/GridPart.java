@@ -600,7 +600,7 @@ public class GridPart implements IStructuredDataPart {
 		// 列头和列脚的文本
 		renderEngine.renderHeaderText(col, c);
 		renderEngine.renderFoot(col, c);
-
+		col.setData("name", c.getName());
 		col.setAlignment(c.getAlignment());
 		col.setWidth(c.getWidth());
 		col.setMinimumWidth(c.getMinimumWidth());
