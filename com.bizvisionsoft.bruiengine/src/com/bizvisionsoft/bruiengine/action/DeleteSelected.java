@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -27,13 +28,14 @@ public class DeleteSelected {
 	}
 
 	public static void deleteElementInGrid(IBruiService bruiService, IBruiContext context, Object elem) {
-		String message = Optional.ofNullable(AUtil.readTypeAndLabel(elem)).map(m -> "请确认将要删除 " + m)
-				.orElse("请确认将要删除选择的记录。");
+		String label = AUtil.readTypeAndLabel(elem);
+		String message = Optional.ofNullable(label).map(m -> "请确认将要删除 " + m).orElse("请确认将要删除选择的记录。");
 
 		if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
 			Object content = context.getContent();
-			if(content instanceof IStructuredDataPart) {
-				((IStructuredDataPart)content).doDelete(elem);
+			if (content instanceof IStructuredDataPart) {
+				((IStructuredDataPart) content).doDelete(elem);
+				Layer.message(Optional.ofNullable(label).map(m -> "已删除 "+m+" 。").orElse("已删除。"));
 			}
 		}
 	}

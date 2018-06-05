@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#v2.1.5
+#v2.2.1
 
 rwt-resources/340/rap-client.js
 
@@ -20,7 +20,9 @@ bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_multiselect.js
 bvs/widgets/dhtmlxgantt/codebase/locale/locale_cn.js
 bvs/widgets/dhtmlxgantt/codebase/dhtmlx.js
 bvs/widgets/dhtmlxgantt/codebase/dhtmlxgantt.js
+bvs/widgets/dhtmlxgantt/codebase/dhtmlxgantt.css
 bvs/widgets/diagram/codebase/diagram.js
+bvs/widgets/diagram/codebase/diagram.css
 bvs/widgets/dhtmlxscheduler/codebase/ext/dhtmlxscheduler_container_autoresize.js
 bvs/widgets/dhtmlxscheduler/codebase/ext/dhtmlxscheduler_timeline.js
 bvs/widgets/dhtmlxscheduler/codebase/locale/locale_cn.js

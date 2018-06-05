@@ -5,7 +5,10 @@ import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
 
 import com.bizivisionsoft.widgets.util.Layer;
+import com.bizvisionsoft.annotations.md.service.ImageURL;
+import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.Tooltips;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.action.CreateItem;
@@ -33,7 +36,7 @@ public class BruiActionEngine extends BruiEngine {
 		}
 	}
 
-	private static BruiActionEngine create(Action action, IServiceWithId... services) {
+	public static BruiActionEngine create(Action action, IServiceWithId... services) {
 		BruiActionEngine brui;
 		String type = action.getType();
 
@@ -110,13 +113,36 @@ public class BruiActionEngine extends BruiEngine {
 	 * @param event
 	 * @param context
 	 */
-	private void invokeExecute(Event event, IBruiContext context) {
+	public void invokeExecute(Event event, IBruiContext context) {
 		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
 				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
+	}
 
+	public String getImageURL(IBruiContext context) {
+		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
+				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
+		return (String) invokeMethodInjectParams(ImageURL.class, parameters, paramAnnotations, null);
+	}
+
+	public String getText(IBruiContext context) {
+		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
+				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
+		return (String) invokeMethodInjectParams(Label.class, parameters, paramAnnotations, null);
+	}
+
+	public String getTooltips(IBruiContext context) {
+		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
+				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
+		return (String) invokeMethodInjectParams(Tooltips.class, parameters, paramAnnotations, null);
 	}
 
 }

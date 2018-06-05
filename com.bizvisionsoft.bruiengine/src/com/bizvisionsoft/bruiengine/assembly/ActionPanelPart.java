@@ -77,14 +77,14 @@ public class ActionPanelPart {
 		fd.top = new FormAttachment(0, 32);
 		fd.right = new FormAttachment(100, -32);
 
-		Composite panel = new Composite(parent,SWT.NONE);
+		Composite panel = new Composite(parent, SWT.NONE);
 		fd = new FormData();
 		panel.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 32);
 		fd.top = new FormAttachment(label, 32);
 		fd.right = new FormAttachment(100, -32);
-		fd.bottom = new FormAttachment(100,-32);
-		
+		fd.bottom = new FormAttachment(100, -32);
+
 		RowLayout layout = new RowLayout();
 		layout.spacing = 32;
 		panel.setLayout(layout);
@@ -93,58 +93,55 @@ public class ActionPanelPart {
 	}
 
 	private void createAction(Composite parent, Action a) {
-		Label btn = createButton(parent, a);
-		btn.addListener(SWT.MouseDown, e -> BruiActionEngine.execute(a, e, context, service));
-		btn.setLayoutData(new RowData(128	, 128));
-	}
+		final BruiActionEngine ae = BruiActionEngine.create(a, context, service);
 
-	public Label createButton(Composite parent, Action a) {
 		final Label btn = new Label(parent, SWT.NONE);
 		toolkit.enableMarkup(btn);
+		btn.setData("engine", ae);
+		btn.setData("action", a);
+		btn.addListener(SWT.Resize, e -> redrawButton(btn));
+		btn.addListener(SWT.MouseDown, e -> ae.invokeExecute(e, context));
+		btn.setLayoutData(new RowData(128, 128));
+	}
 
-		btn.addListener(SWT.Resize, e -> {
-			Point size = btn.getSize();
-			if (size.x == 0 || size.y == 0) {
-				return;
-			}
+	public void redrawButton(final Label btn) {
+		Action a = (Action) btn.getData("action");
+		final BruiActionEngine ae = (BruiActionEngine) btn.getData("engine");
+		
+		Point size = btn.getSize();
+		if (size.x == 0 || size.y == 0) {
+			return;
+		}
 
-			int imageSize = Math.min(size.x, size.y) / 2;
-			int marginWidth = (size.x - imageSize) / 2;
-			int marginTop = (size.y - (imageSize + 50)) / 2;
-			String imageUrl = a.getImage();
-			String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
+		String imageUrl = Optional.ofNullable(ae.getImageURL(context)).orElse(a.getImage());
+		String buttonText = Optional.ofNullable(ae.getText(context)).orElse(a.getText());
+		String desc = Optional.ofNullable(ae.getTooltips(context)).orElse(a.getTooltips());
 
-			String text = "";
-			if (imageUrl != null) {
-				text += "<img alter='" + a.getName() + "' src='" + BruiToolkit.getResourceURL(a.getImage())
-						+ "' style='margin-top:" + marginTop + "px;margin-left:" + marginWidth
-						+ "px;cursor:pointer;' width='" + imageSize + "px' height='" + imageSize + "px'></img>";
-			}
-			if (a.isForceText()) {
-				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
-						+ "</div>";
-			} else {
-				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
-						+ "</div>";
-			}
+		buttonText = buttonText == null ? "" : buttonText;
 
-			String desc = a.getTooltips();
-			if (!Util.isEmptyOrNull(desc)) {
-				text += "<div style='width:" + size.x
-						+ "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc + "</div>";
-			}
+		String text = getButtonLabel(size, imageUrl, buttonText, desc);
+		btn.setText(text);
+	}
 
-			btn.setText(text);
+	private String getButtonLabel(Point size, String imageUrl, String buttonText, String desc) {
+		int imageSize = Math.min(size.x, size.y) / 2;
+		int marginWidth = (size.x - imageSize) / 2;
+		int marginTop = (size.y - (imageSize + 50)) / 2;
 
-		});
+		String text = "";
+		if (imageUrl != null) {
+			text += "<img src='" + BruiToolkit.getResourceURL(imageUrl) + "' style='margin-top:" + marginTop
+					+ "px;margin-left:" + marginWidth + "px;cursor:pointer;' width='" + imageSize + "px' height='"
+					+ imageSize + "px'></img>";
+		}
+		text += "<div style='width:" + size.x + "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
+				+ "</div>";
 
-		// String style = a.getStyle();
-		// if (style != null && !style.isEmpty()) {
-		// btn.setData(RWT.CUSTOM_VARIANT, style);
-		// }
-		return btn;
+		if (!Util.isEmptyOrNull(desc)) {
+			text += "<div style='width:" + size.x + "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc
+					+ "</div>";
+		}
+		return text;
 	}
 
 }
