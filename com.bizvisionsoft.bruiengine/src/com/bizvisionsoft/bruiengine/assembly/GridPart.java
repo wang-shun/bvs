@@ -576,6 +576,8 @@ public class GridPart implements IStructuredDataPart {
 		if (cc.isMarkupEnabled()) {
 			UserSession.bruiToolkit().enableMarkup(grp);
 		}
+
+		grp.setData("name", cc.getName());
 		grp.setText(cc.getText());
 		grp.setExpanded(cc.isExpanded());
 
