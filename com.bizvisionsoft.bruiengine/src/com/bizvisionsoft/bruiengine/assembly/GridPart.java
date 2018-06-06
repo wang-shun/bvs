@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
@@ -560,7 +561,11 @@ public class GridPart implements IStructuredDataPart {
 
 	public void setViewerInput() {
 		if (!disableDateSetEngine) {
-			setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
+			try {
+				setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
+			} catch (Exception e) {
+				Layer.message(e.getMessage(), Layer.ICON_CANCEL);
+			}
 		}
 	}
 
