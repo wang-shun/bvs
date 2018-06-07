@@ -182,5 +182,9 @@ public class AssemblyContainer {
 	public BruiAssemblyContext getContext() {
 		return context;
 	}
+	
+	public Composite getContainer() {
+		return container;
+	}
 
 }
