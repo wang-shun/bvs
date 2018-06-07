@@ -34,8 +34,13 @@ public class GridPartDefaultRender {
 	}
 
 	public void renderCell(ViewerCell cell, Column column, Object value, Object image) {
-		String format = column.getFormat();
-		String text = Util.getFormatText(value, format, locale);
+		String text;
+		if((value instanceof Number) &&((Number) value).doubleValue()==0 && !column.isForceDisplayZero()) {
+			text = "";
+		}else {
+			String format = column.getFormat();
+			text = Util.getFormatText(value, format, locale);
+		}
 		if (image instanceof Image) {
 			cell.setImage((Image) image);
 		} else if (image instanceof String) {

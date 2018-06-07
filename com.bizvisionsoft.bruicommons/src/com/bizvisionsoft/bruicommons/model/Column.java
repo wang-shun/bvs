@@ -181,6 +181,8 @@ public class Column extends ModelObject {
 
 	private boolean noToggleGridColumnGroup;
 
+	private boolean forceDisplayZero;
+
 	public boolean isHide() {
 		return hide;
 	}
@@ -214,4 +216,13 @@ public class Column extends ModelObject {
 	public void setNoToggleGridColumnGroup(boolean noToggleGridColumnGroup) {
 		this.noToggleGridColumnGroup = noToggleGridColumnGroup;
 	}
+
+	public boolean isForceDisplayZero() {
+		return forceDisplayZero;
+	}
+	
+	public void setForceDisplayZero(boolean forceDisplayZero) {
+		this.forceDisplayZero = forceDisplayZero;
+	}
+	
 }
