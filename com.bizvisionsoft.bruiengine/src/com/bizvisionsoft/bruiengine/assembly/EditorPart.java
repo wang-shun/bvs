@@ -182,7 +182,6 @@ public class EditorPart {
 					}
 					bruiService.closeCurrentPart();
 				} catch (Exception e1) {
-					e1.printStackTrace();
 					MessageDialog.openError(bruiService.getCurrentShell(), "´íÎó", e1.getMessage());
 				}
 			});
