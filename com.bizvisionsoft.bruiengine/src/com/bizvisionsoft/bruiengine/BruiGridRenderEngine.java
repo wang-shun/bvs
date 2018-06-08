@@ -108,7 +108,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private Object getColumnImageUrl(Object element, Column column) {
-		return AUtil.readImageUrl(element, config.getName(), column.getName(), element);
+		return AUtil.readImageUrl(element, config.getName(), column.getName(), null);
 	}
 
 	public int compare(Column column, Object e1, Object e2) {

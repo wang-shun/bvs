@@ -208,7 +208,7 @@ public class BruiToolkit {
 		String sessionId = file.getParentFile().getName().split("_")[2].toUpperCase();
 		if (RWT.getRequest().getSession().getId().toUpperCase().equals(sessionId)) {
 			try {
-				return "/bvs/fs?id=" + URLEncoder.encode(Util.compress(path), "utf-8");
+				return "/bvs/fs?id=" + URLEncoder.encode(path, "utf-8");
 			} catch (Exception e) {
 			}
 		}

@@ -234,7 +234,7 @@ public class MultiFileField extends EditorField {
 		uploadPanel.setURLMaker(f -> {
 			String url;
 			try {
-				url = "/bvs/fs?id=" + URLEncoder.encode(Util.compress(f.getPath()), "utf-8");
+				url = "/bvs/fs?id=" + URLEncoder.encode(f.getPath(), "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				url = "";
 			}

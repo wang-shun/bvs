@@ -24,7 +24,7 @@ public class Download extends HttpServlet {
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String path = URLDecoder.decode(id, "utf-8");
-		path = Util.decompress(id);
+//		path = Util.decompress(id);
 		String sid = request.getSession().getId();
 
 		File file = new File(path);

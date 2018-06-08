@@ -101,6 +101,14 @@ public class Util {
 			text = (boolean) value ? "是" : "否";
 		} else if (value instanceof String) {
 			text = (String) value;
+		} else if (value instanceof List<?>) {
+			text = "";
+			for (int i = 0; i < ((List<?>) value).size(); i++) {
+				if (i != 0) {
+					text += ", ";
+				}
+				text += getFormatText(((List<?>) value).get(i), format, locale);
+			}
 		} else if (value instanceof Object) {
 			text = Optional.ofNullable(AUtil.readLabel(value)).orElse("");
 		} else {
@@ -318,14 +326,12 @@ public class Util {
 		int idx = new Random().nextInt(BruiColors.deepColor.length - 1 - 0);
 		return BruiColors.getHtmlColor(BruiColors.deepColor[idx].getRgb());
 	}
-	
+
 	// i, u, v都不做声母, 跟随前面的字母
 
-	private static char[] alphatable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-			'H', 'I',
+	private static char[] alphatable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 
-			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-			'W', 'X', 'Y', 'Z' };
+			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 	// private static char[] alphatable = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
 	// 'h', 'i',
@@ -334,12 +340,10 @@ public class Util {
 	// 'x', 'y', 'z' };
 
 	// 初始化
-	private static int[] alphatable_code = { 45217, 45253, 45761, 46318, 46826,
-			47010, 47297, 47614, 47614, 48119, 49062, 49324, 49896, 50371,
-			50614, 50622, 50906, 51387, 51446, 52218, 52218, 52218, 52698,
-			52980, 53689, 54481, 55289 };
+	private static int[] alphatable_code = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 47614, 48119,
+			49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52218, 52218, 52698, 52980, 53689,
+			54481, 55289 };
 
-	
 	/**
 	 * 根据一个包含汉字的字符串返回一个汉字拼音首字母的字符串
 	 * 
@@ -364,7 +368,8 @@ public class Util {
 	/**
 	 * 主函数,输入字符,得到他的声母, 英文字母返回对应的字母 其他非简体汉字返回 '0'
 	 * 
-	 * @param char ch 汉字拼音首字母的字符
+	 * @param char
+	 *            ch 汉字拼音首字母的字符
 	 */
 	public static char char2Alpha(char ch) {
 
@@ -422,7 +427,8 @@ public class Util {
 	/**
 	 * 取出汉字的编码
 	 * 
-	 * @param char ch 汉字拼音首字母的字符
+	 * @param char
+	 *            ch 汉字拼音首字母的字符
 	 */
 	private static int getCodeValue(char ch, String charsetName) {
 
@@ -437,6 +443,5 @@ public class Util {
 			return 0;
 		}
 	}
-
 
 }
