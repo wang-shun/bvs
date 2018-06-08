@@ -2,6 +2,7 @@ package com.bizvisionsoft.serviceconsumer;
 
 import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.CommonService;
+import com.bizvisionsoft.service.DocumentService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OBSService;
@@ -47,6 +48,8 @@ public class Publisher {
 						ProjectService.class,
 
 						ProjectSetService.class,
+						
+						DocumentService.class,
 
 						ProjectTemplateService.class,
 

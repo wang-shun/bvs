@@ -10,6 +10,7 @@ import org.osgi.framework.ServiceReference;
 
 import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.CommonService;
+import com.bizvisionsoft.service.DocumentService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OBSService;
@@ -44,6 +45,7 @@ public class Services implements BundleActivator {
 		register(ProjectService.class);
 		register(ProjectSetService.class);
 		register(ProjectTemplateService.class);
+		register(DocumentService.class);
 		register(EPSService.class);
 		register(RiskService.class);
 		register(WorkSpaceService.class);
