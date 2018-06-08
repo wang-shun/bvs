@@ -82,7 +82,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 		if (bundle == null)
 			throw new RuntimeException("无法获得插件" + bundleId);
 		try {
-			return new BruiAssemblyEngine(bundle.loadClass(className));
+			Class<?> claz = bundle.loadClass(className);
+			return new BruiAssemblyEngine(claz);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getCause());
 		}
