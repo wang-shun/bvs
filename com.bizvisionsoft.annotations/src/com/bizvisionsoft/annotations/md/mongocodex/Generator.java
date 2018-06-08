@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 @Inherited
 public @interface Generator {
 
-	String DEFAULT_NAME = "GongoGenerator";
+	String DEFAULT_NAME = "CodexGenerator";
 
 	String DEFAULT_KEY = "class";
 
