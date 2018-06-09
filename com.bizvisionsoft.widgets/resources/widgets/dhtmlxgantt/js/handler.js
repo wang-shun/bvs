@@ -356,9 +356,9 @@
 								.abs((end.getTime() - task.end_date1.getTime())
 										/ (24 * 60 * 60 * 1000)));
 						if (end.getTime() > task.end_date1.getTime()) {
-							text += " <b>+" + overdue + "d</b>";
+							text += "<span class='layui-badge' style='margin-left:8px;'>+" + overdue + "d</span>";
 						} else if (end.getTime() < task.end_date1.getTime()) {
-							text += " <b>-" + overdue + "d</b>";
+							text += "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-" + overdue + "d</span>";
 						}
 					}
 					return text;
@@ -417,10 +417,10 @@
 							.abs((end.getTime() - task.end_date1.getTime())
 									/ (24 * 60 * 60 * 1000)));
 					if (end.getTime() > task.end_date1.getTime()) {
-						var text = "<b>+" + overdue + "d</b>";
+						var text = "<span class='layui-badge' style='margin-left:8px;'>+" + overdue + "d</span>";
 						return text;
 					} else if (end.getTime() < task.end_date1.getTime()) {
-						var text = "<b>-" + overdue + "d</b>";
+						var text = "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-" + overdue + "d</span>";
 						return text;
 					}
 				}

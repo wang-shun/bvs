@@ -93,10 +93,7 @@ public class Util {
 						return new DecimalFormat(f).format(value);
 					}).orElse(value.toString());
 		} else if (value instanceof Float || value instanceof Double) {
-			text = Optional.ofNullable(format)//
-					.map(f -> {
-						return new DecimalFormat(f).format(value);
-					}).orElse(value.toString());
+			return new DecimalFormat(Optional.ofNullable(format).orElse("#.0")).format(value);
 		} else if (value instanceof Boolean) {
 			text = (boolean) value ? "ÊÇ" : "·ñ";
 		} else if (value instanceof String) {
