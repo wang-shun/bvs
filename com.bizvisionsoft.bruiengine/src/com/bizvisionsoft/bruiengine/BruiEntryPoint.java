@@ -80,15 +80,25 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		title.setLayoutData(fd);
 		
 		
-		Label foot = new Label(shell,SWT.NONE);
-		foot.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
-		foot.setText("系统状态  |  使用条款  |  许可协议  |  关于我们");
+		Label footRight = new Label(shell,SWT.NONE);
+		footRight.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		footRight.setText("系统状态  |  使用条款  |  许可协议  |  关于我们");
 		fd = new FormData();
 		fd.right = new FormAttachment(100,-16);
 		fd.bottom = new FormAttachment(100,-16);
 //		fd.left = new FormAttachment(0,16);
 		fd.height = 24;
-		foot.setLayoutData(fd);
+		footRight.setLayoutData(fd);
+		
+		Label footLeft = new Label(shell,SWT.NONE);
+		footLeft.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		footLeft.setText("版本: 5.0.11.180510_M4");
+		fd = new FormData();
+		fd.left = new FormAttachment(0,16);
+		fd.bottom = new FormAttachment(100,-16);
+//		fd.left = new FormAttachment(0,16);
+		fd.height = 24;
+		footLeft.setLayoutData(fd);
 		
 		shell.setStyleAttribute("backgroundImage", "resource/image/bg/bg0" + (new Random().nextInt(3) + 1) + ".jpg");
 		shell.setStyleAttribute("background-size", "100% 100%");
