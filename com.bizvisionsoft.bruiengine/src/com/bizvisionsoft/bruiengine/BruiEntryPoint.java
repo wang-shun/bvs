@@ -92,7 +92,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		
 		Label footLeft = new Label(shell,SWT.NONE);
 		footLeft.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
-		footLeft.setText("版本: 5.0.11.180510_M4");
+		footLeft.setText("武汉曜正科技有限公司 版权所有   版本: 5.0.11.180510_M4");
 		fd = new FormData();
 		fd.left = new FormAttachment(0,16);
 		fd.bottom = new FormAttachment(100,-16);
