@@ -163,15 +163,15 @@ public class Gantt extends Composite {
 		remoteObject.set("inputData", inputData);
 	}
 
-	public void setInitDateRange(Date initFrom, Date initTo) {
-		if (initTo == null || initFrom == null)
-			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-		checkWidget();
-		this.initFrom = initFrom;
-		this.initTo = initTo;
-		remoteObject.set("initFrom", new SimpleDateFormat("yyyy/MM/dd").format(initFrom));
-		remoteObject.set("initTo", new SimpleDateFormat("yyyy/MM/dd").format(initTo));
-	}
+//	public void setInitDateRange(Date initFrom, Date initTo) {
+//		if (initTo == null || initFrom == null)
+//			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+//		checkWidget();
+//		this.initFrom = initFrom;
+//		this.initTo = initTo;
+//		remoteObject.set("initFrom", new SimpleDateFormat("yyyy/MM/dd").format(initFrom));
+//		remoteObject.set("initTo", new SimpleDateFormat("yyyy/MM/dd").format(initTo));
+//	}
 
 	public void setInputData(List<?> tasks, List<?> links) {
 		this.tasks = new ArrayList<Object>();

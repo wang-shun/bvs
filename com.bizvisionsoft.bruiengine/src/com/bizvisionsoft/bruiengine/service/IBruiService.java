@@ -1,10 +1,14 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.util.Date;
+
+import org.bson.types.ObjectId;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
+import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.CreationInfo;
 import com.bizvisionsoft.service.model.User;
 
@@ -45,8 +49,13 @@ public interface IBruiService extends IServiceWithId {
 	public void closeCurrentContent();
 
 	CreationInfo creationInfo();
-
+	
 	public boolean confirm(String title, String message);
 
+	Command command(ObjectId target_id,Date date,String name);
+
+	Command command(ObjectId target_id,Date date);
+
+	Command command(ObjectId target_id);
 
 }

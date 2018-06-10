@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.service;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -12,6 +13,7 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.CreationInfo;
 import com.bizvisionsoft.service.model.User;
 
@@ -109,6 +111,21 @@ public class BruiService implements IBruiService {
 	@Override
 	public boolean confirm(String title, String message) {
 		return MessageDialog.openConfirm(getCurrentShell(), title, message);
+	}
+
+	@Override
+	public Command command(ObjectId target_id,Date date,String name ) {
+		return Command.newInstance(name, getCurrentUserId(), date, target_id);
+	}
+
+	@Override
+	public Command command(ObjectId target_id,Date date) {
+		return Command.newInstance(null, getCurrentUserId(), date, target_id);
+	}
+	
+	@Override
+	public Command command(ObjectId target_id) {
+		return Command.newInstance(null, getCurrentUserId(), new Date(), target_id);
 	}
 
 }

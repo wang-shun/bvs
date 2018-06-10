@@ -76,7 +76,7 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 		sb.append("<div style='white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + content + "</div>");
 		sb.append("<div><span>" + senderName +  "</span>&nbsp;&nbsp;&nbsp;");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "·¢ËÍÈÕÆÚ", null);
-		sb.append("<span style='font-weight:bolder'>"+new SimpleDateFormat("yyyy/MM/dd").format(sendDate) +"</span></div>");
+		sb.append("<span style='font-weight:bolder'>"+new SimpleDateFormat(Util.DATE_FORMAT_DATE).format(sendDate) +"</span></div>");
 
 		sb.append("</div>");
 		sb.append("</div>");

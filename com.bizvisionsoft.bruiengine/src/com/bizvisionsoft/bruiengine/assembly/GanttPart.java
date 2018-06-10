@@ -2,8 +2,6 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
@@ -153,15 +151,15 @@ public class GanttPart implements IPostSelectionProvider {
 		panel.setLayout(new FillLayout());
 		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
 
-		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
-		if (dateRange != null && dateRange.length == 2) {
-			gantt.setInitDateRange(dateRange[0], dateRange[1]);
-		}
-		Calendar cal = Calendar.getInstance();
-		Date from = cal.getTime();
-		cal.add(Calendar.MONTH, 6);
-		Date to = cal.getTime();
-		gantt.setInitDateRange(from, to);
+//		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
+//		if (dateRange != null && dateRange.length == 2) {
+//			gantt.setInitDateRange(dateRange[0], dateRange[1]);
+//		}
+//		Calendar cal = Calendar.getInstance();
+//		Date from = cal.getTime();
+//		cal.add(Calendar.MONTH, 6);
+//		Date to = cal.getTime();
+//		gantt.setInitDateRange(from, to);
 
 		// ²éÑ¯Êý¾Ý
 		try {

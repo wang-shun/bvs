@@ -243,6 +243,8 @@ public class Util {
 
 	static final String DEFAULT_CONTENT_TYPE_FILE_NAME = "content-type.tmp";
 
+	public static final String DATE_FORMAT_DATE = "yyyy-MM-dd";
+
 	public static String getContentType(File uploadedFile, String defaultType) {
 		String contentType = null;
 		BufferedReader br = null;
