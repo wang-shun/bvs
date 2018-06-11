@@ -35,11 +35,32 @@ public class GridPartDefaultRender {
 
 	public void renderCell(ViewerCell cell, Column column, Object value, Object image) {
 		String text;
-		if((value instanceof Number) &&((Number) value).doubleValue()==0 && !column.isForceDisplayZero()) {
+		if ((value instanceof Number) && ((Number) value).doubleValue() == 0 && !column.isForceDisplayZero()) {
 			text = "";
-		}else {
+		} else {
 			String format = column.getFormat();
 			text = Util.getFormatText(value, format, locale);
+			if ((value instanceof Number)) {
+				double num = ((Number) value).doubleValue();
+				String style = "";
+				// ะกำฺ0
+				if (num < 0 && column.getNegativeStyle() != null) {
+					style = column.getNegativeStyle();
+				} else if (num > 0) {
+					if (column.getPostiveStyle() != null) {
+						style = column.getPostiveStyle();
+					}
+					if (num < 1 && column.getLt1Style() != null) {
+						style += " " + column.getLt1Style();
+					}
+					if (num > 1 && column.getGt1Style() != null) {
+						style += " " + column.getGt1Style();
+					}
+				}
+				if (!style.trim().isEmpty()) {
+					text = "<div class='" + style + "'>" + text + "</div>";
+				}
+			}
 		}
 		if (image instanceof Image) {
 			cell.setImage((Image) image);

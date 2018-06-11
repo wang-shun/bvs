@@ -39,7 +39,7 @@ import com.mongodb.BasicDBObject;
 
 public class Util {
 
-	private static final String MONEY_NUMBER_FORMAT = "#,###.0";
+	private static final String MONEY_NUMBER_FORMAT = "#,##0.0";
 
 	private static char[] array = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
 
@@ -93,7 +93,7 @@ public class Util {
 						return new DecimalFormat(f).format(value);
 					}).orElse(value.toString());
 		} else if (value instanceof Float || value instanceof Double) {
-			return new DecimalFormat(Optional.ofNullable(format).orElse("#.0")).format(value);
+			return new DecimalFormat(Optional.ofNullable(format).orElse("0.0")).format(value);
 		} else if (value instanceof Boolean) {
 			text = (boolean) value ? "ÊÇ" : "·ñ";
 		} else if (value instanceof String) {

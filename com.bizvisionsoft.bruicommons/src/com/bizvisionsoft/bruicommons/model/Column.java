@@ -35,6 +35,16 @@ public class Column extends ModelObject {
 	private String format;
 
 	private int sort;
+	
+	private boolean forceDisplayZero;
+	
+	private String negativeStyle;
+	
+	private String postiveStyle;
+	
+	private String gt1Style;
+	
+	private String lt1Style;
 
 	public List<Column> getColumns() {
 		return columns;
@@ -181,8 +191,6 @@ public class Column extends ModelObject {
 
 	private boolean noToggleGridColumnGroup;
 
-	private boolean forceDisplayZero;
-
 	public boolean isHide() {
 		return hide;
 	}
@@ -223,6 +231,38 @@ public class Column extends ModelObject {
 	
 	public void setForceDisplayZero(boolean forceDisplayZero) {
 		this.forceDisplayZero = forceDisplayZero;
+	}
+	
+	public void setNegativeStyle(String negativeStyle) {
+		this.negativeStyle = negativeStyle;
+	}
+	
+	public String getNegativeStyle() {
+		return negativeStyle;
+	}
+	
+	public String getGt1Style() {
+		return gt1Style;
+	}
+	
+	public void setGt1Style(String gt1Style) {
+		this.gt1Style = gt1Style;
+	}
+	
+	public String getPostiveStyle() {
+		return postiveStyle;
+	}
+	
+	public void setPostiveStyle(String postiveStyle) {
+		this.postiveStyle = postiveStyle;
+	}
+	
+	public String getLt1Style() {
+		return lt1Style;
+	}
+	
+	public void setLt1Style(String lt1Style) {
+		this.lt1Style = lt1Style;
 	}
 	
 }
