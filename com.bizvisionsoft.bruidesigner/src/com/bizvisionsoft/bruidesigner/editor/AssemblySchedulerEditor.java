@@ -27,7 +27,7 @@ public class AssemblySchedulerEditor extends ModelEditor {
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
-		createComboField(parent, new String[] { "日程表", "时间线" }, new String[] { "scheduler", "timeline" }, "样式",
+		createComboField(parent, new String[] { "日程表", "时间线","选择器" }, new String[] { "scheduler", "timeline" ,"selector"}, "样式",
 				inputData, "schedulerType", SWT.READ_ONLY | SWT.BORDER);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)

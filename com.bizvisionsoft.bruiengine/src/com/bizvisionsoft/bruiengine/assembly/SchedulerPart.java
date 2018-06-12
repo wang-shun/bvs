@@ -2,11 +2,11 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -49,7 +49,6 @@ public class SchedulerPart implements IPostSelectionProvider {
 	private void init() {
 		this.config = context.getAssembly();
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
-		Assert.isNotNull(dataSetEngine,config.getName()+ "组件缺少数据集定义");
 	}
 
 	private Composite createSticker(Composite parent) {
@@ -74,6 +73,16 @@ public class SchedulerPart implements IPostSelectionProvider {
 		panel.setLayout(new FillLayout());
 		schedulers = (Schedulers) new Schedulers(panel, config.getSchedulerType()).setContainer(config.getName());
 
+		if (dataSetEngine != null) {
+			loadData();
+		}
+
+		context.setSelectionProvider(this);
+
+		schedulers.addListener(SWT.Selection, e -> selected(e));
+	}
+
+	private void loadData() {
 		// 查询数据
 		List<?> input = (List<?>) dataSetEngine.query(null, context, "list");
 		schedulers.setInput(input);
@@ -84,19 +93,21 @@ public class SchedulerPart implements IPostSelectionProvider {
 			} catch (Exception e2) {
 			}
 		}
-
-		context.setSelectionProvider(this);
-
-		List<Action> rowActions = config.getRowActions();
-		if (!Util.isEmptyOrNull(rowActions)) {
-			schedulers.addListener(SWT.Selection, e -> selected(e));
-		}
 	}
 
 	private void selected(Event e) {
 		this.selectedItem = e.data;
-		new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(e.data)
-				.setActions(config.getRowActions()).setEvent(e).open();
+		fireSelectionChanged(e);
+		List<Action> rowActions = config.getRowActions();
+		if (!Util.isEmptyOrNull(rowActions)) {
+			new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(e.data).setActions(rowActions)
+					.setEvent(e).open();
+		}
+	}
+
+	private void fireSelectionChanged(Event e) {
+		SelectionChangedEvent event = new SelectionChangedEvent(this, new StructuredSelection(e.data));
+		postSelectionChangedListeners.forEach(i -> i.selectionChanged(event));
 	}
 
 	@Override

@@ -218,6 +218,8 @@ public class Assembly extends ModelObject {
 	private String gridDataSetBundleId;
 
 	private String gridDataSetClassName;
+	
+	private int gridPageCount;
 
 	private List<Column> columns;
 
@@ -225,6 +227,14 @@ public class Assembly extends ModelObject {
 	private List<FormField> fields;
 
 	private boolean gridAutoColumnWidth;
+	
+	public int getGridPageCount() {
+		return gridPageCount;
+	}
+	
+	public void setGridPageCount(int gridPageCount) {
+		this.gridPageCount = gridPageCount;
+	}
 
 	public String getGridRenderBundleId() {
 		return gridRenderBundleId;

@@ -61,7 +61,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 
 		String serivceName = grid.getGridDataSetService();
-		if (serivceName != null) {
+		if (!Util.isEmptyOrNull(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
@@ -96,7 +96,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			if (context != null) {
 				injectContextInputParameters(context, names, values);
-				
+
 				injectPageContextInputParameters(context, names, values);
 
 				injectRootContextInputParameters(context, names, values);
@@ -134,7 +134,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			values.add(filter);
 
 			injectContextInputParameters(context, names, values);
-			
+
 			injectPageContextInputParameters(context, names, values);
 
 			injectRootContextInputParameters(context, names, values);
@@ -162,7 +162,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			}
 		}
 	}
-	
+
 	private void injectPageContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
 		if (context != null) {
 			Object input = context.getContentPageInput();
@@ -178,7 +178,6 @@ public class BruiDataSetEngine extends BruiEngine {
 			}
 		}
 	}
-
 
 	private void injectRootContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
 		if (context != null) {

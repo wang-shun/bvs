@@ -34,7 +34,7 @@ import com.mongodb.BasicDBObject;
 
 public class MessengerInboxPart {
 
-	private static final int LIMIT = 30;
+	private static final int LIMIT = 20;
 
 	@Inject
 	private IBruiService bruiService;

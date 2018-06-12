@@ -6,6 +6,17 @@ This software is covered by GPL license. You also can obtain Commercial or Enter
 
 (c) Dinamenta, UAB.
 */
+
+.dhx_selector {
+  cursor: pointer;
+}
+
+.dhx_mark_finish,
+.dhx_mark_start {
+  text-align: center;
+  background-color: #ffffff !important;
+}
+
 .dhtmlx_message_area {
   position: fixed;
   right: 5px;
@@ -1091,7 +1102,7 @@ div.icon_delete {
   filter: alpha(opacity=100);
 }
 .dhx_scheduler_month .dhx_marked_timespan {
-  display: none;
+  display: block;
 }
 .dhx_mini_calendar .dhx_marked_timespan {
   display: none;
@@ -1104,7 +1115,7 @@ div.icon_delete {
 }
 .dhx_scheduler_month .dhx_now_time {
   border-bottom: 0;
-  border-left: 2px solid red;
+ /* border-left: 2px solid red;*/
 }
 .dhx_matrix_now_time {
   border-left: 2px solid red;

@@ -58,8 +58,6 @@ import com.mongodb.BasicDBObject;
 
 public class GridPart implements IStructuredDataPart {
 
-	private static final int LIMIT = 50;
-
 	@Inject
 	private IBruiService bruiService;
 
@@ -131,6 +129,17 @@ public class GridPart implements IStructuredDataPart {
 
 	@Init
 	protected void init() {
+		if (config.isGridPageControl()) {
+			int _limit = config.getGridPageCount();
+			if (_limit == 0) {
+				limit = 50;
+			} else {
+				limit = _limit;
+			}
+		} else {
+			limit = null;
+		}
+
 		// 注册渲染器
 		renderEngine = BruiGridRenderEngine.create(config, bruiService, context);
 
@@ -200,17 +209,16 @@ public class GridPart implements IStructuredDataPart {
 		Control grid = createGridControl(panel);
 		Control pagec = createToolbar(panel);
 
-		
-		if(vertialQueryPanel) {
+		if (vertialQueryPanel) {
 			layoutVertiacal(panel, queryPanel, grid, pagec);
-		}else {
+		} else {
 			layoutHorizontal(panel, queryPanel, grid, pagec);
 		}
 		setViewerInput();
-		
+
 		renderEngine.uiCreated();
 	}
-	
+
 	private void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {
 		Label sep = null;
 		if (queryPanel != null) {
@@ -380,10 +388,8 @@ public class GridPart implements IStructuredDataPart {
 	private Control createPageControl() {
 		count = dataSetEngine.count(filter, context);
 		// 获得最佳的每页记录数
-		limit = LIMIT;
-		// 起始
 		skip = 0;
-		page = new Pagination(toolbar, toolitems.isEmpty() ? SWT.LONG : SWT.MEDIUM).setCount(count).setLimit(LIMIT);
+		page = new Pagination(toolbar, toolitems.isEmpty() ? SWT.LONG : SWT.MEDIUM).setCount(count).setLimit(limit);
 		page.addListener(SWT.Selection, e -> {
 			currentPage = e.index;
 			skip = (currentPage - 1) * limit;
@@ -791,7 +797,7 @@ public class GridPart implements IStructuredDataPart {
 		}
 		return null;
 	}
-	
+
 	public GridTreeViewer getViewer() {
 		return viewer;
 	}

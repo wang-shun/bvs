@@ -50,27 +50,33 @@
 
 		var dhx_cal_date = document.createElement("div");
 		dhx_cal_date.className = "dhx_cal_date";
+		if (this.type == "selector") {
+			dhx_cal_date.style.marginLeft = "16px";
+			dhx_cal_date.style.textAlign = "left";
+		}
 		dhx_cal_navline.append(dhx_cal_date);
 
-		var day_tab = document.createElement("div");
-		day_tab.className = "dhx_cal_tab";
-		day_tab.setAttribute("name", "day_tab");
-		day_tab.style.right = "204px";
-		dhx_cal_navline.append(day_tab);
+		if (this.type != "selector") {
+			var day_tab = document.createElement("div");
+			day_tab.className = "dhx_cal_tab";
+			day_tab.setAttribute("name", "day_tab");
+			day_tab.style.right = "204px";
+			dhx_cal_navline.append(day_tab);
 
-		var week_tab = document.createElement("div");
-		week_tab.className = "dhx_cal_tab";
-		week_tab.setAttribute("name", "week_tab");
-		week_tab.style.right = "140px";
-		dhx_cal_navline.append(week_tab);
+			var week_tab = document.createElement("div");
+			week_tab.className = "dhx_cal_tab";
+			week_tab.setAttribute("name", "week_tab");
+			week_tab.style.right = "140px";
+			dhx_cal_navline.append(week_tab);
 
-		var month_tab = document.createElement("div");
-		month_tab.className = "dhx_cal_tab";
-		month_tab.setAttribute("name", "month_tab");
-		month_tab.style.right = "76px";
-		dhx_cal_navline.append(month_tab);
-		
-		if(this.type == "timeline"){
+			var month_tab = document.createElement("div");
+			month_tab.className = "dhx_cal_tab";
+			month_tab.setAttribute("name", "month_tab");
+			month_tab.style.right = "76px";
+			dhx_cal_navline.append(month_tab);
+		}
+
+		if (this.type == "timeline") {
 			var timeline_tab = document.createElement("div");
 			timeline_tab.className = "dhx_cal_tab";
 			timeline_tab.setAttribute("name", "timeline_tab");
@@ -104,6 +110,8 @@
 					this.renderScheduler();
 				} else if (this.type == "timeline") {
 					this.renderTimeline();
+				} else if (this.type == "selector") {
+					this.renderSelector();
 				}
 			}
 		},
@@ -142,8 +150,8 @@
 				var month = (date.getMonth() + 1);
 				var d = new Date(year, month, 0);
 				scheduler.matrix[view_name].x_size = d.getDate();// number of
-																	// days in
-																	// month;
+				// days in
+				// month;
 				return true;
 			});
 
@@ -159,6 +167,51 @@
 
 			scheduler.init(this.element, new Date(), "timeline");
 			scheduler.parse(this.events, "json");
+		},
+
+		renderSelector : function() {
+			// ////////////////////////////////////////////////////////////////////////////////
+			// 初始配置
+			this.scheduler.config.readonly = true;
+			this.scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+			this.scheduler.config.first_hour = 7;
+			this.scheduler.config.last_hour = 19;
+			this.scheduler.config.start_on_monday = false;
+			this.scheduler.config.full_day = true;
+			this.scheduler.config.multi_day = true;
+			this.scheduler.xy.nav_height = 48;
+
+			this.scheduler.templates.month_date_class = function(date, today) {
+				return "dhx_selector";
+			}
+
+			var ro = rap.getRemoteObject(this);
+			this.scheduler.attachEvent("onEmptyClick", function(date, e) {
+				ro.call("onDateClick", {
+					"date" : date,
+					"event" : e
+				});
+				return true;
+			});
+
+			if (this.events) {
+				for (var i = 0; i < this.events.length; i++) {
+					var options = {
+						start_date : this.events[i].date,
+						end_date : this.scheduler.date.add(this.events[i].date,
+								1, "day"),
+						type : this.events[i].type,
+						css : this.events[i].style,
+						html : this.events[i].text
+					};
+					this.scheduler.addMarkedTimespan(options);
+				}
+			}
+			// ////////////////////////////////////////////////////////////////////////////////
+			// 初始化并加载数据
+			this.scheduler.init(this.element, new Date(), "month");
+
+			// this.scheduler.parse(this.events, "json");
 		},
 
 		renderScheduler : function() {

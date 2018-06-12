@@ -38,6 +38,8 @@ public class Schedulers extends Composite {
 			Display.getCurrent().asyncExec(() -> {
 				if ("onClick".equals(eventCode)) {
 					select(jo);
+				}else if("onDateClick".equals(eventCode)) {
+					selectDate(jo);
 				}
 			});
 		}
@@ -65,6 +67,13 @@ public class Schedulers extends Composite {
 		remoteObject.set("type", type);
 	}
 
+	private void selectDate(JsonObject jo) {
+		String date = jo.get("date").asString();
+		Event event = new Event();
+		event.data = date;
+		Arrays.asList(getListeners(SWT.Selection)).forEach(l -> l.handleEvent(event));
+	}
+
 	private void select(JsonObject jo) {
 		String id = jo.get("id").asString();
 		Event event = new Event();
@@ -88,6 +97,7 @@ public class Schedulers extends Composite {
 		// 加载插件
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxscheduler_container_autoresize.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxscheduler_timeline.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxscheduler_limit.js");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 加载语言包，应根据RWT的locale
@@ -138,7 +148,7 @@ public class Schedulers extends Composite {
 
 		return this;
 	}
-
+	
 	public Schedulers setSection(List<?> section) {
 		this.section = new ArrayList<Object>();
 		this.section.addAll(section);
