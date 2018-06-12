@@ -26,8 +26,6 @@
 		this.type = properties.type;
 
 		this.element = document.createElement("div");
-		this.element.style.width = "100%";
-		this.element.style.height = "100%";
 		this.element.className = "dhx_cal_container";
 		this.parent.append(this.element);
 
@@ -174,12 +172,7 @@
 			// 初始配置
 			this.scheduler.config.readonly = true;
 			this.scheduler.config.xml_date = "%Y-%m-%d %H:%i";
-			this.scheduler.config.first_hour = 7;
-			this.scheduler.config.last_hour = 19;
-			this.scheduler.config.start_on_monday = false;
-			this.scheduler.config.full_day = true;
-			this.scheduler.config.multi_day = true;
-			this.scheduler.xy.nav_height = 48;
+			this.scheduler.config.container_autoresize = true;
 
 			this.scheduler.templates.month_date_class = function(date, today) {
 				return "dhx_selector";
@@ -259,9 +252,9 @@
 		},
 
 		layout : function() {
-			var area = this.parent.getClientArea();
-			this.element.style.left = area[0] + "px";
-			this.element.style.top = area[1] + "px";
+//			var area = this.parent.getClientArea();
+//			this.element.style.left = area[0] + "px";
+//			this.element.style.top = area[1] + "px";
 		},
 
 		addListener : function(event) {

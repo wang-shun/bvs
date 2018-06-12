@@ -1261,10 +1261,12 @@ div.icon_delete {
 /* bootstrap CSS fix end */
 .dhx_cal_container {
   background-color: #C2D5FC;
-	font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
+  font-family: "Microsoft YaHei", "Segoe UI", Tahoma, "Lucida Sans Unicode", sans-serif;
   font-size: 14px;
   position: relative;
   overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
 }
 .dhx_cal_container div {
   -moz-user-select: none;
