@@ -61,16 +61,14 @@ public class InfopadPart {
 	@Init
 	private void init() {
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
-		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
+		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 	}
 
 	@CreateUI
 	private void createUI(Composite parent) {
-		Object _data = dataSetEngine.query();
+		List<?> _data = (List<?>) dataSetEngine.query(null, context, "list");
 		if (_data instanceof List<?> && ((List<?>) _data).size() > 0) {
 			input = ((List<?>) _data).get(0);
-		} else if (_data != null) {
-			input = _data;
 		} else {
 			throw new RuntimeException("数据源list方法返回为空。");
 		}

@@ -17,6 +17,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.assembly.GridPartDefaultRender;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiGridRenderEngine extends BruiEngine {
 
@@ -29,7 +30,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private static BruiGridRenderEngine load(String bundleId, String className) {
-		if (bundleId != null && className != null) {
+		if (!Util.isEmptyOrNull(bundleId) && !Util.isEmptyOrNull(className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiGridRenderEngine(bundle.loadClass(className));
@@ -76,7 +77,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 		if (defaultRender != null) {
 			defaultRender.renderCell(cell, column, value, image);
 		} else {
-			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value ,image},
+			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value, image },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
 							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE },
 					element.toString());

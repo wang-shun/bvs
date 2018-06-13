@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,11 +81,11 @@ public class Util {
 	public static String getFormatText(Object value, String format, Locale locale) {
 		String text;
 		if (value instanceof Date) {
-			text = Optional.ofNullable(format)//
-					.map(f -> {
-						return new SimpleDateFormat(f, locale).format(value);
-					})
-					.orElse(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale).format(value));
+			if(Util.isEmptyOrNull(format)) {
+				return new SimpleDateFormat(DATE_FORMAT_DATE, locale).format(value);
+			}else {
+				return new SimpleDateFormat(format, locale).format(value);
+			}
 		} else if (value instanceof Integer || value instanceof Long || value instanceof Short) {
 			text = Optional.ofNullable(format)//
 					.map(f -> {

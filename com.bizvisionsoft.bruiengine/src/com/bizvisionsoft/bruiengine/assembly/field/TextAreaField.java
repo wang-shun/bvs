@@ -49,7 +49,7 @@ public class TextAreaField extends EditorField {
 	@Override
 	protected Object getControlLayoutData() {
 		GridData gd = (GridData) super.getControlLayoutData();
-		gd.heightHint = 120;
+		gd.heightHint = 60;
 		return gd;
 	}
 
