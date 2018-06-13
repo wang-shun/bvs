@@ -272,6 +272,9 @@ public class FormFieldsEditPane extends Composite {
 			} else if (FormField.TYPE_LABEL.equals(fieldType)) {
 				new LabelPane(element, editor, parent, type);
 				
+			} else if (FormField.TYPE_LABEL_MULTILINE.equals(fieldType)) {
+				new LabelPane(element, editor, parent, type);
+				
 			} else if (FormField.TYPE_TEXT_MULTILINE.equals(fieldType)) {
 				new TextMultiLinePane(element, editor, parent, type);
 			
@@ -328,7 +331,10 @@ public class FormFieldsEditPane extends Composite {
 			
 			} else if (FormField.TYPE_QUERY_TEXT_RANGE.equals(fieldType)) {
 				new NumberRangeQueryPane(element, editor, parent, type);
-			
+
+			} else if (FormField.TYPE_BANNER.equals(fieldType)) {
+				new BannerPane(element, editor, parent, type);
+
 			}
 
 			element.addPropertyChangeListener("name", listener);

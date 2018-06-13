@@ -30,7 +30,8 @@ public class TypeSelectionPane {
 					FormField.TYPE_SELECTION, 
 					FormField.TYPE_MULTI_SELECTION, 
 					FormField.TYPE_FILE,
-					FormField.TYPE_MULTI_FILE 
+					FormField.TYPE_MULTI_FILE,
+					FormField.TYPE_BANNER
 					};
 		} else if (type.equals("query")) {
 			fields = new String[] {
@@ -43,7 +44,8 @@ public class TypeSelectionPane {
 					FormField.TYPE_QUERY_DATETIME,
 					FormField.TYPE_QUERY_DATETIME_RANGE,
 					FormField.TYPE_QUERY_SELECTION,
-					FormField.TYPE_QUERY_MULTI_SELECTION
+					FormField.TYPE_QUERY_MULTI_SELECTION,
+					FormField.TYPE_BANNER
 					};
 		} else if (type.equals("info")) {
 			fields = new String[] {
@@ -52,9 +54,11 @@ public class TypeSelectionPane {
 					FormField.TYPE_PAGE_NOTE, 
 					FormField.TYPE_INLINE, 
 					FormField.TYPE_LABEL,
+					FormField.TYPE_LABEL_MULTILINE,
 					FormField.TYPE_RADIO, 
 					FormField.TYPE_CHECK, 
-					FormField.TYPE_MULTI_CHECK 
+					FormField.TYPE_MULTI_CHECK,
+					FormField.TYPE_BANNER 
 					};
 		}
 

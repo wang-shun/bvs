@@ -33,6 +33,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
+import com.bizvisionsoft.bruiengine.assembly.field.BannerField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckQueryField;
 import com.bizvisionsoft.bruiengine.assembly.field.ComboField;
@@ -287,6 +288,8 @@ public class EditorPart {
 			fieldPart = new MultiCheckField();
 		} else if (FormField.TYPE_TEXT_RANGE.equals(type)) {
 			fieldPart = new NumberRangeField();
+		} else if (FormField.TYPE_BANNER.equals(type)) {// 横幅，说明性字段
+			fieldPart = new BannerField();
 		} else if (FormField.TYPE_QUERY_DATETIME_RANGE.equals(type)) {// 查询专用
 			fieldPart = new DateTimeRangeQueryField();
 		} else if (FormField.TYPE_QUERY_DATETIME.equals(type)) {// 查询专用
