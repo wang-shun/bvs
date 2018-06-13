@@ -1,12 +1,18 @@
 package com.bizvisionsoft.bruidesigner.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
+import com.bizvisionsoft.bruidesigner.editor.field.FormFieldsEditPane;
 
 public class AssemblyMessengerEditor extends ModelEditor {
 
@@ -43,6 +49,18 @@ public class AssemblyMessengerEditor extends ModelEditor {
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：UserService.list");
+		
+		parent = createTabItemContent("查询字段");
+		List<FormField> fields = ((Assembly) inputData).getFields();
+		if (fields == null)
+			((Assembly) inputData).setFields(fields = new ArrayList<FormField>());
+		new FormFieldsEditPane(parent, fields, this, "query");
+		
+		parent = createTabItemContent("操作");
+		List<Action> actions = ((Assembly) inputData).getActions();
+		if (actions == null)
+			((Assembly) inputData).setActions(actions = new ArrayList<Action>());
+		new ActionsEditPane(parent, actions, true, this);
 
 		addPartNamePropertyChangeListener("name");
 	}

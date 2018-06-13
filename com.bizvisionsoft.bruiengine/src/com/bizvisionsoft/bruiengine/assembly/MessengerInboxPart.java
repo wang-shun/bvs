@@ -1,6 +1,5 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,6 +10,7 @@ import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -28,11 +28,13 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class MessengerInboxPart {
+public class MessengerInboxPart implements IQueryEnable {
 
 	private static final int LIMIT = 20;
 
@@ -86,7 +88,7 @@ public class MessengerInboxPart {
 	@Init
 	protected void init() {
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
-		Assert.isNotNull(dataSetEngine, config.getName()+"组件缺少数据集定义");
+		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 	}
 
 	public BruiDataSetEngine getDataSetEngine() {
@@ -206,7 +208,7 @@ public class MessengerInboxPart {
 		String currentDate = null;
 		for (int i = 0; i < input.size(); i++) {
 			Date date = (Date) AUtil.readValue(input.get(i), cName, fName, defaultDate);
-			String _date = new SimpleDateFormat("yyyy年M月d日").format(date);
+			String _date = Util.getFormatText(date, Util.DATE_FORMAT_DATE, RWT.getLocale());
 			if (!_date.equals(currentDate)) {
 				result.add(_date);
 				currentDate = _date;
@@ -236,6 +238,40 @@ public class MessengerInboxPart {
 		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked())
 				.forEach(c -> result.add(c.getData()));
 		return result;
+	}
+
+	public IBruiService getBruiService() {
+		return bruiService;
+	}
+
+	public IBruiContext getContext() {
+		return context;
+	}
+
+	public Assembly getConfig() {
+		return config;
+	}
+
+
+	public void setCount(long count) {
+		this.count = count;
+		page.setCount(count);
+	}
+
+	public BasicDBObject getFilter() {
+		return filter;
+	}
+
+	public void setSkip(int i) {
+		skip = i;
+	}
+
+	public void setCurrentPage(int i) {
+		currentPage = 0;
+	}
+
+	public void setFilter(BasicDBObject result) {
+		filter = result;
 	}
 
 }

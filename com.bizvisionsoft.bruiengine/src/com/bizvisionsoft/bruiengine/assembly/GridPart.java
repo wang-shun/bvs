@@ -52,11 +52,10 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.session.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart {
+public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	@Inject
 	private IBruiService bruiService;
@@ -700,37 +699,6 @@ public class GridPart implements IStructuredDataPart {
 		viewer.getGrid().removeAll();
 	}
 
-	/**
-	 * ÷¥––≤È—Ø
-	 */
-	public void openQueryEditor() {
-		Assembly queryConfig = (Assembly) AUtil.simpleCopy(config, new Assembly());
-		queryConfig.setType(Assembly.TYPE_EDITOR);
-		queryConfig.setTitle("≤È—Ø");
-
-		String bundleId = config.getQueryBuilderBundle();
-		String classId = config.getQueryBuilderClass();
-		Object input;
-		if (!Util.isEmptyOrNull(bundleId) && !Util.isEmptyOrNull(classId)) {
-			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
-		} else {
-			input = new Document();
-		}
-		new Editor<Object>(queryConfig, context).setInput(true, input).ok((r, t) -> doQuery(r));
-	}
-
-	public void doQuery(BasicDBObject result) {
-		filter = result;
-		if (pageEnabled()) {
-			currentPage = 0;
-			skip = 0;
-			count = dataSetEngine.count(filter, context);
-			page.setCount(count);
-		}
-		setViewerInput();
-
-	}
-
 	public void setCheckAll(boolean b) {
 		Arrays.asList(viewer.getGrid().getItems()).stream().forEach(i -> i.setChecked(b));
 	}
@@ -800,6 +768,47 @@ public class GridPart implements IStructuredDataPart {
 
 	public GridTreeViewer getViewer() {
 		return viewer;
+	}
+
+	@Override
+	public IBruiContext getContext() {
+		return context;
+	}
+
+	@Override
+	public Assembly getConfig() {
+		return config;
+	}
+
+	@Override
+	public IBruiService getBruiService() {
+		return bruiService;
+	}
+
+	@Override
+	public void setCount(long count) {
+		this.count = count;
+		page.setCount(count);
+	}
+
+	@Override
+	public BasicDBObject getFilter() {
+		return filter;
+	}
+
+	@Override
+	public void setSkip(int skip) {
+		this.skip = skip;
+	}
+
+	@Override
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	@Override
+	public void setFilter(BasicDBObject filter) {
+		this.filter = filter;
 	}
 
 }
