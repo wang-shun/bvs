@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.assembly.field;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -73,7 +74,7 @@ public abstract class EditorField {
 		layout.numColumns = fieldConfig.isHasInfoLabel() ? 3 : 2;
 		container.setLayout(layout);
 
-		createTitleLabel(container).setLayoutData(getLabelLayoutData());
+		Optional.ofNullable(createTitleLabel(container)).ifPresent(l->l.setLayoutData(getLabelLayoutData()));
 		createControl(container).setLayoutData(getControlLayoutData());
 		if (fieldConfig.isHasInfoLabel())
 			createInfoLabel(container).setLayoutData(getInfoLayoutData());

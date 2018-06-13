@@ -19,7 +19,7 @@ public class TextAreaField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		control = new Text(parent, SWT.BORDER | SWT.MULTI);
+		control = new Text(parent, SWT.BORDER | SWT.MULTI|SWT.WRAP);
 
 		// 设置文本是否只读
 		control.setEditable(!isReadOnly());

@@ -24,12 +24,14 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
+import com.bizvisionsoft.bruiengine.assembly.field.BannerField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.EditorField;
 import com.bizvisionsoft.bruiengine.assembly.field.HtmlPageField;
 import com.bizvisionsoft.bruiengine.assembly.field.InLineWrapper;
 import com.bizvisionsoft.bruiengine.assembly.field.MultiCheckField;
 import com.bizvisionsoft.bruiengine.assembly.field.RadioField;
+import com.bizvisionsoft.bruiengine.assembly.field.TextAreaField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextField;
 import com.bizvisionsoft.bruiengine.assembly.field.TextPageField;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
@@ -143,8 +145,12 @@ public class InfopadPart {
 		EditorField fieldPart = null;
 		if (FormField.TYPE_TEXT.equals(type)) {
 			fieldPart = new TextField();
+		} else if (FormField.TYPE_BANNER.equals(type)) {// ºá·ù£¬ËµÃ÷ÐÔ×Ö¶Î
+			fieldPart = new BannerField();
 		} else if (FormField.TYPE_LABEL.equals(type)) {
 			fieldPart = new TextField();
+		} else if (FormField.TYPE_LABEL_MULTILINE.equals(type)) {
+			fieldPart = new TextAreaField();
 		} else if (FormField.TYPE_RADIO.equals(type)) {
 			fieldPart = new RadioField();
 		} else if (FormField.TYPE_CHECK.equals(type)) {

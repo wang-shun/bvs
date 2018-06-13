@@ -435,6 +435,9 @@ public class FormField extends ModelObject {
 
 	public static final String TYPE_LABEL = "文本标签";
 
+	public static final String TYPE_LABEL_MULTILINE = "多行文本标签";
+
+	public static final String TYPE_BANNER = "横幅";
 	
 	public String getTextQueryType() {
 		return textQueryType;
@@ -442,6 +445,28 @@ public class FormField extends ModelObject {
 	
 	public void setTextQueryType(String textQueryType) {
 		this.textQueryType = textQueryType;
+	}
+	
+	
+	private int height;
+	
+
+	public int getHeight() {
+		return height;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	private boolean staticContent;
+	
+	public boolean isStaticContent() {
+		return staticContent;
+	}
+	
+	public void setStaticContent(boolean staticContent) {
+		this.staticContent = staticContent;
 	}
 	
 	
