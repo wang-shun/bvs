@@ -12,6 +12,7 @@ import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
 import com.bizvisionsoft.service.provider.BsonProvider;
@@ -55,7 +56,9 @@ public class Publisher {
 
 						EPSService.class,
 						
-						WorkSpaceService.class
+						WorkSpaceService.class,
+						
+						WorkReportService.class
 
 				},
 

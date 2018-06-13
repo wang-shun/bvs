@@ -19,6 +19,7 @@ import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
 import com.bizvisionsoft.service.provider.BsonProvider;
@@ -34,6 +35,7 @@ import com.bizvisionsoft.serviceimpl.ProjectSetServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectTemplateServiceImpl;
 import com.bizvisionsoft.serviceimpl.RiskServiceImpl;
 import com.bizvisionsoft.serviceimpl.UserServiceImpl;
+import com.bizvisionsoft.serviceimpl.WorkReportServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkSpaceServiceImpl;
 
@@ -88,6 +90,8 @@ public class Activator implements BundleActivator {
 		regs.add(bc.registerService(ProjectTemplateService.class.getName(), new ProjectTemplateServiceImpl(), null));
 
 		regs.add(bc.registerService(WorkSpaceService.class.getName(), new WorkSpaceServiceImpl(), null));
+
+		regs.add(bc.registerService(WorkReportService.class.getName(), new WorkReportServiceImpl(), null));
 
 	}
 
