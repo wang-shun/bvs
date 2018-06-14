@@ -129,7 +129,9 @@ public class EditorPart {
 		List<FormField> fields = config.getFields();
 		// 判断是否分标签页
 		Composite contentHolder;
-		if (FormField.TYPE_PAGE.equals(fields.get(0).getType())) {
+		if (FormField.TYPE_PAGE.equals(fields.get(0).getType())
+				|| FormField.TYPE_PAGE_HTML.equals(fields.get(0).getType())
+				|| FormField.TYPE_PAGE_NOTE.equals(fields.get(0).getType())) {
 			TabFolder folder = new TabFolder(parent, SWT.TOP | SWT.BORDER);
 			fields.forEach(f -> {
 				Composite content = createTabItem(folder, f.getFieldText());
@@ -174,7 +176,7 @@ public class EditorPart {
 			Button okBtn = UserSession.bruiToolkit().newStyledControl(Button.class, toolbar, SWT.PUSH,
 					BruiToolkit.CSS_NORMAL);
 			okBtn.setText("确定");
-//			okBtn.getShell().setDefaultButton(okBtn);
+			// okBtn.getShell().setDefaultButton(okBtn);
 			okBtn.addListener(SWT.Selection, e -> {
 				try {
 					if (editable) {
@@ -390,7 +392,7 @@ public class EditorPart {
 
 		// 如果表格有查询字段定义
 		grid.setQueryOn(gridConfig.getFields() != null && !gridConfig.getFields().isEmpty());
-		
+
 		grid.setVertialQueryPanel(config.isSmallEditor());
 
 		// 2. 设置表格项的选择

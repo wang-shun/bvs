@@ -79,7 +79,7 @@ public abstract class EditorField {
 		if (fieldConfig.isHasInfoLabel())
 			createInfoLabel(container).setLayoutData(getInfoLayoutData());
 
-		setValue(AUtil.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
+		update();
 
 		container.addListener(SWT.Dispose, e -> {
 			dispose();
@@ -89,6 +89,10 @@ public abstract class EditorField {
 
 	protected void dispose() {
 
+	}
+	
+	public void update() {
+		setValue(AUtil.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
 	}
 
 	public abstract void setValue(Object value);
