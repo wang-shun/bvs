@@ -71,6 +71,10 @@ public class InputDialog extends Dialog {
 	 */
 	private String errorMessage;
 
+	private int textStyle = SWT.SINGLE | SWT.BORDER;
+
+	private boolean multiline;
+
 	/**
 	 * Creates an input dialog with OK and Cancel buttons. Note that the dialog will
 	 * have no visual representation (no widgets) until it is told to open.
@@ -167,7 +171,11 @@ public class InputDialog extends Dialog {
 			label.setFont(parent.getFont());
 		}
 		text = new Text(composite, getInputTextStyle());
-		text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		GridData layoutData = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
+		if (multiline) {
+			layoutData.heightHint = 160;
+		}
+		text.setLayoutData(layoutData);
 		text.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				validateInput();
@@ -287,6 +295,12 @@ public class InputDialog extends Dialog {
 	 * @since 1.1
 	 */
 	protected int getInputTextStyle() {
-		return SWT.SINGLE | SWT.BORDER;
+		return textStyle;
+	}
+
+	public InputDialog setTextMultiline(boolean multiline) {
+		this.multiline = multiline;
+		this.textStyle = SWT.BORDER | SWT.MULTI | SWT.WRAP;
+		return this;
 	}
 }
