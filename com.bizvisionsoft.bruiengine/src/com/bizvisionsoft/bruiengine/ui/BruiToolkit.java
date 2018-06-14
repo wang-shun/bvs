@@ -273,9 +273,6 @@ public class BruiToolkit {
 	}
 
 	public boolean isAcceptableBehavior(Object element, IBruiContext context, Assembly assembly, Action action) {
-		if (!action.isObjectBehavier()) {
-			return true;
-		}
 		String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
 				ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
 				ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER, ServiceParam.CURRENT_USER_ID };

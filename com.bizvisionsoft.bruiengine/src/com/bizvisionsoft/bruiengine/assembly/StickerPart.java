@@ -114,7 +114,7 @@ public class StickerPart {
 				int idx = rightActions.indexOf(action);
 				rightConsumers.get(idx).accept(context);
 			} else {
-				UserSession.bruiToolkit().runAction(action,e, service, context);
+				UserSession.bruiToolkit().runAction(action, e, service, context);
 			}
 		});
 	}
@@ -122,12 +122,25 @@ public class StickerPart {
 	private void setToolbarActions() {
 		final List<Action> actions = new ArrayList<Action>();
 		List<Action> list = assembly.getActions();
-		if (list != null)
+		if (list != null) {
+			final Object input = context.getInput();
+			final Object root = context.getRootInput();
 			list.forEach(action -> {
-				if (UserSession.bruiToolkit().isAcceptableBehavior(context.getInput(), context, assembly, action)) {
+				if (!action.isObjectBehavier()) {
 					actions.add(action);
+				} else {
+					if (input != null) {
+						if (UserSession.bruiToolkit().isAcceptableBehavior(input, context, assembly, action)) {
+							actions.add(action);
+						}
+					} else if (root != null) {
+						if (UserSession.bruiToolkit().isAcceptableBehavior(root, context, assembly, action)) {
+							actions.add(action);
+						}
+					}
 				}
 			});
+		}
 		bar.setActions(actions);
 	}
 
