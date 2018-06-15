@@ -542,7 +542,8 @@ Button[PUSH].serious:pressed {
   color: #ffffff;
 }
 
-Button[TOGGLE].segmentleft{
+Button[TOGGLE].segmentleft,
+Button[PUSH].segmentleft{
   border: none;
   border-radius: 2px 0px 0px 2px;
   border-top: 1px solid #e6e6e6;
@@ -564,7 +565,8 @@ Button[TOGGLE].segmentleft:selected{
 }
 
 
-Button[TOGGLE].segment{
+Button[TOGGLE].segment,
+Button[PUSH].segment{
   border: none;
   border-radius: 0px;
   border-left: none;
@@ -584,7 +586,8 @@ Button[TOGGLE].segment:selected{
   color: #ffffff;
 }
 
-Button[TOGGLE].segmentright{
+Button[TOGGLE].segmentright,
+Button[PUSH].segmentright{
   border: none;
   border-radius: 0px 2px 2px 0px;
   border-left: none;
