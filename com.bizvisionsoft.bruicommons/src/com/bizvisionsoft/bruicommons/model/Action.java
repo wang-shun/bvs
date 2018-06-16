@@ -162,7 +162,9 @@ public class Action extends ModelObject {
 			return true;
 		if (className != null && !className.isEmpty() && bundleId != null && !bundleId.isEmpty())
 			return true;
-
+		if(openPageName!=null && !openPageName.isEmpty()) {
+			return true;
+		}
 		return false;
 	}
 

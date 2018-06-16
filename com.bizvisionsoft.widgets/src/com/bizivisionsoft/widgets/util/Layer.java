@@ -23,7 +23,11 @@ public class Layer {
 	}
 	
 	public static void message(String msg,int icon) {
-		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {icon: "+icon+"})");
+		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {shade:0.2,skin: 'layui-layer-lan',icon: "+icon+",anim: 0})");
+	}
+	
+	public static void message(String title,String msg) {
+		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {title:\""+title+"\", shade:0.2,skin: 'layui-layer-lan',anim: 0})");
 	}
 	
 }
