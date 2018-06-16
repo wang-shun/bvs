@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.SingletonManager;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -36,15 +37,24 @@ public class WidgetHandler {
 
 		public void handleCall(String method, JsonObject parameters) {
 			if (GestureEvent.event.equalsIgnoreCase(method)) {
-				String eventCode = parameters.get("event").asString();
-				String data = parameters.get("data").asString();
-				fireEventListener(eventCode, data);
+				JsonValue jsonValue = parameters.get("data");
+				if (jsonValue.isString()) {
+					String eventCode = parameters.get("event").asString();
+					String data = jsonValue.asString();
+					fireEventListener(eventCode, data);
+				}
 			} else if (EVENT_SLIDING.equalsIgnoreCase(method)) {
-				String data = parameters.get("data").asString();
-				fireEventListener(EVENT_SLIDING, data);
+				JsonValue jsonValue = parameters.get("data");
+				if (jsonValue.isString()) {
+					String data = jsonValue.asString();
+					fireEventListener(EVENT_SLIDING, data);
+				}
 			} else if (EVENT_RENDERHTML.equalsIgnoreCase(method)) {
-				int height = parameters.get("height").asInt();
-				fireEventListener(EVENT_RENDERHTML, height);
+				JsonValue value = parameters.get("height");
+				if (value.isNumber()) {
+					int height = value.asInt();
+					fireEventListener(EVENT_RENDERHTML, height);
+				}
 			}
 		}
 	};
@@ -61,11 +71,11 @@ public class WidgetHandler {
 	}
 
 	public static WidgetHandler getHandler(Widget widget) {
-		if(widget==null) {
+		if (widget == null) {
 			UISession uiSession = RWT.getUISession();
 			return SingletonManager.getInstance(uiSession).getSingleton(WidgetHandler.class);
 		}
-		
+
 		Object wh = widget.getData("widgetHandler");
 		if (wh == null) {
 			wh = new WidgetHandler(widget);
@@ -73,7 +83,7 @@ public class WidgetHandler {
 		}
 		return (WidgetHandler) wh;
 	}
-	
+
 	public static WidgetHandler getHandler() {
 		return getHandler(null);
 	}
