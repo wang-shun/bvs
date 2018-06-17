@@ -6,7 +6,7 @@ public class BruiEditorContext extends BruiAssemblyContext implements IBruiEdito
 	
 	private boolean embedded;
 
-	public BruiEditorContext() {
+	BruiEditorContext() {
 		super();
 		editable = true;
 	}

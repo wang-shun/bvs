@@ -16,6 +16,7 @@ import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.ToolItemDescriptor;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class MultiSelectionField extends SelectionField {
 
@@ -31,7 +32,7 @@ public class MultiSelectionField extends SelectionField {
 		BruiAssemblyEngine brui = BruiAssemblyEngine
 				.newInstance(ModelLoader.site.getAssembly(fieldConfig.getSelectorAssemblyId()));
 		BruiAssemblyContext gridContext;
-		context.add(gridContext = new BruiAssemblyContext().setParent(context));
+		context.add(gridContext = UserSession.newAssemblyContext().setParent(context));
 		gridContext.setEngine(brui);
 		grid = ((GridPart) brui.getTarget()).disablePagination().disableDateSetEngine();
 

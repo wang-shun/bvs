@@ -8,7 +8,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-import com.bizvisionsoft.bruiengine.session.SessionManager;
+import com.bizvisionsoft.bruiengine.service.SessionManager;
 
 public class Brui implements BundleActivator {
 

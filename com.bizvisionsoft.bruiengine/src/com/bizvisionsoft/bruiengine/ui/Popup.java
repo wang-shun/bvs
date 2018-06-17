@@ -12,7 +12,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class Popup extends Part {
 
@@ -47,7 +47,7 @@ public class Popup extends Part {
 	}
 
 	protected BruiAssemblyContext createContext(IBruiContext parentContext) {
-		return new BruiAssemblyContext().setParent(parentContext);
+		return UserSession.newAssemblyContext().setParent(parentContext);
 	}
 
 	public Assembly getAssembly() {

@@ -62,7 +62,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.mongodb.BasicDBObject;
@@ -382,7 +382,7 @@ public class EditorPart {
 		// 1. 实例化，设置上下文
 		Assembly gridConfig = ModelLoader.site.getAssembly(assemblyId);
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(gridConfig);
-		context.add(containerContext = new BruiAssemblyContext().setParent(context));
+		context.add(containerContext = UserSession.newAssemblyContext().setParent(context));
 		containerContext.setEngine(brui);
 
 		GridPart grid = ((GridPart) brui.getTarget());

@@ -32,7 +32,7 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private boolean contentPage;
 
-	public BruiAssemblyContext() {
+	BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
 

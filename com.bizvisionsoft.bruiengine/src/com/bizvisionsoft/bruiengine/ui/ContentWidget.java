@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 
@@ -30,7 +31,7 @@ public class ContentWidget {
 	public ContentWidget(Assembly assembly, BruiService service,BruiAssemblyContext parentContext) {
 		this.assembly = assembly;
 		this.service = service;
-		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
+		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext));
 	}
 
 	public ContentWidget createUI(Composite parent,Object input, boolean closeable) {

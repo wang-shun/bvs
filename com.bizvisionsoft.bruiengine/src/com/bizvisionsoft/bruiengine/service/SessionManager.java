@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.session;
+package com.bizvisionsoft.bruiengine.service;
 
 import java.io.IOException;
 import java.util.ArrayList;

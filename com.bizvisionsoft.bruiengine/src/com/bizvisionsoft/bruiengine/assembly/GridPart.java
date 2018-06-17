@@ -45,11 +45,10 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
-import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
@@ -318,7 +317,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		}
 
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(queryConfig);
-		IBruiContext childContext = new BruiEditorContext().setEditable(true).setEmbeded(true).setInput(input)
+		IBruiContext childContext = UserSession.newEditorContext().setEditable(true).setEmbeded(true).setInput(input)
 				.setParent(context).setAssembly(queryConfig).setEngine(brui);
 		context.add(childContext);
 

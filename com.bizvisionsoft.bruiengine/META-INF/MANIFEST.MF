@@ -33,6 +33,5 @@ Export-Package: com.bizvisionsoft.bruiengine,
  com.bizvisionsoft.bruiengine.assembly,
  com.bizvisionsoft.bruiengine.assembly.field,
  com.bizvisionsoft.bruiengine.service,
- com.bizvisionsoft.bruiengine.session,
  com.bizvisionsoft.bruiengine.ui,
  com.bizvisionsoft.bruiengine.util

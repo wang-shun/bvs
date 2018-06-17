@@ -1,6 +1,8 @@
-package com.bizvisionsoft.bruiengine.session;
+package com.bizvisionsoft.bruiengine.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,15 +27,38 @@ public class UserSession implements IShellProvider {
 
 	private String remoteAddr;
 
+	private List<IBruiContext> contexts;
+
 	public UserSession() {
+		contexts = new ArrayList<>();
 		bruiToolkit = new BruiToolkit();
+	}
+
+	public static BruiAssemblyContext newAssemblyContext() {
+		return current().newAssemblyContextInstance();
+	}
+	
+	public static BruiEditorContext newEditorContext() {
+		return current().newEditorContextInstance();
+	}
+
+	private BruiAssemblyContext newAssemblyContextInstance() {
+		BruiAssemblyContext context = new BruiAssemblyContext();
+		this.contexts.add(context);
+		return context;
+	}
+	
+	private BruiEditorContext newEditorContextInstance() {
+		BruiEditorContext context = new BruiEditorContext();
+		this.contexts.add(context);
+		return context;
 	}
 
 	public static UserSession current() {
 		UserSession session = (UserSession) SingletonUtil.getSessionInstance(UserSession.class);
 		return session;
 	}
-	
+
 	public UserSession setShell(Shell shell) {
 		this.shell = shell;
 		return this;
@@ -63,7 +88,7 @@ public class UserSession implements IShellProvider {
 	public void setHttpSession(HttpSession httpSession) {
 		this.httpSession = httpSession;
 	}
-	
+
 	public HttpSession getHttpSession() {
 		return httpSession;
 	}
@@ -71,7 +96,7 @@ public class UserSession implements IShellProvider {
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
 	}
-	
+
 	public Date getLoginTime() {
 		return loginTime;
 	}
@@ -80,10 +105,9 @@ public class UserSession implements IShellProvider {
 		this.remoteAddr = remoteAddr;
 		return this;
 	}
-	
+
 	public String getRemoteAddr() {
 		return remoteAddr;
 	}
-	
 
 }

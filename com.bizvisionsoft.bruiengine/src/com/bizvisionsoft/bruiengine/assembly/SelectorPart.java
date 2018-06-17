@@ -20,6 +20,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 
 public class SelectorPart {
@@ -77,7 +78,7 @@ public class SelectorPart {
 		// 扩展DataGrid
 		// 1. 实例化，设置上下文
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(gridConfig);
-		context.add(containerContext = new BruiAssemblyContext().setParent(context));
+		context.add(containerContext = UserSession.newAssemblyContext().setParent(context));
 		containerContext.setEngine(brui);
 
 		GridPart grid = ((GridPart) brui.getTarget());

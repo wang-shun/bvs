@@ -18,6 +18,7 @@ import com.bizvisionsoft.bruicommons.model.Layout;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class AssemblyContainer {
 
@@ -31,7 +32,7 @@ public class AssemblyContainer {
 
 	public AssemblyContainer(Composite parent, BruiAssemblyContext parentContext) {
 		this.parent = parent;
-		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext).setContentPage(true));
+		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext).setContentPage(true));
 	}
 
 	public AssemblyContainer setAssembly(Assembly assembly) {

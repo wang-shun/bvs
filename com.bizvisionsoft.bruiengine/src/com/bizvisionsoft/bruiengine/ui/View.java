@@ -17,7 +17,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class View extends Part {
 
@@ -51,7 +51,7 @@ public class View extends Part {
 
 		previous = new ArrayList<>();
 		this.page = page;
-		this.context = new BruiAssemblyContext();
+		this.context = UserSession.newAssemblyContext();
 		this.context.setInput(input);
 
 		sidebarWidget = new SidebarWidget(page.getSidebar(), service, context);
@@ -67,10 +67,10 @@ public class View extends Part {
 	public int open() {
 		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
 			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("登录PMS").open());
+					.map(a -> new Popup(a, UserSession.newAssemblyContext()).setTitle("登录PMS").open());
 		} else if (page.isForceCheckLogin()) {
 			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, new BruiAssemblyContext()).setTitle("您的操作需再次验证身份").open());
+					.map(a -> new Popup(a, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open());
 		}
 
 		int result = super.open();

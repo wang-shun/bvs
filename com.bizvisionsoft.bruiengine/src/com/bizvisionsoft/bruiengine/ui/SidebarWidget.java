@@ -27,7 +27,7 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 
@@ -84,7 +84,7 @@ public class SidebarWidget {
 	public SidebarWidget(Sidebar sidebar, BruiService service, BruiAssemblyContext parentContext) {
 		this.sidebar = sidebar;
 		this.service = service;
-		parentContext.add(context = new BruiAssemblyContext().setParent(parentContext));
+		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext));
 		bruiToolkit = UserSession.bruiToolkit();
 
 		// 1. 创建实例,注入并初始化

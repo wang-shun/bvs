@@ -16,6 +16,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public abstract class EditorField {
 
@@ -61,7 +62,7 @@ public abstract class EditorField {
 
 	public Composite createUI(Composite parent) {
 		if (editor != null) {
-			editor.getContext().add(context = new BruiAssemblyContext().setParent(editor.getContext()));
+			editor.getContext().add(context = UserSession.newAssemblyContext().setParent(editor.getContext()));
 		}
 
 		locale = RWT.getLocale();

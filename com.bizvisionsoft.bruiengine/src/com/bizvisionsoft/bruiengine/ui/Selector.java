@@ -13,6 +13,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class Selector extends Popup {
 
@@ -42,7 +43,7 @@ public class Selector extends Popup {
 
 	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
-		return new BruiEditorContext();
+		return UserSession.newEditorContext();
 	}
 
 	public Selector setEditable(boolean editable) {

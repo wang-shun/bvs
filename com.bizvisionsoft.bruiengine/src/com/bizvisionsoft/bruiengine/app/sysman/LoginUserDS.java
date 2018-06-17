@@ -7,8 +7,8 @@ import javax.servlet.http.HttpSession;
 
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.session.SessionManager;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.SessionManager;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.service.model.User;
 
 public class LoginUserDS {

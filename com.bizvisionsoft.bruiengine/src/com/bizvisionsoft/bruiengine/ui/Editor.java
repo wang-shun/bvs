@@ -13,6 +13,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.BruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.mongodb.BasicDBObject;
 
 public class Editor<T> extends Popup {
@@ -49,7 +50,7 @@ public class Editor<T> extends Popup {
 
 	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
-		BruiEditorContext c = new BruiEditorContext();// 编辑器考虑可在各种不同的上下文中使用，默认不应连接到父上下文
+		BruiEditorContext c = UserSession.newEditorContext();// 编辑器考虑可在各种不同的上下文中使用，默认不应连接到父上下文
 		if (assembly.isAddToParentContext()) {
 			c.setParent(parentContext);
 		}

@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.session.UserSession;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.SessionDiskUploadReceiver;
 import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.FileService;
