@@ -12,6 +12,7 @@ import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
@@ -28,6 +29,8 @@ public class UserSession {
 	private Display display;
 
 	private ServerPushSession pushSession;
+
+	private boolean pushStoped;
 
 	public UserSession() {
 		HttpServletRequest request = RWT.getRequest();
@@ -84,7 +87,10 @@ public class UserSession {
 
 	public void dispose() {
 		contexts.forEach(c -> c.dispose());
-		pushSession.stop();
+		if (!pushStoped) {
+			pushSession.stop();
+			pushStoped = true;
+		}
 	}
 
 	public static BruiToolkit bruiToolkit() {
@@ -113,30 +119,34 @@ public class UserSession {
 	 * 
 	 * @param date
 	 */
-	public void logout(Date date) {
+	public boolean logout(Date date) {
+		if (display.isDisposed()) {
+			dispose();
+			return false;
+		}
 
 		final int interval;
 		if (date == null) {
-			interval = 1;
+			interval = 0;
 		} else {
-			long _interval = new Date().getTime() - date.getTime();
+			int _interval = (int) ((date.getTime() - new Date().getTime()));
 			if (_interval <= 0) {
-				interval = 1;
+				interval = 0;
 			} else {
-				interval = (int) _interval;
+				interval = _interval;
 			}
 		}
 		display.asyncExec(() -> {
-			String message;
-			if (interval == 1) {
-				message = "系统将立刻停止对您的服务。";
+			if (interval < 1000) {
+				Layer.message("系统将立刻停止对您的服务。<br/>如有任何疑问请咨询系统管理人员。", Layer.ICON_INFO);
+				RWT.getUISession().getHttpSession().setMaxInactiveInterval(1);
 			} else {
-				message = "系统将于" + getFriendlyTimeDuration(interval) + "后停止对您的服务。";
+				MessageDialog.openWarning(display.getActiveShell(), "通知",
+						"系统将于" + getFriendlyTimeDuration(interval) + "后停止对您的服务。<br/>如有任何疑问请咨询系统管理人员。");
+				RWT.getUISession().getHttpSession().setMaxInactiveInterval(interval / 1000);
 			}
-			MessageDialog.openWarning(display.getActiveShell(), "通知", message);
-			RWT.getUISession().getHttpSession().setMaxInactiveInterval(interval);
 		});
-
+		return true;
 	}
 
 	public void sendMessage(final String message) {
