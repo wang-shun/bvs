@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -27,7 +28,7 @@ public class Popup extends Part {
 	private BruiService service;
 
 	public Popup(Assembly assembly, IBruiContext parentContext) {
-		super(UserSession.current().getShell());
+		super(Display.getCurrent().getActiveShell());
 		service = new BruiService(this);
 
 		this.assembly = assembly;

@@ -48,7 +48,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		display = new Display();
 		shell = new Shell(display, SWT.NO_TRIM);
 		setBackground();
-		UserSession.current().setEntryPoint(this).setShell(shell);
+		UserSession.current().setEntryPoint(this);
 
 		shell.setMaximized(true);
 		shell.layout();

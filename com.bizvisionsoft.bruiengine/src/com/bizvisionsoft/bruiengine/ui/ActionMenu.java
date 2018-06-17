@@ -72,7 +72,7 @@ public class ActionMenu extends Part {
 	private Map<String, Function<Action, Boolean>> listener = new HashMap<String, Function<Action, Boolean>>();
 
 	public ActionMenu(IBruiService service) {
-		super(UserSession.current().getShell());
+		super(service.getCurrentShell());
 		this.service = service;
 		setShellStyle(SWT.ON_TOP);
 	}

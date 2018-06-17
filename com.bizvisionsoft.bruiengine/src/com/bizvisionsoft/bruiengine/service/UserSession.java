@@ -6,34 +6,30 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.SingletonUtil;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.rap.rwt.service.ServerPushSession;
+import org.eclipse.swt.widgets.Display;
 
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.service.model.User;
 
-public class UserSession implements IShellProvider {
-
-	private Shell shell;
+public class UserSession {
 
 	private BruiToolkit bruiToolkit;
 
 	private BruiEntryPoint bruiEntryPoint;
 
-	private List<IBruiContext> contexts;
+	private List<IBruiContext> contexts = new ArrayList<>();
+
+	private Display display;
+
+	private ServerPushSession pushSession;
 
 	public UserSession() {
-		contexts = new ArrayList<>();
-		readRequest();
-		bruiToolkit = new BruiToolkit();
-	}
-
-	private void readRequest() {
-
 		HttpServletRequest request = RWT.getRequest();
 		remoteAddr = request.getRemoteAddr();
 		remoteHost = request.getRemoteHost();
@@ -45,6 +41,11 @@ public class UserSession implements IShellProvider {
 		requestSessionId = request.getRequestedSessionId();
 		requestURI = request.getRequestURI();
 
+		display = Display.getCurrent();
+		pushSession = new ServerPushSession();
+		pushSession.start();
+
+		bruiToolkit = new BruiToolkit();
 	}
 
 	public static BruiAssemblyContext newAssemblyContext() {
@@ -72,17 +73,18 @@ public class UserSession implements IShellProvider {
 		return session;
 	}
 
-	public UserSession setShell(Shell shell) {
-		this.shell = shell;
-		return this;
-	}
-
-	public Shell getShell() {
-		return shell;
-	}
+	// public UserSession setShell(Shell shell) {
+	// this.shell = shell;
+	// return this;
+	// }
+	//
+	// public Shell getShell() {
+	// return shell;
+	// }
 
 	public void dispose() {
 		contexts.forEach(c -> c.dispose());
+		pushSession.stop();
 	}
 
 	public static BruiToolkit bruiToolkit() {
@@ -104,6 +106,41 @@ public class UserSession implements IShellProvider {
 
 	void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	/**
+	 * 强制登出用户进程
+	 * 
+	 * @param date
+	 */
+	public void logout(Date date) {
+
+		final int interval;
+		if (date == null) {
+			interval = 1;
+		} else {
+			long _interval = new Date().getTime() - date.getTime();
+			if (_interval <= 0) {
+				interval = 1;
+			} else {
+				interval = (int) _interval;
+			}
+		}
+		display.asyncExec(() -> {
+			String message;
+			if (interval == 1) {
+				message = "系统将立刻停止对您的服务。";
+			} else {
+				message = "系统将于" + getFriendlyTimeDuration(interval) + "后停止对您的服务。";
+			}
+			MessageDialog.openWarning(display.getActiveShell(), "通知", message);
+			RWT.getUISession().getHttpSession().setMaxInactiveInterval(interval);
+		});
+
+	}
+
+	public void sendMessage(final String message) {
+		display.asyncExec(() -> MessageDialog.openWarning(display.getActiveShell(), "通知", message));
 	}
 
 	@ReadValue
@@ -141,26 +178,26 @@ public class UserSession implements IShellProvider {
 
 	@ReadValue("loginDuration")
 	private String getLoginDuration() {
-		Date one;
-		Date two;
-		long day = 0;
-		long hour = 0;
-		long min = 0;
-		long sec = 0;
-		one = new Date();
-		two = loginTime;
+		Date one = new Date();
+		Date two = loginTime;
 		long time1 = one.getTime();
 		long time2 = two.getTime();
+
 		long diff;
 		if (time1 < time2) {
 			diff = time2 - time1;
 		} else {
 			diff = time1 - time2;
 		}
-		day = diff / (24 * 60 * 60 * 1000);
-		hour = (diff / (60 * 60 * 1000) - day * 24);
-		min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
-		sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+
+		return getFriendlyTimeDuration(diff);
+	}
+
+	private String getFriendlyTimeDuration(long diff) {
+		long day = diff / (24 * 60 * 60 * 1000);
+		long hour = (diff / (60 * 60 * 1000) - day * 24);
+		long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+		long sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
 
 		String result = "";
 		if (day != 0)
@@ -172,6 +209,10 @@ public class UserSession implements IShellProvider {
 		if (sec != 0)
 			result += sec + "秒";
 		return result;
+	}
+
+	public User getLoginUser() {
+		return loginUser;
 	}
 
 }

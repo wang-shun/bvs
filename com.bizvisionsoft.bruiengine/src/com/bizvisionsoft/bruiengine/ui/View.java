@@ -10,6 +10,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -46,7 +47,7 @@ public class View extends Part {
 	}
 
 	public View(Page page, Object input) {
-		super(UserSession.current().getShell());
+		super(Display.getCurrent().getActiveShell());
 		service = new BruiService(this);
 
 		previous = new ArrayList<>();
