@@ -1,11 +1,15 @@
 package com.bizvisionsoft.bruidesigner.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import com.bizvisionsoft.bruicommons.model.ModelObject;
+import com.bizvisionsoft.bruicommons.model.Role;
 import com.bizvisionsoft.bruicommons.model.Site;
 
 public class SiteEditor extends ModelEditor {
@@ -44,6 +48,12 @@ public class SiteEditor extends ModelEditor {
 		field.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		addPartNamePropertyChangeListener("name");
+		
+		parent = createTabItemContent("½ÇÉ«");
+		List<Role> roles = ((Site) inputData).getRoles();
+		if (roles == null)
+			((Site) inputData).setRoles(roles = new ArrayList<Role>());
+		new RolePane(parent, roles, this);
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import com.bizvisionsoft.bruicommons.model.Headbar;
 import com.bizvisionsoft.bruicommons.model.Layout;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruicommons.model.Page;
+import com.bizvisionsoft.bruicommons.model.Role;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
 import com.bizvisionsoft.bruicommons.model.Site;
 import com.bizvisionsoft.bruicommons.model.Template;
@@ -89,6 +90,8 @@ public class ModelToolkit {
 			return ((Folder) model).getName();
 		if (model instanceof Layout)
 			return ((Layout) model).getName();
+		if (model instanceof Role)
+			return ((Role) model).getText()+" ["+((Role) model).getName()+"]";
 		if (model instanceof Column)
 			return ((Column) model).getName()
 					+ (((Column) model).getText() == null ? "" : (" £¨" + ((Column) model).getText() + "£©"));
@@ -98,6 +101,7 @@ public class ModelToolkit {
 			}
 			return "[" + ((FormField) model).getType() + "] " + ((FormField) model).getName();
 		}
+		
 		return "";
 	}
 
@@ -439,6 +443,14 @@ public class ModelToolkit {
 		column.setWidth(80);
 		column.setColumns(new ArrayList<Column>());
 		return column;
+	}
+	
+	public static Role createRole() {
+		Role role = new Role();
+		role.setId(generateId());
+		String generateName = generateName("ÐÂ½ÇÉ«");
+		role.setName(generateName);
+		return role;
 	}
 
 	public static FormField createField() {

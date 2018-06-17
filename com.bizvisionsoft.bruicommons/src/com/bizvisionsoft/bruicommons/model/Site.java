@@ -245,5 +245,16 @@ public class Site extends ModelObject {
 	public Page getPageById(String pageId) {
 		return pages.stream().filter(p -> pageId.equals(p.getId())).findFirst().orElse(null);
 	}
+	
+	private List<Role> roles;
+	
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	
 
 }
