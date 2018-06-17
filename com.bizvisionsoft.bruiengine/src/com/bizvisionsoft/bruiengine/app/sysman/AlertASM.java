@@ -72,7 +72,7 @@ public class AlertASM {
 		fd.height = 120;
 		
 		Button backupBtn = new Button(parent, SWT.PUSH);
-		backupBtn.setText("备份系统设置数据");
+		backupBtn.setText("开始备份");
 		backupBtn.setData(RWT.CUSTOM_VARIANT, "info");
 		fd = new FormData();
 		backupBtn.setLayoutData(fd);
@@ -90,17 +90,17 @@ public class AlertASM {
 	private String getInfo() {
 		return "<blockquote class='layui-elem-quote' style='border-left: 5px solid #ff9800;'>"
 				+ "<div class='label_headline'>请务必了解您将要执行的操作</div>"
-				+ "<br/>系统设置需经过专业培训，不适当的操作可能对系统产生严重影响。当您不确定是否了解将要执行的操作对系统所造成的影响以前，请退出系统设置，或咨询专业人士。" + "</blockquote>";
+				+ "<br/>您在本页面可执行的操作需经过专业培训，不适当的操作可能对系统产生严重影响。当您不确定是否了解将要执行的操作对系统所造成的影响以前，请退出系统设置，或咨询专业人士。" + "</blockquote>";
 	}
 
 	private String getMntInfo() {
-		return "<blockquote class='layui-elem-quote'>" + "<div class='label_headline'>您可以考虑启动系统维护？</div>"
+		return "<blockquote class='layui-elem-quote'>" + "<div class='label_headline'>是否需要启动系统维护？</div>"
 				+ "<br/>启用系统维护后，所有用户将在维护开始后无法使用系统，直到您关闭系统维护。当维护起始时间尚未到来以前，已登录的用户将收到提示，并可继续未完的操作，当维护起始时间到来时，这些用户将被强制退出。"
 				+ "</blockquote>";
 	}
 
 	private String getBackupInfo() {
-		return "<blockquote class='layui-elem-quote' style='border-left: 5px solid #03a9f4;'>" + "<div class='label_headline'>进行备份系统？</div>"
+		return "<blockquote class='layui-elem-quote' style='border-left: 5px solid #03a9f4;'>" + "<div class='label_headline'>备份系统设置和业务基础数据？</div>"
 				+ "<br/>对系统进行备份是避免误操作造成不可挽回影响的有效措施。对整个运行系统进行备份需要进入维护状态，并可能需要很长的时间。但如果仅是避免误操作，您可以备份系统设置数据。"
 				+ "</blockquote>";
 	}
