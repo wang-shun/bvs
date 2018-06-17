@@ -14,6 +14,7 @@ import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.OrganizationService;
+import com.bizvisionsoft.service.PermissionService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
@@ -30,6 +31,7 @@ import com.bizvisionsoft.serviceimpl.EPSServiceImpl;
 import com.bizvisionsoft.serviceimpl.FileServiceImpl;
 import com.bizvisionsoft.serviceimpl.OBSServiceImpl;
 import com.bizvisionsoft.serviceimpl.OrganizationServiceImpl;
+import com.bizvisionsoft.serviceimpl.PermissionServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectSetServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectTemplateServiceImpl;
@@ -92,6 +94,8 @@ public class Activator implements BundleActivator {
 		regs.add(bc.registerService(WorkSpaceService.class.getName(), new WorkSpaceServiceImpl(), null));
 
 		regs.add(bc.registerService(WorkReportService.class.getName(), new WorkReportServiceImpl(), null));
+
+		regs.add(bc.registerService(PermissionService.class.getName(), new PermissionServiceImpl(), null));
 
 	}
 

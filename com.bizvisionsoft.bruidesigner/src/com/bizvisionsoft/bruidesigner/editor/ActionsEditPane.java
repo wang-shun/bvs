@@ -374,6 +374,9 @@ public class ActionsEditPane extends SashForm {
 			if (Action.TYPE_QUERY.equals(action.getType())) {
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			editor.createTextField(parent, "角色（多个#分割）", action, "role", SWT.BORDER);
+			
 			action.addPropertyChangeListener("name", listener);
 		}
 

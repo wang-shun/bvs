@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.eclipse.core.runtime.Platform;
 
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
@@ -17,7 +18,7 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 public class CreateItem {
 
 	@Inject
-	private IBruiService bruiService;
+	private IBruiService br;
 
 	private Assembly assembly;
 
@@ -37,6 +38,8 @@ public class CreateItem {
 		try {
 			//先检查注解
 			Object input = Platform.getBundle(bundleId).loadClass(className).newInstance();
+			//处理CreationInfo
+			AUtil.writeValue(input, assembly.getName(), WriteValue.CREATIONINFO, br.creationInfo());
 			String message = Optional.ofNullable(AUtil.readType(input)).orElse("");
 			Editor<?> editor = new Editor<Object>(assembly, context).setInput(input);
 			editor.setTitle("创建 " + message);

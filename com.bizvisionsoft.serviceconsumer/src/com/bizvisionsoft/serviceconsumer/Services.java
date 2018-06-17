@@ -15,6 +15,7 @@ import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.OrganizationService;
+import com.bizvisionsoft.service.PermissionService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
@@ -51,6 +52,7 @@ public class Services implements BundleActivator {
 		register(RiskService.class);
 		register(WorkSpaceService.class);
 		register(WorkReportService.class);
+		register(PermissionService.class);
 	}
 
 	private void register(Class<?> type) {

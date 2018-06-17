@@ -113,7 +113,7 @@ public class RolePane extends Composite {
 
 			editor.createTextField(parent, "½ÇÉ«ÎÄ±¾:", element, "text", SWT.BORDER);
 
-			editor.createTextField(parent, "ÃèÊö:", element, "description", SWT.BORDER);
+			editor.createTextField(parent, "ÃèÊö:", element, "description", SWT.BORDER|SWT.MULTI|SWT.WRAP);
 
 			element.addPropertyChangeListener("name", listener);
 

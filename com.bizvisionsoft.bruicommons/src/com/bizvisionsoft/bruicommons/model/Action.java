@@ -283,4 +283,15 @@ public class Action extends ModelObject {
 		
 	}
 	
+	private String role;
+	
+	public String getRole() {
+		return role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	
 }

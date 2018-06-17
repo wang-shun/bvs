@@ -16,7 +16,9 @@ public class AssemblyLinkEditor extends ModelEditor {
 		createAssemblyField(parent, "组件:", inputData, "id",false);
 
 		createCheckboxField(parent, "默认:", inputData, "defaultAssembly", SWT.CHECK);
-
+		
+		createTextField(parent, "角色（多个#分割）", inputData, "role", SWT.BORDER);
+		
 	}
 
 	@Override

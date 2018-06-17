@@ -51,5 +51,15 @@ public class AssemblyLink extends ModelObject{
 		firePropertyChange("defaultAssembly", old, this.defaultAssembly);
 	}
 	
+	private String role;
+	
+	public String getRole() {
+		return role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 
 }
