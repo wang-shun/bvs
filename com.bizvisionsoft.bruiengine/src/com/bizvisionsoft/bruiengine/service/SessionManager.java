@@ -45,9 +45,8 @@ public class SessionManager {
 		hs.setAttribute(ATT_USRINFO, usrinfo);
 
 		final UserSession session = UserSession.current();
-		session.setHttpSession(hs);
+		session.setLoginUser(usrinfo);
 		session.setLoginTime(new Date());
-		session.setRemoteAddr(RWT.getRequest().getRemoteAddr());
 		
 		if (!userSessions.contains(session)) {
 			RWT.getUISession().addUISessionListener(l -> {

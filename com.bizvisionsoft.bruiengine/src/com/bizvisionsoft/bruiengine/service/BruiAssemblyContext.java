@@ -32,6 +32,8 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	private boolean contentPage;
 
+	private boolean disposed;
+
 	BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
 	}
@@ -52,11 +54,18 @@ public class BruiAssemblyContext implements IBruiContext {
 	}
 
 	public void dispose() {
-		for (int i = 0; i < children.size(); i++)
-			children.get(i).dispose();
-		children = null;
-		if (parentContext != null) {
-			parentContext.remove(this);
+		if (!disposed) {
+			if (children != null) {
+				for (int i = 0; i < children.size(); i++) {
+					children.get(i).dispose();
+				}
+				children = null;
+				if (parentContext != null) {
+					parentContext.remove(this);
+				}
+			}
+			input = null;
+			disposed = true;
 		}
 	}
 
@@ -129,7 +138,7 @@ public class BruiAssemblyContext implements IBruiContext {
 
 	@Override
 	public void remove(IBruiContext childContext) {
-		if (childContext != null) {
+		if (childContext != null && children != null) {
 			children.remove(childContext);
 		}
 	}

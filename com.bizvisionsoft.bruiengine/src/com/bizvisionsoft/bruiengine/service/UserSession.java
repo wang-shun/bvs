@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.service.model.User;
 
 public class UserSession implements IShellProvider {
 
@@ -21,23 +24,33 @@ public class UserSession implements IShellProvider {
 
 	private BruiEntryPoint bruiEntryPoint;
 
-	private HttpSession httpSession;
-
-	private Date loginTime;
-
-	private String remoteAddr;
-
 	private List<IBruiContext> contexts;
 
 	public UserSession() {
 		contexts = new ArrayList<>();
+		readRequest();
 		bruiToolkit = new BruiToolkit();
+	}
+
+	private void readRequest() {
+
+		HttpServletRequest request = RWT.getRequest();
+		remoteAddr = request.getRemoteAddr();
+		remoteHost = request.getRemoteHost();
+		userAgent = request.getHeader("user-agent");
+		characterEncoding = request.getCharacterEncoding();
+		authType = request.getAuthType();
+		pathInfo = request.getPathInfo();
+		remoteUser = request.getRemoteUser();
+		requestSessionId = request.getRequestedSessionId();
+		requestURI = request.getRequestURI();
+
 	}
 
 	public static BruiAssemblyContext newAssemblyContext() {
 		return current().newAssemblyContextInstance();
 	}
-	
+
 	public static BruiEditorContext newEditorContext() {
 		return current().newEditorContextInstance();
 	}
@@ -47,7 +60,7 @@ public class UserSession implements IShellProvider {
 		this.contexts.add(context);
 		return context;
 	}
-	
+
 	private BruiEditorContext newEditorContextInstance() {
 		BruiEditorContext context = new BruiEditorContext();
 		this.contexts.add(context);
@@ -69,7 +82,7 @@ public class UserSession implements IShellProvider {
 	}
 
 	public void dispose() {
-
+		contexts.forEach(c -> c.dispose());
 	}
 
 	public static BruiToolkit bruiToolkit() {
@@ -85,29 +98,80 @@ public class UserSession implements IShellProvider {
 		return bruiEntryPoint;
 	}
 
-	public void setHttpSession(HttpSession httpSession) {
-		this.httpSession = httpSession;
+	void setLoginUser(User loginUser) {
+		this.loginUser = loginUser;
 	}
 
-	public HttpSession getHttpSession() {
-		return httpSession;
-	}
-
-	public void setLoginTime(Date loginTime) {
+	void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
 	}
 
-	public Date getLoginTime() {
-		return loginTime;
-	}
+	@ReadValue
+	private Date loginTime;
 
-	public UserSession setRemoteAddr(String remoteAddr) {
-		this.remoteAddr = remoteAddr;
-		return this;
-	}
+	@ReadValue
+	private String remoteAddr;
 
-	public String getRemoteAddr() {
-		return remoteAddr;
+	@ReadValue
+	private User loginUser;
+
+	@ReadValue
+	private String remoteHost;
+
+	@ReadValue
+	private String userAgent;
+
+	@ReadValue
+	private String requestURI;
+
+	@ReadValue
+	private String characterEncoding;
+
+	@ReadValue
+	private String authType;
+
+	@ReadValue
+	private String pathInfo;
+
+	@ReadValue
+	private String remoteUser;
+
+	@ReadValue
+	private String requestSessionId;
+
+	@ReadValue("loginDuration")
+	private String getLoginDuration() {
+		Date one;
+		Date two;
+		long day = 0;
+		long hour = 0;
+		long min = 0;
+		long sec = 0;
+		one = new Date();
+		two = loginTime;
+		long time1 = one.getTime();
+		long time2 = two.getTime();
+		long diff;
+		if (time1 < time2) {
+			diff = time2 - time1;
+		} else {
+			diff = time1 - time2;
+		}
+		day = diff / (24 * 60 * 60 * 1000);
+		hour = (diff / (60 * 60 * 1000) - day * 24);
+		min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+		sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+
+		String result = "";
+		if (day != 0)
+			result += day + "天 ";
+		if (hour != 0)
+			result += hour + "小时 ";
+		if (min != 0)
+			result += min + "分钟 ";
+		if (sec != 0)
+			result += sec + "秒";
+		return result;
 	}
 
 }
