@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
