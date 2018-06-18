@@ -18,6 +18,8 @@ public class SessionManager {
 
 	public static final String ATT_USRINFO = "usrinfo";
 
+	public static final String ATT_LOGINTIME = "logintime";
+
 	public List<UserSession> userSessions = new ArrayList<UserSession>();
 
 	public List<UserSession> getUserSessions() {
@@ -43,19 +45,21 @@ public class SessionManager {
 	public void setSessionUserInfo(User user) {
 		HttpSession hs = RWT.getRequest().getSession();
 		hs.setAttribute(ATT_USRINFO, user);
+		hs.setAttribute(ATT_LOGINTIME, new Date());
 
 		final UserSession session = UserSession.current();
 		session.setLoginUser(user);
 		session.setLoginTime(new Date());
+	}
+	
+	public void updateSessionUserInfo() {
+		HttpSession hs = RWT.getRequest().getSession();
+		User user = (User) hs.getAttribute(ATT_USRINFO);
+		Date date = (Date) hs.getAttribute(ATT_LOGINTIME);
 		
-		if (!userSessions.contains(session)) {
-			RWT.getUISession().addUISessionListener(l -> {
-				userSessions.remove(session);
-				session.dispose();
-			});
-			userSessions.add(session);
-		}
-
+		UserSession session = UserSession.current();
+		session.setLoginUser(user);
+		session.setLoginTime(date);
 	}
 
 	public String[] loadClientLogin() {
@@ -100,5 +104,6 @@ public class SessionManager {
 
 		return this;
 	}
+
 
 }

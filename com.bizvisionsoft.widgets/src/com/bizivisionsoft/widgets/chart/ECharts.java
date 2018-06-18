@@ -51,6 +51,8 @@ public class ECharts extends Composite {
 			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
 		}
 		this.option = option;
+//		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//		System.out.println(gson.toJson(gson.fromJson(this.option.toString(), HashMap.class)));
 		remoteObject.set("option", option);
 	}
 

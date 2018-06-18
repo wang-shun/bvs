@@ -65,12 +65,13 @@ public class View extends Part {
 	}
 
 	public int open() {
+		Assembly la = ModelLoader.site.getLoginAssembly();
 		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
-			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, UserSession.newAssemblyContext()).setTitle("登录PMS").open());
+			new Popup(la, UserSession.newAssemblyContext()).setTitle("登录PMS").open();
 		} else if (page.isForceCheckLogin()) {
-			Optional.ofNullable(ModelLoader.site.getLoginAssembly())
-					.map(a -> new Popup(a, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open());
+			new Popup(la, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open();
+		} else {
+			service.loginUser();
 		}
 
 		int result = super.open();

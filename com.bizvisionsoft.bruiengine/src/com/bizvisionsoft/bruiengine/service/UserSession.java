@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.service.model.User;
@@ -30,7 +31,7 @@ public class UserSession {
 
 	private ServerPushSession pushSession;
 
-	private boolean pushStoped;
+	private boolean sessionStarted;
 
 	public UserSession() {
 		HttpServletRequest request = RWT.getRequest();
@@ -47,8 +48,15 @@ public class UserSession {
 		display = Display.getCurrent();
 		pushSession = new ServerPushSession();
 		pushSession.start();
-
 		bruiToolkit = new BruiToolkit();
+
+		if (!Brui.sessionManager.userSessions.contains(this)) {
+			RWT.getUISession().addUISessionListener(l -> {
+				Brui.sessionManager.userSessions.remove(this);
+				dispose();
+			});
+			Brui.sessionManager.userSessions.add(this);
+		}
 	}
 
 	public static BruiAssemblyContext newAssemblyContext() {
@@ -76,20 +84,10 @@ public class UserSession {
 		return session;
 	}
 
-	// public UserSession setShell(Shell shell) {
-	// this.shell = shell;
-	// return this;
-	// }
-	//
-	// public Shell getShell() {
-	// return shell;
-	// }
-
 	public void dispose() {
 		contexts.forEach(c -> c.dispose());
-		if (!pushStoped) {
+		if (sessionStarted) {
 			pushSession.stop();
-			pushStoped = true;
 		}
 	}
 
@@ -104,14 +102,6 @@ public class UserSession {
 
 	public BruiEntryPoint getEntryPoint() {
 		return bruiEntryPoint;
-	}
-
-	void setLoginUser(User loginUser) {
-		this.loginUser = loginUser;
-	}
-
-	void setLoginTime(Date loginTime) {
-		this.loginTime = loginTime;
 	}
 
 	/**
@@ -153,14 +143,22 @@ public class UserSession {
 		display.asyncExec(() -> MessageDialog.openWarning(display.getActiveShell(), "֪ͨ", message));
 	}
 
-	@ReadValue
+	@ReadValue("loginTime")
 	private Date loginTime;
+
+	void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
 
 	@ReadValue
 	private String remoteAddr;
 
 	@ReadValue
 	private User loginUser;
+
+	void setLoginUser(User loginUser) {
+		this.loginUser = loginUser;
+	}
 
 	@ReadValue
 	private String remoteHost;
@@ -188,10 +186,11 @@ public class UserSession {
 
 	@ReadValue("loginDuration")
 	private String getLoginDuration() {
-		Date one = new Date();
-		Date two = loginTime;
-		long time1 = one.getTime();
-		long time2 = two.getTime();
+		if (loginTime == null) {
+			return "";
+		}
+		long time1 = new Date().getTime();
+		long time2 = loginTime.getTime();
 
 		long diff;
 		if (time1 < time2) {

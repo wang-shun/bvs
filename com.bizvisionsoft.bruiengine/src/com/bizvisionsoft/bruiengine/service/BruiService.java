@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
+import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Page;
@@ -47,10 +50,15 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void setCurrentUserInfo(User user) {
+	public void loginUser(User user) {
 		Brui.sessionManager.setSessionUserInfo(user);
 	}
+	
 
+	public void loginUser() {
+		Brui.sessionManager.updateSessionUserInfo();
+	}
+	
 	@Override
 	public String getResourceURL(String resPath) {
 		if (!resPath.startsWith("/")) {
@@ -131,16 +139,19 @@ public class BruiService implements IBruiService {
 	}
 
 	public Assembly getRolebasedPageContent(Page page) {
-		List<String> roles = getCurrentUserInfo().getRoles();
 		List<AssemblyLink> links = page.getContentArea().getAssemblyLinks();
 		Assert.isTrue(links != null && links.size() > 0, "缺少内容区组件。");
 
 		AssemblyLink matchedLink = null;
 		AssemblyLink defaultLink = null;
 
+		List<String> userRoles = getCurrentUserRoles();
+
 		for (int i = 0; i < links.size(); i++) {
 			AssemblyLink link = links.get(i);
-			if (roles != null && roles.size() > 0 && roles.contains(link.getRole())) {
+			List<String> linkRoles = readRoles(link.getRole());
+
+			if (checkRole(userRoles, linkRoles)) {
 				matchedLink = link;
 				break;
 			}
@@ -152,11 +163,59 @@ public class BruiService implements IBruiService {
 		if (matchedLink == null) {
 			matchedLink = defaultLink;
 		}
-		
+
 		Assert.isNotNull(matchedLink, "缺少对应角色的内容区组件。");
 		Assembly assembly = ModelLoader.site.getAssembly(matchedLink.getId());
 		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
 		return assembly;
+	}
+
+	private List<String> getCurrentUserRoles() {
+		List<String> roles = getCurrentUserInfo().getRoles();
+		if (roles == null) {
+			return new ArrayList<>();
+		} else {
+			return roles;
+		}
+	}
+
+	private boolean checkRole(List<String> userRoles, List<String> reqRoles) {
+		if (reqRoles.isEmpty()) {// 没有需求的角色
+			return true;
+		}
+		if (userRoles.isEmpty()) {// 用户没有定义角色
+			return false;
+		}
+		for (int i = 0; i < reqRoles.size(); i++) {
+			if (userRoles.contains(reqRoles.get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private List<String> readRoles(String role) {
+		if (role == null || role.trim().isEmpty())
+			return new ArrayList<>();
+		List<String> result = new ArrayList<>();
+		Arrays.asList(role.split("#")).forEach(s -> result.add(s.trim()));
+		return result;
+	}
+
+	public List<Action> getPermitActions(List<Action> actions) {
+		List<String> roles = getCurrentUserInfo().getRoles();
+		boolean buzAdmin = getCurrentUserInfo().isBuzAdmin();
+
+		List<Action> result = new ArrayList<>();
+		if (actions != null) {
+			actions.forEach(action -> {
+				List<String> actionRoles = readRoles(action.getRole());
+				if (buzAdmin || checkRole(roles, actionRoles)) {
+					result.add(action);
+				}
+			});
+		}
+		return result;
 	}
 
 }
