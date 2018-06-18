@@ -40,12 +40,12 @@ public class SessionManager {
 	/**
 	 * 保存当前http进程中用户信息
 	 */
-	public void setSessionUserInfo(User usrinfo) {
+	public void setSessionUserInfo(User user) {
 		HttpSession hs = RWT.getRequest().getSession();
-		hs.setAttribute(ATT_USRINFO, usrinfo);
+		hs.setAttribute(ATT_USRINFO, user);
 
 		final UserSession session = UserSession.current();
-		session.setLoginUser(usrinfo);
+		session.setLoginUser(user);
 		session.setLoginTime(new Date());
 		
 		if (!userSessions.contains(session)) {

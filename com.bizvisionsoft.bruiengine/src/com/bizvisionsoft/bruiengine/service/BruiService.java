@@ -1,13 +1,16 @@
 package com.bizvisionsoft.bruiengine.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.Part;
@@ -44,8 +47,8 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void setCurrentUserInfo(User usrinfo) {
-		Brui.sessionManager.setSessionUserInfo(usrinfo);
+	public void setCurrentUserInfo(User user) {
+		Brui.sessionManager.setSessionUserInfo(user);
 	}
 
 	@Override
@@ -113,18 +116,47 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public Command command(ObjectId target_id,Date date,String name ) {
+	public Command command(ObjectId target_id, Date date, String name) {
 		return Command.newInstance(name, getCurrentUserId(), date, target_id);
 	}
 
 	@Override
-	public Command command(ObjectId target_id,Date date) {
+	public Command command(ObjectId target_id, Date date) {
 		return Command.newInstance(null, getCurrentUserId(), date, target_id);
 	}
-	
+
 	@Override
 	public Command command(ObjectId target_id) {
 		return Command.newInstance(null, getCurrentUserId(), new Date(), target_id);
+	}
+
+	public Assembly getRolebasedPageContent(Page page) {
+		List<String> roles = getCurrentUserInfo().getRoles();
+		List<AssemblyLink> links = page.getContentArea().getAssemblyLinks();
+		Assert.isTrue(links != null && links.size() > 0, "缺少内容区组件。");
+
+		AssemblyLink matchedLink = null;
+		AssemblyLink defaultLink = null;
+
+		for (int i = 0; i < links.size(); i++) {
+			AssemblyLink link = links.get(i);
+			if (roles != null && roles.size() > 0 && roles.contains(link.getRole())) {
+				matchedLink = link;
+				break;
+			}
+			if (link.isDefaultAssembly()) {
+				defaultLink = link;
+			}
+		}
+
+		if (matchedLink == null) {
+			matchedLink = defaultLink;
+		}
+		
+		Assert.isNotNull(matchedLink, "缺少对应角色的内容区组件。");
+		Assembly assembly = ModelLoader.site.getAssembly(matchedLink.getId());
+		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
+		return assembly;
 	}
 
 }

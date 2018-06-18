@@ -3,7 +3,6 @@ package com.bizvisionsoft.bruiengine.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -100,16 +99,7 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Supplier<RuntimeException> s = new Supplier<RuntimeException>() {
-
-			@Override
-			public RuntimeException get() {
-				return new RuntimeException("缺少内容区组件");
-			}
-
-		};
-		Assembly assembly = ModelLoader.site.getAssembly(page.getContentArea().getAssemblyLinks().stream()
-				.filter(al -> al.isDefaultAssembly()).findFirst().orElseThrow(s).getId());
+		Assembly assembly = service.getRolebasedPageContent(page);
 		createContentArea(assembly, null, false);
 
 		FormData fd;
