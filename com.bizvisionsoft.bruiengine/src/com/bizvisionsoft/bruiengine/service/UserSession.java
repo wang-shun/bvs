@@ -31,8 +31,6 @@ public class UserSession {
 
 	private ServerPushSession pushSession;
 
-	private boolean sessionStarted;
-
 	public UserSession() {
 		HttpServletRequest request = RWT.getRequest();
 		remoteAddr = request.getRemoteAddr();
@@ -86,9 +84,7 @@ public class UserSession {
 
 	public void dispose() {
 		contexts.forEach(c -> c.dispose());
-		if (sessionStarted) {
-			pushSession.stop();
-		}
+		// pushSession.stop();
 	}
 
 	public static BruiToolkit bruiToolkit() {

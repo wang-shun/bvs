@@ -154,12 +154,10 @@ public class BruiService implements IBruiService {
 			AssemblyLink link = links.get(i);
 			List<String> linkRoles = readRoles(link.getRole());
 
-			if (checkRole(userRoles, linkRoles)) {
-				matchedLink = link;
-				break;
-			}
 			if (link.isDefaultAssembly()) {
 				defaultLink = link;
+			}else if (checkRole(userRoles, linkRoles)) {
+				matchedLink = link;
 			}
 		}
 
@@ -187,7 +185,7 @@ public class BruiService implements IBruiService {
 					roles = (List<String>) value;
 				} else if (value instanceof String[]) {
 					roles = Arrays.asList((String[]) value);
-				} else {
+				} else if (value != null) {
 					throw new RuntimeException("注解为RoleBased的方法，必须返回null（交由用户角色判断）, List<String> 或者 String[]。");
 				}
 			}
@@ -229,7 +227,7 @@ public class BruiService implements IBruiService {
 
 	public List<Action> getPermitActions(List<Action> actions, Object iac) {
 		User user = getCurrentUserInfo();
-		boolean administrator = user.isSA();
+		boolean administrator = user.isSU();
 		boolean buzAdmin = user.isBuzAdmin();
 
 		List<String> roles = getCurrentUserRoles(iac);

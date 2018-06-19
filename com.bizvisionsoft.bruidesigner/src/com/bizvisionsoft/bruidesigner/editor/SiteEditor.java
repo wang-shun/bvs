@@ -35,7 +35,7 @@ public class SiteEditor extends ModelEditor {
 
 		createAssemblyField(parent, "用户登录组件:", inputData, "login", true);
 
-		createTextField(parent, "administrator密码:", inputData, "password", SWT.BORDER);
+		createTextField(parent, "超级用户密码（登录名为su）:", inputData, "password", SWT.BORDER);
 
 		parent = createTabItemContent("Head");
 		Text field = createTextField(parent, "<Head>标签HTML:", inputData, "headHtml", SWT.MULTI | SWT.BORDER | SWT.WRAP);

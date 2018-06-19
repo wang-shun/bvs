@@ -73,8 +73,8 @@ public class LoginPage {
 		}
 
 		User user = null;
-		if ("administrator".equals(userName) && password.equals(ModelLoader.site.getPassword())) {
-			user = User.SA();
+		if ("su".equals(userName) && password.equals(ModelLoader.site.getPassword())) {
+			user = User.SU();
 		} else {
 			try {
 				user = Services.get(UserService.class).check(userName, password);
