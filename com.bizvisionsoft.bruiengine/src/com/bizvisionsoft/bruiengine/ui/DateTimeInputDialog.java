@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.Date;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -62,26 +63,11 @@ public class DateTimeInputDialog extends Dialog {
 
 	private DateTimeSetting dateSetting = DateTimeSetting.date();
 
-	/**
-	 * Creates an input dialog with OK and Cancel buttons. Note that the dialog will
-	 * have no visual representation (no widgets) until it is told to open.
-	 * <p>
-	 * Note that the <code>open</code> method blocks for input dialogs.
-	 * </p>
-	 * 
-	 * @param parentShell
-	 *            the parent shell, or <code>null</code> to create a top-level shell
-	 * @param dialogTitle
-	 *            the dialog title, or <code>null</code> if none
-	 * @param dialogMessage
-	 *            the dialog message, or <code>null</code> if none
-	 * @param initialValue
-	 *            the initial input value, or <code>null</code> if none (equivalent
-	 *            to the empty string)
-	 * @param validator
-	 *            an input validator, or <code>null</code> if none
-	 */
-	public DateTimeInputDialog(Shell parentShell, String dialogTitle, String dialogMessage, Date initialValue,
+	private Date endDate;
+
+	private BiFunction<Date, Date, String> validator2;
+
+	public DateTimeInputDialog(Shell parentShell, String dialogTitle, String dialogMessage,Date initialValue,
 			Function<Date, String> validator) {
 		super(parentShell);
 		this.title = dialogTitle;
@@ -90,14 +76,24 @@ public class DateTimeInputDialog extends Dialog {
 		this.validator = validator;
 	}
 
+	public DateTimeInputDialog(Shell parentShell, String dialogTitle, String dialogMessage, 
+			BiFunction<Date, Date, String> validator) {
+		super(parentShell);
+		this.title = dialogTitle;
+		message = dialogMessage;
+		this.validator2 = validator;
+	}
+
 	/*
 	 * (non-Javadoc) Method declared on Dialog.
 	 */
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
 			value = text.getDate();
+			endDate = text.getEndDate();
 		} else {
 			value = null;
+			endDate = null;
 		}
 		super.buttonPressed(buttonId);
 	}
@@ -214,6 +210,10 @@ public class DateTimeInputDialog extends Dialog {
 		return value;
 	}
 
+	public Date[] getValues() {
+		return new Date[] { value, endDate };
+	}
+
 	/**
 	 * Validates the input.
 	 * <p>
@@ -228,6 +228,10 @@ public class DateTimeInputDialog extends Dialog {
 		if (validator != null) {
 			errorMessage = validator.apply(text.getDate());
 		}
+		if (validator2 != null) {
+			errorMessage = validator2.apply(text.getDate(), text.getEndDate());
+		}
+
 		// Bug 16256: important not to treat "" (blank error) the same as null
 		// (no error)
 		setErrorMessage(errorMessage);
