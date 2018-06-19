@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
@@ -20,6 +21,7 @@ import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.CreationInfo;
+import com.bizvisionsoft.service.model.IAuthControled;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
@@ -201,10 +203,10 @@ public class BruiService implements IBruiService {
 		return result;
 	}
 
-	public List<Action> getPermitActions(List<Action> actions) {
+	public List<Action> getPermitActions(List<Action> actions, IAuthControled iac) {
 		User user = getCurrentUserInfo();
 		boolean administrator = user.isSA();
-		List<String> roles = user.getRoles();
+		List<String> roles = Optional.ofNullable(iac).map(i -> i.getRoles(user.getUserId())).orElse(user.getRoles());
 		boolean buzAdmin = user.isBuzAdmin();
 
 		List<Action> result = new ArrayList<>();
@@ -218,5 +220,6 @@ public class BruiService implements IBruiService {
 		}
 		return result;
 	}
+
 
 }

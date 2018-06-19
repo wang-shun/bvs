@@ -51,7 +51,7 @@ public class SidebarWidget {
 
 		@Override
 		public Object[] getChildren(Object parentElement) {
-			List<Action> children = service.getPermitActions(((Action) parentElement).getChildren());
+			List<Action> children = service.getPermitActions(((Action) parentElement).getChildren(),null);
 			if (children != null)
 				return children.toArray(new Action[0]);
 			return new Action[0];
@@ -211,7 +211,7 @@ public class SidebarWidget {
 
 		});
 
-		List<Action> actions = service.getPermitActions(sidebar.getSidebarItems());
+		List<Action> actions = service.getPermitActions(sidebar.getSidebarItems(),null);
 		viewer.setInput(actions);
 
 		viewer.getGrid().addListener(SWT.Selection, e -> {
