@@ -99,7 +99,7 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Assembly assembly = service.getRolebasedPageContent(page);
+		Assembly assembly = service.getRolebasedPageContent(page,context.getRootInput());
 		createContentArea(assembly, null, false);
 
 		FormData fd;

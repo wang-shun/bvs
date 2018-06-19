@@ -1,16 +1,19 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.RoleBased;
+import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -21,7 +24,6 @@ import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.CreationInfo;
-import com.bizvisionsoft.service.model.IAuthControled;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
@@ -139,14 +141,14 @@ public class BruiService implements IBruiService {
 		return Command.newInstance(null, getCurrentUserId(), new Date(), target_id);
 	}
 
-	public Assembly getRolebasedPageContent(Page page) {
+	public Assembly getRolebasedPageContent(Page page, Object iac) {
 		List<AssemblyLink> links = page.getContentArea().getAssemblyLinks();
 		Assert.isTrue(links != null && links.size() > 0, "缺少内容区组件。");
 
 		AssemblyLink matchedLink = null;
 		AssemblyLink defaultLink = null;
 
-		List<String> userRoles = getCurrentUserRoles();
+		List<String> userRoles = getCurrentUserRoles(iac);
 
 		for (int i = 0; i < links.size(); i++) {
 			AssemblyLink link = links.get(i);
@@ -171,13 +173,35 @@ public class BruiService implements IBruiService {
 		return assembly;
 	}
 
-	private List<String> getCurrentUserRoles() {
-		List<String> roles = getCurrentUserInfo().getRoles();
-		if (roles == null) {
-			return new ArrayList<>();
-		} else {
-			return roles;
+	@SuppressWarnings("unchecked")
+	private List<String> getCurrentUserRoles(Object iac) {
+		List<String> roles = null;
+		if (iac != null) {// 带有输入对象控制权限的
+			Method method = AUtil.getMethod(iac.getClass(), RoleBased.class).orElse(null);
+			if (method != null) {
+				String[] paramemterNames = new String[] { ServiceParam.CURRENT_USER_ID };
+				Object[] parameterValues = new Object[] { getCurrentUserInfo().getUserId() };
+				Object value = AUtil.invokeMethodInjectParams(iac, method, parameterValues, paramemterNames,
+						ServiceParam.class, f -> f.value());
+				if (value instanceof List) {
+					roles = (List<String>) value;
+				} else if (value instanceof String[]) {
+					roles = Arrays.asList((String[]) value);
+				} else {
+					throw new RuntimeException("注解为RoleBased的方法，必须返回null（交由用户角色判断）, List<String> 或者 String[]。");
+				}
+			}
 		}
+
+		if (roles == null) {
+			roles = getCurrentUserInfo().getRoles();
+		}
+
+		if (roles == null) {
+			roles = new ArrayList<>();
+		}
+
+		return roles;
 	}
 
 	private boolean checkRole(List<String> userRoles, List<String> reqRoles) {
@@ -203,11 +227,12 @@ public class BruiService implements IBruiService {
 		return result;
 	}
 
-	public List<Action> getPermitActions(List<Action> actions, IAuthControled iac) {
+	public List<Action> getPermitActions(List<Action> actions, Object iac) {
 		User user = getCurrentUserInfo();
 		boolean administrator = user.isSA();
-		List<String> roles = Optional.ofNullable(iac).map(i -> i.getRoles(user.getUserId())).orElse(user.getRoles());
 		boolean buzAdmin = user.isBuzAdmin();
+
+		List<String> roles = getCurrentUserRoles(iac);
 
 		List<Action> result = new ArrayList<>();
 		if (actions != null) {
@@ -220,6 +245,5 @@ public class BruiService implements IBruiService {
 		}
 		return result;
 	}
-
 
 }
