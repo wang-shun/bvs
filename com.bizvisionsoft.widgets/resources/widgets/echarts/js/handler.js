@@ -38,7 +38,7 @@
 				rap.off("render", this.onRender);
 				this.layout();
 				this.chart = echarts.init(this.element);
-				this.chart.setOption(this.option);
+				this.chart.setOption(this.option,true);
 			}
 		},
 
