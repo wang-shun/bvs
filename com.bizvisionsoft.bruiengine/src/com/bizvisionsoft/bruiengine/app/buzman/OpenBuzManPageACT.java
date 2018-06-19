@@ -13,7 +13,7 @@ public class OpenBuzManPageACT {
 	@Execute
 	public void execute() {
 		User user = brui.getCurrentUserInfo();
-		if(!user.isBuzAdmin()) {
+		if(!user.isBuzAdmin()&&!user.isSA()) {
 			Layer.message("您没有获得业务管理的授权。", Layer.ICON_LOCK);
 			return;
 		}

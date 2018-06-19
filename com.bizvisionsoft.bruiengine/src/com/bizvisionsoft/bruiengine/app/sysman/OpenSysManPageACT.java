@@ -13,7 +13,7 @@ public class OpenSysManPageACT {
 	@Execute
 	public void execute() {
 		User user = brui.getCurrentUserInfo();
-		if(!user.isAdmin()) {
+		if(!user.isAdmin()&&!user.isSA()) {
 			Layer.message("您没有获得系统管理的授权。", Layer.ICON_LOCK);
 			return;
 		}

@@ -246,15 +246,14 @@ public class Site extends ModelObject {
 		return pages.stream().filter(p -> pageId.equals(p.getId())).findFirst().orElse(null);
 	}
 	
-	private List<Role> roles;
+	private String password;
 	
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
-	public List<Role> getRoles() {
-		return roles;
+	public String getPassword() {
+		return password;
 	}
-	
 
 }

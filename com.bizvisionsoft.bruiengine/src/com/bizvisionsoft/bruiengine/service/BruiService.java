@@ -53,12 +53,11 @@ public class BruiService implements IBruiService {
 	public void loginUser(User user) {
 		Brui.sessionManager.setSessionUserInfo(user);
 	}
-	
 
 	public void loginUser() {
 		Brui.sessionManager.updateSessionUserInfo();
 	}
-	
+
 	@Override
 	public String getResourceURL(String resPath) {
 		if (!resPath.startsWith("/")) {
@@ -203,14 +202,16 @@ public class BruiService implements IBruiService {
 	}
 
 	public List<Action> getPermitActions(List<Action> actions) {
-		List<String> roles = getCurrentUserInfo().getRoles();
-		boolean buzAdmin = getCurrentUserInfo().isBuzAdmin();
+		User user = getCurrentUserInfo();
+		boolean administrator = user.isSA();
+		List<String> roles = user.getRoles();
+		boolean buzAdmin = user.isBuzAdmin();
 
 		List<Action> result = new ArrayList<>();
 		if (actions != null) {
 			actions.forEach(action -> {
 				List<String> actionRoles = readRoles(action.getRole());
-				if (buzAdmin || checkRole(roles, actionRoles)) {
+				if (administrator || buzAdmin || checkRole(roles, actionRoles)) {
 					result.add(action);
 				}
 			});
