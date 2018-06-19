@@ -18,7 +18,7 @@ public class LogoutUserLaterACT {
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			DateTimeInputDialog dt = new DateTimeInputDialog(brui.getCurrentShell(), "延时登出", "请选择用户登出系统的时间", null,
-					d -> d == null ? "必须选择时间" : null).setDateSetting(DateTimeSetting.dateTime());
+					d -> d == null ? "必须选择时间" : null).setDateSetting(DateTimeSetting.dateTime().setRange(true));
 			if (dt.open() == DateTimeInputDialog.OK) {
 				((UserSession) t).logout(dt.getValue());
 			}
