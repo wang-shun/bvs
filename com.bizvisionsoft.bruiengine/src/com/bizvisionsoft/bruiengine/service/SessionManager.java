@@ -47,7 +47,7 @@ public class SessionManager {
 		HttpSession hs = RWT.getRequest().getSession();
 		Object usrinfo = hs.getAttribute(ATT_USRINFO);
 		if (usrinfo != null) {
-			if (!user.equals(usrinfo)) {
+			if (!usrinfo.equals(user)) {
 				throw new RuntimeException("ÓÃ»§Ãû´íÎó");
 			}
 		} else {
