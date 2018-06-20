@@ -105,7 +105,7 @@ public class ActionMenu extends Part {
 						ServiceParam.CURRENT_USER_ID };
 				Object contextInput = context.getInput();
 				Object rootInput = context.getRootInput();
-				User user = Brui.sessionManager.getSessionUserInfo();
+				User user = Brui.sessionManager.getUser();
 				Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
 				Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
 				Object[] parameterValues = new Object[] { contextInput, inputid, rootInput, rootInputId, user,

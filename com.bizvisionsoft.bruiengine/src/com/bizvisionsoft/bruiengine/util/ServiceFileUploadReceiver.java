@@ -27,7 +27,7 @@ public class ServiceFileUploadReceiver extends FileUploadReceiver {
 	public void receive(InputStream dataStream, FileDetails details) throws IOException {
 		FileService fs = Services.get(FileService.class);
 		remoteFile = fs.upload(dataStream, details.getFileName(), namespace, details.getContentType(),
-				Brui.sessionManager.getSessionUserInfo().getUserId());
+				Brui.sessionManager.getUser().getUserId());
 	}
 
 	public RemoteFile getRemoteFile() {

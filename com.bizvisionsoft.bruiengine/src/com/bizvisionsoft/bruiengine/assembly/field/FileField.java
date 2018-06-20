@@ -183,7 +183,7 @@ public class FileField extends EditorField implements FileUploadListener {
 			FileService fs = Services.get(FileService.class);
 			File file = receiver.getTargetFiles()[receiver.getTargetFiles().length - 1];
 			RemoteFile remoteFile = fs.upload(new FileInputStream(file), file.getName(), fieldConfig.getFileNamespace(),
-					Util.getContentType(file, null), Brui.sessionManager.getSessionUserInfo().getUserId());
+					Util.getContentType(file, null), Brui.sessionManager.getUser().getUserId());
 			if (value == null)
 				value = new ArrayList<RemoteFile>();
 			else

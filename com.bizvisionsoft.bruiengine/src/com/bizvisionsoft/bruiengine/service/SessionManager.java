@@ -29,7 +29,7 @@ public class SessionManager {
 	/**
 	 * 获得当前http进程中用户信息
 	 */
-	public User getSessionUserInfo() {
+	public User getUser() {
 		HttpSession hs = RWT.getRequest().getSession();
 		return (User) hs.getAttribute(ATT_USRINFO);
 	}

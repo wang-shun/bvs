@@ -197,7 +197,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 	private void injectUserParameters(List<String> names, List<Object> values) {
 		try {
-			User user = Brui.sessionManager.getSessionUserInfo();
+			User user = Brui.sessionManager.getUser();
 			if (user != null) {
 				names.add(ServiceParam.CURRENT_USER);
 				values.add(user);

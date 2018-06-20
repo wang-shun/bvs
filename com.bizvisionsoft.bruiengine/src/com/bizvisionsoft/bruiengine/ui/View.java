@@ -16,6 +16,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
+import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class View extends Part {
@@ -99,7 +100,7 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Assembly assembly = service.getRolebasedPageContent(page,context.getRootInput());
+		Assembly assembly = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(),page,context.getRootInput());
 		createContentArea(assembly, null, false);
 
 		FormData fd;

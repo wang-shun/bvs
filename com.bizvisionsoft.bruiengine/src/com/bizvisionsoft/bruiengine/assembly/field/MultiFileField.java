@@ -308,7 +308,7 @@ public class MultiFileField extends EditorField {
 				for (int i = 0; i < lfs.size(); i++) {
 					File file = lfs.get(i);
 					String contentType = Util.getContentType(file, null);
-					String uploadBy = Brui.sessionManager.getSessionUserInfo().getUserId();
+					String uploadBy = Brui.sessionManager.getUser().getUserId();
 					RemoteFile rf = Services.get(FileService.class).upload(new FileInputStream(file), file.getName(),
 							fieldConfig.getFileNamespace(), contentType, uploadBy);
 					newValue.add(rf);

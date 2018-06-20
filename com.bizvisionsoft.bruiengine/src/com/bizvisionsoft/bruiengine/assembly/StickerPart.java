@@ -19,6 +19,7 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class StickerPart {
@@ -122,6 +123,9 @@ public class StickerPart {
 	private void setToolbarActions() {
 		final List<Action> actions = new ArrayList<Action>();
 		List<Action> list = assembly.getActions();
+		//È¨ÏÞ¿ØÖÆ
+		list = PermissionUtil.getPermitActions(service.getCurrentUserInfo(), list, context.getRootInput());
+		
 		if (list != null) {
 			final Object input = context.getInput();
 			final Object root = context.getRootInput();

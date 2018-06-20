@@ -20,6 +20,7 @@ import com.bizvisionsoft.bruiengine.action.QueryInGrid;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiActionEngine extends BruiEngine {
@@ -114,32 +115,36 @@ public class BruiActionEngine extends BruiEngine {
 	 * @param context
 	 */
 	public void invokeExecute(Event event, IBruiContext context) {
+		if (!PermissionUtil.checkAction(Brui.sessionManager.getUser(), action, context)) {
+			return;
+		}
+
 		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
 	}
 
 	public String getImageURL(IBruiContext context) {
-		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		return (String) invokeMethodInjectParams(ImageURL.class, parameters, paramAnnotations, null);
 	}
 
 	public String getText(IBruiContext context) {
-		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		return (String) invokeMethodInjectParams(Label.class, parameters, paramAnnotations, null);
 	}
 
 	public String getTooltips(IBruiContext context) {
-		Object[] parameters = new Object[] { action,  context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getSessionUserInfo() };
+		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
+				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
 				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
 		return (String) invokeMethodInjectParams(Tooltips.class, parameters, paramAnnotations, null);

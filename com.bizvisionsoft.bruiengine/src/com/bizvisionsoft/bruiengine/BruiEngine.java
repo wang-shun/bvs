@@ -18,6 +18,7 @@ public class BruiEngine {
 	@ReadValue
 	protected Class<?> clazz;
 	protected Object target;
+	protected IServiceWithId[] services;
 
 	protected BruiEngine(Class<?> clazz) {
 		this.clazz = clazz;
@@ -102,6 +103,7 @@ public class BruiEngine {
 	}
 
 	public BruiEngine init(IServiceWithId[] services) {
+		this.services = services;
 		if (clazz == null)
 			return this;
 		for (int i = 0; i < services.length; i++) {
