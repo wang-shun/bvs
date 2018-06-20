@@ -24,7 +24,7 @@ public class AddSiteElement {
 		context.selected(em -> {
 			if (em instanceof Site) {
 				Page page = DesignerlToolkit.createPage((Site) em);
-				Editor.create("页面编辑器", context, page).setTitle("创建新页面").open((o, t) -> {
+				Editor.create("页面编辑器", context, page,false).setTitle("创建新页面").ok((o, t) -> {
 					((GridPart) context.getContent()).add(em, t);
 				});
 			}
