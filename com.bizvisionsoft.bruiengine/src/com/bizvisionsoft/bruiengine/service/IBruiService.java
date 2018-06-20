@@ -22,7 +22,7 @@ public interface IBruiService extends IServiceWithId {
 	
 	public String getCurrentUserId();
 
-	public void loginUser(User user) throws Exception;
+	public void loginUser(User user);
 
 	public String getResourceURL(String resPath);
 

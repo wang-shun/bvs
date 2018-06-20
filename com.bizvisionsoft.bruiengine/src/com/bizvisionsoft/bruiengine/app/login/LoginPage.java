@@ -85,11 +85,7 @@ public class LoginPage {
 		if (user == null) {
 			throw new Exception("无法通过账户验证，请输入正确的用户名和密码。");
 		}
-		try {
-			bruiService.loginUser(user);
-		} catch (Exception e) {
-			throw new Exception("无法通过账户权限验证，请输入正确的用户名和密码。");
-		}
+		bruiService.loginUser(user);
 		if (bruiService != null) {
 			bruiService.closeCurrentPart();
 		}

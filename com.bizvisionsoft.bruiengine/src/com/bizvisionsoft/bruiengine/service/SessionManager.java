@@ -43,12 +43,12 @@ public class SessionManager {
 	 * 保存当前http进程中用户信息
 	 * @throws Exception 
 	 */
-	public void setSessionUserInfo(User user) throws Exception {
+	public void setSessionUserInfo(User user) {
 		HttpSession hs = RWT.getRequest().getSession();
 		Object usrinfo = hs.getAttribute(ATT_USRINFO);
 		if (usrinfo != null) {
 			if (!user.equals(usrinfo)) {
-				throw new Exception();
+				throw new RuntimeException("用户名错误");
 			}
 		} else {
 			hs.setAttribute(ATT_USRINFO, user);

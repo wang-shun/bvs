@@ -44,7 +44,7 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void loginUser(User user) throws Exception {
+	public void loginUser(User user) {
 		Brui.sessionManager.setSessionUserInfo(user);
 	}
 
