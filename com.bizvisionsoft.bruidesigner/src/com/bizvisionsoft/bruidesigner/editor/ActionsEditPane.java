@@ -377,6 +377,9 @@ public class ActionsEditPane extends SashForm {
 			
 			editor.createTextField(parent, "角色（多个#分割）", action, "role", SWT.BORDER);
 			
+			editor.createTextField(parent, "排除角色（多个#分割）", action, "excludeRole", SWT.BORDER);
+
+			
 			action.addPropertyChangeListener("name", listener);
 		}
 

@@ -61,5 +61,15 @@ public class AssemblyLink extends ModelObject{
 		this.role = role;
 	}
 	
+	private String excludeRole;
+	
+	public void setExcludeRole(String excludeRole) {
+		this.excludeRole = excludeRole;
+	}
+	
+	public String getExcludeRole() {
+		return excludeRole;
+	}
+	
 
 }

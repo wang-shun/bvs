@@ -52,7 +52,7 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 		// 头像
 		sb.append("<div style='height:74px;display:block;'>");
 		String sender = (String) AUtil.readValue(element, cName, "发送者", null);
-		String senderName = sender.substring(0, sender.indexOf("[")).trim();
+		String senderName = sender;//.substring(0, sender.indexOf("[")).trim();
 		String headPicURL = (String) AUtil.readValue(element, cName, "头像", null);
 		if (headPicURL != null) {
 			sb.append("<img src=" + headPicURL

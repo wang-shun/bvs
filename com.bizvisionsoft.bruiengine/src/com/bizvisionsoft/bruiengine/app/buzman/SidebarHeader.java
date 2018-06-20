@@ -50,7 +50,7 @@ public class SidebarHeader {
 				+ "px height=" + 32 + "px/>");
 
 		title.setText(
-				"<div style='font-size:18px;font-weight:lighter;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white;margin-left:2px;margin-top:12px;width:180px;'>业务和基础数据管理</div>");
+				"<div style='font-size:18px;font-weight:lighter;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white;margin-left:2px;margin-top:12px;width:180px;'>基础业务数据管理</div>");
 		pic.addListener(SWT.MouseDown, e -> {
 			WidgetToolkit.execJS("history.back()");
 		});

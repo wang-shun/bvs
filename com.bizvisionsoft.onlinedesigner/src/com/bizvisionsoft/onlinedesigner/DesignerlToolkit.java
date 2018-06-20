@@ -85,9 +85,9 @@ public class DesignerlToolkit {
 					+ (((Column) model).getText() == null ? "" : (" £¨" + ((Column) model).getText() + "£©"));
 		if (model instanceof FormField) {
 			if (FormField.TYPE_INLINE.equals(((FormField) model).getType())) {
-				return "[" + ((FormField) model).getType() + "]";
+				return " [" + ((FormField) model).getType() + "]";
 			}
-			return "[" + ((FormField) model).getType() + "] " + ((FormField) model).getName();
+			return " [" + ((FormField) model).getType() + "] " + ((FormField) model).getName();
 		}
 		return "";
 	}

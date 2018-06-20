@@ -232,7 +232,7 @@ public abstract class ModelEditor extends EditorPart {
 			String id = assembly.getId();
 			String bundleId = assembly.getBundleId();
 			String className = assembly.getClassName();
-			String str = assembly.getName() + "[" + id + "]";
+			String str = assembly.getName() + " [" + id + "]";
 			if (bundleId != null) {
 				str += "\n²å¼þ:" + bundleId;
 			}

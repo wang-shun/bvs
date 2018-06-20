@@ -444,7 +444,7 @@ public class AUtil {
 			return method.invoke(target, args);
 		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
 		} catch (InvocationTargetException e1) {
-			throw createTargetException(e1, null);
+			throw createTargetException(e1, e1.getTargetException().getMessage());
 		}
 		return null;
 	}

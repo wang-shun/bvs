@@ -145,28 +145,37 @@ public class BruiService implements IBruiService {
 		List<AssemblyLink> links = page.getContentArea().getAssemblyLinks();
 		Assert.isTrue(links != null && links.size() > 0, "缺少内容区组件。");
 
-		AssemblyLink matchedLink = null;
-		AssemblyLink defaultLink = null;
+		List<AssemblyLink> matched = new ArrayList<>();
+		List<AssemblyLink> excluded = new ArrayList<>();
+		List<AssemblyLink> defaultLink = new ArrayList<>();
 
 		List<String> userRoles = getCurrentUserRoles(iac);
 
 		for (int i = 0; i < links.size(); i++) {
 			AssemblyLink link = links.get(i);
-			List<String> linkRoles = readRoles(link.getRole());
 
 			if (link.isDefaultAssembly()) {
-				defaultLink = link;
-			}else if (checkRole(userRoles, linkRoles)) {
-				matchedLink = link;
+				defaultLink.add(link);
 			}
+
+			List<String> linkRoles = readRoles(link.getRole());
+			if (matchedRole(userRoles, linkRoles)) {
+				matched.add(link);
+			}
+
+			List<String> linkExcludeRoles = readRoles(link.getExcludeRole());
+			if (exculeRole(userRoles, linkExcludeRoles)) {
+				excluded.add(link);
+			}
+
 		}
 
-		if (matchedLink == null) {
-			matchedLink = defaultLink;
+		matched.removeAll(excluded);
+		if(matched.isEmpty()) {
+			matched.addAll(defaultLink);
 		}
-
-		Assert.isNotNull(matchedLink, "缺少对应角色的内容区组件。");
-		Assembly assembly = ModelLoader.site.getAssembly(matchedLink.getId());
+		Assert.isLegal(!matched.isEmpty(), "缺少对应角色的内容区组件。");
+		Assembly assembly = ModelLoader.site.getAssembly(matched.get(0).getId());
 		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
 		return assembly;
 	}
@@ -202,9 +211,24 @@ public class BruiService implements IBruiService {
 		return roles;
 	}
 
-	private boolean checkRole(List<String> userRoles, List<String> reqRoles) {
+	private boolean matchedRole(List<String> userRoles, List<String> reqRoles) {
 		if (reqRoles.isEmpty()) {// 没有需求的角色
 			return true;
+		}
+		if (userRoles.isEmpty()) {// 用户没有定义角色
+			return false;
+		}
+		for (int i = 0; i < reqRoles.size(); i++) {
+			if (userRoles.contains(reqRoles.get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean exculeRole(List<String> userRoles, List<String> reqRoles) {
+		if (reqRoles.isEmpty()) {// 没有需求的角色
+			return false;
 		}
 		if (userRoles.isEmpty()) {// 用户没有定义角色
 			return false;
@@ -236,7 +260,10 @@ public class BruiService implements IBruiService {
 		if (actions != null) {
 			actions.forEach(action -> {
 				List<String> actionRoles = readRoles(action.getRole());
-				if (administrator || buzAdmin || checkRole(roles, actionRoles)) {
+				List<String> actionExcludeRoles = readRoles(action.getExcludeRole());
+				if (administrator || buzAdmin) {
+					result.add(action);
+				} else if (matchedRole(roles, actionRoles) && !exculeRole(roles, actionExcludeRoles)) {
 					result.add(action);
 				}
 			});

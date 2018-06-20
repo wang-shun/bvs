@@ -19,6 +19,8 @@ public class AssemblyLinkEditor extends ModelEditor {
 		
 		createTextField(parent, "角色（多个#分割）", inputData, "role", SWT.BORDER);
 		
+		createTextField(parent, "排除角色（多个#分割）", inputData, "excludeRole", SWT.BORDER);
+
 	}
 
 	@Override

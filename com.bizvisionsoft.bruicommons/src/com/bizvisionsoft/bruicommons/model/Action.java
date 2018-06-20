@@ -292,6 +292,16 @@ public class Action extends ModelObject {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	private String excludeRole;
+	
+	public void setExcludeRole(String excludeRole) {
+		this.excludeRole = excludeRole;
+	}
+	
+	public String getExcludeRole() {
+		return excludeRole;
+	}
 
 	
 }

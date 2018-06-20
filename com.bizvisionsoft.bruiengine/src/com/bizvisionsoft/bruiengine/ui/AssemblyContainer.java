@@ -58,6 +58,9 @@ public class AssemblyContainer {
 	}
 
 	public AssemblyContainer create() {
+		if(assembly ==null) {
+			throw new RuntimeException("缺少组件定义。");// 否则没有创建任何组件，出错。
+		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 如果是自定义的组件，先创建，并获得container
 		if (!assembly.isEmptyContainer()) {
