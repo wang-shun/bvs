@@ -41,22 +41,30 @@ public class SessionManager {
 
 	/**
 	 * 保存当前http进程中用户信息
+	 * @throws Exception 
 	 */
-	public void setSessionUserInfo(User user) {
+	public void setSessionUserInfo(User user) throws Exception {
 		HttpSession hs = RWT.getRequest().getSession();
-		hs.setAttribute(ATT_USRINFO, user);
-		hs.setAttribute(ATT_LOGINTIME, new Date());
+		Object usrinfo = hs.getAttribute(ATT_USRINFO);
+		if (usrinfo != null) {
+			if (!user.equals(usrinfo)) {
+				throw new Exception();
+			}
+		} else {
+			hs.setAttribute(ATT_USRINFO, user);
+			hs.setAttribute(ATT_LOGINTIME, new Date());
 
-		final UserSession session = UserSession.current();
-		session.setLoginUser(user);
-		session.setLoginTime(new Date());
+			final UserSession session = UserSession.current();
+			session.setLoginUser(user);
+			session.setLoginTime(new Date());
+		}
 	}
-	
+
 	public void updateSessionUserInfo() {
 		HttpSession hs = RWT.getRequest().getSession();
 		User user = (User) hs.getAttribute(ATT_USRINFO);
 		Date date = (Date) hs.getAttribute(ATT_LOGINTIME);
-		
+
 		UserSession session = UserSession.current();
 		session.setLoginUser(user);
 		session.setLoginTime(date);
@@ -104,6 +112,5 @@ public class SessionManager {
 
 		return this;
 	}
-
 
 }
