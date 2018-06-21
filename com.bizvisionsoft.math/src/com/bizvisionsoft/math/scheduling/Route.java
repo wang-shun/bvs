@@ -76,7 +76,7 @@ public class Route {
 
 	@Override
 	public String toString() {
-		return "Route [" + end1.id + "-->" + end2.id +", "+ relations + ", dashed=" + dashed + ", LAG="
+		return "Route [" + end1.getId() + "-->" + end2.getId() +", "+ relations + ", dashed=" + dashed + ", LAG="
 				+ LAG + "]";
 	}
 

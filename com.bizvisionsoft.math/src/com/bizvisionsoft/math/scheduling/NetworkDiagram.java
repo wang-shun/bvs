@@ -21,16 +21,14 @@ public class NetworkDiagram {
 
 	public float T = 0;
 
-
 	public NetworkDiagram(List<Task> tasks, List<Route> routes) {
 
 		this.tasks = new ArrayList<Task>();
 		this.tasks.addAll(tasks);
 		Collections.sort(this.tasks);
-		
+
 		this.routes = new ArrayList<Route>();
 		this.routes.addAll(routes);
-
 
 		// check start end.
 		// 初始化
@@ -38,14 +36,13 @@ public class NetworkDiagram {
 		end = getTask(Task.END);
 	}
 
-
 	public List<Task> schedule() {
 
 		virtualRoute = new ArrayList<Route>();
 
 		// 1. 计算ES, EF
-		start.ES = 0;
-		start.EF = 0;
+		start.setES(0);
+		start.setEF(0);
 		tasks.forEach(t -> calculateEarlestStart(t));
 
 		// 2. 修正end
@@ -53,19 +50,19 @@ public class NetworkDiagram {
 		exclude.add(start);
 		exclude.add(end);
 		ergodic(end, true, route -> exclude.add(route.end1));
-		tasks.parallelStream().filter(task -> !exclude.contains(task) && task.EF > end.EF).forEach(t -> {
+		tasks.parallelStream().filter(task -> !exclude.contains(task) && task.getEF() > end.getEF()).forEach(t -> {
 			virtualRoute.add(new Route(t, end, true, new Relation(Relation.FTF, 0)));
-			end.updateES(t.EF);
+			end.updateES(t.getEF());
 		});
 		routes.addAll(virtualRoute);
-		//清空
+		// 清空
 		virtualRoute.clear();
 
 		// 3. 求LS,LF
-		end.LS = end.ES;
-		end.LF = end.EF;
-		start.LS = 0;
-		start.LF = 0;
+		end.setLS(end.getES());
+		end.setLF(end.getEF());
+		start.setLS(0);
+		start.setLF(0);
 		tasks.forEach(t -> calculateLatestFinish(t));
 
 		// 4. 求LAG
@@ -73,29 +70,28 @@ public class NetworkDiagram {
 
 		// 5.求TF,FF
 		tasks.forEach(t -> calculateTF(t));
-		end.TF = 0;
-		end.FF = 0;
-		start.TF = 0;
-		start.FF = 0;
+		end.setTF(0);
+		end.setFF(0);
+		start.setTF(0);
+		start.setFF(0);
 
 		// 6.求总工期
-		T = end.LF;
-		
+		T = end.getLF();
+
 		System.out.println("\n============================排程/工期计算============================");
 		System.out.println("工作排程-------------------------------");
-		tasks.forEach(t->System.out.println(t));
+		tasks.forEach(t -> System.out.println(t));
 		System.out.println("网络图-----------------------------");
 		routes.forEach(r -> System.out.println(r));
 		System.out.println("总工期-------------------------------");
 		System.out.println(T);
 		System.out.println("=================================================================");
-		
-		
+
 		return tasks;
 	}
 
 	private void calculateTF(Task task) {
-		task.TF = task.LS - task.ES;
+		task.setTF(task.getLS() - task.getES());
 		ergodic(task, false, route -> {
 			task.updateFF(route.LAG);
 		});
@@ -105,13 +101,13 @@ public class NetworkDiagram {
 		route.relations.forEach(rela -> {
 			float lag = 0;
 			if (rela.type == Relation.FTS) {
-				lag = route.end2.ES - (route.end1.EF + rela.interval);
+				lag = route.end2.getES() - (route.end1.getEF() + rela.interval);
 			} else if (rela.type == Relation.STS) {
-				lag = route.end2.ES - (route.end1.ES + rela.interval);
+				lag = route.end2.getES() - (route.end1.getES() + rela.interval);
 			} else if (rela.type == Relation.FTF) {
-				lag = route.end2.EF - (route.end1.EF + rela.interval);
+				lag = route.end2.getEF() - (route.end1.getEF() + rela.interval);
 			} else if (rela.type == Relation.STF) {
-				lag = route.end2.EF - (route.end1.ES + rela.interval);
+				lag = route.end2.getEF() - (route.end1.getES() + rela.interval);
 			}
 			route.updateLAG(lag);
 		});
@@ -123,18 +119,18 @@ public class NetworkDiagram {
 		}
 		ergodic(task, false, route -> {
 			route.relations.forEach(rela -> {
-				if (route.end2.LS == -1) {
+				if (route.end2.getLS() == -1) {
 					calculateLatestFinish(route.end2);
 				}
 				float lf = 0;
 				if (rela.type == Relation.FTS) {
-					lf = route.end2.LS - rela.interval;
+					lf = route.end2.getLS() - rela.interval;
 				} else if (rela.type == Relation.FTF) {
-					lf = route.end2.LF - rela.interval;
+					lf = route.end2.getLF() - rela.interval;
 				} else if (rela.type == Relation.STF) {
-					lf = route.end2.LF - rela.interval + task.D;
+					lf = route.end2.getLF() - rela.interval + task.getD();
 				} else if (rela.type == Relation.STS) {
-					lf = route.end2.LS - rela.interval + task.D;
+					lf = route.end2.getLS() - rela.interval + task.getD();
 				}
 				task.updateLF(lf);
 			});
@@ -148,18 +144,18 @@ public class NetworkDiagram {
 		}
 		ergodic(task, true, route -> {
 			route.relations.forEach(rela -> {
-				if (route.end1.ES == -1) {
+				if (route.end1.getES() == -1) {
 					calculateEarlestStart(route.end1);
 				}
 				float es = 0;
 				if (rela.type == Relation.FTS) {
-					es = route.end1.EF + rela.interval;
+					es = route.end1.getEF() + rela.interval;
 				} else if (rela.type == Relation.FTF) {
-					es = route.end1.EF + rela.interval - task.D;
+					es = route.end1.getEF() + rela.interval - task.getD();
 				} else if (rela.type == Relation.STF) {
-					es = route.end1.ES + rela.interval - task.D;
+					es = route.end1.getES() + rela.interval - task.getD();
 				} else if (rela.type == Relation.STS) {
-					es = route.end1.ES + rela.interval;
+					es = route.end1.getES() + rela.interval;
 				}
 				if (es < 0) {
 					es = 0;
@@ -197,8 +193,7 @@ public class NetworkDiagram {
 	 * @return
 	 */
 	public Task getTask(String id) {
-		return tasks.parallelStream().filter(t -> t.id.equals(id)).findFirst().orElse(null);
+		return tasks.parallelStream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
 	}
-
 
 }

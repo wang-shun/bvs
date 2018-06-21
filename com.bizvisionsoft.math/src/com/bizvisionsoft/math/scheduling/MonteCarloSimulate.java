@@ -45,7 +45,7 @@ public class MonteCarloSimulate {
 		Collections.sort(this.tasks);
 		for (int i = 0; i < tasks.size(); i++) {
 			Task task = tasks.get(i);
-			if (task.id.equals(Task.START) || task.id.equals(Task.END)) {
+			if (task.getId().equals(Task.START) || task.getId().equals(Task.END)) {
 				continue;
 			}
 			long count = 0;
@@ -55,23 +55,23 @@ public class MonteCarloSimulate {
 			float xy = 0;
 			for (int j = 0; j < result.length; j++) {
 				Task rTask = result[j].tasks.get(i);
-				if (rTask.TF == 0) {// 在关键路径上
+				if (rTask.getTF() == 0) {// 在关键路径上
 					count++;
 				}
-				avgX += rTask.D;
+				avgX += rTask.getD();
 				avgY += result[j].T;
-				x2 += rTask.D * rTask.D;
-				xy = rTask.D * result[j].T;
+				x2 += rTask.getD() * rTask.getD();
+				xy = rTask.getD() * result[j].T;
 			}
-			task.ACP = 1f * count / result.length;
+			task.setACP(1f * count / result.length);
 			// 计算ACI,线性回归
 			avgX = avgX / result.length;
 			avgY = avgY / result.length;
 			float f = x2 - result.length * avgX * avgY;
 			if (f != 0) {
-				task.ACI = (xy - result.length * avgX * avgY) / f;
+				task.setACI((xy - result.length * avgX * avgY) / f);
 			} else {
-				task.ACI = null;
+				task.setACI(null);
 			}
 		}
 
@@ -93,7 +93,7 @@ public class MonteCarloSimulate {
 		ArrayList<Risk> effRisks = riskImpact(iTasks, protentialRisks,useRamdon);
 
 		// 不受风险影响的工作
-		tasks.stream().filter(t -> !iTasks.contains(t)).forEach(task -> iTasks.add(new Task(task.id, task.D)));
+		tasks.stream().filter(t -> !iTasks.contains(t)).forEach(task -> iTasks.add(new Task(task.getId(), task.getD())));
 
 		// 创建路径
 		ArrayList<Route> iRoute = new ArrayList<Route>();
@@ -121,13 +121,13 @@ public class MonteCarloSimulate {
 			if (!useRandom||risk.probability >= Math.random()) { // 满足发生概率
 				effRisks.add(risk);
 				risk.consequences.forEach(c -> {
-					Task task = new Task(c.task.id, c.task.D + c.value);
+					Task task = new Task(c.task.getId(), c.task.getD() + c.value);
 					int idx = iTasks.indexOf(task);
 					if (idx < 0) {
 						iTasks.add(task);
 					} else {
 						task = iTasks.get(idx);
-						task.D += c.value;
+						task.setD(task.getD() + c.value);
 					}
 				});
 				effRisks.addAll(riskImpact(iTasks, risk.secondary,useRandom));// 考虑次生风险

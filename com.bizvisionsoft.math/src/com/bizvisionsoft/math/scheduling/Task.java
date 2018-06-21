@@ -1,69 +1,67 @@
 package com.bizvisionsoft.math.scheduling;
 
+import java.util.List;
+
 public class Task implements Comparable<Task>{
 
 	public static final String START = "_start";
 
 	public static final String END = "_end";
 	
-	public final String id;
+	private final String id;
 
 	/**
 	 * 工期
 	 */
-	public float D;
+	private float D;
 
 	/**
 	 * 最早开始
 	 */
-	public float ES = -1f;
+	private float ES = -1f;
 
 	/**
 	 * 最早完成
 	 */
-	public float EF = -1f;
+	private float EF = -1f;
 
 	/**
 	 * 最晚开始
 	 */
-	public float LS = -1f;
+	private float LS = -1f;
 
 	/**
 	 * 最晚完成
 	 */
-	public float LF = -1f;
+	private float LF = -1f;
 
 	/**
 	 * 总时差
 	 */
-	public float TF = -1f;
+	private float TF = -1f;
 
 	/**
 	 * 自由时差
 	 */
-	public float FF = -1f;
+	private float FF = -1f;
 	
 	/**
 	 * 关键概率
 	 */
-	public float ACP;
+	private float ACP;
 	
 	/**
 	 * 进度风险指标
 	 */
-	public Float ACI;
-
-	/**
-	 * 位于关键线路上、成为关键工序的概率
-	 */
-	public long acp = 0;
+	private Float ACI;
 
 	public Task(String id, float d) {
-
 		this.id = id;
-
-		this.D = d;
-
+		this.setD(d);
+	}
+	
+	public Task(String id, List<Task> subTasks) {
+		this.id = id;
 	}
 
 	public static Task startTask() {
@@ -78,7 +76,7 @@ public class Task implements Comparable<Task>{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		return result;
 	}
 
@@ -91,43 +89,120 @@ public class Task implements Comparable<Task>{
 		if (getClass() != obj.getClass())
 			return false;
 		Task other = (Task) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (getId() == null) {
+			if (other.getId() != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!getId().equals(other.getId()))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", D=" + D + ", ES=" + ES + ", EF=" + EF + ", LS=" + LS + ", LF=" + LF + ", TF=" + TF
-				+ ", FF=" + FF + "]";
+		return "Task [id=" + getId() + ", D=" + getD() + ", ES=" + getES() + ", EF=" + getEF() + ", LS=" + getLS() + ", LF=" + getLF() + ", TF=" + getTF()
+				+ ", FF=" + getFF() + "]";
 	}
 
 	void updateES(float es) {
-		if (es > ES) {
-			this.ES = es;
-			this.EF = es + D;
+		if (es > getES()) {
+			this.setES(es);
+			this.setEF(es + getD());
 		}
 	}
 
 	public void updateLF(float lf) {
-		if (LF == -1 || lf < LF) {
-			this.LF = lf;
-			this.LS = lf - D;
+		if (getLF() == -1 || lf < getLF()) {
+			this.setLF(lf);
+			this.setLS(lf - getD());
 		}
 	}
 
 	public void updateFF(float lag) {
-		if (FF == -1 || lag < FF) {
-			FF = lag;
+		if (getFF() == -1 || lag < getFF()) {
+			setFF(lag);
 		}
 	}
 
 	@Override
 	public int compareTo(Task o) {
-		return this.id.compareTo(o.id);
+		return this.getId().compareTo(o.getId());
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public Float getACI() {
+		return ACI;
+	}
+
+	public void setACI(Float aCI) {
+		ACI = aCI;
+	}
+
+	public float getACP() {
+		return ACP;
+	}
+
+	public void setACP(float aCP) {
+		ACP = aCP;
+	}
+
+	public float getTF() {
+		return TF;
+	}
+
+	public void setTF(float tF) {
+		TF = tF;
+	}
+
+	public float getFF() {
+		return FF;
+	}
+
+	public void setFF(float fF) {
+		FF = fF;
+	}
+
+	public float getLS() {
+		return LS;
+	}
+
+	public void setLS(float lS) {
+		LS = lS;
+	}
+
+	public float getES() {
+		return ES;
+	}
+
+	public void setES(float eS) {
+		ES = eS;
+	}
+
+	public float getLF() {
+		return LF;
+	}
+
+	public void setLF(float lF) {
+		LF = lF;
+	}
+
+	public float getEF() {
+		return EF;
+	}
+
+	public void setEF(float eF) {
+		EF = eF;
+	}
+
+	public float getD() {
+		return D;
+	}
+
+	public void setD(float d) {
+		D = d;
+	}
+	
 
 }

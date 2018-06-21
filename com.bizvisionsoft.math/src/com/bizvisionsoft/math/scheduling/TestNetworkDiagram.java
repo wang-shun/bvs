@@ -90,7 +90,7 @@ public class TestNetworkDiagram {
 		System.out.println("该工序位于关键线路上成为关键工序,它便会严重影响到项目总工期。");
 		System.out.println("对于RCI指标高的风险意味着他的发生对项目进度的影响较大，应当重点关注");
 
-		tasks.forEach(t -> System.out.println(t.id + "  ACI:" + t.ACI + ", ACP:" + t.ACP));
+		tasks.forEach(t -> System.out.println(t.getId() + "  ACI:" + t.getACI() + ", ACP:" + t.getACP()));
 		risks.forEach(r -> System.out.println(r.id + " RCI:" + r.RCI + " ,T:" + r.T));
 
 		System.out.println("无风险时，项目工期为：" + mcs.noRiskT);
