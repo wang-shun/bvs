@@ -49,6 +49,8 @@ public class SessionManager {
 		Object usrinfo = hs.getAttribute(ATT_USRINFO);
 		if (usrinfo != null && !usrinfo.equals(user))
 			throw new RuntimeException("必须以当前用户登录系统。");
+		else if (usrinfo.equals(user))
+			return;
 		
 		hs.setAttribute(ATT_USRINFO, user);
 		hs.setAttribute(ATT_LOGINTIME, new Date());
