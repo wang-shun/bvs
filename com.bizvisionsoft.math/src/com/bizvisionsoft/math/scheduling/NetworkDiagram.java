@@ -195,5 +195,19 @@ public class NetworkDiagram {
 	public Task getTask(String id) {
 		return tasks.parallelStream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
 	}
+	
+	/**
+	 * 根据输入的任务和搭接关系 分析有几张网络图
+	 * @param tasks
+	 * @param routes
+	 * @return
+	 */
+	public static List<NetworkDiagram> createNetworkDiagram(List<Task> tasks, List<Route> routes){
+		List<NetworkDiagram>  result = new ArrayList<NetworkDiagram>();
+		
+		
+		
+		return result;
+	}
 
 }

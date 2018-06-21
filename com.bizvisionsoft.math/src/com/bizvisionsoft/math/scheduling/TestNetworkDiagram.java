@@ -6,8 +6,8 @@ import java.util.List;
 public class TestNetworkDiagram {
 
 	public static void main(String[] args) {
-		test0();
-
+		//1. 首先要分析输入的task包括几张图。
+		
 	}
 	
 	private static void test0() {

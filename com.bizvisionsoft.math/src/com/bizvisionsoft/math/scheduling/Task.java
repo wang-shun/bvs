@@ -55,6 +55,8 @@ public class Task implements Comparable<Task>{
 	 */
 	private Float ACI;
 
+	private List<Task> subTasks;
+
 	public Task(String id, float d) {
 		this.id = id;
 		this.setD(d);
@@ -62,6 +64,11 @@ public class Task implements Comparable<Task>{
 	
 	public Task(String id, List<Task> subTasks) {
 		this.id = id;
+		this.subTasks = subTasks;
+	}
+	
+	public List<Task> getSubTasks() {
+		return subTasks;
 	}
 
 	public static Task startTask() {
