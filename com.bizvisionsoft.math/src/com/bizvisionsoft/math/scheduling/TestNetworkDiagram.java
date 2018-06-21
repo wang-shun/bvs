@@ -6,13 +6,33 @@ import java.util.List;
 public class TestNetworkDiagram {
 
 	public static void main(String[] args) {
-		test3();
+		test0();
 
+	}
+	
+	private static void test0() {
+		Task start = Task.startTask();
+		Task a = new Task("a", 5);
+		Task b = new Task("b", 10);
+		Task c = new Task("c", 13);
+		Task d = new Task("d", 7);
+		Task end = Task.endTask();
+
+		Route start_a = new Route(start, a);
+		Route a_b = new Route(a, b, new Relation(Relation.FTS, 6));
+		Route a_c = new Route(a, c, new Relation(Relation.FTS, 7));
+		Route a_d = new Route(a, d);
+		Route b_d = new Route(b, d, new Relation(Relation.FTS, 3));
+
+		List<Task> tasks = Arrays.asList(b, c,  start, a, d,  end);
+		List<Route> routes = Arrays.asList(start_a, a_b,   a_c, a_d, b_d);
+		NetworkDiagram nd = new NetworkDiagram(tasks, routes);
+		nd.schedule();
 	}
 
 	private static void test3() {
 		//任务
-		Task start = new Task(Task.START);
+		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 8);
 		Task c = new Task("c", 17);
@@ -20,7 +40,7 @@ public class TestNetworkDiagram {
 		Task e = new Task("e", 15);
 		Task f = new Task("f", 25);
 		Task g = new Task("g", 10);
-		Task end = new Task(Task.END);
+		Task end = Task.endTask();
 
 		//任务搭接关系
 		Route start_a = new Route(start, a);
@@ -82,7 +102,7 @@ public class TestNetworkDiagram {
 	}
 
 	private static void test1() {
-		Task start = new Task(Task.START);
+		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 10);
 		Task c = new Task("c", 13);
@@ -90,7 +110,7 @@ public class TestNetworkDiagram {
 		Task e = new Task("e", 18);
 		Task f = new Task("f", 27);
 		Task g = new Task("g", 12);
-		Task end = new Task(Task.END);
+		Task end = Task.endTask();
 
 		Route start_a = new Route(start, a);
 		Route a_b = new Route(a, b, new Relation(Relation.STF, 6));
@@ -112,7 +132,7 @@ public class TestNetworkDiagram {
 
 	private static void test2() {
 		// 任务
-		Task start = new Task(Task.START);
+		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 8);
 		Task c = new Task("c", 10);
@@ -120,7 +140,7 @@ public class TestNetworkDiagram {
 		Task e = new Task("e", 15);
 		Task f = new Task("f", 25);
 		Task g = new Task("g", 10);
-		Task end = new Task(Task.END);
+		Task end = Task.endTask();
 
 		// 任务的前后搭接关系
 		Route start_a = new Route(start, a);

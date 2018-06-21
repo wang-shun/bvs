@@ -5,21 +5,42 @@ public class Task implements Comparable<Task>{
 	public static final String START = "_start";
 
 	public static final String END = "_end";
-
+	
 	public final String id;
 
+	/**
+	 * 工期
+	 */
 	public float D;
 
+	/**
+	 * 最早开始
+	 */
 	public float ES = -1f;
 
+	/**
+	 * 最早完成
+	 */
 	public float EF = -1f;
 
+	/**
+	 * 最晚开始
+	 */
 	public float LS = -1f;
 
+	/**
+	 * 最晚完成
+	 */
 	public float LF = -1f;
 
+	/**
+	 * 总时差
+	 */
 	public float TF = -1f;
 
+	/**
+	 * 自由时差
+	 */
 	public float FF = -1f;
 	
 	/**
@@ -45,10 +66,12 @@ public class Task implements Comparable<Task>{
 
 	}
 
-	public Task(String id) {
-
-		this(id, 0);
-
+	public static Task startTask() {
+		return new Task(START, 0);
+	}
+	
+	public static Task endTask() {
+		return new Task(END, 0);
 	}
 
 	@Override
