@@ -1,6 +1,7 @@
 package com.bizvisionsoft.math.scheduling;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -195,18 +196,71 @@ public class NetworkDiagram {
 	public Task getTask(String id) {
 		return tasks.parallelStream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
 	}
-	
+
 	/**
-	 * 根据输入的任务和搭接关系 分析有几张网络图
+	 * 根据输入的任务和搭接关系 获得网络图的连通子图
+	 * 
 	 * @param tasks
 	 * @param routes
 	 * @return
 	 */
-	public static List<NetworkDiagram> createNetworkDiagram(List<Task> tasks, List<Route> routes){
-		List<NetworkDiagram>  result = new ArrayList<NetworkDiagram>();
-		
-		
-		
+	public static List<NetworkDiagram> listConnectedSubgraphic(List<Task> tasks, List<Route> routes) {
+		List<NetworkDiagram> result = new ArrayList<NetworkDiagram>();
+		for (int i = 0; i < routes.size(); i++) {
+			Route route = routes.get(i);
+			ArrayList<Route> _routes = new ArrayList<Route>();
+			_routes.addAll(searchNextFromRoute(routes, route.end1));
+			_routes.add(route);
+			_routes.addAll(searchNextToRoute(routes, route.end2));
+
+			NetworkDiagram net = result.stream().filter(nd -> {
+				ArrayList<Route> temp = new ArrayList<>(nd.routes);
+				temp.retainAll(_routes);
+				return temp.size() > 0;
+			}).findFirst().orElse(null);
+			if (net == null) {
+				ArrayList<Task> _tasks = new ArrayList<Task>();
+				_routes.forEach(r -> {
+					if (!_tasks.contains(r.end1))
+						_tasks.add(r.end1);
+					if (!_tasks.contains(r.end2))
+						_tasks.add(r.end2);
+				});
+				result.add(new NetworkDiagram(new ArrayList<Task>(_tasks), _routes));
+			} else {
+				_routes.forEach(r -> {
+					if (!net.tasks.contains(r.end1))
+						net.tasks.add(r.end1);
+					if (!net.tasks.contains(r.end2))
+						net.tasks.add(r.end2);
+				});
+				net.routes.addAll(_routes);
+			}
+		}
+		return result;
+	}
+
+	private static List<Route> searchNextFromRoute(List<Route> routes, Task to) {
+		ArrayList<Route> result = new ArrayList<>();
+		List<Route> from = Arrays.asList(routes.stream().filter(r -> r.end2.equals(to)).toArray(Route[]::new));
+		if (!from.isEmpty()) {
+			result.addAll(from);
+			from.forEach(r -> result.addAll(searchNextFromRoute(routes, r.end1)));
+		} else {
+			result.add(new Route(Task.startTask(), to));
+		}
+		return result;
+	}
+
+	private static List<Route> searchNextToRoute(List<Route> routes, Task from) {
+		ArrayList<Route> result = new ArrayList<>();
+		List<Route> to = Arrays.asList(routes.stream().filter(r -> r.end1.equals(from)).toArray(Route[]::new));
+		if (!to.isEmpty()) {
+			result.addAll(to);
+			to.forEach(r -> result.addAll(searchNextToRoute(routes, r.end2)));
+		} else {
+			result.add(new Route(from, Task.endTask()));
+		}
 		return result;
 	}
 
