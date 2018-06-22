@@ -787,7 +787,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	@Override
 	public void setCount(long count) {
 		this.count = count;
-		page.setCount(count);
+		if (page != null)
+			page.setCount(count);
 	}
 
 	@Override
