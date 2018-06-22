@@ -198,7 +198,7 @@ public class NetworkDiagram {
 	}
 
 	/**
-	 * 根据输入的任务和搭接关系 获得网络图的连通子图
+	 * 计算图的多个连通子图
 	 * 
 	 * @param tasks
 	 * @param routes
