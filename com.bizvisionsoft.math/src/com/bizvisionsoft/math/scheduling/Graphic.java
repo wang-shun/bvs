@@ -2,6 +2,8 @@ package com.bizvisionsoft.math.scheduling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,7 @@ public class Graphic {
 	private float T;
 	private Task start;
 	private Task end;
+	private Date startDate;
 
 	public Graphic(List<Task> tasks, List<Route> routes) {
 		this.tasks = tasks;
@@ -164,7 +167,6 @@ public class Graphic {
 		return result;
 	}
 
-
 	public void schedule() {
 		// 只对叶子排程
 		nets.stream().filter(nd -> nd.tasks.stream().allMatch(t -> t.getD() != -1))
@@ -214,17 +216,44 @@ public class Graphic {
 		}
 		route.relations.get(0).interval = interval;
 	}
-	
+
 	public float getT() {
 		return T;
 	}
-	
+
 	public List<Task> getTasks() {
 		return tasks;
 	}
 
 	public Task getTask(String taskId) {
-		return tasks.stream().filter(t->t.getId().equals(taskId)).findFirst().orElse(null);
+		return tasks.stream().filter(t -> t.getId().equals(taskId)).findFirst().orElse(null);
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setStartDate(String id, Date start) {
+		int interval = (int) ((start.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+		setStartInterval(id, interval);
+	}
+
+	public Date getTaskEFDate(String taskId) {
+		Task task = getTask(taskId);
+		if (task == null) {
+			throw new RuntimeException("任务" + taskId + "不存在。");
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		cal.add(Calendar.DATE, task.getEF().intValue());
+		return cal.getTime();
+	}
+
+	public Date getFinishDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		cal.add(Calendar.DATE, (int) T);
+		return cal.getTime();
 	}
 
 }

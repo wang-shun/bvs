@@ -30,4 +30,12 @@ public class Layer {
 		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {title:\""+title+"\", shade:0.2,skin: 'layui-layer-lan',anim: 0})");
 	}
 	
+	public static void message(String title,String msg,int animate) {
+		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {title:\""+title+"\", shade:0.2,skin: 'layui-layer-lan',anim: "+animate+"})");
+	}
+	
+	public static void message(String title,String msg,int icon,int animate) {
+		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {title:\""+title+"\", shade:0.2,skin: 'layui-layer-lan',icon: "+icon+",anim: "+animate+"})");
+	}
+	
 }
