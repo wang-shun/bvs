@@ -15,7 +15,7 @@ public class TestNetworkDiagram {
 	/**
 	 * 测试总成工作参与排程
 	 */
-	private static void test4() {
+	public static void test4() {
 		Task a = new Task("a", 5);
 		Task b = new Task("b");// 总成
 		Task c = new Task("c", 13);
@@ -111,7 +111,7 @@ public class TestNetworkDiagram {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 
-	private static void test0() {
+	public static void test0() {
 		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 10);
@@ -131,7 +131,7 @@ public class TestNetworkDiagram {
 		nd.schedule();
 	}
 
-	private static void test3() {
+	public static void test3() {
 		// 任务
 		Task start = Task.startTask();
 		Task a = new Task("a", 5);
@@ -202,7 +202,7 @@ public class TestNetworkDiagram {
 		}
 	}
 
-	private static void test1() {
+	public static void test1() {
 		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 10);
@@ -231,7 +231,7 @@ public class TestNetworkDiagram {
 		nd.schedule();
 	}
 
-	private static void test2() {
+	public static void test2() {
 		// 任务
 		Task start = Task.startTask();
 		Task a = new Task("a", 5);

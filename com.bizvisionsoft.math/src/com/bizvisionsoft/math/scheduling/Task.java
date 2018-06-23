@@ -10,6 +10,16 @@ public class Task implements Comparable<Task> {
 	public static final String END = "#END";
 
 	private final String id;
+	
+	private String name;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * ¹¤ÆÚ
@@ -69,6 +79,12 @@ public class Task implements Comparable<Task> {
 
 	public void setSubTasks(List<Task> subTasks) {
 		this.subTasks = subTasks;
+		this.setD(null);
+	}
+	
+	public Task addSubTask(Task subTask) {
+		this.subTasks.add(subTask);
+		return this;
 	}
 
 	public List<Task> getSubTasks() {
