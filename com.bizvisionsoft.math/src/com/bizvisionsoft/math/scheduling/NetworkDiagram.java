@@ -25,7 +25,6 @@ public class NetworkDiagram {
 
 		this.tasks = new ArrayList<Task>();
 		this.tasks.addAll(tasks);
-		Collections.sort(this.tasks);
 
 		this.routes = new ArrayList<Route>();
 		this.routes.addAll(routes);
@@ -38,12 +37,14 @@ public class NetworkDiagram {
 
 	public List<Task> schedule() {
 		tasks.forEach(t -> t.reset());
+		Collections.sort(this.tasks);
+
 		
 		virtualRoute = new ArrayList<Route>();
 
 		// 1. 计算ES, EF
-		start.setES(0);
-		start.setEF(0);
+		start.setES(0f);
+		start.setEF(0f);
 		tasks.forEach(t -> calculateEarlestStart(t));
 
 		// 2. 修正end
@@ -62,8 +63,8 @@ public class NetworkDiagram {
 		// 3. 求LS,LF
 		end.setLS(end.getES());
 		end.setLF(end.getEF());
-		start.setLS(0);
-		start.setLF(0);
+		start.setLS(0f);
+		start.setLF(0f);
 		tasks.forEach(t -> calculateLatestFinish(t));
 
 		// 4. 求LAG
@@ -71,10 +72,10 @@ public class NetworkDiagram {
 
 		// 5.求TF,FF
 		tasks.forEach(t -> calculateTF(t));
-		end.setTF(0);
-		end.setFF(0);
-		start.setTF(0);
-		start.setFF(0);
+		end.setTF(0f);
+		end.setFF(0f);
+		start.setTF(0f);
+		start.setFF(0f);
 
 		// 6.求总工期
 		T = end.getLF();
@@ -120,7 +121,7 @@ public class NetworkDiagram {
 		}
 		ergodic(task, false, route -> {
 			route.relations.forEach(rela -> {
-				if (route.end2.getLS() == -1) {
+				if (route.end2.getLS() == null) {
 					calculateLatestFinish(route.end2);
 				}
 				float lf = 0;
@@ -145,18 +146,22 @@ public class NetworkDiagram {
 		}
 		ergodic(task, true, route -> {
 			route.relations.forEach(rela -> {
-				if (route.end1.getES() == -1) {
+				if (route.end1.getES() == null) {
 					calculateEarlestStart(route.end1);
 				}
 				float es = 0;
-				if (rela.type == Relation.FTS) {
-					es = route.end1.getEF() + rela.interval;
-				} else if (rela.type == Relation.FTF) {
-					es = route.end1.getEF() + rela.interval - task.getD();
-				} else if (rela.type == Relation.STF) {
-					es = route.end1.getES() + rela.interval - task.getD();
-				} else if (rela.type == Relation.STS) {
-					es = route.end1.getES() + rela.interval;
+				try {
+					if (rela.type == Relation.FTS) {
+						es = route.end1.getEF() + rela.interval;
+					} else if (rela.type == Relation.FTF) {
+						es = route.end1.getEF() + rela.interval - task.getD();
+					} else if (rela.type == Relation.STF) {
+						es = route.end1.getES() + rela.interval - task.getD();
+					} else if (rela.type == Relation.STS) {
+						es = route.end1.getES() + rela.interval;
+					}
+				} catch (Exception e) {
+					System.out.println(route.end1);
 				}
 				if (es < 0) {
 					es = 0;

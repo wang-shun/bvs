@@ -3,58 +3,58 @@ package com.bizvisionsoft.math.scheduling;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
 
-	public static final String START = "_start";
+	public static final String START = "#START";
 
-	public static final String END = "_end";
-	
+	public static final String END = "#END";
+
 	private final String id;
 
 	/**
 	 * 工期
 	 */
-	private float D = -1f;
+	private Float D;
 
 	/**
 	 * 最早开始
 	 */
-	private float ES = -1f;
+	private Float ES;
 
 	/**
 	 * 最早完成
 	 */
-	private float EF = -1f;
+	private Float EF;
 
 	/**
 	 * 最晚开始
 	 */
-	private float LS = -1f;
+	private Float LS;
 
 	/**
 	 * 最晚完成
 	 */
-	private float LF = -1f;
+	private Float LF;
 
 	/**
 	 * 总时差
 	 */
-	private float TF = -1f;
+	private Float TF;
 
 	/**
 	 * 自由时差
 	 */
-	private float FF = -1f;
-	
+	private Float FF;
+
 	/**
 	 * 关键概率
 	 */
-	private float ACP = -1f;
-	
+	private Float ACP;
+
 	/**
 	 * 进度风险指标
 	 */
-	private Float ACI = -1f;
+	private Float ACI;
 
 	private List<Task> subTasks = new ArrayList<>();
 
@@ -62,15 +62,15 @@ public class Task implements Comparable<Task>{
 		this.id = id;
 		this.setD(d);
 	}
-	
+
 	public Task(String id) {
 		this.id = id;
 	}
-	
+
 	public void setSubTasks(List<Task> subTasks) {
 		this.subTasks = subTasks;
 	}
-	
+
 	public List<Task> getSubTasks() {
 		return subTasks;
 	}
@@ -78,7 +78,7 @@ public class Task implements Comparable<Task>{
 	public static Task startTask() {
 		return new Task(START, 0);
 	}
-	
+
 	public static Task endTask() {
 		return new Task(END, 0);
 	}
@@ -110,33 +110,38 @@ public class Task implements Comparable<Task>{
 
 	@Override
 	public String toString() {
-		return "Task [id=" + getId() + ", D=" + getD() + ", ES=" + getES() + ", EF=" + getEF() + ", LS=" + getLS() + ", LF=" + getLF() + ", TF=" + getTF()
-				+ ", FF=" + getFF() + "]";
+		return "Task [id=" + getId() + ", D=" + getD() + ", ES=" + getES() + ", EF=" + getEF() + ", LS=" + getLS()
+				+ ", LF=" + getLF() + ", TF=" + getTF() + ", FF=" + getFF() + "]";
 	}
 
 	void updateES(float es) {
-		if (es > getES()) {
+		if (getES() == null || es > getES()) {
 			this.setES(es);
 			this.setEF(es + getD());
 		}
 	}
 
 	public void updateLF(float lf) {
-		if (getLF() == -1 || lf < getLF()) {
+		if (getLF() == null || lf < getLF()) {
 			this.setLF(lf);
 			this.setLS(lf - getD());
 		}
 	}
 
 	public void updateFF(float lag) {
-		if (getFF() == -1 || lag < getFF()) {
+		if (getFF() == null || lag < getFF()) {
 			setFF(lag);
 		}
 	}
 
 	@Override
 	public int compareTo(Task o) {
-		return this.getId().compareTo(o.getId());
+		if (id.equals(START) || o.id.equals(END)) {
+			return -1;
+		} else if (id.equals(END) || o.id.equals(START)) {
+			return 1;
+		}
+		return getId().compareTo(o.getId());
 	}
 
 	public String getId() {
@@ -151,80 +156,79 @@ public class Task implements Comparable<Task>{
 		ACI = aCI;
 	}
 
-	public float getACP() {
+	public Float getACP() {
 		return ACP;
 	}
 
-	public void setACP(float aCP) {
+	public void setACP(Float aCP) {
 		ACP = aCP;
 	}
 
-	public float getTF() {
+	public Float getTF() {
 		return TF;
 	}
 
-	public void setTF(float tF) {
+	public void setTF(Float tF) {
 		TF = tF;
 	}
 
-	public float getFF() {
+	public Float getFF() {
 		return FF;
 	}
 
-	public void setFF(float fF) {
+	public void setFF(Float fF) {
 		FF = fF;
 	}
 
-	public float getLS() {
+	public Float getLS() {
 		return LS;
 	}
 
-	public void setLS(float lS) {
+	public void setLS(Float lS) {
 		LS = lS;
 	}
 
-	public float getES() {
+	public Float getES() {
 		return ES;
 	}
 
-	public void setES(float eS) {
+	public void setES(Float eS) {
 		ES = eS;
 	}
 
-	public float getLF() {
+	public Float getLF() {
 		return LF;
 	}
 
-	public void setLF(float lF) {
+	public void setLF(Float lF) {
 		LF = lF;
 	}
 
-	public float getEF() {
+	public Float getEF() {
 		return EF;
 	}
 
-	public void setEF(float eF) {
+	public void setEF(Float eF) {
 		EF = eF;
 	}
 
-	public float getD() {
+	public Float getD() {
 		return D;
 	}
 
-	public void setD(float d) {
+	public void setD(Float d) {
 		D = d;
 	}
 
 	public void reset() {
-		ES = -1f;
-		EF = -1f;
-		LS = -1f;
-		LF = -1f;
-		TF = -1f;
-		FF = -1f;
+		ES = null;
+		EF = null;
+		LS = null;
+		LF = null;
+		TF = null;
+		FF = null;
 		ACI = null;
-		ACP = -1f;
+		ACP = null;
 	}
-
 
 }

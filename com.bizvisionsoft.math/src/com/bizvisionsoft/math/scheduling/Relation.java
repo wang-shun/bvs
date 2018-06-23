@@ -10,9 +10,9 @@ public class Relation {
 
 	public static final int FTF = 3;
 
-	public final int type;
+	public int type;
 
-	public final float interval;
+	public float interval;
 
 	public Relation(int type, float interval) {
 

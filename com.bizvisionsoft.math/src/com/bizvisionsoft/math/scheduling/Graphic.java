@@ -2,16 +2,22 @@ package com.bizvisionsoft.math.scheduling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Graphic {
 
 	private List<NetworkDiagram> nets;
 	private List<Task> tasks;
 	private float T;
+	private Task start;
+	private Task end;
 
 	public Graphic(List<Task> tasks, List<Route> routes) {
 		this.tasks = tasks;
+		start = Task.startTask();
+		end = Task.endTask();
 		nets = listConnectedSubgraphic(tasks, routes);
 	}
 
@@ -31,17 +37,21 @@ public class Graphic {
 	public List<NetworkDiagram> listConnectedSubgraphic(List<Task> inputTasks, List<Route> inputRoutes) {
 		final List<Route> routes = new ArrayList<>(inputRoutes);
 		final List<Task> tasks = new ArrayList<>(inputTasks);
+		final Set<Task> removedIn = new HashSet<Task>();
+		final Set<Task> removedOut = new HashSet<Task>();
 		// 路由降级
 		inputTasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sum -> {
 			// 获得连入sumTaskd的连接
 			inputRoutes.stream().filter(r -> sum.equals(r.end2)).forEach(in -> {
 				linkToLeafTask(sum, in, routes);
 				routes.remove(in);
+				removedIn.add(in.end2);
 			});
 			// 获得连出sumTaskd的连接
 			inputRoutes.stream().filter(r -> sum.equals(r.end1)).forEach(out -> {
 				linkFromLeafTask(sum, out, routes);
 				routes.remove(out);
+				removedOut.add(out.end1);
 			});
 		});
 
@@ -75,13 +85,28 @@ public class Graphic {
 			}
 		}
 		// 处理孤立点
-		tasks.stream().filter(t -> !result.stream().anyMatch(n -> n.tasks.contains(t))).forEach(_t -> {
-			NetworkDiagram nd = new NetworkDiagram(Arrays.asList(Task.startTask(), _t, Task.endTask()),
-					Arrays.asList(new Route(Task.startTask(), _t), new Route(_t, Task.endTask())));
-			result.add(nd);
-		});
+		tasks.stream().filter(t -> !removedIn.contains(t) && !removedOut.contains(t)
+				&& !result.stream().anyMatch(n -> n.tasks.contains(t))).forEach(_t -> {
+					NetworkDiagram nd = new NetworkDiagram(Arrays.asList(start, _t, end),
+							Arrays.asList(new Route(start, _t), new Route(_t, end)));
+					result.add(nd);
+				});
 
 		return result;
+	}
+
+	public List<Route> getStartRoute() {
+		Set<Route> result = new HashSet<Route>();
+		nets.forEach(n -> n.routes.stream().filter(r -> Task.START.equals(r.end1.getId()))
+				.forEach(_r -> result.add(_r)));
+		return new ArrayList<Route>(Arrays.asList(result.toArray(new Route[0])));
+	}
+
+	public List<Task> getEndTask() {
+		Set<Task> result = new HashSet<Task>();
+		nets.forEach(
+				n -> n.routes.stream().filter(r -> Task.END.equals(r.end2.getId())).forEach(_r -> result.add(_r.end1)));
+		return new ArrayList<Task>(Arrays.asList(result.toArray(new Task[0])));
 	}
 
 	private void linkToLeafTask(Task parent, Route in, List<Route> routes) {
@@ -122,7 +147,7 @@ public class Graphic {
 			result.addAll(from);
 			from.forEach(r -> result.addAll(searchNextFromRoute(routes, r.end1)));
 		} else {
-			result.add(new Route(Task.startTask(), to));
+			result.add(new Route(start, to));
 		}
 		return result;
 	}
@@ -134,7 +159,7 @@ public class Graphic {
 			result.addAll(to);
 			to.forEach(r -> result.addAll(searchNextToRoute(routes, r.end2)));
 		} else {
-			result.add(new Route(from, Task.endTask()));
+			result.add(new Route(from, end));
 		}
 		return result;
 	}
@@ -170,26 +195,25 @@ public class Graphic {
 				calculteSummaryTask(sub);
 			}
 
-			if (task.getES() == -1 || task.getES() > sub.getES()) {
+			if (task.getES() == null || task.getES() > sub.getES()) {
 				task.setES(sub.getES());
 			}
 
-			if (task.getEF() == -1 || task.getEF() < sub.getEF()) {
+			if (task.getEF() == null || task.getEF() < sub.getEF()) {
 				task.setEF(sub.getEF());
 			}
-			
-			if (task.getLS() == -1 || task.getLS() > sub.getLS()) {
+
+			if (task.getLS() == null || task.getLS() > sub.getLS()) {
 				task.setLS(sub.getLS());
 			}
 
-			if (task.getLF() == -1 || task.getLF() < sub.getLF()) {
+			if (task.getLF() == null || task.getLF() < sub.getLF()) {
 				task.setLF(sub.getLF());
 			}
-			
+
 		}
 
-		task.setD(task.getLF()-task.getLS());
+		task.setD(task.getLF() - task.getLS());
 	}
-
 
 }

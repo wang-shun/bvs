@@ -42,7 +42,16 @@ public class TestNetworkDiagram {
 
 
 		Graphic gh = new Graphic(Arrays.asList(a, b, c, d, e, f, g, h, i), Arrays.asList(a_b, a_c, d_b, c_e, g_h, h_f,i_g,j_e));
+		
+		List<Route> start = gh.getStartRoute();
+		System.out.println(start);
+		// 得出的起始节点为a, d, i
+		Route route = start.stream().filter(r->r.end2.getId().equals("i")).findFirst().orElse(null);
+		System.out.println(route);
+		Relation relation = route.relations.get(0);
+		relation.interval = 2;
 		gh.schedule();
+		
 	}
 
 	private static void test0() {
