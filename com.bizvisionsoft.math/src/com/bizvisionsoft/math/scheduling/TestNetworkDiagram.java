@@ -10,15 +10,23 @@ public class TestNetworkDiagram {
 		test4();
 	}
 
+	/**
+	 * 测试总成工作参与排程
+	 */
 	private static void test4() {
 		Task a = new Task("a", 5);
-		Task b = new Task("b", 10);
+		Task b = new Task("b");// 总成
 		Task c = new Task("c", 13);
 		Task d = new Task("d", 7);
 		Task e = new Task("e", 7);
 		Task f = new Task("f", 7);
-		Task g = new Task("g", 7);
+		Task g = new Task("g");
 		Task h = new Task("h", 7);
+		Task i = new Task("i", 12);
+		Task j = new Task("j", 6);
+		
+		b.setSubTasks(Arrays.asList(g, h));
+		g.setSubTasks(Arrays.asList(j));
 
 		Route a_b = new Route(a, b, new Relation(Relation.FTS, 6));
 		Route a_c = new Route(a, c, new Relation(Relation.FTS, 7));
@@ -26,13 +34,15 @@ public class TestNetworkDiagram {
 		Route c_e = new Route(c, e, new Relation(Relation.FTS, 7));
 
 		Route g_h = new Route(g, h, new Relation(Relation.FTS, 7));
-
-		List<NetworkDiagram> result = NetworkDiagram.listConnectedSubgraphic(Arrays.asList(a, b, c, d, e, f, g, h),
-				Arrays.asList(a_b, a_c, d_b, c_e, g_h));
+		Route h_f = new Route(h, f, new Relation(Relation.FTS, 2));
 		
-		for (int i = 0; i < result.size(); i++) {
-			System.out.println(result.get(i).routes);
-		}
+		Route i_g = new Route(i, g, new Relation(Relation.FTS, 5));
+		
+		Route j_e = new Route(j, e, new Relation(Relation.FTS, 2));
+
+
+		Graphic gh = new Graphic(Arrays.asList(a, b, c, d, e, f, g, h, i), Arrays.asList(a_b, a_c, d_b, c_e, g_h, h_f,i_g,j_e));
+		gh.schedule();
 	}
 
 	private static void test0() {

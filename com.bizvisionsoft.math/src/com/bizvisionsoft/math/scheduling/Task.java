@@ -1,5 +1,6 @@
 package com.bizvisionsoft.math.scheduling;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Task implements Comparable<Task>{
@@ -13,7 +14,7 @@ public class Task implements Comparable<Task>{
 	/**
 	 * 工期
 	 */
-	private float D;
+	private float D = -1f;
 
 	/**
 	 * 最早开始
@@ -48,22 +49,25 @@ public class Task implements Comparable<Task>{
 	/**
 	 * 关键概率
 	 */
-	private float ACP;
+	private float ACP = -1f;
 	
 	/**
 	 * 进度风险指标
 	 */
-	private Float ACI;
+	private Float ACI = -1f;
 
-	private List<Task> subTasks;
+	private List<Task> subTasks = new ArrayList<>();
 
 	public Task(String id, float d) {
 		this.id = id;
 		this.setD(d);
 	}
 	
-	public Task(String id, List<Task> subTasks) {
+	public Task(String id) {
 		this.id = id;
+	}
+	
+	public void setSubTasks(List<Task> subTasks) {
 		this.subTasks = subTasks;
 	}
 	
@@ -210,6 +214,17 @@ public class Task implements Comparable<Task>{
 	public void setD(float d) {
 		D = d;
 	}
-	
+
+	public void reset() {
+		ES = -1f;
+		EF = -1f;
+		LS = -1f;
+		LF = -1f;
+		TF = -1f;
+		FF = -1f;
+		ACI = null;
+		ACP = -1f;
+	}
+
 
 }
