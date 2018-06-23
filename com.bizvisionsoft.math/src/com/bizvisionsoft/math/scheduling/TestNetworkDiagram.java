@@ -1,6 +1,8 @@
 package com.bizvisionsoft.math.scheduling;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class TestNetworkDiagram {
@@ -44,14 +46,69 @@ public class TestNetworkDiagram {
 		Graphic gh = new Graphic(Arrays.asList(a, b, c, d, e, f, g, h, i), Arrays.asList(a_b, a_c, d_b, c_e, g_h, h_f,i_g,j_e));
 		
 		List<Route> start = gh.getStartRoute();
+		System.out.println("起始节点：");
 		System.out.println(start);
 		// 得出的起始节点为a, d, i
-		Route route = start.stream().filter(r->r.end2.getId().equals("i")).findFirst().orElse(null);
-		System.out.println(route);
-		Relation relation = route.relations.get(0);
-		relation.interval = 2;
+		
+		//假定项目开始时间为2018年6月1日
+		Calendar pjStart = Calendar.getInstance();
+		pjStart.set(2018, 5, 1);
+		
+		//a工作开始于2018年6月1日
+		Calendar aStart = Calendar.getInstance();
+		aStart.set(2018, 5, 1);
+	
+		//b工作开始于2018年6月2日
+		Calendar dStart = Calendar.getInstance();
+		dStart.set(2018, 5, 2);
+
+		//i工作开始于2018年6月10日
+		Calendar iStart = Calendar.getInstance();
+		iStart.set(2018, 5, 10);
+
+		//求出各个起点相对项目的延迟天数
+		long timeInMillis = pjStart.getTimeInMillis();
+		int intervalA = (int) ((aStart.getTimeInMillis()-timeInMillis)/(1000*60*60*24));
+		int intervalD = (int) ((dStart.getTimeInMillis()-timeInMillis)/(1000*60*60*24));
+		int intervalI = (int) ((iStart.getTimeInMillis()-timeInMillis)/(1000*60*60*24));
+		
+		gh.setStartInterval("a",intervalA);
+		gh.setStartInterval("d",intervalD);
+		gh.setStartInterval("i",intervalI);
 		gh.schedule();
 		
+		//项目总工期为
+		System.out.println("项目工期：");
+		float pjDuration = gh.getT();
+		System.out.println(pjDuration);
+		pjStart.add(Calendar.DATE, (int)pjDuration);
+		System.out.println("项目完工日期");
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(pjStart.getTime()));
+		
+		//显示任务的计划
+		displayTaskInfo(gh, "c");
+		displayTaskInfo(gh, "d");
+
+	}
+
+	private static void displayTaskInfo(Graphic gh, String taskId) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println("任务"+taskId+": ");
+		Task taskC = gh.getTask(taskId);
+		System.out.println("工期："+taskC.getD());
+		
+		Calendar cStart = Calendar.getInstance();
+		cStart.set(2018, 5, 1);
+		cStart.add(Calendar.DATE, taskC.getES().intValue());
+		System.out.println("计划开始："+new SimpleDateFormat("yyyy-MM-dd").format(cStart.getTime()));
+
+		Calendar cFinish = Calendar.getInstance();
+		cFinish.set(2018, 5, 1);
+		cFinish.add(Calendar.DATE, taskC.getEF().intValue());
+		System.out.println("计划完成："+new SimpleDateFormat("yyyy-MM-dd").format(cFinish.getTime()));
+		
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 
 	private static void test0() {

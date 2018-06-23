@@ -97,8 +97,8 @@ public class Graphic {
 
 	public List<Route> getStartRoute() {
 		Set<Route> result = new HashSet<Route>();
-		nets.forEach(n -> n.routes.stream().filter(r -> Task.START.equals(r.end1.getId()))
-				.forEach(_r -> result.add(_r)));
+		nets.forEach(
+				n -> n.routes.stream().filter(r -> Task.START.equals(r.end1.getId())).forEach(_r -> result.add(_r)));
 		return new ArrayList<Route>(Arrays.asList(result.toArray(new Route[0])));
 	}
 
@@ -164,13 +164,6 @@ public class Graphic {
 		return result;
 	}
 
-	public void schedule1() {
-		nets.forEach(nd -> nd.schedule());
-		T = (float) nets.stream().mapToDouble(nd -> nd.T).max().getAsDouble();
-		System.out.println(T);
-
-		tasks.forEach(t -> System.out.println(t.getId() + " D:" + t.getD()));
-	}
 
 	public void schedule() {
 		// 只对叶子排程
@@ -182,9 +175,7 @@ public class Graphic {
 
 		// 总工期
 		T = (float) nets.stream().mapToDouble(nd -> nd.T).max().getAsDouble();
-		System.out.println(T);
 
-		tasks.forEach(t -> System.out.println(t.getId() + " D:" + t.getD()));
 	}
 
 	private void calculteSummaryTask(Task task) {
@@ -214,6 +205,26 @@ public class Graphic {
 		}
 
 		task.setD(task.getLF() - task.getLS());
+	}
+
+	public void setStartInterval(String id, int interval) {
+		Route route = getStartRoute().stream().filter(r -> r.end2.getId().equals(id)).findFirst().orElse(null);
+		if (route == null) {
+			throw new RuntimeException("任务" + id + ", 不是起始节点");
+		}
+		route.relations.get(0).interval = interval;
+	}
+	
+	public float getT() {
+		return T;
+	}
+	
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public Task getTask(String taskId) {
+		return tasks.stream().filter(t->t.getId().equals(taskId)).findFirst().orElse(null);
 	}
 
 }
