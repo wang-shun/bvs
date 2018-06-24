@@ -3,7 +3,6 @@ package com.bizvisionsoft.bruiengine.action;
 import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
@@ -20,8 +19,7 @@ public class DeleteSelected {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
+	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(elem -> {
 			deleteElementInGrid(bruiService, context, elem);
 		});

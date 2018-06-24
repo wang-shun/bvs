@@ -1,7 +1,6 @@
 package com.bizvisionsoft.onlinedesigner.actions;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Event;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -18,8 +17,7 @@ public class RemoveSiteElement {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
+	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		context.selected(em -> {
 			if (em instanceof Page) {
 				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要选中的页面。")) {

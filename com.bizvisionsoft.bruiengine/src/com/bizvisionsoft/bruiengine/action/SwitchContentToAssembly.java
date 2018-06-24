@@ -1,7 +1,5 @@
 package com.bizvisionsoft.bruiengine.action;
 
-import org.eclipse.swt.widgets.Event;
-
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
@@ -13,7 +11,7 @@ public class SwitchContentToAssembly {
 
 	@Inject
 	private IBruiService bruiService;
-	
+
 	private Assembly assembly;
 
 	private boolean openContent;
@@ -24,13 +22,12 @@ public class SwitchContentToAssembly {
 	}
 
 	@Execute
-	public void execute(@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(value = Execute.PARAM_EVENT) Event event) {
-		if(openContent) {
+	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+		if (openContent) {
 			bruiService.openContent(assembly, context.getFirstElement());
-		}else {
+		} else {
 			bruiService.switchContent(assembly, context.getFirstElement());
 		}
 	}
-	
+
 }

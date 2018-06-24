@@ -1,7 +1,5 @@
 package com.bizvisionsoft.bruiengine.action;
 
-import org.eclipse.swt.widgets.Event;
-
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
@@ -15,9 +13,8 @@ public class QueryInGrid {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(value = Execute.PARAM_EVENT) Event event,
-			@MethodParam(value = Execute.PARAM_CONTEXT) IBruiContext context) {
-		//获得
+	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+		// 获得
 		IQueryEnable content = (IQueryEnable) context.getContent();
 		content.openQueryEditor();
 	}
