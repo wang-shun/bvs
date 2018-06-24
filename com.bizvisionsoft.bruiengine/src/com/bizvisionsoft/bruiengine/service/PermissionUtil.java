@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Assert;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.RoleBased;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -134,10 +134,10 @@ public class PermissionUtil {
 		if (iac != null) {// 带有输入对象控制权限的
 			Method method = AUtil.getMethod(iac.getClass(), RoleBased.class).orElse(null);
 			if (method != null) {
-				String[] paramemterNames = new String[] { ServiceParam.CURRENT_USER_ID };
+				String[] paramemterNames = new String[] { MethodParam.CURRENT_USER_ID };
 				Object[] parameterValues = new Object[] { user.getUserId() };
 				Object value = AUtil.invokeMethodInjectParams(iac, method, parameterValues, paramemterNames,
-						ServiceParam.class, f -> f.value());
+						MethodParam.class, f -> f.value());
 				if (value instanceof List) {
 					roles = (List<String>) value;
 				} else if (value instanceof String[]) {

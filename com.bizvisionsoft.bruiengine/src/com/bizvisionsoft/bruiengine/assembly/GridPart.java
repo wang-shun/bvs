@@ -105,7 +105,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	private int actionColWidth;
 
 	private boolean vertialQueryPanel;
-	
+
 	private boolean asEditorField;
 
 	public GridPart() {
@@ -160,7 +160,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		this.itemSelector = listener;
 		return this;
 	}
-	
+
 	public GridPart setAsEditorField(boolean asEditorField) {
 		this.asEditorField = asEditorField;
 		return this;
@@ -450,7 +450,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 					invoveAction(e, elem, action);
 				});
 			});
-		} else if (itemSelector != null&& !asEditorField) {
+		} else if (itemSelector != null && !asEditorField) {
 			actionColWidth = 2 * BruiToolkit.actionMargin + BruiToolkit.actionTextBtnWidth;
 
 			GridColumn col = new GridColumn(grid, SWT.NONE);
@@ -465,7 +465,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
 			vcol.setLabelProvider(
-					new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }), context));
+					new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }), context)
+							.setEnablement(itemSelector.enablement));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}

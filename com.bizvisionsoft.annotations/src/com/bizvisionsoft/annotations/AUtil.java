@@ -17,9 +17,9 @@ import com.bizvisionsoft.annotations.md.service.Label;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
 import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.google.gson.GsonBuilder;
 
 public class AUtil {
@@ -463,7 +463,7 @@ public class AUtil {
 					.orElse(null);
 			if (m != null) {
 				Object value = invokeMethodInjectParams(element, m, parameterValues, paramemterNames,
-						ServiceParam.class, f1 -> f1.value());
+						MethodParam.class, f1 -> f1.value());
 				return Boolean.TRUE.equals(value);
 			}
 		}

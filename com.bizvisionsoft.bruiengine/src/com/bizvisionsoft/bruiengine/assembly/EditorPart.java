@@ -25,13 +25,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.SelectionValidation;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetReturnCode;
 import com.bizvisionsoft.annotations.ui.common.GetReturnResult;
 import com.bizvisionsoft.annotations.ui.common.Inject;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.assembly.field.BannerField;
 import com.bizvisionsoft.bruiengine.assembly.field.CheckField;
@@ -65,6 +69,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 
 public class EditorPart {
@@ -396,10 +401,35 @@ public class EditorPart {
 		grid.setVertialQueryPanel(config.isSmallEditor());
 
 		// 2. 设置表格项的选择
-		grid.addItemSelector(new ToolItemDescriptor("选择", e -> {
+		ToolItemDescriptor itemSelector = new ToolItemDescriptor("选择", e -> {
 			if ("choice".equals(e.text) && field.setSelection(Arrays.asList(new Object[] { e.item.getData() })))
 				closeContainer();
-		}));
+		});
+		grid.addItemSelector(itemSelector);
+
+		// 3. 检查这个字段是否有选择器校验注解
+		AUtil.getContainerMethod(input.getClass(), SelectionValidation.class, config.getName(),
+				field.getFieldConfig().getName(), f -> f.value()).ifPresent(method -> {
+					itemSelector.enablement = o -> {
+
+						String[] paramemterNames = { MethodParam.OBJECT, MethodParam.CONTEXT_INPUT_OBJECT,
+								MethodParam.CONTEXT_INPUT_OBJECT_ID, MethodParam.ROOT_CONTEXT_INPUT_OBJECT,
+								MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID, MethodParam.CURRENT_USER,
+								MethodParam.CURRENT_USER_ID };
+						Object contextInput = context.getInput();
+						Object rootInput = context.getRootInput();
+						User user = Brui.sessionManager.getUser();
+						Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id"))
+								.orElse(null);
+						Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id"))
+								.orElse(null);
+						Object[] parameterValues = { o, contextInput, inputid, rootInput, rootInputId, user,
+								user.getUserId() };
+
+						return Boolean.TRUE.equals(AUtil.invokeMethodInjectParams(input, method, parameterValues,
+								paramemterNames, MethodParam.class, f -> f.value()));
+					};
+				});
 
 		if (field instanceof MultiSelectionField) {
 			grid.addToolItem(new ToolItemDescriptor("确定", BruiToolkit.CSS_NORMAL, e -> {

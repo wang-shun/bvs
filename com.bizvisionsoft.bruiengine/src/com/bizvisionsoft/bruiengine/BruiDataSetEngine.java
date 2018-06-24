@@ -14,7 +14,7 @@ import org.osgi.framework.Bundle;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.Listener;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -82,16 +82,16 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
-			names.add(ServiceParam.SKIP);
+			names.add(MethodParam.SKIP);
 			values.add(skip);
 
-			names.add(ServiceParam.LIMIT);
+			names.add(MethodParam.LIMIT);
 			values.add(limit);
 
-			names.add(ServiceParam.FILTER);
+			names.add(MethodParam.FILTER);
 			values.add(filter);
 
-			names.add(ServiceParam.CONDITION);
+			names.add(MethodParam.CONDITION);
 			values.add(new BasicDBObject().append("skip", skip).append("limit", limit).append("filter", filter));
 
 			if (context != null) {
@@ -104,7 +104,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			injectUserParameters(names, values);
 
-			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), ServiceParam.class,
+			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
 					t -> t.value());
 
 			// try {
@@ -130,7 +130,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
 
-			names.add(ServiceParam.FILTER);
+			names.add(MethodParam.FILTER);
 			values.add(filter);
 
 			injectContextInputParameters(context, names, values);
@@ -142,7 +142,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			injectUserParameters(names, values);
 
 			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
-					ServiceParam.class, t -> t.value());
+					MethodParam.class, t -> t.value());
 		}
 		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 count的方法。");
 	}
@@ -151,12 +151,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (context != null) {
 			Object input = context.getInput();
 			if (input != null) {
-				names.add(ServiceParam.CONTEXT_INPUT_OBJECT);
+				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
 				Object _id = Util.getBson(input).get("_id");
 				if (_id != null) {
-					names.add(ServiceParam.CONTEXT_INPUT_OBJECT_ID);
+					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
 				}
 			}
@@ -167,12 +167,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (context != null) {
 			Object input = context.getContentPageInput();
 			if (input != null) {
-				names.add(ServiceParam.PAGE_CONTEXT_INPUT_OBJECT);
+				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
 				Object _id = Util.getBson(input).get("_id");
 				if (_id != null) {
-					names.add(ServiceParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
+					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
 				}
 			}
@@ -183,12 +183,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (context != null) {
 			Object input = context.getRootInput();
 			if (input != null) {
-				names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT);
+				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
 				Object _id = Util.getBson(input).get("_id");
 				if (_id != null) {
-					names.add(ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
+					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
 				}
 			}
@@ -199,10 +199,10 @@ public class BruiDataSetEngine extends BruiEngine {
 		try {
 			User user = Brui.sessionManager.getUser();
 			if (user != null) {
-				names.add(ServiceParam.CURRENT_USER);
+				names.add(MethodParam.CURRENT_USER);
 				values.add(user);
 
-				names.add(ServiceParam.CURRENT_USER_ID);
+				names.add(MethodParam.CURRENT_USER_ID);
 				values.add(user.getUserId());
 			}
 		} catch (Exception e) {
@@ -257,7 +257,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
 			if (filter != null) {
-				names.add(ServiceParam.FILTER);
+				names.add(MethodParam.FILTER);
 				values.add(filter);
 			}
 
@@ -268,7 +268,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			injectUserParameters(names, values);
 
 			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
-					ServiceParam.class, t -> t.value());
+					MethodParam.class, t -> t.value());
 
 		}
 		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 " + fName + "的方法。");
@@ -306,14 +306,14 @@ public class BruiDataSetEngine extends BruiEngine {
 			String[] names;
 			if (parent == null) {
 				values = new Object[] { Util.getBson(element).get("_id"), element };
-				names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
 			} else {
 				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
 						element };
-				names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
-						ServiceParam.OBJECT };
+				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
+						MethodParam.OBJECT };
 			}
-			return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
+			return invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
 		}
 		return new RuntimeException("DateSet缺少Insert注解的方法");
 	}
@@ -327,14 +327,14 @@ public class BruiDataSetEngine extends BruiEngine {
 			String[] names;
 			if (parent == null) {
 				values = new Object[] { Util.getBson(element).get("_id"), element };
-				names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
+				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
 			} else {
 				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
 						element };
-				names = new String[] { ServiceParam.PARENT_ID, ServiceParam.PARENT_OBJECT, ServiceParam._ID,
-						ServiceParam.OBJECT };
+				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
+						MethodParam.OBJECT };
 			}
-			invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
+			invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
 		}
 	}
 
@@ -345,8 +345,8 @@ public class BruiDataSetEngine extends BruiEngine {
 			Object[] values;
 			String[] names;
 			values = new Object[] { Util.getBson(element).get("_id"), element };
-			names = new String[] { ServiceParam._ID, ServiceParam.OBJECT };
-			return invokeMethodInjectParams(method, values, names, ServiceParam.class, t -> t.value());
+			names = new String[] { MethodParam._ID, MethodParam.OBJECT };
+			return invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
 		}
 		return null;
 	}

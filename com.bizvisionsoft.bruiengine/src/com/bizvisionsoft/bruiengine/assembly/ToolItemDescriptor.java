@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.function.Function;
+
 import org.eclipse.swt.widgets.Listener;
 
 public class ToolItemDescriptor {
@@ -9,8 +11,8 @@ public class ToolItemDescriptor {
 		this.style = style;
 		this.listener = listener;
 	}
-	
-	public ToolItemDescriptor(String label,  Listener listener) {
+
+	public ToolItemDescriptor(String label, Listener listener) {
 		this.label = label;
 		this.listener = listener;
 	}
@@ -21,4 +23,10 @@ public class ToolItemDescriptor {
 
 	public Listener listener;
 
+	public Function<Object, Boolean> enablement;
+
+	public ToolItemDescriptor setEnablement(Function<Object, Boolean> enablement) {
+		this.enablement = enablement;
+		return this;
+	}
 }

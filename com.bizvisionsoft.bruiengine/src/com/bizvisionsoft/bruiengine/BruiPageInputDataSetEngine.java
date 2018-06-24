@@ -10,7 +10,7 @@ import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.DataSet;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.serviceconsumer.Services;
 
@@ -70,7 +70,7 @@ public class BruiPageInputDataSetEngine extends BruiEngine {
 			Object[] args = new Object[method.getParameterCount()];
 			Parameter[] para = method.getParameters();
 			for (int i = 0; i < para.length; i++) {
-				ServiceParam sp = para[i].getAnnotation(ServiceParam.class);
+				MethodParam sp = para[i].getAnnotation(MethodParam.class);
 				if (sp != null) {
 					String paramName = sp.value();
 					if (paramName.equals("_id")) {

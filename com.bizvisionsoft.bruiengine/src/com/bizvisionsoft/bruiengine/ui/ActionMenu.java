@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.annotations.md.service.ServiceParam;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.Brui;
@@ -99,10 +99,10 @@ public class ActionMenu extends Part {
 			Action action = actions.get(i);
 			if (action.isObjectBehavier() && input != null && assembly != null) {
 
-				String[] paramemterNames = new String[] { ServiceParam.CONTEXT_INPUT_OBJECT,
-						ServiceParam.CONTEXT_INPUT_OBJECT_ID, ServiceParam.ROOT_CONTEXT_INPUT_OBJECT,
-						ServiceParam.ROOT_CONTEXT_INPUT_OBJECT_ID, ServiceParam.CURRENT_USER,
-						ServiceParam.CURRENT_USER_ID };
+				String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT,
+						MethodParam.CONTEXT_INPUT_OBJECT_ID, MethodParam.ROOT_CONTEXT_INPUT_OBJECT,
+						MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID, MethodParam.CURRENT_USER,
+						MethodParam.CURRENT_USER_ID };
 				Object contextInput = context.getInput();
 				Object rootInput = context.getRootInput();
 				User user = Brui.sessionManager.getUser();
