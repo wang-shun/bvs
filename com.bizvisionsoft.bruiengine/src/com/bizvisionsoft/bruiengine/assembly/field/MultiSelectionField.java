@@ -39,7 +39,7 @@ public class MultiSelectionField extends SelectionField {
 		// 如果可以编辑，增加 添加按钮，删除按钮，表格增加勾选框
 		if (!isReadOnly()) {
 			// 2. 设置表格项的选择
-			grid.setCheckOn(true)
+			grid.setCheckOn(true).setAsEditorField(true)
 					// 3. 增加工具栏按钮
 					.addToolItem(new ToolItemDescriptor("添加", "inbox", e -> {
 						showSelector();

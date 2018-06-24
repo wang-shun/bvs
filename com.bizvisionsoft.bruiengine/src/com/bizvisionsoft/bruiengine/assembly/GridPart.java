@@ -105,6 +105,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	private int actionColWidth;
 
 	private boolean vertialQueryPanel;
+	
+	private boolean asEditorField;
 
 	public GridPart() {
 	}
@@ -158,6 +160,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		this.itemSelector = listener;
 		return this;
 	}
+	
+	public GridPart setAsEditorField(boolean asEditorField) {
+		this.asEditorField = asEditorField;
+		return this;
+	}
 
 	public GridPart addToolItem(ToolItemDescriptor ti) {
 		toolitems.add(ti);
@@ -197,7 +204,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Composite panel;
-		if (config.isHasTitlebar() && itemSelector == null) {
+		if (config.isHasTitlebar() && itemSelector == null && !asEditorField) {
 			panel = createSticker(parent);
 		} else {
 			panel = parent;
@@ -410,7 +417,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		//
 		final List<Action> actions = config.getRowActions();
 		// 如果作为选择器，无需创建操作
-		if (itemSelector == null && actions != null && actions.size() > 0) {
+		if (itemSelector == null && actions != null && actions.size() > 0 && !asEditorField) {
 			actionColWidth = BruiToolkit.actionMargin;
 
 			for (Action action : actions) {
@@ -443,7 +450,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 					invoveAction(e, elem, action);
 				});
 			});
-		} else if (itemSelector != null) {
+		} else if (itemSelector != null&& !asEditorField) {
 			actionColWidth = 2 * BruiToolkit.actionMargin + BruiToolkit.actionTextBtnWidth;
 
 			GridColumn col = new GridColumn(grid, SWT.NONE);
@@ -517,7 +524,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 		GridTreeViewer viewer = new GridTreeViewer(parent, style);
 		Grid grid = viewer.getGrid();
-		grid.setHeaderVisible(config.isGridHeaderVisiable());
+		grid.setHeaderVisible(!asEditorField && config.isGridHeaderVisiable());
 		grid.setFooterVisible(config.isGridFooterVisiable());
 		grid.setLinesVisible(config.isGridLineVisiable());
 		grid.setHideIndentionImage(config.isGridHideIndentionImage());
