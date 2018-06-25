@@ -52,10 +52,7 @@ public class BruiActionEngine extends BruiEngine {
 			String cla = action.getCreateActionNewInstanceClassName();
 			brui = new BruiActionEngine(new CreateSelectedSubItem(ModelLoader.site.getAssembly(editorId), bid, cla));
 		} else if (Action.TYPE_EDIT.equals(type)) {
-			String editorId = action.getEditorAssemblyId();
-			brui = new BruiActionEngine(
-					new OpenSelected(ModelLoader.site.getAssembly(editorId), action.isEditorAssemblyEditable()));
-
+			brui = new BruiActionEngine(new OpenSelected());
 		} else if (Action.TYPE_DELETE.equals(type)) {
 			brui = new BruiActionEngine(new DeleteSelected());
 

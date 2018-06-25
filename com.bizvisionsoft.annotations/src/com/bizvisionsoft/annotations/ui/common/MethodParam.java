@@ -23,6 +23,8 @@ public @interface MethodParam {
 	String LIMIT = "limit";
 
 	String FILTER = "filter";
+	
+	String FILTER_N_UPDATE = "filter_and_update";
 
 	String CONDITION = "condition";
 

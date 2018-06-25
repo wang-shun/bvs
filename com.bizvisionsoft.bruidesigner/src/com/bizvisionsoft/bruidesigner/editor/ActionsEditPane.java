@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TreeItem;
@@ -363,6 +364,9 @@ public class ActionsEditPane extends SashForm {
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_EDIT.equals(action.getType())) {
 				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
+				Label l = new Label(parent, SWT.NONE);
+				l.setText("不提供编辑器组件时，系统将使用对象的@ReadEditorConfig注解。");
+				l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 				editor.createCheckboxField(parent, "允许编辑:", action, "editorAssemblyEditable", SWT.CHECK);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -374,12 +378,13 @@ public class ActionsEditPane extends SashForm {
 			if (Action.TYPE_QUERY.equals(action.getType())) {
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
+			.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
 			editor.createTextField(parent, "角色（多个#分割）", action, "role", SWT.BORDER);
-			
+
 			editor.createTextField(parent, "排除角色（多个#分割）", action, "excludeRole", SWT.BORDER);
 
-			
 			action.addPropertyChangeListener("name", listener);
 		}
 

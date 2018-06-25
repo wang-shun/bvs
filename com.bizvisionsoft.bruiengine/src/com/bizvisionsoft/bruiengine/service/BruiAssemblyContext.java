@@ -10,7 +10,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
+import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.model.User;
 
 public class BruiAssemblyContext implements IBruiContext {
 
@@ -218,6 +221,16 @@ public class BruiAssemblyContext implements IBruiContext {
 		} else {
 			throw new RuntimeException("组件" + assembly.getName() + "的输入类型不匹配，要求是" + AUtil.readType(input));
 		}
+	}
+
+	@Override
+	public Object[] getContextParameters(String[] paramemterNames) {
+		Object contextInput = getInput();
+		Object rootInput = getRootInput();
+		User user = Brui.sessionManager.getUser();
+		Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
+		Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
+		return new Object[] { contextInput, inputid, rootInput, rootInputId, user, user.getUserId() };
 	}
 
 }

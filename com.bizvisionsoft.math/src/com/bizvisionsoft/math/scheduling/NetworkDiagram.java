@@ -39,7 +39,6 @@ public class NetworkDiagram {
 		tasks.forEach(t -> t.reset());
 		Collections.sort(this.tasks);
 
-		
 		virtualRoute = new ArrayList<Route>();
 
 		// 1. ¼ÆËãES, EF
@@ -100,16 +99,24 @@ public class NetworkDiagram {
 	}
 
 	private void calculateLAG(Route route) {
+		final Float es1 = route.end1.getES();
+		final Float es2 = route.end2.getES();
+		final Float ef1 = route.end1.getEF();
+		final Float ef2 = route.end2.getEF();
 		route.relations.forEach(rela -> {
 			float lag = 0;
 			if (rela.type == Relation.FTS) {
-				lag = route.end2.getES() - (route.end1.getEF() + rela.interval);
-			} else if (rela.type == Relation.STS) {
-				lag = route.end2.getES() - (route.end1.getES() + rela.interval);
-			} else if (rela.type == Relation.FTF) {
-				lag = route.end2.getEF() - (route.end1.getEF() + rela.interval);
-			} else if (rela.type == Relation.STF) {
-				lag = route.end2.getEF() - (route.end1.getES() + rela.interval);
+				lag = es2 - (ef1 + rela.interval);
+			} else {
+				if (rela.type == Relation.STS) {
+					lag = es2 - (es1 + rela.interval);
+				} else {
+					if (rela.type == Relation.FTF) {
+						lag = ef2 - (ef1 + rela.interval);
+					} else if (rela.type == Relation.STF) {
+						lag = ef2 - (es1 + rela.interval);
+					}
+				}
 			}
 			route.updateLAG(lag);
 		});

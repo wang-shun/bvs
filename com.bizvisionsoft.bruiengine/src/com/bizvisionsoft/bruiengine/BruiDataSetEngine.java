@@ -288,7 +288,13 @@ public class BruiDataSetEngine extends BruiEngine {
 				BasicDBObject filterAndUpdate = new FilterAndUpdate().filter(new BasicDBObject("_id", _id)).set(data)
 						.bson();
 				method.setAccessible(true);
-				method.invoke(getTarget(), filterAndUpdate);
+				if (method.getParameterCount() == 1) {// 兼容简写模式，无注解
+					method.invoke(getTarget(), filterAndUpdate);
+				} else {
+					String[] names = { MethodParam._ID, MethodParam.OBJECT, MethodParam.FILTER_N_UPDATE };
+					Object[] values = { Util.getBson(element).get("_id"), element, filterAndUpdate };
+					invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
+				}
 			} catch (IllegalAccessException | IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {

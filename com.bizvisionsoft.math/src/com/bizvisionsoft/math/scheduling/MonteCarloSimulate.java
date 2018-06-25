@@ -104,13 +104,15 @@ public class MonteCarloSimulate {
 		});
 
 		// 构造网络图
-		NetworkDiagram nd = new NetworkDiagram(iTasks, iRoute);
-		nd.schedule();
+//		NetworkDiagram nd = new NetworkDiagram(iTasks, iRoute);
+//		nd.schedule();
+		Graphic gh = new Graphic(iTasks, iRoute);
+		gh.schedule();
 
 		// 写入Task的工期数据
-		result.T = nd.T;
+		result.T = gh.getT();
 		// 写入每个Task
-		result.tasks = nd.tasks;
+		result.tasks = gh.getTasks();
 		result.risks = effRisks;
 		return result;
 	}

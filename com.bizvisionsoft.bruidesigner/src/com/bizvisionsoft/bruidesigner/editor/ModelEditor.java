@@ -170,12 +170,13 @@ public abstract class ModelEditor extends EditorPart {
 			boolean editable) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
-		layoutLabel(label);
+		GridData layoutData = new GridData(SWT.RIGHT, SWT.TOP, false, false,1,2);
+		layoutData.verticalIndent = 6;
+		label.setLayoutData(layoutData);
 
 		int style = SWT.READ_ONLY | SWT.MULTI;
-		Text text = new Text(parent, style);
-		GridData layoutData;
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		final Text text = new Text(parent, style);
+		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 2);
 		if ((style & SWT.MULTI) != 0) {
 			layoutData.heightHint = 60;
 		}
@@ -211,7 +212,7 @@ public abstract class ModelEditor extends EditorPart {
 		});
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("选择组件..");
+		button.setText("选择");
 		button.addListener(SWT.Selection, event -> {
 			AssemblySelectionDialog dialog = new AssemblySelectionDialog(parent.getShell(), false);
 			if (AssemblySelectionDialog.OK == dialog.open()) {
@@ -220,6 +221,15 @@ public abstract class ModelEditor extends EditorPart {
 					modelValue.setValue(((Assembly) result[0]).getId());
 				}
 			}
+		});
+		button.setEnabled(editable);
+		
+		
+		button = new Button(parent, SWT.PUSH);
+		button.setText("清除");
+		button.addListener(SWT.Selection, event -> {
+			modelValue.setValue(null);
+			text.setText("");
 		});
 		button.setEnabled(editable);
 

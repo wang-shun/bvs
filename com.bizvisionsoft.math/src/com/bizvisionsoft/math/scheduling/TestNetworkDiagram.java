@@ -9,7 +9,7 @@ public class TestNetworkDiagram {
 
 	public static void main(String[] args) {
 		// 1. 首先要分析输入的task包括几张图。
-		test4();
+		test3();
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class TestNetworkDiagram {
 
 	public static void test3() {
 		// 任务
-		Task start = Task.startTask();
+//		Task start = Task.startTask();
 		Task a = new Task("a", 5);
 		Task b = new Task("b", 8);
 		Task c = new Task("c", 17);
@@ -141,10 +141,10 @@ public class TestNetworkDiagram {
 		Task e = new Task("e", 15);
 		Task f = new Task("f", 25);
 		Task g = new Task("g", 10);
-		Task end = Task.endTask();
+//		Task end = Task.endTask();
 
 		// 任务搭接关系
-		Route start_a = new Route(start, a);
+//		Route start_a = new Route(start, a);
 		Route a_b = new Route(a, b, new Relation(Relation.STF, 6));
 		Route b_e = new Route(b, e, new Relation(Relation.FTF, 10));
 		Route e_g = new Route(e, g);
@@ -154,7 +154,7 @@ public class TestNetworkDiagram {
 		Route a_d = new Route(a, d);
 		Route b_d = new Route(b, d, new Relation(Relation.FTS, 3));
 		Route d_g = new Route(d, g, new Relation(Relation.STS, 3), new Relation(Relation.FTF, 2));
-		Route g_end = new Route(g, end);
+//		Route g_end = new Route(g, end);
 
 		// 风险
 		Risk r1 = new Risk("R1", .3f, new Consequence(b, 12), new Consequence(c, 13));
@@ -163,8 +163,8 @@ public class TestNetworkDiagram {
 		Risk r4 = new Risk("R4", .4f, new Consequence(e, 17));
 		r2.addSecondaryRisks(r3);// 添加次生风险
 
-		List<Task> tasks = Arrays.asList(start, a, d, e, b, c, f, g, end);
-		List<Route> routes = Arrays.asList(start_a, a_b, b_e, c_f, f_g, e_g, a_c, a_d, b_d, d_g, g_end);
+		List<Task> tasks = Arrays.asList( a, d, e, b, c, f, g);
+		List<Route> routes = Arrays.asList( a_b, b_e, c_f, f_g, e_g, a_c, a_d, b_d, d_g);
 		List<Risk> risks = Arrays.asList(r1, r2, r4);
 		MonteCarloSimulate mcs = new MonteCarloSimulate(tasks, routes, risks);
 		/////////////////////////////////////////////////// 调节模拟次数获得精确结果

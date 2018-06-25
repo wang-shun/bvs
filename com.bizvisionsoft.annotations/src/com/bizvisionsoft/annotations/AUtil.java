@@ -14,6 +14,7 @@ import java.util.function.Function;
 import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
+import com.bizvisionsoft.annotations.md.service.ReadEditorConfig;
 import com.bizvisionsoft.annotations.md.service.ReadOptions;
 import com.bizvisionsoft.annotations.md.service.ReadValidation;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -451,22 +452,34 @@ public class AUtil {
 
 	public static boolean readBehavior(Object element, String cName, String fName, Object[] parameterValues,
 			String[] paramemterNames) {
-		Field f = getContainerField(element.getClass(), Behavior.class, cName, fName, a -> a.value()).orElse(null);
+		return Boolean.TRUE.equals(
+				readValue(element, cName, fName, parameterValues, paramemterNames, Behavior.class, a -> a.value()));
+	}
+
+	public static Object readEditorConfig(Object element, String cName, String fName, Object[] parameterValues,
+			String[] paramemterNames) {
+		return readValue(element, cName, fName, parameterValues, paramemterNames,
+				ReadEditorConfig.class, a -> a.value());
+	}
+
+	public static <T extends Annotation> Object readValue(Object element, String cName, String fName,
+			Object[] parameterValues, String[] paramemterNames, Class<T> aclass,
+			Function<T, String[]> howToGetNameFromAnnotation) {
+		Field f = getContainerField(element.getClass(), aclass, cName, fName, howToGetNameFromAnnotation).orElse(null);
 		if (f != null) {
 			f.setAccessible(true);
 			try {
-				return Boolean.TRUE.equals(f.get(element));
+				return f.get(element);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 			}
 		} else {
-			Method m = AUtil.getContainerMethod(element.getClass(), Behavior.class, cName, fName, a -> a.value())
+			Method m = AUtil.getContainerMethod(element.getClass(), aclass, cName, fName, howToGetNameFromAnnotation)
 					.orElse(null);
 			if (m != null) {
-				Object value = invokeMethodInjectParams(element, m, parameterValues, paramemterNames,
-						MethodParam.class, f1 -> f1.value());
-				return Boolean.TRUE.equals(value);
+				return invokeMethodInjectParams(element, m, parameterValues, paramemterNames, MethodParam.class,
+						f1 -> f1.value());
 			}
 		}
-		return false;
+		return null;
 	}
 }

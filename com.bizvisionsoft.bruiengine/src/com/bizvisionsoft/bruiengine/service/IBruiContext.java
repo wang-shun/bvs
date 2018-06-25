@@ -60,5 +60,7 @@ public interface IBruiContext extends IServiceWithId {
 	
 	<T> T getRootInput(Class<T> checkClass, boolean nullAble);
 
+	Object[] getContextParameters(String[] paramemterNames);
+
 
 }

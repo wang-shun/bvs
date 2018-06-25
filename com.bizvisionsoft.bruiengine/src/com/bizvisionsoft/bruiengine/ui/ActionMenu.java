@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.rap.rwt.RWT;
@@ -22,7 +21,6 @@ import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -30,7 +28,6 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.util.Util;
-import com.bizvisionsoft.service.model.User;
 
 public class ActionMenu extends Part {
 
@@ -99,17 +96,10 @@ public class ActionMenu extends Part {
 			Action action = actions.get(i);
 			if (action.isObjectBehavier() && input != null && assembly != null) {
 
-				String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT,
-						MethodParam.CONTEXT_INPUT_OBJECT_ID, MethodParam.ROOT_CONTEXT_INPUT_OBJECT,
-						MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID, MethodParam.CURRENT_USER,
-						MethodParam.CURRENT_USER_ID };
-				Object contextInput = context.getInput();
-				Object rootInput = context.getRootInput();
-				User user = Brui.sessionManager.getUser();
-				Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
-				Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
-				Object[] parameterValues = new Object[] { contextInput, inputid, rootInput, rootInputId, user,
-						user.getUserId() };
+				String[] paramemterNames = { MethodParam.CONTEXT_INPUT_OBJECT, MethodParam.CONTEXT_INPUT_OBJECT_ID,
+						MethodParam.ROOT_CONTEXT_INPUT_OBJECT, MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID,
+						MethodParam.CURRENT_USER, MethodParam.CURRENT_USER_ID };
+				Object[] parameterValues = context.getContextParameters(paramemterNames);
 
 				if (AUtil.readBehavior(input, assembly.getName(), action.getName(), parameterValues, paramemterNames)) {
 					result.add(action);
