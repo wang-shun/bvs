@@ -55,6 +55,7 @@ public class MonteCarloSimulate {
 			float x2 = 0;
 			float xy = 0;
 			for (int j = 0; j < result.length; j++) {
+				Collections.sort(result[j].tasks);
 				Task rTask = result[j].tasks.get(i);
 				if (rTask.getTF() == 0) {// 在关键路径上
 					count++;
@@ -117,7 +118,10 @@ public class MonteCarloSimulate {
 		// 写入Task的工期数据
 		result.T = gh.getT();
 		// 写入每个Task
-		result.tasks = gh.getTasks();
+		result.tasks = new ArrayList<>();
+		gh.getTasks().forEach(t -> {
+			result.tasks.add(t);
+		});
 		result.risks = effRisks;
 		return result;
 	}
@@ -141,14 +145,14 @@ public class MonteCarloSimulate {
 				risk.consequences.forEach(c -> {
 					if (c.task.getSubTasks().isEmpty()) {
 						float d = c.task.getD() + c.value;
-						Task task = new Task(c.task.getId(), d<0?0:d).setName(c.task.getName());
+						Task task = new Task(c.task.getId(), d < 0 ? 0 : d).setName(c.task.getName());
 						int idx = iTasks.indexOf(task);
 						if (idx < 0) {
 							iTasks.add(task);
 						} else {
 							task = iTasks.get(idx);
 							d = task.getD() + c.value;
-							task.setD(d<0?0:d);
+							task.setD(d < 0 ? 0 : d);
 						}
 					}
 				});

@@ -210,7 +210,7 @@ public class Graphic {
 			
 			task.setTF(task.getLS()-task.getES());
 			
-			task.setFF(task.getLS()-task.getEF());
+			task.setFF(0f);//总成工作无需计算FF
 			
 		}
 
