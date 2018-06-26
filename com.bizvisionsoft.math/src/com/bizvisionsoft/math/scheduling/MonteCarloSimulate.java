@@ -18,9 +18,11 @@ public class MonteCarloSimulate {
 
 	private SimulationResult[] result;
 
-	public Map<Float,Integer> TMap;
+	public Map<Float, Integer> TMap;
 
-	public float noRiskT; 
+	public float noRiskT;
+
+
 	/**
 	 * 蒙特卡罗 模拟，获得项目工期的概率分布; 获得各项工作的TCP指标; 获得各项工作的TCI指标 获得各项风险的RCI指标
 	 * 
@@ -34,11 +36,11 @@ public class MonteCarloSimulate {
 	}
 
 	public void simulate(int times) {
-		TMap = new HashMap<Float,Integer>();
+		TMap = new HashMap<Float, Integer>();
 		result = new SimulationResult[times];
 		for (int i = 0; i < times; i++) {
-			result[i] = simulate(protentialRisks,true);
-			TMap.put(result[i].T, Optional.ofNullable(TMap.get(result[i].T)).orElse(0)+1);
+			result[i] = simulate(protentialRisks, true);
+			TMap.put(result[i].T, Optional.ofNullable(TMap.get(result[i].T)).orElse(0) + 1);//增加命中次数
 		}
 
 		// 计算ACP
@@ -76,9 +78,9 @@ public class MonteCarloSimulate {
 		}
 
 		// 计算RCI，计算每个风险与项目的相关性
-		noRiskT = simulate(new ArrayList<Risk>(),false).T;
+		noRiskT = simulate(new ArrayList<Risk>(), false).T;
 		protentialRisks.forEach(r -> {
-			r.T = simulate(Arrays.asList(r),false).T - noRiskT;
+			r.T = simulate(Arrays.asList(r), false).T - noRiskT;
 			r.RCI = r.T / noRiskT;
 		});
 
@@ -90,10 +92,11 @@ public class MonteCarloSimulate {
 		List<Task> iTasks = new ArrayList<Task>();
 
 		// 风险影响的工作
-		ArrayList<Risk> effRisks = riskImpact(iTasks, protentialRisks,useRamdon);
+		ArrayList<Risk> effRisks = riskImpact(iTasks, protentialRisks, useRamdon);
 
 		// 不受风险影响的工作
-		tasks.stream().filter(t -> !iTasks.contains(t)).forEach(task -> iTasks.add(new Task(task.getId(), task.getD())));
+		tasks.stream().filter(t -> !iTasks.contains(t))
+				.forEach(task -> iTasks.add(new Task(task.getId(), task.getD())));
 
 		// 创建路径
 		ArrayList<Route> iRoute = new ArrayList<Route>();
@@ -104,8 +107,8 @@ public class MonteCarloSimulate {
 		});
 
 		// 构造网络图
-//		NetworkDiagram nd = new NetworkDiagram(iTasks, iRoute);
-//		nd.schedule();
+		// NetworkDiagram nd = new NetworkDiagram(iTasks, iRoute);
+		// nd.schedule();
 		Graphic gh = new Graphic(iTasks, iRoute);
 		gh.schedule();
 
@@ -117,25 +120,28 @@ public class MonteCarloSimulate {
 		return result;
 	}
 
-	private ArrayList<Risk> riskImpact(List<Task> iTasks, List<Risk> risks,boolean useRandom) {
+	private ArrayList<Risk> riskImpact(List<Task> iTasks, List<Risk> risks, boolean useRandom) {
 		ArrayList<Risk> effRisks = new ArrayList<Risk>();
 		risks.forEach(risk -> {
-			if (!useRandom||risk.probability >= Math.random()) { // 满足发生概率
+			if (!useRandom || risk.probability >= Math.random()) { // 满足发生概率
 				effRisks.add(risk);
 				risk.consequences.forEach(c -> {
-					Task task = new Task(c.task.getId(), c.task.getD() + c.value);
-					int idx = iTasks.indexOf(task);
-					if (idx < 0) {
-						iTasks.add(task);
-					} else {
-						task = iTasks.get(idx);
-						task.setD(task.getD() + c.value);
+					if (c.task.getD() != null) {
+						Task task = new Task(c.task.getId(), c.task.getD() + c.value);
+						int idx = iTasks.indexOf(task);
+						if (idx < 0) {
+							iTasks.add(task);
+						} else {
+							task = iTasks.get(idx);
+							task.setD(task.getD() + c.value);
+						}
 					}
 				});
-				effRisks.addAll(riskImpact(iTasks, risk.secondary,useRandom));// 考虑次生风险
+				effRisks.addAll(riskImpact(iTasks, risk.secondary, useRandom));// 考虑次生风险
 			}
 		});
 		return effRisks;
 	}
+	
 
 }

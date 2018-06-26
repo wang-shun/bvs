@@ -238,7 +238,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				a -> a.value());
 	}
 
-	public List<?> getGanntInputLink(BasicDBObject linkFilter, IBruiContext context) {
+	public Object getGanntInputLink(BasicDBObject linkFilter, IBruiContext context) {
 		try {
 			return query(linkFilter, context, "links");
 		} catch (Exception e) {
@@ -246,11 +246,11 @@ public class BruiDataSetEngine extends BruiEngine {
 		return null;
 	}
 
-	public List<?> getGanntInputData(BasicDBObject workFilter, IBruiContext context) {
+	public Object getGanntInputData(BasicDBObject workFilter, IBruiContext context) {
 		return query(workFilter, context, "data");
 	}
 
-	public List<?> query(BasicDBObject filter, IBruiContext context, String fName) {
+	public Object query(BasicDBObject filter, IBruiContext context, String fName) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), fName, a -> a.value())
 				.orElse(null);
 		if (method != null) {
@@ -267,7 +267,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			injectUserParameters(names, values);
 
-			return (List<?>) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
+			return  invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
 					MethodParam.class, t -> t.value());
 
 		}

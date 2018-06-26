@@ -163,8 +163,8 @@ public class GanttPart implements IPostSelectionProvider {
 
 		// 查询数据
 		try {
-			tasks = dataSetEngine.getGanntInputData(new BasicDBObject(), context);
-			links = dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
+			tasks = (List<?>)dataSetEngine.getGanntInputData(new BasicDBObject(), context);
+			links = (List<?>)dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
 			// 设置为gantt输入
 			gantt.setInputData(tasks, links);
 		} catch (Exception e) {

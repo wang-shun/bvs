@@ -58,4 +58,8 @@ public class Risk {
 		secondary.addAll(Arrays.asList(risks));
 	}
 
+	public String getId() {
+		return id;
+	}
+
 }

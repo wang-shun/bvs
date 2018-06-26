@@ -32,6 +32,8 @@ public class Assembly extends ModelObject {
 			text += " - 操作面板";
 		} else if (TYPE_MESSENGER.equals(type)) {
 			text += " - 消息收件箱";
+		} else if (TYPE_CHART.equals(type)) {
+			text += " - 图表";
 		}
 		return text;
 	}
@@ -61,6 +63,9 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_ACTION_PANEL = "actionpanel";
 	
 	public static final String TYPE_MESSENGER = "messenger";
+	
+	public static final String TYPE_CHART = "chart";
+
 
 
 	private String id;
