@@ -22,7 +22,6 @@ public class MonteCarloSimulate {
 
 	public float noRiskT;
 
-
 	/**
 	 * 蒙特卡罗 模拟，获得项目工期的概率分布; 获得各项工作的TCP指标; 获得各项工作的TCI指标 获得各项风险的RCI指标
 	 * 
@@ -40,7 +39,7 @@ public class MonteCarloSimulate {
 		result = new SimulationResult[times];
 		for (int i = 0; i < times; i++) {
 			result[i] = simulate(protentialRisks, true);
-			TMap.put(result[i].T, Optional.ofNullable(TMap.get(result[i].T)).orElse(0) + 1);//增加命中次数
+			TMap.put(result[i].T, Optional.ofNullable(TMap.get(result[i].T)).orElse(0) + 1);// 增加命中次数
 		}
 
 		// 计算ACP
@@ -96,7 +95,10 @@ public class MonteCarloSimulate {
 
 		// 不受风险影响的工作
 		tasks.stream().filter(t -> !iTasks.contains(t))
-				.forEach(task -> iTasks.add(new Task(task.getId(), task.getD())));
+				.forEach(task -> iTasks.add(new Task(task.getId(), task.getD()).setName(task.getName())));
+
+		// 处理下级节点
+		dealSubTasks(iTasks);
 
 		// 创建路径
 		ArrayList<Route> iRoute = new ArrayList<Route>();
@@ -120,20 +122,33 @@ public class MonteCarloSimulate {
 		return result;
 	}
 
+	private void dealSubTasks(List<Task> iTasks) {
+		tasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sumTask -> {
+			Task iTask = getNewTask(iTasks, sumTask);
+			sumTask.getSubTasks().forEach(s -> iTask.addSubTask(getNewTask(iTasks, s)));
+		});
+	}
+
+	private Task getNewTask(List<Task> iTasks, Task sumTask) {
+		return iTasks.stream().filter(it -> sumTask.getId().equals(it.getId())).findFirst().get();
+	}
+
 	private ArrayList<Risk> riskImpact(List<Task> iTasks, List<Risk> risks, boolean useRandom) {
 		ArrayList<Risk> effRisks = new ArrayList<Risk>();
 		risks.forEach(risk -> {
 			if (!useRandom || risk.probability >= Math.random()) { // 满足发生概率
 				effRisks.add(risk);
 				risk.consequences.forEach(c -> {
-					if (c.task.getD() != null) {
-						Task task = new Task(c.task.getId(), c.task.getD() + c.value);
+					if (c.task.getSubTasks().isEmpty()) {
+						float d = c.task.getD() + c.value;
+						Task task = new Task(c.task.getId(), d<0?0:d).setName(c.task.getName());
 						int idx = iTasks.indexOf(task);
 						if (idx < 0) {
 							iTasks.add(task);
 						} else {
 							task = iTasks.get(idx);
-							task.setD(task.getD() + c.value);
+							d = task.getD() + c.value;
+							task.setD(d<0?0:d);
 						}
 					}
 				});
@@ -142,6 +157,5 @@ public class MonteCarloSimulate {
 		});
 		return effRisks;
 	}
-	
 
 }

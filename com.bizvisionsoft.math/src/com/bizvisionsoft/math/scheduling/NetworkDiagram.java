@@ -22,7 +22,6 @@ public class NetworkDiagram {
 	public float T = 0;
 
 	public NetworkDiagram(List<Task> tasks, List<Route> routes) {
-
 		this.tasks = new ArrayList<Task>();
 		this.tasks.addAll(tasks);
 
@@ -157,18 +156,14 @@ public class NetworkDiagram {
 					calculateEarlestStart(route.end1);
 				}
 				float es = 0;
-				try {
-					if (rela.type == Relation.FTS) {
-						es = route.end1.getEF() + rela.interval;
-					} else if (rela.type == Relation.FTF) {
-						es = route.end1.getEF() + rela.interval - task.getD();
-					} else if (rela.type == Relation.STF) {
-						es = route.end1.getES() + rela.interval - task.getD();
-					} else if (rela.type == Relation.STS) {
-						es = route.end1.getES() + rela.interval;
-					}
-				} catch (Exception e) {
-					System.out.println(route.end1);
+				if (rela.type == Relation.FTS) {
+					es = route.end1.getEF() + rela.interval;
+				} else if (rela.type == Relation.FTF) {
+					es = route.end1.getEF() + rela.interval - task.getD();
+				} else if (rela.type == Relation.STF) {
+					es = route.end1.getES() + rela.interval - task.getD();
+				} else if (rela.type == Relation.STS) {
+					es = route.end1.getES() + rela.interval;
 				}
 				if (es < 0) {
 					es = 0;

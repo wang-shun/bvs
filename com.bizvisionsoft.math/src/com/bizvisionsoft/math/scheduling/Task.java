@@ -13,8 +13,9 @@ public class Task implements Comparable<Task> {
 	
 	private String name;
 	
-	public void setName(String name) {
+	public Task setName(String name) {
 		this.name = name;
+		return this;
 	}
 	
 	public String getName() {

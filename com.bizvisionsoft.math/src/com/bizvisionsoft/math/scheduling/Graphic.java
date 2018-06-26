@@ -42,22 +42,25 @@ public class Graphic {
 		final List<Task> tasks = new ArrayList<>(inputTasks);
 		final Set<Task> removedIn = new HashSet<Task>();
 		final Set<Task> removedOut = new HashSet<Task>();
+
+		
 		// 路由降级
 		inputTasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sum -> {
 			// 获得连入sumTaskd的连接
 			inputRoutes.stream().filter(r -> sum.equals(r.end2)).forEach(in -> {
 				linkToLeafTask(sum, in, routes);
-				routes.remove(in);
 				removedIn.add(in.end2);
 			});
 			// 获得连出sumTaskd的连接
 			inputRoutes.stream().filter(r -> sum.equals(r.end1)).forEach(out -> {
 				linkFromLeafTask(sum, out, routes);
-				routes.remove(out);
 				removedOut.add(out.end1);
 			});
 		});
-
+		
+		//去掉含总成的连接
+		routes.removeIf(r->!r.end1.getSubTasks().isEmpty()||!r.end2.getSubTasks().isEmpty());
+		
 		List<NetworkDiagram> result = new ArrayList<NetworkDiagram>();
 		// 处理子图
 		for (int i = 0; i < routes.size(); i++) {
@@ -132,6 +135,7 @@ public class Graphic {
 				linkFromLeafTask(t, out, routes);
 			}
 		});
+
 	}
 
 	private void addRoute(List<Route> routes, Route route) {
@@ -169,7 +173,7 @@ public class Graphic {
 
 	public void schedule() {
 		// 只对叶子排程
-		nets.stream().filter(nd -> nd.tasks.stream().allMatch(t -> t.getD() != -1))
+		nets.stream().filter(nd -> nd.tasks.stream().allMatch(t -> t.getSubTasks().isEmpty()))
 				.forEach(pureNd -> pureNd.schedule());
 
 		// 计算总成工期
@@ -203,7 +207,11 @@ public class Graphic {
 			if (task.getLF() == null || task.getLF() < sub.getLF()) {
 				task.setLF(sub.getLF());
 			}
-
+			
+			task.setTF(task.getLS()-task.getES());
+			
+			task.setFF(task.getLS()-task.getEF());
+			
 		}
 
 		task.setD(task.getLF() - task.getLS());
