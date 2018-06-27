@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruidesigner.editor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -101,7 +102,7 @@ public class LayoutEditPane extends Composite {
 		left.setLayout(new GridLayout());
 
 		Composite toolbar = new Composite(left, SWT.NONE);
-		toolbar.setLayout(new GridLayout(3, false));
+		toolbar.setLayout(new GridLayout(5, false));
 
 		Button addlayout = new Button(toolbar, SWT.PUSH);
 		addlayout.setText("Ìí¼Ó²¼¾Ö");
@@ -127,6 +128,38 @@ public class LayoutEditPane extends Composite {
 			}
 		});
 
+		
+		Button moveUp = new Button(toolbar, SWT.PUSH);
+		moveUp.setImage(Activator.getImageDescriptor("icons/up.png").createImage());
+		moveUp.addListener(SWT.Selection, e -> {
+			if (!(current instanceof AssemblyLayouted))
+				return;
+			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted)current);
+			int idx = acts.indexOf(current);
+			if (idx == 0) {
+				return;
+			}
+			acts.remove(idx);
+			acts.add(idx - 1, (AssemblyLayouted)current);
+
+			viewer.refresh();
+		});
+		
+		Button moveDown = new Button(toolbar, SWT.PUSH);
+		moveDown.setImage(Activator.getImageDescriptor("icons/down.png").createImage());
+		moveDown.addListener(SWT.Selection, e -> {
+			if (!(current instanceof AssemblyLayouted))
+				return;
+			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted)current);
+			int idx = acts.indexOf(current);
+			if (idx == acts.size() - 1) {
+				return;
+			}
+			acts.remove(idx);
+			acts.add(idx + 1,(AssemblyLayouted) current);
+			viewer.refresh();
+		});
+		
 		Button remove = new Button(toolbar, SWT.PUSH);
 		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
 		remove.addListener(SWT.Selection, e -> {
@@ -140,6 +173,8 @@ public class LayoutEditPane extends Composite {
 				viewer.refresh(layout);
 			}
 		});
+		
+		
 
 		viewer = new TreeViewer(left, SWT.FULL_SELECTION | SWT.BORDER);
 		viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
@@ -156,6 +191,15 @@ public class LayoutEditPane extends Composite {
 			}
 		});
 		return left;
+	}
+
+	private List<AssemblyLayouted> getNeighborAssemblyLayouted(AssemblyLayouted al) {
+		return Optional.ofNullable(getParentLayout(al)).map(p -> p.getAssemblys()).orElse(new ArrayList<>());
+	}
+	
+	public Layout getParentLayout(AssemblyLayouted al) {
+		return Optional.ofNullable((TreeItem) viewer.testFindItem(al)).map(itm -> itm.getParentItem())
+				.map(pi -> (Layout) pi.getData()).orElse(null);
 	}
 
 	private void openAssemblyLayouted(AssemblyLayouted element, Composite parent) {
