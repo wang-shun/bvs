@@ -76,8 +76,7 @@ public class Route {
 
 	@Override
 	public String toString() {
-		return "Route [" + end1.getId() + "-->" + end2.getId() +", "+ relations + ", dashed=" + dashed + ", LAG="
-				+ LAG + "]";
+		return "Route [" + end1 + "-->" + end2 + "]";
 	}
 
 	public void updateLAG(float lag) {

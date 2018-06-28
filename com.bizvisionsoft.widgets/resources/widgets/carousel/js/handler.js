@@ -56,6 +56,10 @@
 				pages.forEach(function(elem) {
 					elem.style.width="100%";
 					elem.style.height="100%";
+					elem.style.removeProperty("opacity");
+					elem.style.removeProperty("position");
+					elem.style.removeProperty("left");
+					elem.style.removeProperty("top");
 					$(elem).appendTo(folder);
 				});
 

@@ -9,7 +9,10 @@ public class TestNetworkDiagram {
 
 	public static void main(String[] args) {
 		// 1. 首先要分析输入的task包括几张图。
-		test3();
+//		test3();
+		
+		
+		System.out.println();
 	}
 
 	/**
@@ -166,7 +169,7 @@ public class TestNetworkDiagram {
 		List<Task> tasks = Arrays.asList( a, d, e, b, c, f, g);
 		List<Route> routes = Arrays.asList( a_b, b_e, c_f, f_g, e_g, a_c, a_d, b_d, d_g);
 		List<Risk> risks = Arrays.asList(r1, r2, r4);
-		MonteCarloSimulate mcs = new MonteCarloSimulate(tasks, routes, risks);
+		MonteCarloSimulate mcs = new MonteCarloSimulate(tasks, routes, risks,null);
 		/////////////////////////////////////////////////// 调节模拟次数获得精确结果
 		int times = 100000;
 		////////////////////////////////////////////////////////////////////////////////
@@ -273,8 +276,9 @@ public class TestNetworkDiagram {
 		List<Risk> risks = Arrays.asList(r1, r2, r4);
 
 		// 开始模拟
-		MonteCarloSimulate mcs = new MonteCarloSimulate(tasks, routes, risks);
+		MonteCarloSimulate mcs = new MonteCarloSimulate(tasks, routes, risks,null);
 		mcs.simulate(1000);
 	}
+	
 
 }

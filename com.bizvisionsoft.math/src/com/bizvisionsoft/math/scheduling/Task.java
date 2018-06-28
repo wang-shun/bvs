@@ -127,8 +127,7 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + getId() + ", D=" + getD() + ", ES=" + getES() + ", EF=" + getEF() + ", LS=" + getLS()
-				+ ", LF=" + getLF() + ", TF=" + getTF() + ", FF=" + getFF() + "]";
+		return "Task [id=" + id + ", name=" + name + ", D=" + D + "]";
 	}
 
 	void updateES(float es) {

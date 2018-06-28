@@ -95,6 +95,7 @@ public class ChartPart implements IQueryEnable{
 
 	protected ECharts createControl(Composite parent) {
 		chart = new ECharts(parent, SWT.NONE);
+		chart.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		return chart;
 	}
 

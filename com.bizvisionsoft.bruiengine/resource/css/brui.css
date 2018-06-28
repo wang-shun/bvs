@@ -20,6 +20,14 @@
 	background: linear-gradient(15deg, #ffa726, #e65100) !important;
 }
 
+.brui_segmentLeft{
+    border-radius: 36px 0px 0px 36px !important;
+}
+
+.brui_segmentRight{
+    border-radius: 0px 36px 36px 0px !important;
+}
+
 .brui_borderTop {
 	border-top: 1px solid #d9d9d9 !important;
 }
@@ -40,6 +48,10 @@
 	text-align:center;
 	border-radius:5px;
 	padding: 2px 4px;
+}
+
+.brui_bg_lightgrey{
+	background: #f5f5f5;
 }
 
 .menu {

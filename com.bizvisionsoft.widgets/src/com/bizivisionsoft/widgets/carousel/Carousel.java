@@ -36,9 +36,9 @@ public class Carousel extends Composite {
 
 	private void initialize() {
 		renderSetting = new JsonObject();
-		setAnimation("default");
+		setAnimation("fade");
 		setAutoplay(true);
-		setInterval(3000);
+		setInterval(4000);
 		setArrow("hover");
 		setIndicator("inside");
 	}

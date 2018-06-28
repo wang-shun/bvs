@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class MonteCarloSimulate {
 
@@ -22,16 +23,20 @@ public class MonteCarloSimulate {
 
 	public float noRiskT;
 
+	private Consumer<Route> startRouteHandle;
+
 	/**
 	 * 蒙特卡罗 模拟，获得项目工期的概率分布; 获得各项工作的TCP指标; 获得各项工作的TCI指标 获得各项风险的RCI指标
 	 * 
 	 * @param times
 	 *            次数
 	 */
-	public MonteCarloSimulate(List<Task> tasks, List<Route> routes, List<Risk> protentialRisks) {
+	public MonteCarloSimulate(List<Task> tasks, List<Route> routes, List<Risk> protentialRisks,
+			Consumer<Route> startRouteHandle) {
 		this.tasks = tasks;
 		this.routes = routes;
 		this.protentialRisks = protentialRisks;
+		this.startRouteHandle = startRouteHandle;
 	}
 
 	public void simulate(int times) {
@@ -113,6 +118,10 @@ public class MonteCarloSimulate {
 		// NetworkDiagram nd = new NetworkDiagram(iTasks, iRoute);
 		// nd.schedule();
 		Graphic gh = new Graphic(iTasks, iRoute);
+
+		if (startRouteHandle != null)
+			gh.getStartRoute().forEach(startRouteHandle);
+
 		gh.schedule();
 
 		// 写入Task的工期数据

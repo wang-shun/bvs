@@ -77,6 +77,10 @@ public class Util {
 	public static String generateName(String text) {
 		return generateName(text, text);
 	}
+	
+	public static String getFormatText(Object object) {
+		return getFormatText(object,null,RWT.getLocale());
+	}
 
 	public static String getFormatText(Object value, String format, Locale locale) {
 		String text;

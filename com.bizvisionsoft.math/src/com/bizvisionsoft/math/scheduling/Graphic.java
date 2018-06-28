@@ -43,7 +43,6 @@ public class Graphic {
 		final Set<Task> removedIn = new HashSet<Task>();
 		final Set<Task> removedOut = new HashSet<Task>();
 
-		
 		// 路由降级
 		inputTasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sum -> {
 			// 获得连入sumTaskd的连接
@@ -51,8 +50,13 @@ public class Graphic {
 				linkToLeafTask(sum, in, routes);
 				removedIn.add(in.end2);
 			});
+		});
+		
+		ArrayList<Route> _temp = new ArrayList<>(routes);
+		
+		inputTasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sum -> {
 			// 获得连出sumTaskd的连接
-			inputRoutes.stream().filter(r -> sum.equals(r.end1)).forEach(out -> {
+			_temp.stream().filter(r -> sum.equals(r.end1)).forEach(out -> {
 				linkFromLeafTask(sum, out, routes);
 				removedOut.add(out.end1);
 			});
