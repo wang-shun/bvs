@@ -37,7 +37,7 @@
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
 				this.layout();
-				this.chart = echarts.init(this.element);
+				this.chart = echarts.init(this.element,"light");
 				this.chart.setOption(this.option,true);
 			}
 		},
