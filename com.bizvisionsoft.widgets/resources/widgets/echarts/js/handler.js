@@ -29,7 +29,15 @@
 	bizvision.echarts.prototype = {
 
 		setOption : function(option) {
-			this.option = option;
+			var s = JSON.stringify(option);
+
+			this.option = JSON.parse(s, function(k, v) {
+				if (v && v.indexOf && v.indexOf('function') > -1) {
+					return eval("(function(){return " + v + " })()")
+				}
+				return v;
+			});
+
 			this.onRender();
 		},
 
@@ -37,13 +45,13 @@
 			if (this.element.parentNode) {
 				rap.off("render", this.onRender);
 				this.layout();
-				this.chart = echarts.init(this.element,"light");
-				this.chart.setOption(this.option,true);
+				this.chart = echarts.init(this.element, "light");
+				this.chart.setOption(this.option, true);
 			}
 		},
 
 		destroy : function() {
-			if(this.chart && !this.chart.isDisposed()){
+			if (this.chart && !this.chart.isDisposed()) {
 				this.chart.dispose();
 			}
 			if (this.element && this.element.parentNode) {
@@ -56,7 +64,7 @@
 			this.element.style.width = area[2] + "px";
 			this.element.style.height = area[3] + "px";
 			if (this.chart) {
-				this.chart.resize(area[2],area[3]);
+				this.chart.resize(area[2], area[3]);
 			}
 		}
 

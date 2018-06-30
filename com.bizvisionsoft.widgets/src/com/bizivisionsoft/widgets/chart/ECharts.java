@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
+import com.google.gson.GsonBuilder;
 
 public class ECharts extends Composite {
 
@@ -54,6 +55,11 @@ public class ECharts extends Composite {
 //		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //		System.out.println(gson.toJson(gson.fromJson(this.option.toString(), HashMap.class)));
 		remoteObject.set("option", option);
+	}
+	
+	public void setInput(Object input) {
+		String json = new GsonBuilder().create().toJson(input);
+		option = JsonObject.readFrom(json);
 	}
 
 	@Override
