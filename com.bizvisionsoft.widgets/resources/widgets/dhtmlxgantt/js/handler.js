@@ -112,8 +112,8 @@
 		},
 
 		genericConfig : function(config) {
-			this.gantt.config.auto_scheduling = true;
-			this.gantt.config.auto_scheduling_strict = true;
+			this.gantt.config.auto_scheduling = false;
+			this.gantt.config.auto_scheduling_strict = false;
 			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
 
