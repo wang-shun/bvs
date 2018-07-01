@@ -116,7 +116,7 @@
 		genericConfig : function(config) {
 			this.gantt.config.auto_scheduling = true;
 			this.gantt.config.auto_scheduling_strict = true;
-			this.gantt.config.auto_scheduling_move_projects = true;
+			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
 
 			this.gantt.config.fit_tasks = true;
@@ -456,19 +456,19 @@
 
 			var ro = rap.getRemoteObject(this);
 
-			// gantt.attachEvent("onAfterTaskAdd", function(id, task) {
-			// gantt.batchUpdate(function() {
-			// checkParents(id);
-			// });
-			// });
-			//
-			// gantt.attachEvent("onAfterTaskDelete", function(id, task) {
-			// if (delTaskParent != gantt.config.root_id) {
-			// gantt.batchUpdate(function() {
-			// checkParents(delTaskParent);
-			// });
-			// }
-			// });
+			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
+				gantt.batchUpdate(function() {
+					checkParents(id);
+				});
+			});
+
+			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
+				if (delTaskParent != gantt.config.root_id) {
+					gantt.batchUpdate(function() {
+						checkParents(delTaskParent);
+					});
+				}
+			});
 
 			var checkProject = this.checkProject;
 			gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
@@ -480,36 +480,38 @@
 				}
 			});
 
-			// function checkParents(id) {
-			// setTaskType(id);
-			// var parent = gantt.getParent(id);
-			// if (parent != gantt.config.root_id) {
-			// checkParents(parent);
-			// }
-			// };
+			function checkParents(id) {
+				setTaskType(id);
+				var parent = gantt.getParent(id);
+				if (parent != gantt.config.root_id) {
+					checkParents(parent);
+				}
+			}
+			;
 
-			// function setTaskType(id) {
-			// id = id.id ? id.id : id;
-			// var task = gantt.getTask(id);
-			// if (gantt.hasChild(task.id)) {
-			// if (gantt.config.types.project != task.type) {
-			// task.type = gantt.config.types.project;
-			// gantt.updateTask(id);
-			// }
-			// } else {
-			// if (gantt.config.types.task != task.type
-			// && gantt.config.types.milestone != task.type) {
-			// task.type = gantt.config.types.task;
-			// gantt.updateTask(id);
-			// }
-			// }
-			// };
+			function setTaskType(id) {
+				id = id.id ? id.id : id;
+				var task = gantt.getTask(id);
+				if (gantt.hasChild(task.id)) {
+					if (gantt.config.types.project != task.type) {
+						task.type = gantt.config.types.project;
+						gantt.updateTask(id);
+					}
+				} else {
+					if (gantt.config.types.task != task.type
+							&& gantt.config.types.milestone != task.type) {
+						task.type = gantt.config.types.task;
+						gantt.updateTask(id);
+					}
+				}
+			}
+			;
 
-			// gantt.attachEvent("onParse", function() {
-			// gantt.eachTask(function(task) {
-			// setTaskType(task);
-			// });
-			// });
+			gantt.attachEvent("onParse", function() {
+				gantt.eachTask(function(task) {
+					setTaskType(task);
+				});
+			});
 
 			gantt.attachEvent("onBeforeTaskDelete",
 					function onBeforeTaskDelete(id, task) {
@@ -636,8 +638,7 @@
 		},
 
 		addTask : function(parameter) {
-			this.gantt.addTask(parameter.task, parameter.parentId,
-					parameter.index);
+			this.gantt.addTask(parameter.task, parameter.parentId);
 		},
 
 		addLink : function(link) {
@@ -646,8 +647,9 @@
 
 		save : function() {
 			var tasks = [];
+			var gantt = this.gantt;
 			this.gantt.eachTask(function(task) {
-				task.wbsCode = this.gantt.getWBSCode(task);
+				task.wbsCode = gantt.getWBSCode(task);
 				tasks.push(task);
 			})
 			var links = this.gantt.getLinks();

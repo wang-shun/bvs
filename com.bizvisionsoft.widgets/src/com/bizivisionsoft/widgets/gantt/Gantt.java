@@ -274,11 +274,14 @@ public class Gantt extends Composite {
 		event.data = jo;
 		JsonValue id = jo.get("id");
 		if ("save".equals(eventCode)) {
+			event.tasks = new ArrayList<Object>();
+			event.links = new ArrayList<Object>();
 			jo.get("tasks").asArray().forEach(jv->{
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findTask(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
+				event.tasks.add(obj);
 			});
 			
 			jo.get("links").asArray().forEach(jv->{
@@ -286,9 +289,12 @@ public class Gantt extends Composite {
 				String _id = _jo.get("id").asString();
 				Object obj = findLink(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
+				event.links.add(obj);
 			});
-			event.tasks = tasks;
-			event.links = links;
+			tasks.clear();
+			tasks.addAll(event.tasks);
+			links.clear();
+			links.addAll(event.links);
 		} else if (GanttEventCode.onGridHeaderMenuClick.name().equals(eventCode)) {
 
 		} else if (GanttEventCode.onTaskLinkBefore.name().equals(eventCode)) {
