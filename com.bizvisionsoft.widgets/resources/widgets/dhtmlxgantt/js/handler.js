@@ -1,23 +1,22 @@
 (function() {
 	'use strict';
 
-	rap.registerTypeHandler("bizvision.dhtmlxgantt",
-			{
+	rap.registerTypeHandler("bizvision.dhtmlxgantt", {
 
-				factory : function(properties) {
-					return new bizvision.dhtmlxgantt(properties);
-				},
+		factory : function(properties) {
+			return new bizvision.dhtmlxgantt(properties);
+		},
 
-				destructor : "destroy",
+		destructor : "destroy",
 
-				properties : [ "config", "initFrom", "initTo", "inputData" ],
+		properties : [ "config", "initFrom", "initTo", "inputData" ],
 
-				methods : [ "addListener", "removeListener", "addTask",
-						"addLink", "updateTask", "updateLink", "deleteTask",
-						"deleteLink", "autoSchedule", "highlightCriticalPath",
-						"setScaleType", "save" ]
+		methods : [ "addListener", "removeListener", "addTask", "addLink",
+				"updateTask", "updateLink", "deleteTask", "deleteLink",
+				"autoSchedule", "highlightCriticalPath", "setScaleType",
+				"save", "setDirty" ]
 
-			});
+	});
 
 	if (!window.bizvision) {
 		window.bizvision = {};
@@ -45,6 +44,8 @@
 	};
 
 	bizvision.dhtmlxgantt.prototype = {
+
+		dirty : false,
 
 		onRender : function() {
 			if (this.element.parentNode) {
@@ -110,6 +111,7 @@
 				// this.initTo);
 				this.gantt.parse(this.inputData);
 
+				// rap.on( "send", this.onSend );
 			}
 		},
 
@@ -454,12 +456,19 @@
 
 			var gantt = this.gantt;
 
+			var pt = this;
+
 			var ro = rap.getRemoteObject(this);
 
 			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
 				gantt.batchUpdate(function() {
 					checkParents(id);
 				});
+				changeDirty(true);
+			});
+
+			gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
+				changeDirty(true);
 			});
 
 			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
@@ -468,6 +477,7 @@
 						checkParents(delTaskParent);
 					});
 				}
+				changeDirty(true);
 			});
 
 			var checkProject = this.checkProject;
@@ -476,9 +486,20 @@
 					ro.call("onTaskLinkBefore", link);
 					return false;
 				} else {
+					changeDirty(true);
 					return true;
 				}
 			});
+
+			function changeDirty(dirty) {
+				if (dirty != pt.dirty) {
+					pt.dirty = dirty;
+					ro.call("dirtyChanged", {
+						"dirty" : pt.dirty
+					});
+				}
+			}
+			;
 
 			function checkParents(id) {
 				setTaskType(id);
@@ -550,11 +571,12 @@
 		},
 
 		onSend : function() {
+			rap.getRemoteObject(this).set("dirty", this.dirty);
 		},
 
 		destroy : function() {
 			if (this.element.parentNode) {
-				rap.off("send", this.onSend);
+				// rap.off("send", this.onSend);
 				this.gantt.destructor();
 				this.element.parentNode.removeChild(this.element);
 			}
@@ -687,6 +709,10 @@
 
 		deleteLink : function(param) {
 			this.gantt.deleteLink(param.id);
+		},
+
+		setDirty : function(param) {
+			this.dirty = param.dirty;
 		},
 
 		autoSchedule : function() {

@@ -53,7 +53,6 @@ public class Gantt extends Composite {
 
 		@Override
 		public void handleCall(String eventCode, JsonObject jo) {
-
 			Display.getCurrent().asyncExec(() -> {
 				Event event = createEvent(eventCode, jo);
 				if (event.doit)
@@ -68,6 +67,8 @@ public class Gantt extends Composite {
 	List<Object> tasks;
 
 	List<Object> links;
+
+	private boolean dirty;
 
 	private String containerName;
 
@@ -270,21 +271,27 @@ public class Gantt extends Composite {
 
 	private Event createEvent(String eventCode, JsonObject jo) {
 		GanttEvent event = new GanttEvent();
+		event.gantt = this;
 		event.text = eventCode;
 		event.data = jo;
 		JsonValue id = jo.get("id");
-		if ("save".equals(eventCode)) {
+		if ("dirtyChanged".equals(eventCode)) {
+			JsonValue jv = jo.get("dirty");
+			if(jv.isBoolean()) {
+				this.dirty = jv.asBoolean();
+			}
+		} else if ("save".equals(eventCode)) {
 			event.tasks = new ArrayList<Object>();
 			event.links = new ArrayList<Object>();
-			jo.get("tasks").asArray().forEach(jv->{
+			jo.get("tasks").asArray().forEach(jv -> {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findTask(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
 				event.tasks.add(obj);
 			});
-			
-			jo.get("links").asArray().forEach(jv->{
+
+			jo.get("links").asArray().forEach(jv -> {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findLink(_id);
@@ -501,6 +508,15 @@ public class Gantt extends Composite {
 
 	public void setScaleType(String type) {
 		remoteObject.call("setScaleType", new JsonObject().add("type", type));
+	}
+
+	public void setDirty(boolean dirty) {
+		remoteObject.call("setDirty", new JsonObject().add("dirty", dirty));
+		this.dirty = dirty;
+	}
+
+	public boolean isDirty() {
+		return dirty;
 	}
 
 }

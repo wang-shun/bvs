@@ -42,5 +42,7 @@ public class GanttEvent extends Event {
 	public List<Object> tasks;
 
 	public List<Object> links;
+
+	public Gantt gantt;
 	
 }
