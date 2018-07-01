@@ -320,5 +320,9 @@ public class GanttPart implements IPostSelectionProvider {
 			});
 		}
 	}
+	
+	public boolean isDirty() {
+		return gantt.isDirty();
+	}
 
 }
