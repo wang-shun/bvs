@@ -1,23 +1,21 @@
 (function() {
 	'use strict';
 
-	rap.registerTypeHandler("bizvision.dhtmlxgantt",
-			{
+	rap.registerTypeHandler("bizvision.dhtmlxgantt", {
 
-				factory : function(properties) {
-					return new bizvision.dhtmlxgantt(properties);
-				},
+		factory : function(properties) {
+			return new bizvision.dhtmlxgantt(properties);
+		},
 
-				destructor : "destroy",
+		destructor : "destroy",
 
-				properties : [ "config", "initFrom", "initTo", "inputData" ],
+		properties : [ "config", "initFrom", "initTo", "inputData" ],
 
-				methods : [ "addListener", "removeListener", "addTask",
-						"addLink", "updateTask", "updateLink", "deleteTask",
-						"deleteLink", "autoSchedule", "highlightCriticalPath",
-						"setScaleType", "save" ]
+		methods : [ "addListener", "removeListener", "addTask", "addLink",
+				"updateTask", "updateLink", "deleteTask", "deleteLink",
+				"autoSchedule", "highlightCriticalPath", "setScaleType" ]
 
-			});
+	});
 
 	if (!window.bizvision) {
 		window.bizvision = {};
@@ -114,9 +112,9 @@
 		},
 
 		genericConfig : function(config) {
-			this.gantt.config.auto_scheduling = true;
-			this.gantt.config.auto_scheduling_strict = true;
-			this.gantt.config.auto_scheduling_move_projects = true;
+			this.gantt.config.auto_scheduling = false;
+			this.gantt.config.auto_scheduling_strict = false;
+			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
 
 			this.gantt.config.fit_tasks = true;
@@ -151,10 +149,6 @@
 				this.gantt.config.drag_progress = true;
 				this.gantt.config.drag_resize = true;
 			}
-
-			this.gantt.config.show_progress = false;
-			this.gantt.config.smart_rendering = true;
-			this.gantt.config.static_background = true;
 		},
 
 		configGridMenu : function(config) {
@@ -362,11 +356,9 @@
 								.abs((end.getTime() - task.end_date1.getTime())
 										/ (24 * 60 * 60 * 1000)));
 						if (end.getTime() > task.end_date1.getTime()) {
-							text += "<span class='layui-badge' style='margin-left:8px;'>+"
-									+ overdue + "d</span>";
+							text += "<span class='layui-badge' style='margin-left:8px;'>+" + overdue + "d</span>";
 						} else if (end.getTime() < task.end_date1.getTime()) {
-							text += "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-"
-									+ overdue + "d</span>";
+							text += "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-" + overdue + "d</span>";
 						}
 					}
 					return text;
@@ -425,12 +417,10 @@
 							.abs((end.getTime() - task.end_date1.getTime())
 									/ (24 * 60 * 60 * 1000)));
 					if (end.getTime() > task.end_date1.getTime()) {
-						var text = "<span class='layui-badge' style='margin-left:8px;'>+"
-								+ overdue + "d</span>";
+						var text = "<span class='layui-badge' style='margin-left:8px;'>+" + overdue + "d</span>";
 						return text;
 					} else if (end.getTime() < task.end_date1.getTime()) {
-						var text = "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-"
-								+ overdue + "d</span>";
+						var text = "<span class='layui-badge layui-bg-blue' style='margin-left:8px;'>-" + overdue + "d</span>";
 						return text;
 					}
 				}
@@ -456,19 +446,94 @@
 
 			var ro = rap.getRemoteObject(this);
 
-			// gantt.attachEvent("onAfterTaskAdd", function(id, task) {
-			// gantt.batchUpdate(function() {
-			// checkParents(id);
-			// });
-			// });
-			//
-			// gantt.attachEvent("onAfterTaskDelete", function(id, task) {
-			// if (delTaskParent != gantt.config.root_id) {
-			// gantt.batchUpdate(function() {
-			// checkParents(delTaskParent);
-			// });
-			// }
-			// });
+			gantt.attachEvent("onAfterAutoSchedule", function(id, tasks) {
+				ro.call("onAfterAutoSchedule", {
+					"taskId" : id,
+					"updatedTasks" : tasks
+				});
+			});
+
+			/*
+			 * gantt.attachEvent("onAfterTaskAutoSchedule", function(task,
+			 * start, link, predecessor) { ro.call("onAfterTaskAutoSchedule", {
+			 * "task" : task, "start" : start, "link" : link, "predecessor" :
+			 * predecessor }); });
+			 */
+
+			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
+				gantt.batchUpdate(function() {
+					checkParents(id);
+				});
+
+				ro.call("onAfterTaskAdd", {
+					"id" : id,
+					"task" : task
+				});
+			});
+
+			gantt.attachEvent("onAfterTaskUpdate", function(id, task) {
+				ro.call("onAfterTaskUpdate", {
+					"id" : id,
+					"task" : task
+				});
+
+				gantt.eachParent(function(parent) {
+					ro.call("onAfterTaskUpdate", {
+						"id" : parent.id,
+						"task" : parent
+					});
+				}, task);
+			});
+
+			gantt.attachEvent("onAfterTaskDrag", function(id, mode) {
+				var modes = gantt.config.drag_mode;
+				switch (mode) {
+				case modes.move:
+					break;
+				case modes.resize:
+					break;
+				case modes.progress:
+					ro.call("onAfterTaskProgress", {
+						"id" : id,
+						"task" : gantt.getTask(id)
+					});
+					break;
+				}
+			});
+
+			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
+				if (delTaskParent != gantt.config.root_id) {
+					gantt.batchUpdate(function() {
+						checkParents(delTaskParent);
+					});
+				}
+
+				ro.call("onAfterTaskDelete", {
+					"id" : id,
+					"task" : task
+				});
+			});
+
+			gantt.attachEvent("onAfterLinkAdd", function(id, link) {
+				ro.call("onAfterLinkAdd", {
+					"id" : id,
+					"link" : link
+				});
+			});
+
+			gantt.attachEvent("onAfterLinkUpdate", function(id, link) {
+				ro.call("onAfterLinkUpdate", {
+					"id" : id,
+					"link" : link
+				});
+			});
+
+			gantt.attachEvent("onAfterLinkDelete", function(id, link) {
+				ro.call("onAfterLinkDelete", {
+					"id" : id,
+					"link" : link
+				});
+			});
 
 			var checkProject = this.checkProject;
 			gantt.attachEvent("onBeforeLinkAdd", function(id, link) {
@@ -480,36 +545,39 @@
 				}
 			});
 
-			// function checkParents(id) {
-			// setTaskType(id);
-			// var parent = gantt.getParent(id);
-			// if (parent != gantt.config.root_id) {
-			// checkParents(parent);
-			// }
-			// };
+			function checkParents(id) {
+				setTaskType(id);
+				var parent = gantt.getParent(id);
+				if (parent != gantt.config.root_id) {
+					checkParents(parent);
+				}
+			}
+			;
 
-			// function setTaskType(id) {
-			// id = id.id ? id.id : id;
-			// var task = gantt.getTask(id);
-			// if (gantt.hasChild(task.id)) {
-			// if (gantt.config.types.project != task.type) {
-			// task.type = gantt.config.types.project;
-			// gantt.updateTask(id);
-			// }
-			// } else {
-			// if (gantt.config.types.task != task.type
-			// && gantt.config.types.milestone != task.type) {
-			// task.type = gantt.config.types.task;
-			// gantt.updateTask(id);
-			// }
-			// }
-			// };
+			function setTaskType(id) {
+				id = id.id ? id.id : id;
+				var task = gantt.getTask(id);
+				if (gantt.hasChild(task.id)) {
+					if (gantt.config.types.project != task.type) {
+						task.type = gantt.config.types.project;
+					}
+					gantt.updateTask(id);
+					gantt.open(id);
+				} else {
+					if (gantt.config.types.task != task.type
+							&& gantt.config.types.milestone != task.type) {
+						task.type = gantt.config.types.task;
+					}
+					gantt.updateTask(id);
+				}
+			}
+			;
 
-			// gantt.attachEvent("onParse", function() {
-			// gantt.eachTask(function(task) {
-			// setTaskType(task);
-			// });
-			// });
+			gantt.attachEvent("onParse", function() {
+				gantt.eachTask(function(task) {
+					setTaskType(task);
+				});
+			});
 
 			gantt.attachEvent("onBeforeTaskDelete",
 					function onBeforeTaskDelete(id, task) {
@@ -584,13 +652,29 @@
 				// 统一处理同步,不能单独添加，否者可能在未更新模型前触发侦听程序，导致不一致的数据
 
 			} else if (eventCode == "onAutoScheduleCircularLink") {
+				gantt.attachEvent(eventCode, function(groups) {
+					ro.call(eventCode, {
+						"groups" : groups
+					});
+				});
 			} else if (eventCode == "onCircularLinkError") {
+				gantt.attachEvent(eventCode, function(link, group) {
+					ro.call(eventCode, {
+						"link" : link,
+						"group" : group
+					});
+				});
 			} else if (eventCode == "onEmptyClick"
 					|| eventCode == "onMultiSelect") {
 				gantt.attachEvent(eventCode, function(e) {
 					ro.call(eventCode, {});
 				});
 			} else if (eventCode == "onError") {
+				gantt.attachEvent(eventCode, function(errorMessage) {
+					ro.call(eventCode, {
+						"errorMessage" : errorMessage
+					});
+				});
 			} else if (eventCode == "onLinkClick"
 					|| eventCode == "onLinkDblClick"
 					|| eventCode == "onTaskClick"
@@ -605,6 +689,11 @@
 					return true;
 				});
 			} else if (eventCode == "onLinkValidation") {
+				gantt.attachEvent(eventCode, function(link) {
+					ro.call(eventCode, {
+						"link" : link
+					});
+				});
 			} else if (eventCode == "onScaleClick") {
 				gantt.attachEvent(eventCode, function(e, date) {
 					ro.call(eventCode, {
@@ -629,9 +718,9 @@
 			} else if (eventCode == "onAfterTaskResize") {// 自定义的事件
 			} else if (eventCode == "onAfterTaskProgress") {// 自定义的事件
 			} else {
-				// gantt.attachEvent(eventCode, function() {
-				// ro.call(eventCode, {});
-				// });
+				gantt.attachEvent(eventCode, function() {
+					ro.call(eventCode, {});
+				});
 			}
 		},
 
@@ -642,19 +731,6 @@
 
 		addLink : function(link) {
 			this.gantt.addLink(link);
-		},
-
-		save : function() {
-			console.log(this.gantt);
-			var tasks = [];
-			this.gantt.eachTask(function(task) {
-				tasks.push(task);
-			})
-			var links = this.gantt.getLinks();
-			rap.getRemoteObject(this).call("save", {
-				"tasks" : tasks,
-				"links" : links
-			});
 		},
 
 		updateTask : function(task) {

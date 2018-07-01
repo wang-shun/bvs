@@ -273,8 +273,23 @@ public class Gantt extends Composite {
 		event.text = eventCode;
 		event.data = jo;
 		JsonValue id = jo.get("id");
-
-		if (GanttEventCode.onGridHeaderMenuClick.name().equals(eventCode)) {
+		if ("save".equals(eventCode)) {
+			jo.get("tasks").asArray().forEach(jv->{
+				JsonObject _jo = jv.asObject();
+				String _id = _jo.get("id").asString();
+				Object obj = findTask(_id);
+				WidgetToolkit.write(obj, _jo, containerName, "id");
+			});
+			
+			jo.get("links").asArray().forEach(jv->{
+				JsonObject _jo = jv.asObject();
+				String _id = _jo.get("id").asString();
+				Object obj = findLink(_id);
+				WidgetToolkit.write(obj, _jo, containerName, "id");
+			});
+			event.tasks = tasks;
+			event.links = links;
+		} else if (GanttEventCode.onGridHeaderMenuClick.name().equals(eventCode)) {
 
 		} else if (GanttEventCode.onTaskLinkBefore.name().equals(eventCode)) {
 			event.linkSource = findTask(jo.get("source").asString());
@@ -468,6 +483,10 @@ public class Gantt extends Composite {
 
 	public void autoSchedule() {
 		remoteObject.call("autoSchedule", new JsonObject());
+	}
+
+	public void save() {
+		remoteObject.call("save", new JsonObject());
 	}
 
 	public void highlightCriticalPath(boolean display) {
