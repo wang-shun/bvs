@@ -645,9 +645,9 @@
 		},
 
 		save : function() {
-			console.log(this.gantt);
 			var tasks = [];
 			this.gantt.eachTask(function(task) {
+				task.wbsCode = this.gantt.getWBSCode(task);
 				tasks.push(task);
 			})
 			var links = this.gantt.getLinks();

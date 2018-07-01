@@ -235,8 +235,8 @@ public class GanttPart implements IPostSelectionProvider {
 		gantt.removeGanttListener(eventCode, listener);
 	}
 
-	public void addTask(Object task, int index) {
-		gantt.addTask(task, index);
+	public void addTask(Object task) {
+		gantt.addTask(task);
 	}
 
 	public void deleteTask(String taskId) {

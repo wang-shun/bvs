@@ -448,11 +448,11 @@ public class Gantt extends Composite {
 	 * @param item
 	 * @param index
 	 */
-	public void addTask(Object item, int index) {
+	public void addTask(Object item) {
 		tasks.add(item);
 		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
 		JsonObject parameter = new JsonObject();
-		parameter.add("task", task).add("index", index);
+		parameter.add("task", task);
 		remoteObject.call("addTask", parameter);
 	}
 
