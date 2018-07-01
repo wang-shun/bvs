@@ -262,6 +262,10 @@ public class GanttPart implements IPostSelectionProvider {
 	public void reschedule() {
 		gantt.autoSchedule();
 	}
+	
+	public void callSave() {
+		gantt.save();
+	}
 
 	public void highlightCriticalPath(boolean highlightCriticalPath) {
 		this.highlightCriticalPath = highlightCriticalPath;

@@ -1,6 +1,7 @@
 package com.bizivisionsoft.widgets.gantt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Event;
 
@@ -37,5 +38,9 @@ public class GanttEvent extends Event {
 	public Object linkTarget;
 
 	public String linkType;
+
+	public List<Object> tasks;
+
+	public List<Object> links;
 	
 }
