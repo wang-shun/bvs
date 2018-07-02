@@ -72,34 +72,6 @@
 	Tasks
 */
 
-.level2_task {
-	border: 1px solid #0288d1 !important;
-	background: #03a9f4 !important;
-}
-
-.level2_task.gantt_selected {
-	-webkit-box-shadow: 0 0 5px #0288d1 !important;
-	box-shadow: 0 0 5px #0288d1 !important;
-}
-
-.level2_task .gantt_task_progress{
-    background:#0288d1 !important;
-}
-
-.level1_task {
-	border: 1px solid #512da8 !important;
-	background: #7e57c2 !important;
-}
-
-.level1_task.gantt_selected {
-	-webkit-box-shadow: 0 0 5px #512da8 !important;
-	box-shadow: 0 0 5px #512da8 !important;
-}
-
-.level1_task .gantt_task_progress{
-    background:#512da8 !important;
-}
-
 .gantt_task_link .gantt_link_arrow_right {
   border-width: 6px 6px 6px 6px;
   margin-top: -3px;
@@ -1016,12 +988,13 @@ div.dhx_modal_cover {
 }
 .gantt_task_line.gantt_milestone {
   visibility: hidden;
-  background-color: #D33DAF;
-  border: 0px solid #61164f;
+  background-color: #ff9800;
+  border: 0px solid #795548;
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
   -moz-box-sizing: content-box;
 }
+
 .gantt_task_line.gantt_milestone div {
   visibility: visible;
 }
@@ -1056,8 +1029,8 @@ div.dhx_modal_cover {
           box-shadow: 0 0 5px 0px #999999;
 }
 .gantt_critical_task {
-  background-color: #e63030;
-  border-color: #9d3a3a;
+  background-color: #e63030 !important;
+  border-color: #9d3a3a !important;
 }
 .gantt_critical_task .gantt_task_progress {
   background-color: rgba(0, 0, 0, 0.4);
@@ -1771,4 +1744,46 @@ div.dhx_modal_cover {
   color: #fff;
   font-weight: bold;
   border-width: 0;
+}
+
+.level2_task {
+	border: 1px solid #0288d1 !important;
+	background: #03a9f4 !important;
+}
+
+.level2_task.gantt_selected {
+	-webkit-box-shadow: 0 0 5px #0288d1 !important;
+	box-shadow: 0 0 5px #0288d1 !important;
+}
+
+.level2_task .gantt_task_progress{
+    background:#0288d1 !important;
+}
+
+.level1_task {
+	border: 1px solid #303f9f !important;
+	background: #5c6bc0 !important;
+}
+
+.level1_task.gantt_selected {
+	-webkit-box-shadow: 0 0 5px #303f9f !important;
+	box-shadow: 0 0 5px #303f9f !important;
+}
+
+.level1_task .gantt_task_progress{
+    background:#303f9f !important;
+}
+
+.milestone_task {
+	border: 1px solid #795548 !important;
+	background: #ff9800 !important;
+}
+
+.milestone_task.gantt_selected {
+	-webkit-box-shadow: 0 0 5px #795548 !important;
+	box-shadow: 0 0 5px #795548 !important;
+}
+
+.milestone_task.gantt_task_progress {
+	background: #795548 !important;
 }

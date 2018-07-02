@@ -334,11 +334,16 @@
 		configTaskStyle : function(config) {
 			this.gantt.config.task_height = 20;
 			this.gantt.templates.task_class = function(start, end, task) {
+				if (task.type == gantt.config.types.milestone) {
+					return "milestone_task";
+				}
 				if (task.barstyle) {
 					return task.barstyle;
 				}
 				return "";
 			};
+			
+			
 		},
 
 		configHolidays : function(config) {
@@ -353,12 +358,16 @@
 
 		configSideContent : function(config) {
 
+			var gantt = this.gantt;
+			var formatFunc = gantt.date.date_to_str("%n/%j");
 			if (config.grid_width == 0) {
-				var gantt = this.gantt;
-				var formatFunc = gantt.date.date_to_str("%n/%j");
 
 				gantt.templates.rightside_text = function(start, end, task) {
-					var text = formatFunc(end);
+					var text = "";
+					if (task.type == gantt.config.types.milestone) {
+						text = task.text+"&nbsp;";
+					}
+					text += formatFunc(end) +"&nbsp;";
 					if (task.end_date1) {
 						var overdue = Math.ceil(Math
 								.abs((end.getTime() - task.end_date1.getTime())
@@ -376,6 +385,13 @@
 
 				gantt.templates.leftside_text = function(start, end, task) {
 					return formatFunc(start);
+				};
+			}else{
+				gantt.templates.rightside_text = function (start, end, task) {
+					if (task.type == gantt.config.types.milestone) {
+						return task.text+"&nbsp;"+formatFunc(start) ;
+					}
+					return "";
 				};
 			}
 		},
