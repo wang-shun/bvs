@@ -576,7 +576,6 @@
 
 		destroy : function() {
 			if (this.element.parentNode) {
-				// rap.off("send", this.onSend);
 				this.gantt.destructor();
 				this.element.parentNode.removeChild(this.element);
 			}

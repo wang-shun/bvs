@@ -1,5 +1,6 @@
 package com.bizvisionsoft.onlinedesigner.actions;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -14,5 +15,6 @@ public class CreateIndexACT {
 	@Execute
 	public void execute() {
 		Services.get(CommonService.class).createIndex();
+		Layer.message("索引创建完成。");
 	}
 }
