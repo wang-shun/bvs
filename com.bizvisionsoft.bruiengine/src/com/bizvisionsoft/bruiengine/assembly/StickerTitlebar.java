@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -45,10 +45,16 @@ public class StickerTitlebar extends Composite {
 
 		toolbar = new Composite(this, SWT.NONE);
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
-		FillLayout rl = new FillLayout(SWT.HORIZONTAL);
-		rl.marginHeight = 4;
+		RowLayout rl = new RowLayout(SWT.HORIZONTAL);
+		rl.marginHeight = 2;
 		rl.spacing = 8;
 		rl.marginWidth = 0;
+		rl.wrap = false;
+		rl.fill = true;
+		rl.marginBottom = 0;
+		rl.marginTop = 0;
+		rl.marginLeft = 0;
+		rl.marginRight = 0;
 
 		toolbar.setLayout(rl);
 		
