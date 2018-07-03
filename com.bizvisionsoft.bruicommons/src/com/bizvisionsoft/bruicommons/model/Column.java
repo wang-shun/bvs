@@ -191,6 +191,8 @@ public class Column extends ModelObject {
 
 	private boolean noToggleGridColumnGroup;
 
+	private String tooltipText;
+
 	public boolean isHide() {
 		return hide;
 	}
@@ -264,5 +266,12 @@ public class Column extends ModelObject {
 	public void setLt1Style(String lt1Style) {
 		this.lt1Style = lt1Style;
 	}
+
+	public String getTooltipText() {
+		return tooltipText;
+	}
 	
+	public void setTooltipText(String tooltipText) {
+		this.tooltipText = tooltipText;
+	}
 }

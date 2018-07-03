@@ -257,6 +257,8 @@ public class GridColumnsEditPane extends Composite {
 			editor.createTextField(parent, "列名称:", element, "name", SWT.BORDER);
 
 			editor.createTextField(parent, "列头显示文本:", element, "text", SWT.BORDER);
+			
+			editor.createTextField(parent, "列头工具提示:", element, "tooltipText", SWT.BORDER);
 
 			editor.createCheckboxField(parent, "列头使用超文本：", element, "markupEnabled", SWT.CHECK);
 

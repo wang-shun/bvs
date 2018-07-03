@@ -627,6 +627,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		col.setResizeable(c.isResizeable());
 		col.setDetail(c.isDetail());
 		col.setSummary(c.isSummary());
+		col.setHeaderTooltip(c.getTooltipText());
 
 		GridViewerColumn vcol = new GridViewerColumn(viewer, col);
 		GridPartColumnLabelProvider labelProvider = new GridPartColumnLabelProvider(renderEngine, c);
