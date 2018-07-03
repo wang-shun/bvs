@@ -209,6 +209,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		} else {
 			panel = parent;
 		}
+		panel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		panel.setLayout(new FormLayout());
 		Control queryPanel = createQueryPanel(panel);
 		Control grid = createGridControl(panel);
