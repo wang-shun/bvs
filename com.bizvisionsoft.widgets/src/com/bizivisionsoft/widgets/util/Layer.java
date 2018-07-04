@@ -38,4 +38,8 @@ public class Layer {
 		WidgetToolkit.execJS("layer.msg(\"" + msg + "\", {title:\""+title+"\", shade:0.2,skin: 'layui-layer-lan',icon: "+icon+",anim: "+animate+"})");
 	}
 	
+	public static void open(String title,String content,int width,int height) {
+		String html = "<div style='margin:16px;'>"+content+"</div>";
+		WidgetToolkit.execJS("layer.open({\"type\": 1,\"title\": \""+title+"\",\"skin\": \"layui-layer-lan\", area: [\""+width+"px\", \""+height+"px\"], content: \""+html+"\"})");
+	}
 }
