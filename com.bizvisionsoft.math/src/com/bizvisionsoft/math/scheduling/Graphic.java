@@ -25,7 +25,7 @@ public class Graphic {
 	}
 
 	private <T> void addToList(List<T> src, T target) {
-		if (!src.contains(target)) {
+		if (!src.contains(target) && target!=null) {
 			src.add(target);
 		}
 	}

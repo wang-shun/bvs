@@ -50,7 +50,7 @@ public class NetworkDiagram {
 		exclude.add(start);
 		exclude.add(end);
 		ergodic(end, true, route -> exclude.add(route.end1));
-		tasks.parallelStream().filter(task -> !exclude.contains(task) && task.getEF() > end.getEF()).forEach(t -> {
+		tasks.stream().filter(task -> !exclude.contains(task) && task.getEF() > end.getEF()).forEach(t -> {
 			virtualRoute.add(new Route(t, end, true, new Relation(Relation.FTF, 0)));
 			end.updateES(t.getEF());
 		});
@@ -189,7 +189,9 @@ public class NetworkDiagram {
 		if (reverse) {
 			routes.stream().filter(f -> f.end2.equals(from)).forEach(action);
 		} else {
-			routes.stream().filter(f -> f.end1.equals(from)).forEach(action);
+			routes.stream().filter(f -> {
+				return f.end1.equals(from);
+			}).forEach(action);
 		}
 	}
 
@@ -201,7 +203,7 @@ public class NetworkDiagram {
 	 * @return
 	 */
 	public Task getTask(String id) {
-		return tasks.parallelStream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
+		return tasks.stream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
 	}
 
 }
