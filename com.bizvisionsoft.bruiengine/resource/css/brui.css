@@ -21,10 +21,10 @@
 }
 
 .brui_blur {    
-    -webkit-filter: blur(14px);
-       -moz-filter: blur(14px);
-        -ms-filter: blur(14px);    
-            filter: blur(14px);    
+    -webkit-filter: brightness(0.8) blur(14px);
+       -moz-filter: brightness(0.8) blur(14px);
+        -ms-filter: brightness(0.8) blur(14px);    
+            filter: brightness(0.8) blur(14px);    
 }
 
 .brui_segmentLeft{

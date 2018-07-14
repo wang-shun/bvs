@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.assembly;
 import java.util.Locale;
 
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.rap.rwt.RWT;
@@ -95,6 +96,10 @@ public class GridPartDefaultRender {
 			return ((Comparable) e1).compareTo((Comparable) e2);
 		}
 		return 0;
+	}
+
+	public void handleColumn(GridViewerColumn vcol) {
+		
 	}
 
 }

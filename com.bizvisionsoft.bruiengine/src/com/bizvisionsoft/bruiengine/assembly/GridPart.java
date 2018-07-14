@@ -632,7 +632,6 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 		GridViewerColumn vcol = new GridViewerColumn(viewer, col);
 		GridPartColumnLabelProvider labelProvider = new GridPartColumnLabelProvider(renderEngine, c);
-
 		vcol.setLabelProvider(labelProvider);
 
 		if (c.getSort() != 0) {
@@ -640,6 +639,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 			this.sortSequance = c.getSort();
 		}
 
+		renderEngine.handleColumn(vcol);
 		return vcol;
 	}
 

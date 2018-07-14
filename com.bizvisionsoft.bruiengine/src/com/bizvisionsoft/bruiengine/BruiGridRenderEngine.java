@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.osgi.framework.Bundle;
 
@@ -10,6 +11,7 @@ import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnFooter;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHeader;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderCompare;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderConfig;
+import com.bizvisionsoft.annotations.ui.grid.GridRenderColumnHandler;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderInput;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderUICreated;
 import com.bizvisionsoft.annotations.ui.grid.GridRenderUpdateCell;
@@ -126,6 +128,14 @@ public class BruiGridRenderEngine extends BruiEngine {
 	public void uiCreated() {
 		if (defaultRender == null) {
 			invokeMethod(GridRenderUICreated.class);
+		}
+	}
+
+	public void handleColumn(GridViewerColumn vcol) {
+		if (defaultRender != null) {
+			defaultRender.handleColumn(vcol);
+		} else {
+			invokeMethodInjectParams(GridRenderColumnHandler.class, new Object[] { vcol }, new String[] { "" }, null);
 		}
 	}
 
