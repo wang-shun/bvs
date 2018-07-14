@@ -38,6 +38,10 @@ public class SiteEditor extends ModelEditor {
 
 		createPathField(parent, "±³¾°Ò³¶¥²¿Logo£¨¿í¸ß150x60£©:", inputData, "headLogo", SWT.BORDER);
 		
+		createIntegerField(parent, "±³¾°Ò³¶¥²¿Logo ¿í(Ä¬ÈÏ150):", inputData, "headLogoWidth", SWT.BORDER, 150, 600);
+		
+		createIntegerField(parent, "±³¾°Ò³¶¥²¿Logo ¸ß(Ä¬ÈÏ60):", inputData, "headLogoHeight", SWT.BORDER, 60, 600);
+		
 		createTextField(parent, "±³¾°Ò³µ×²¿×ó±ßÎÄ×Ö:", inputData, "footLeftText", SWT.BORDER);
 		
 		createPathField(parent, "±³¾°Í¼Æ¬:", inputData, "pageBackgroundImage", SWT.BORDER);
