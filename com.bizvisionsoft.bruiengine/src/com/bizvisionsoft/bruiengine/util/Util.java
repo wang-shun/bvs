@@ -77,17 +77,17 @@ public class Util {
 	public static String generateName(String text) {
 		return generateName(text, text);
 	}
-	
+
 	public static String getFormatText(Object object) {
-		return getFormatText(object,null,RWT.getLocale());
+		return getFormatText(object, null, RWT.getLocale());
 	}
 
 	public static String getFormatText(Object value, String format, Locale locale) {
 		String text;
 		if (value instanceof Date) {
-			if(Util.isEmptyOrNull(format)) {
+			if (Util.isEmptyOrNull(format)) {
 				return new SimpleDateFormat(DATE_FORMAT_DATE, locale).format(value);
-			}else {
+			} else {
 				return new SimpleDateFormat(format, locale).format(value);
 			}
 		} else if (value instanceof Integer || value instanceof Long || value instanceof Short) {
@@ -292,10 +292,9 @@ public class Util {
 	 *
 	 */
 	public static <T> List<List<T>> splitArray(List<T> source, int subSize) {
-		int count = source.size() % subSize == 0 ? source.size() / subSize : source.size() / subSize + 1;
-
 		List<List<T>> subAryList = new ArrayList<List<T>>();
-
+		int count = subSize == 0 ? 0
+				: (source.size() % subSize == 0 ? source.size() / subSize : source.size() / subSize + 1);
 		for (int i = 0; i < count; i++) {
 			int index = i * subSize;
 			List<T> list = new ArrayList<T>();
@@ -445,5 +444,5 @@ public class Util {
 			return 0;
 		}
 	}
-	
+
 }

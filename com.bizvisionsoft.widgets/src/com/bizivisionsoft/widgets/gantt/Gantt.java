@@ -277,7 +277,7 @@ public class Gantt extends Composite {
 		JsonValue id = jo.get("id");
 		if ("dirtyChanged".equals(eventCode)) {
 			JsonValue jv = jo.get("dirty");
-			if(jv.isBoolean()) {
+			if (jv.isBoolean()) {
 				this.dirty = jv.asBoolean();
 			}
 		} else if ("save".equals(eventCode)) {
@@ -484,11 +484,21 @@ public class Gantt extends Composite {
 	}
 
 	public void updateLink(Object item) {
+		links.forEach(link -> {
+			if (link.equals(item)) {
+				AUtil.simpleCopy(item, link);
+			}
+		});
 		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
 		remoteObject.call("updateLink", link);
 	}
 
 	public void updateTask(Object item) {
+		tasks.forEach(task -> {
+			if (task.equals(item)) {
+				AUtil.simpleCopy(item, task);
+			}
+		});
 		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
 				convertor4UpdateGantt);
 		remoteObject.call("updateTask", task);
