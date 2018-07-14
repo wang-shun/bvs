@@ -41,6 +41,8 @@ public class SiteEditor extends ModelEditor {
 		createTextField(parent, "±³¾°Ò³µ×²¿×ó±ßÎÄ×Ö:", inputData, "footLeftText", SWT.BORDER);
 		
 		createPathField(parent, "±³¾°Í¼Æ¬:", inputData, "pageBackgroundImage", SWT.BORDER);
+		
+		createTextField(parent, "µÇÂ¼»¶Ó­´Ê:", inputData, "welcome", SWT.BORDER);
 
 		createTextField(parent, "³¬¼¶ÓÃ»§ÃÜÂë£¨µÇÂ¼ÃûÎªsu£©:", inputData, "password", SWT.BORDER);
 

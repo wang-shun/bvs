@@ -285,4 +285,14 @@ public class Site extends ModelObject {
 	public void setPageBackgroundImage(String pageBackgroundImage) {
 		this.pageBackgroundImage = pageBackgroundImage;
 	}
+
+	private String welcome;
+
+	public void setWelcome(String welcome) {
+		this.welcome = welcome;
+	}
+	
+	public String getWelcome() {
+		return welcome;
+	}
 }

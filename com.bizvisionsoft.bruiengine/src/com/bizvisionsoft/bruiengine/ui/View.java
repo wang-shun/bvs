@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -67,7 +68,9 @@ public class View extends Part {
 	public int open() {
 		Assembly la = ModelLoader.site.getLoginAssembly();
 		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
-			new Popup(la, UserSession.newAssemblyContext()).setTitle("登录PMS").open();
+			String welcome = Optional.ofNullable(ModelLoader.site.getWelcome()).map(t -> t.trim().isEmpty() ? null : t)
+					.orElse("登录PMS");
+			new Popup(la, UserSession.newAssemblyContext()).setTitle(welcome).open();
 		} else if (page.isForceCheckLogin()) {
 			new Popup(la, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open();
 		} else {
@@ -100,7 +103,8 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Assembly assembly = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(),page,context.getRootInput());
+		Assembly assembly = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page,
+				context.getRootInput());
 		createContentArea(assembly, null, false);
 
 		FormData fd;
