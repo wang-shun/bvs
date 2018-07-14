@@ -295,4 +295,25 @@ public class Site extends ModelObject {
 	public String getWelcome() {
 		return welcome;
 	}
+	
+	private Integer headLogoWidth;
+	
+	private Integer headLogoHeight;
+	
+	public Integer getHeadLogoHeight() {
+		return headLogoHeight;
+	}
+	
+	public Integer getHeadLogoWidth() {
+		return headLogoWidth;
+	}
+	
+	public void setHeadLogoHeight(Integer headLogoHeight) {
+		this.headLogoHeight = headLogoHeight;
+	}
+	
+	public void setHeadLogoWidth(Integer headLogoWidth) {
+		this.headLogoWidth = headLogoWidth;
+	}
+	
 }

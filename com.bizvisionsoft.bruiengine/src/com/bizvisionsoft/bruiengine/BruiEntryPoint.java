@@ -89,7 +89,16 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 				.orElse("resource/image/logo_w.svg");
 		title.setStyleAttribute("backgroundImage", logo);
 		title.setStyleAttribute("background-repeat", "no-repeat");
-		FormData fd = new FormData(150, 60);
+		title.setStyleAttribute("background-size", "cover");
+
+		Integer h = ModelLoader.site.getHeadLogoHeight();
+		Integer w = ModelLoader.site.getHeadLogoWidth();
+		FormData fd;
+		if(w!=null&&h!=null) {
+			fd = new FormData(w, h);
+		}else {
+			fd = new FormData(150, 60);
+		}
 		fd.left = new FormAttachment(0, 16);
 		fd.top = new FormAttachment(0, 16);
 		title.setLayoutData(fd);
