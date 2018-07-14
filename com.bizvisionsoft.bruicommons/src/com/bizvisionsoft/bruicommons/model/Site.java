@@ -80,7 +80,7 @@ public class Site extends ModelObject {
 	public void setLoginAssembly(Assembly loginAssembly) {
 		login = Optional.ofNullable(loginAssembly).map(l -> l.getId()).orElse(null);
 	}
-	
+
 	@Structure("list")
 	public List<Page> getPages() {
 		return pages;
@@ -90,9 +90,9 @@ public class Site extends ModelObject {
 	public long countPages() {
 		return Optional.ofNullable(pages).map(p -> p.size()).orElse(0);
 	}
-	
+
 	private Folder rootFolder;
-	
+
 	private List<Page> pages;
 
 	private AssemblyLib assyLib;
@@ -245,15 +245,44 @@ public class Site extends ModelObject {
 	public Page getPageById(String pageId) {
 		return pages.stream().filter(p -> pageId.equals(p.getId())).findFirst().orElse(null);
 	}
-	
+
 	private String password;
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
 
+	private String footLeftText;
+
+	public String getFootLeftText() {
+		return footLeftText;
+	}
+
+	public void setFootLeftText(String footLeftText) {
+		this.footLeftText = footLeftText;
+	}
+
+	private String headLogo;
+
+	public String getHeadLogo() {
+		return headLogo;
+	}
+
+	public void setHeadLogo(String headLogo) {
+		this.headLogo = headLogo;
+	}
+
+	private String pageBackgroundImage;
+
+	public String getPageBackgroundImage() {
+		return pageBackgroundImage;
+	}
+
+	public void setPageBackgroundImage(String pageBackgroundImage) {
+		this.pageBackgroundImage = pageBackgroundImage;
+	}
 }

@@ -20,6 +20,13 @@
 	background: linear-gradient(15deg, #ffa726, #e65100) !important;
 }
 
+.brui_blur {    
+    -webkit-filter: blur(14px);
+       -moz-filter: blur(14px);
+        -ms-filter: blur(14px);    
+            filter: blur(14px);    
+}
+
 .brui_segmentLeft{
     border-radius: 36px 0px 0px 36px !important;
 }
