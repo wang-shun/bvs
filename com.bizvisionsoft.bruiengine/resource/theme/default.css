@@ -622,6 +622,17 @@ Combo[BORDER] {
   box-shadow: none;
 }
 
+CCombo,
+CCombo[BORDER] {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: none;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+}
+
 Combo:focused,
 Combo[BORDER]:focused {
   border: 1px solid #c9c9c9;
@@ -633,7 +644,7 @@ Combo[BORDER]:disabled {
   box-shadow: none;
 }
 
-Combo-Button {
+Combo-Button,CCombo-Button {
   cursor: default;
   background-color: transparent;
   border: none;
@@ -648,21 +659,21 @@ Combo-Button:disabled {
   background-color: transparent;
 }
 
-Combo-Button-Icon {
+Combo-Button-Icon,CCombo-Button-Icon {
   background-image: url(resource/widget/rap/combo/combo-down.png);
 }
 
-Combo-Button-Icon:hover {
+Combo-Button-Icon:hover,CCombo-Button-Icon:hover {
   background-image: url(resource/widget/rap/combo/combo-down-hover.png);
 }
 
-Combo-List {
+Combo-List,CCombo-List {
   border: 1px solid #d2d2d2;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
 }
 
-Combo-List-Item {
+Combo-List-Item,CCombo-List-Item {
   color: inherit;
   background-color: transparent;
   background-image: none;
@@ -671,20 +682,20 @@ Combo-List-Item {
   padding: 8px 12px 8px 12px;
 }
 
-Combo-List-Item:hover, Combo-List-Item:even:hover  {
+Combo-List-Item:hover, Combo-List-Item:even:hover,CCombo-List-Item:hover, CCombo-List-Item:even:hover  {
   background-color: #d0d9ff;
 }
 
-Combo-List-Item:selected, Combo-List-Item:even:selected {
+Combo-List-Item:selected, Combo-List-Item:even:selected,CCombo-List-Item:selected, CCombo-List-Item:even:selected {
   background-color: #3f51b5;
   color: #ffffff;
 }
 
-Combo-Field {
+Combo-Field,CCombo-Field {
   padding: 8px 12px 8px 12px;
 }
 
-Combo-FocusIndicator {
+Combo-FocusIndicator,CCombo-FocusIndicator {
   background-color: transparent;
   border: none;
   margin: 0;

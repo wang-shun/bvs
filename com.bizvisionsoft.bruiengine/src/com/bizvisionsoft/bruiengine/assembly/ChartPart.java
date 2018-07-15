@@ -3,7 +3,9 @@ package com.bizvisionsoft.bruiengine.assembly;
 import java.util.List;
 
 import org.bson.Document;
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -22,7 +24,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
 
-public class ChartPart implements IQueryEnable{
+public class ChartPart implements IQueryEnable {
 
 	@Inject
 	private IBruiService bruiService;
@@ -39,7 +41,7 @@ public class ChartPart implements IQueryEnable{
 
 	private BasicDBObject filter;
 
-	private JsonObject option;
+	private JsonValue option;
 
 	public ChartPart() {
 	}
@@ -116,9 +118,16 @@ public class ChartPart implements IQueryEnable{
 		if (input instanceof List<?>) {
 			if (((List<?>) input).isEmpty()) {
 				throw new RuntimeException("数据源list方法返回的List没有数据。");
-			} else {
+			} else if (((List<?>) input).size() == 1) {
 				Object doc = ((List<?>) input).get(0);
 				setViewerInput(doc);
+			} else {
+				JsonArray _option = new JsonArray();
+				for(int i=0;i<((List<?>) input).size();i++) {
+					Document d = (Document) ((List<?>) input).get(i);
+					_option.add(JsonObject.readFrom(d.toJson()));
+				}
+				option = _option;
 			}
 		} else if (input instanceof Document) {
 			option = JsonObject.readFrom(((Document) input).toJson());

@@ -3,6 +3,7 @@ package com.bizivisionsoft.widgets.chart;
 import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.OperationHandler;
@@ -26,7 +27,7 @@ public class ECharts extends Composite {
 		}
 	};
 
-	private JsonObject option;
+	private JsonValue option;
 
 	/**
 	 * 
@@ -39,21 +40,21 @@ public class ECharts extends Composite {
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
-		option = new JsonObject();
+//		option = new JsonValue();
 	}
 
-	public JsonObject getOption() {
+	public JsonValue getOption() {
 		return option;
 	}
 
-	public void setOption(JsonObject option) {
+	public void setOption(JsonValue option) {
 		checkWidget();
 		if (option == null) {
 			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
 		}
 		this.option = option;
 //		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//		System.out.println(gson.toJson(gson.fromJson(this.option.toString(), HashMap.class)));
+//		System.out.println(gson.toJson(gson.fromJson(this.option.toString(), List.class)));
 		remoteObject.set("option", option);
 	}
 	
