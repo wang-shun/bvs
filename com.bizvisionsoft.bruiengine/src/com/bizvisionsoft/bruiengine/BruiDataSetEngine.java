@@ -281,6 +281,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (method != null) {
 			try {
 				if (!data.containsField("_id")) {
+					//没有_id字段的不会保存到数据库
 					return;
 				}
 				Object _id = data.get("_id");

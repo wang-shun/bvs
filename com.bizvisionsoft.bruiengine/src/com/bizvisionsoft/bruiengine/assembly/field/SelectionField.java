@@ -95,8 +95,12 @@ public class SelectionField extends EditorField {
 	}
 
 	protected void presentation() {
-		Object label = Optional.ofNullable(value).map(v -> AUtil.readLabel(v, null)).orElse("");
-		text.setText("" + label);
+		if(value instanceof String) {
+			text.setText((String)value);
+		}else {
+			Object label = Optional.ofNullable(value).map(v -> AUtil.readLabel(v, null)).orElse("");
+			text.setText("" + label);
+		}
 	}
 
 	@Override

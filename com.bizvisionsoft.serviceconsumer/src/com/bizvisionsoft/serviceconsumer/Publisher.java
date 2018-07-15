@@ -8,6 +8,7 @@ import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.OBSService;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.PermissionService;
+import com.bizvisionsoft.service.ProductService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
@@ -50,6 +51,8 @@ public class Publisher {
 						ProjectService.class,
 
 						ProjectSetService.class,
+
+						ProductService.class,
 						
 						DocumentService.class,
 

@@ -59,7 +59,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	@Inject
 	private IBruiService bruiService;
 
-	private Assembly config;
+	protected Assembly config;
 
 	@GetContent("viewer")
 	protected GridTreeViewer viewer;
@@ -84,7 +84,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	private Composite toolbar;
 
-	private ToolItemDescriptor itemSelector;
+	protected ToolItemDescriptor itemSelector;
 
 	private List<ToolItemDescriptor> toolitems = new ArrayList<ToolItemDescriptor>();
 
@@ -106,7 +106,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	private boolean vertialQueryPanel;
 
-	private boolean asEditorField;
+	protected boolean asEditorField;
 
 	public GridPart() {
 	}
@@ -225,7 +225,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		renderEngine.uiCreated();
 	}
 
-	private void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {
+	protected void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {
 		Label sep = null;
 		if (queryPanel != null) {
 			FormData fd = new FormData();
@@ -261,7 +261,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		fd.bottom = new FormAttachment(100);
 	}
 
-	private void layoutHorizontal(Composite panel, Control queryPanel, Control grid, Control pagec) {
+	protected void layoutHorizontal(Composite panel, Control queryPanel, Control grid, Control pagec) {
 		Label sep = null;
 		if (queryPanel != null) {
 			FormData fd = new FormData();
@@ -297,7 +297,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		fd.bottom = new FormAttachment(100);
 	}
 
-	private Composite createSticker(Composite parent) {
+	protected Composite createSticker(Composite parent) {
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
 		sticker.service = bruiService;
@@ -305,7 +305,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		return sticker.content;
 	}
 
-	private Control createQueryPanel(Composite parent) {
+	protected Control createQueryPanel(Composite parent) {
 		if (!queryOn) {
 			return null;
 		}
@@ -345,7 +345,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		return queryPanel;
 	}
 
-	private Control createToolbar(Composite parent) {
+	protected Control createToolbar(Composite parent) {
 		if (toolitems.isEmpty() && !pageEnabled()) {
 			return null;
 		}
