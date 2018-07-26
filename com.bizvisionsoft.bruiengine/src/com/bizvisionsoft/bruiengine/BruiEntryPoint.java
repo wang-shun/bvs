@@ -94,9 +94,9 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		Integer h = ModelLoader.site.getHeadLogoHeight();
 		Integer w = ModelLoader.site.getHeadLogoWidth();
 		FormData fd;
-		if(w!=null&&h!=null) {
+		if (w != null && h != null) {
 			fd = new FormData(w, h);
-		}else {
+		} else {
 			fd = new FormData(150, 60);
 		}
 		fd.left = new FormAttachment(0, 16);
@@ -116,8 +116,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 		Label footLeft = new Label(shell, SWT.NONE);
 		footLeft.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
-		String text = Optional.ofNullable(ModelLoader.site.getFootLeftText())
-				.orElse("武汉曜正科技有限公司 版权所有");
+		String text = Optional.ofNullable(ModelLoader.site.getFootLeftText()).orElse("武汉曜正科技有限公司 版权所有");
 		footLeft.setText(text);
 		fd = new FormData();
 		fd.left = new FormAttachment(0, 16);
@@ -128,10 +127,10 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 		Composite bgimg = new Composite(shell, SWT.NONE);
 		fd = new FormData();
-		fd.right = new FormAttachment(100,20);
-		fd.bottom = new FormAttachment(100,20);
-		fd.left = new FormAttachment(0,-20);
-		fd.top = new FormAttachment(0,-20);
+		fd.right = new FormAttachment(100, 20);
+		fd.bottom = new FormAttachment(100, 20);
+		fd.left = new FormAttachment(0, -20);
+		fd.top = new FormAttachment(0, -20);
 		bgimg.setLayoutData(fd);
 
 		bgimg.moveBelow(null);
