@@ -120,13 +120,12 @@
 			this.gantt.config.auto_scheduling_strict = true;
 			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
-			this.gantt.config.auto_types = true;
-			
+
 			this.gantt.config.fit_tasks = true;
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
 
-			this.gantt.config.order_branch = true;
+			this.gantt.config.order_branch = false;
 			this.gantt.config.order_branch_free = false;// 禁止在整个项目中拖拽任务
 			this.gantt.config.sort = true;
 
@@ -469,6 +468,8 @@
 		// 处理同步
 		handleTaskModify : function() {
 
+			var delTaskParent;
+
 			var gantt = this.gantt;
 
 			var pt = this;
@@ -476,6 +477,9 @@
 			var ro = rap.getRemoteObject(this);
 
 			gantt.attachEvent("onAfterTaskAdd", function(id, task) {
+				gantt.batchUpdate(function() {
+					checkParents(id);
+				});
 				changeDirty(true);
 			});
 
@@ -484,6 +488,11 @@
 			});
 
 			gantt.attachEvent("onAfterTaskDelete", function(id, task) {
+				if (delTaskParent != gantt.config.root_id) {
+					gantt.batchUpdate(function() {
+						checkParents(delTaskParent);
+					});
+				}
 				changeDirty(true);
 			});
 
@@ -507,6 +516,45 @@
 				}
 			}
 			;
+
+			function checkParents(id) {
+				setTaskType(id);
+				var parent = gantt.getParent(id);
+				if (parent != gantt.config.root_id) {
+					checkParents(parent);
+				}
+			}
+			;
+
+			function setTaskType(id) {
+				id = id.id ? id.id : id;
+				var task = gantt.getTask(id);
+				if (gantt.hasChild(task.id)) {
+					if (gantt.config.types.project != task.type) {
+						task.type = gantt.config.types.project;
+						gantt.updateTask(id);
+					}
+				} else {
+					if (gantt.config.types.task != task.type
+							&& gantt.config.types.milestone != task.type) {
+						task.type = gantt.config.types.task;
+						gantt.updateTask(id);
+					}
+				}
+			}
+			;
+
+			gantt.attachEvent("onParse", function() {
+				gantt.eachTask(function(task) {
+					setTaskType(task);
+				});
+			});
+
+			gantt.attachEvent("onBeforeTaskDelete",
+					function onBeforeTaskDelete(id, task) {
+						delTaskParent = gantt.getParent(id);
+						return true;
+					});
 
 		},
 
