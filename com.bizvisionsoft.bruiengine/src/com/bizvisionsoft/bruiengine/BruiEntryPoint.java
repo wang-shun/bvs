@@ -142,7 +142,10 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		bgimg.setStyleAttribute("background-size", "cover");
 		bgimg.setStyleAttribute("background-repeat", "no-repeat");
 		bgimg.setStyleAttribute("background-position", "center");
-		bgimg.setHtmlAttribute("class", "brui_blur");
+		String css = ModelLoader.site.getPageBackgroundImageCSS();
+		if(!Util.isEmptyOrNull(css)) {
+			bgimg.setHtmlAttribute("class", css);
+		}
 	}
 
 	@Override

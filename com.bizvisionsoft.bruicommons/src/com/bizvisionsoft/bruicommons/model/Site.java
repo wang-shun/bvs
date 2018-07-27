@@ -285,6 +285,16 @@ public class Site extends ModelObject {
 	public void setPageBackgroundImage(String pageBackgroundImage) {
 		this.pageBackgroundImage = pageBackgroundImage;
 	}
+	
+	private String pageBackgroundImageCSS;
+
+	public String getPageBackgroundImageCSS() {
+		return pageBackgroundImageCSS;
+	}
+	
+	public void setPageBackgroundImageCSS(String pageBackgroundImageCSS) {
+		this.pageBackgroundImageCSS = pageBackgroundImageCSS;
+	}
 
 	private String welcome;
 
@@ -315,5 +325,5 @@ public class Site extends ModelObject {
 	public void setHeadLogoWidth(Integer headLogoWidth) {
 		this.headLogoWidth = headLogoWidth;
 	}
-	
+
 }
