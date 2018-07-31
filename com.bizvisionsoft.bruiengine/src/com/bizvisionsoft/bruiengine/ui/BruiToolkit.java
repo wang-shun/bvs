@@ -270,9 +270,9 @@ public class BruiToolkit {
 	}
 
 	public boolean isAcceptableBehavior(Object element, IBruiContext context, Assembly assembly, Action action) {
-		String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT,
-				MethodParam.CONTEXT_INPUT_OBJECT_ID, MethodParam.ROOT_CONTEXT_INPUT_OBJECT,
-				MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID, MethodParam.CURRENT_USER, MethodParam.CURRENT_USER_ID };
+		String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT, MethodParam.CONTEXT_INPUT_OBJECT_ID,
+				MethodParam.ROOT_CONTEXT_INPUT_OBJECT, MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID,
+				MethodParam.CURRENT_USER, MethodParam.CURRENT_USER_ID };
 		Object[] parameterValues = context.getContextParameters(paramemterNames);
 		return AUtil.readBehavior(element, assembly.getName(), action.getName(), parameterValues, paramemterNames);
 	}

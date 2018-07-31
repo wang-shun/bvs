@@ -25,8 +25,6 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.util.BruiColors;
-import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class ActionMenu extends Part {
@@ -116,7 +114,7 @@ public class ActionMenu extends Part {
 		if (count <= colCount) {
 			colCount = count;
 		} else if (count < colCount * rowCount) {
-			// 总数小于行列数的时候，尝试矩形布局
+			// 总数小于行列数的时候，矩形布局
 			colCount = (int) Math.ceil(Math.sqrt(count));
 		}
 
@@ -137,8 +135,7 @@ public class ActionMenu extends Part {
 	@Override
 	protected void createContents(Composite parent) {
 		this.parent = parent;
-		parent.setBackground(BruiColors.getColor(BruiColor.Grey_50));
-
+		parent.setHtmlAttribute("class", "brui_translucent");
 		parent.setLayout(new FillLayout());
 		createPage();
 	}
