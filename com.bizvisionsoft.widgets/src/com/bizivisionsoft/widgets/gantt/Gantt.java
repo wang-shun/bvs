@@ -464,6 +464,17 @@ public class Gantt extends Composite {
 	public void addTask(Object item) {
 		tasks.add(item);
 		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
+
+		JsonArray inputArray = (JsonArray) this.inputData.get("data");
+		inputArray.add(task);
+		Set<String> parentCode = new HashSet<String>();
+		inputArray.forEach(jv -> parentCode.add(jv.asObject().get("id").asString()));
+
+		JsonValue _parent = task.get("parent");
+		if (_parent != null && _parent.isString() && !parentCode.contains(_parent.asString())) {
+			task.remove("parent");
+		}
+
 		JsonObject parameter = new JsonObject();
 		parameter.add("task", task);
 		remoteObject.call("addTask", parameter);
@@ -501,6 +512,16 @@ public class Gantt extends Composite {
 		});
 		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
 				convertor4UpdateGantt);
+
+		JsonArray inputArray = (JsonArray) this.inputData.get("data");
+
+		Set<String> parentCode = new HashSet<String>();
+		inputArray.forEach(jv -> parentCode.add(jv.asObject().get("id").asString()));
+		JsonValue _parent = task.get("parent");
+		if (_parent != null && _parent.isString() && !parentCode.contains(_parent.asString())) {
+			task.remove("parent");
+		}
+
 		remoteObject.call("updateTask", task);
 	}
 
