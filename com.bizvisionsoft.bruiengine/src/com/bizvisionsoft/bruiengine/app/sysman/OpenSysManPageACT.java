@@ -14,7 +14,7 @@ public class OpenSysManPageACT {
 	public void execute() {
 		User user = brui.getCurrentUserInfo();
 		if(!user.isAdmin()&&!user.isSU()) {
-			Layer.message("您没有获得系统管理的授权。", Layer.ICON_LOCK);
+			Layer.message("您没有获得系统管理的授权", Layer.ICON_LOCK);
 			return;
 		}
 		brui.switchPage("系统管理", null);

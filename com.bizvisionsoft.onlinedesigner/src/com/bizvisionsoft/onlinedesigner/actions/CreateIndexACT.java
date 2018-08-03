@@ -18,7 +18,7 @@ public class CreateIndexACT {
 	public void execute() {
 		try {
 			Services.get(CommonService.class).createIndex();
-			Layer.message("索引创建完成。");
+			Layer.message("索引创建完成");
 		} catch (Exception e) {
 			MessageDialog.openError(brui.getCurrentShell(), "创建索引错误", e.getMessage());
 		}

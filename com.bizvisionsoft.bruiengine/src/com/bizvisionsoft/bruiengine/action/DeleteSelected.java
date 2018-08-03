@@ -33,7 +33,7 @@ public class DeleteSelected {
 			Object content = context.getContent();
 			if (content instanceof IStructuredDataPart) {
 				((IStructuredDataPart) content).doDelete(elem);
-				Layer.message(Optional.ofNullable(label).map(m -> "ÒÑÉ¾³ý "+m+" ¡£").orElse("ÒÑÉ¾³ý¡£"));
+				Layer.message(Optional.ofNullable(label).map(m -> "ÒÑÉ¾³ý "+m).orElse("ÒÑÉ¾³ý"));
 			}
 		}
 	}

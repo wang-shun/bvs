@@ -150,7 +150,7 @@ public class ActionMenu extends Part {
 		page.setLayout(layout);
 
 		if (pagedAction.size() <= currentPage) {
-			Layer.message("没有可执行的操作。");
+			Layer.message("没有可执行的操作");
 			return;
 		}
 		pagedAction.get(currentPage).forEach(a -> {

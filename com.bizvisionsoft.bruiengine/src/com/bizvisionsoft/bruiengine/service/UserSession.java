@@ -124,7 +124,7 @@ public class UserSession {
 		}
 		display.asyncExec(() -> {
 			if (interval < 1000) {
-				Layer.message("系统将立刻停止对您的服务。<br/>如有任何疑问请咨询系统管理人员。", Layer.ICON_INFO);
+				Layer.message("系统将立刻停止对您的服务。<br/>如有任何疑问请咨询系统管理人员", Layer.ICON_INFO);
 				RWT.getUISession().getHttpSession().setMaxInactiveInterval(1);
 			} else {
 				MessageDialog.openWarning(display.getActiveShell(), "通知",
