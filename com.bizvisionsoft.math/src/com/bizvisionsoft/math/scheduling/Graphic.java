@@ -24,9 +24,12 @@ public class Graphic {
 		nets = listConnectedSubgraphic(tasks, routes);
 	}
 
-	private <T> void addToList(List<T> src, T target) {
-		if (!src.contains(target) && target!=null) {
+	private <T> boolean addToList(List<T> src, T target) {
+		if (!src.contains(target) && target != null) {
 			src.add(target);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -51,9 +54,9 @@ public class Graphic {
 				removedIn.add(in.end2);
 			});
 		});
-		
+
 		ArrayList<Route> _temp = new ArrayList<>(routes);
-		
+
 		inputTasks.stream().filter(t -> !t.getSubTasks().isEmpty()).forEach(sum -> {
 			// 获得连出sumTaskd的连接
 			_temp.stream().filter(r -> sum.equals(r.end1)).forEach(out -> {
@@ -61,19 +64,30 @@ public class Graphic {
 				removedOut.add(out.end1);
 			});
 		});
-		
-		//去掉含总成的连接
-		routes.removeIf(r->!r.end1.getSubTasks().isEmpty()||!r.end2.getSubTasks().isEmpty());
-		
+
+		// 去掉含总成的连接
+		routes.removeIf(r -> !r.end1.getSubTasks().isEmpty() || !r.end2.getSubTasks().isEmpty());
+
 		List<NetworkDiagram> result = new ArrayList<NetworkDiagram>();
 		// 处理子图
 		for (int i = 0; i < routes.size(); i++) {
 			Route route = routes.get(i);
+			// 如果存在一个网络图包含这个路由的任意节点，需要跳过
+			boolean contains = result.stream()
+					.anyMatch(n -> !route.end1.equals(Task.startTask()) && !route.end2.equals(Task.endTask())
+							&& (n.tasks.contains(route.end1) || n.tasks.contains(route.end2)));
+			if (contains) {
+				continue;
+			}
+
 			final ArrayList<Route> _routes = new ArrayList<Route>();
 			_routes.add(route);
-			searchNextFromRoute(routes, route.end1).forEach(r -> addToList(_routes, r));
-			searchNextToRoute(routes, route.end2).forEach(r -> addToList(_routes, r));
 
+			Set<Task> nodes = new HashSet<Task>();
+			searchNextFromRoute(routes, route, _routes, nodes);
+
+			nodes = new HashSet<Task>();
+			searchNextToRoute(routes, route, _routes, nodes);
 			NetworkDiagram net = result.stream().filter(nd -> {
 				ArrayList<Route> temp = new ArrayList<>(nd.routes);
 				temp.retainAll(_routes);
@@ -95,7 +109,7 @@ public class Graphic {
 			}
 		}
 		// 处理孤立点
-		tasks.stream().filter(t -> !removedIn.contains(t) && !removedOut.contains(t)
+		tasks.stream().filter(t -> t.getSubTasks().isEmpty() && !removedIn.contains(t) && !removedOut.contains(t)
 				&& !result.stream().anyMatch(n -> n.tasks.contains(t))).forEach(_t -> {
 					NetworkDiagram nd = new NetworkDiagram(Arrays.asList(start, _t, end),
 							Arrays.asList(new Route(start, _t), new Route(_t, end)));
@@ -151,28 +165,47 @@ public class Graphic {
 		}
 	}
 
-	private List<Route> searchNextFromRoute(List<Route> routes, Task to) {
-		ArrayList<Route> result = new ArrayList<>();
-		List<Route> from = Arrays.asList(routes.stream().filter(r -> r.end2.equals(to)).toArray(Route[]::new));
-		if (!from.isEmpty()) {
-			result.addAll(from);
-			from.forEach(r -> result.addAll(searchNextFromRoute(routes, r.end1)));
-		} else {
-			result.add(new Route(start, to));
+	private void searchNextFromRoute(List<Route> routes, Route inputRoute, ArrayList<Route> _routes, Set<Task> nodes) {
+		Task to = inputRoute.end1;
+		nodes.add(inputRoute.end2);
+
+		Set<Route> _rt = new HashSet<Route>();
+		for (int i = 0; i < routes.size(); i++) {
+			Route r = routes.get(i);
+			if (r.end2.equals(to) && !nodes.contains(to)) {
+				if (addToList(_routes, r)) {
+					_rt.add(r);
+				}
+			}
 		}
-		return result;
+
+		if (_rt.isEmpty()) {
+			addToList(_routes, new Route(start, to));
+		} else {
+			_rt.stream().forEach(r -> searchNextFromRoute(routes, r, _routes, nodes));
+		}
+
 	}
 
-	private List<Route> searchNextToRoute(List<Route> routes, Task from) {
-		ArrayList<Route> result = new ArrayList<>();
-		List<Route> to = Arrays.asList(routes.stream().filter(r -> r.end1.equals(from)).toArray(Route[]::new));
-		if (!to.isEmpty()) {
-			result.addAll(to);
-			to.forEach(r -> result.addAll(searchNextToRoute(routes, r.end2)));
-		} else {
-			result.add(new Route(from, end));
+	private void searchNextToRoute(List<Route> routes, Route inputRoute, ArrayList<Route> _routes, Set<Task> nodes) {
+		Task from = inputRoute.end2;
+		nodes.add(inputRoute.end1);
+
+		Set<Route> _rt = new HashSet<Route>();
+		for (int i = 0; i < routes.size(); i++) {
+			Route r = routes.get(i);
+			if (r.end1.equals(from) && !nodes.contains(from)) {
+				if (addToList(_routes, r)) {
+					_rt.add(r);
+				}
+			}
 		}
-		return result;
+
+		if (_rt.isEmpty()) {
+			addToList(_routes, new Route(from, end));
+		} else {
+			_rt.stream().forEach(r -> searchNextToRoute(routes, r, _routes, nodes));
+		}
 	}
 
 	public void schedule() {
@@ -211,11 +244,11 @@ public class Graphic {
 			if (task.getLF() == null || task.getLF() < sub.getLF()) {
 				task.setLF(sub.getLF());
 			}
-			
-			task.setTF(task.getLS()-task.getES());
-			
-			task.setFF(0f);//总成工作无需计算FF
-			
+
+			task.setTF(task.getLS() - task.getES());
+
+			task.setFF(0f);// 总成工作无需计算FF
+
 		}
 
 		task.setD(task.getLF() - task.getLS());
@@ -267,7 +300,5 @@ public class Graphic {
 		cal.add(Calendar.DATE, (int) T);
 		return cal.getTime();
 	}
-	
-	
 
 }

@@ -213,7 +213,6 @@ public class GanttPart implements IPostSelectionProvider {
 	}
 
 	// private void testEvent(Event e1) {
-	// System.out.println(e1.text + e1);
 	// }
 
 	private void showRowMenu(Event e) {

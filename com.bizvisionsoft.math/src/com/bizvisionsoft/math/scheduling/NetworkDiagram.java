@@ -127,23 +127,27 @@ public class NetworkDiagram {
 		}
 		ergodic(task, false, route -> {
 			route.relations.forEach(rela -> {
-				if (route.end2.getLS() == null) {
-					calculateLatestFinish(route.end2);
-				}
-				float lf = 0;
-				if (rela.type == Relation.FTS) {
-					lf = route.end2.getLS() - rela.interval;
-				} else if (rela.type == Relation.FTF) {
-					lf = route.end2.getLF() - rela.interval;
-				} else if (rela.type == Relation.STF) {
-					lf = route.end2.getLF() - rela.interval + task.getD();
-				} else if (rela.type == Relation.STS) {
-					lf = route.end2.getLS() - rela.interval + task.getD();
-				}
-				task.updateLF(lf);
+				ergodic(task, route, rela);
 			});
 		});
 
+	}
+
+	private void ergodic(Task task, Route route, Relation rela) {
+		if (route.end2.getLS() == null) {
+			calculateLatestFinish(route.end2);
+		}
+		float lf = 0;
+		if (rela.type == Relation.FTS) {
+			lf = route.end2.getLS() - rela.interval;
+		} else if (rela.type == Relation.FTF) {
+			lf = route.end2.getLF() - rela.interval;
+		} else if (rela.type == Relation.STF) {
+			lf = route.end2.getLF() - rela.interval + task.getD();
+		} else if (rela.type == Relation.STS) {
+			lf = route.end2.getLS() - rela.interval + task.getD();
+		}
+		task.updateLF(lf);
 	}
 
 	private void calculateEarlestStart(Task task) {
