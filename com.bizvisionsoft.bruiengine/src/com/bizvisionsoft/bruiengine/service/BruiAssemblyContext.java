@@ -233,4 +233,67 @@ public class BruiAssemblyContext implements IBruiContext {
 		return new Object[] { contextInput, inputid, rootInput, rootInputId, user, user.getUserId() };
 	}
 
+	@Override
+	public <T> T search_sele_root(Class<T> clas) {
+		return search(clas, SEARCH_NO_HIERARCHY, SEARCH_STRATEGY_SELECTED,SEARCH_STRATEGY_ROOT_INPUT);
+	}
+	
+	@Override
+	public <T> T search(Class<T> clas, int dir, int... strategy) {
+		T result = null;
+		for (int i = 0; i < strategy.length; i++) {
+			switch (strategy[i]) {
+			case SEARCH_STRATEGY_ROOT_INPUT:
+				result = convertResult(clas, getRootInput());
+				if (result != null)
+					return result;
+				break;
+			case SEARCH_STRATEGY_SELECTED:
+				result = convertResult(clas,
+						Optional.ofNullable(getSelection()).map(s -> s.getFirstElement()).orElse(null));
+				if (result != null)
+					return result;
+				break;
+			case SEARCH_STRATEGY_INPUT:
+				result = convertResult(clas, getInput());
+				if (result != null)
+					return result;
+				break;
+			default:
+				break;
+			}
+		}
+
+		switch (dir) {
+		case SEARCH_UP:
+			IBruiContext parent = getParentContext();
+			while (parent != null) {
+				result = parent.search(clas, SEARCH_UP, strategy);
+				if (result != null) {
+					return result;
+				}
+				parent = getParentContext();
+			}
+			break;
+		case SEARCH_DOWN:
+			for (int i = 0; i < children.size(); i++) {
+				result = children.get(i).search(clas, SEARCH_UP, strategy);
+				if (result != null) {
+					return result;
+				}
+			}
+			break;
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T convertResult(Class<T> clas, Object data) {
+		if (data != null && clas.isAssignableFrom(data.getClass()))
+			return (T) data;
+		return null;
+	}
+
+
+
 }
