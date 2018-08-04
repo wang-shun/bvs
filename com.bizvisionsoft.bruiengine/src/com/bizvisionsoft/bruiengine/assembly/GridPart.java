@@ -132,7 +132,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		if (config.isGridPageControl()) {
 			int _limit = config.getGridPageCount();
 			if (_limit == 0) {
-				limit = 50;
+				limit = 30;
 			} else {
 				limit = _limit;
 			}
