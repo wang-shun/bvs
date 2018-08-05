@@ -9,7 +9,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.service.model.Command;
-import com.bizvisionsoft.service.model.CreationInfo;
+import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public interface IBruiService extends IServiceWithId {
@@ -48,7 +48,7 @@ public interface IBruiService extends IServiceWithId {
 
 	public void closeCurrentContent();
 
-	CreationInfo creationInfo();
+	OperationInfo operationInfo();
 	
 	public boolean confirm(String title, String message);
 

@@ -13,7 +13,7 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.model.Command;
-import com.bizvisionsoft.service.model.CreationInfo;
+import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiService implements IBruiService {
@@ -33,12 +33,19 @@ public class BruiService implements IBruiService {
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getUser();
 	}
+	
+	public User getCurrentConsignerInfo() {
+		return Brui.sessionManager.getConsigner();
+	}
 
-	public CreationInfo creationInfo() {
-		CreationInfo info = new CreationInfo();
+	public OperationInfo operationInfo() {
+		OperationInfo info = new OperationInfo();
 		User user = getCurrentUserInfo();
 		info.userId = user.getUserId();
 		info.userName = user.getName();
+		User consigner = getCurrentConsignerInfo();
+		info.consignerId = consigner.getUserId();
+		info.consignerName = consigner.getName();
 		info.date = new Date();
 		return info;
 	}
@@ -51,6 +58,11 @@ public class BruiService implements IBruiService {
 	public void loginUser() {
 		Brui.sessionManager.updateSessionUserInfo();
 	}
+	
+	public void consign(User user) {
+		Brui.sessionManager.setSessionUserInfo(user);
+	}
+
 
 	@Override
 	public String getResourceURL(String resPath) {
@@ -110,6 +122,10 @@ public class BruiService implements IBruiService {
 	public String getCurrentUserId() {
 		return getCurrentUserInfo().getUserId();
 	}
+	
+	public String getCurrentConsignerId() {
+		return getCurrentConsignerInfo().getUserId();
+	}
 
 	@Override
 	public boolean confirm(String title, String message) {
@@ -118,18 +134,20 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public Command command(ObjectId target_id, Date date, String name) {
-		return Command.newInstance(name, getCurrentUserId(), date, target_id);
+		return Command.newInstance(name, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
 	}
+
 
 	@Override
 	public Command command(ObjectId target_id, Date date) {
-		return Command.newInstance(null, getCurrentUserId(), date, target_id);
+		return Command.newInstance(null, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
 	}
 
 	@Override
 	public Command command(ObjectId target_id) {
-		return Command.newInstance(null, getCurrentUserId(), new Date(), target_id);
+		return Command.newInstance(null, getCurrentUserInfo(),getCurrentConsignerInfo(), new Date(), target_id);
 	}
+
 
 
 }

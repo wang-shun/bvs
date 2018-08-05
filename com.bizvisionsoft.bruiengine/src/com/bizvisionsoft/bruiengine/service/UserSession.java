@@ -155,6 +155,10 @@ public class UserSession {
 	void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
+	
+	void setConsignUser(User consignUser) {
+		this.consignUser = consignUser;
+	}
 
 	@ReadValue
 	private String remoteHost;
@@ -179,6 +183,8 @@ public class UserSession {
 
 	@ReadValue
 	private String requestSessionId;
+
+	private User consignUser;
 
 	@ReadValue("loginDuration")
 	private String getLoginDuration() {
@@ -218,6 +224,10 @@ public class UserSession {
 
 	public User getLoginUser() {
 		return loginUser;
+	}
+	
+	public User getConsigner() {
+		return consignUser;
 	}
 
 }

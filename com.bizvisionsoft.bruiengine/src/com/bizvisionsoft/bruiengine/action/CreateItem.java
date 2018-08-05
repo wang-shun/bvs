@@ -39,7 +39,7 @@ public class CreateItem {
 			//先检查注解
 			Object input = Platform.getBundle(bundleId).loadClass(className).newInstance();
 			//处理CreationInfo
-			AUtil.writeValue(input, assembly.getName(), WriteValue.CREATIONINFO, br.creationInfo());
+			AUtil.writeValue(input, assembly.getName(), WriteValue.CREATIONINFO, br.operationInfo());
 			String message = Optional.ofNullable(AUtil.readType(input)).orElse("");
 			Editor<?> editor = new Editor<Object>(assembly, context).setInput(input);
 			editor.setTitle("创建 " + message);

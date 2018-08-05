@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -49,15 +50,24 @@ public class SessionManager {
 		Object usrinfo = hs.getAttribute(ATT_USRINFO);
 		if (usrinfo != null && !usrinfo.equals(user))
 			throw new RuntimeException("必须以当前用户登录系统。");
-		else if (usrinfo!= null && usrinfo.equals(user))
+		else if (usrinfo != null && usrinfo.equals(user))
 			return;
-		
+
 		hs.setAttribute(ATT_USRINFO, user);
 		hs.setAttribute(ATT_LOGINTIME, new Date());
 
 		final UserSession session = UserSession.current();
 		session.setLoginUser(user);
 		session.setLoginTime(new Date());
+	}
+
+	public void setConsigner(User user) {
+		final UserSession session = UserSession.current();
+		session.setConsignUser(user);
+	}
+
+	public User getConsigner() {
+		return Optional.ofNullable(UserSession.current().getConsigner()).orElse(getUser());
 	}
 
 	public void updateSessionUserInfo() {
@@ -109,7 +119,6 @@ public class SessionManager {
 	}
 
 	public SessionManager stop() {
-
 		return this;
 	}
 

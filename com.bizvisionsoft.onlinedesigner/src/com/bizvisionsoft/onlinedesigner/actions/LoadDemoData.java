@@ -119,36 +119,45 @@ public class LoadDemoData {
 			System.out.println("检入工作");
 
 			// 启动
-			projectService.startProject(Command.newInstance("开始项目", "zh", start, project_id));
+			projectService.startProject(Command.newInstance("开始项目", "zh", "钟华", "zh", "钟华", start, project_id));
 			System.out.println("开始项目" + project);
 
-			projectService.distributeProjectPlan(Command.newInstance("下达项目计划", "zh", start, project_id));
+			projectService
+					.distributeProjectPlan(Command.newInstance("下达项目计划", "zh", "钟华", "zh", "钟华", start, project_id));
 			System.out.println("下达项目计划");
 
-			workService.startStage(Command.newInstance("启动阶段", "zh", stage1.getPlanStart(), stage1.get_id()));
-			workService.distributeWorkPlan(Command.newInstance("下达阶段计划", "zh", stage1.getPlanStart(), stage1.get_id()));
-			workService.startWork(Command.newInstance("开始工作", "zh", start, work1.get_id()));
+			workService.startStage(
+					Command.newInstance("启动阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanStart(), stage1.get_id()));
+			workService.distributeWorkPlan(
+					Command.newInstance("下达阶段计划", "zh", "钟华", "zh", "钟华", stage1.getPlanStart(), stage1.get_id()));
+			workService.startWork(Command.newInstance("开始工作", "zh", "钟华", "zh", "钟华", start, work1.get_id()));
 			System.out.println("开始工作" + work1);
-			workService.finishWork(Command.newInstance("完成工作", "zh", finish, work1.get_id()));
+			workService.finishWork(Command.newInstance("完成工作", "zh", "钟华", "zh", "钟华", finish, work1.get_id()));
 			System.out.println("完成工作" + work1);
-			workService.finishStage(Command.newInstance("完成阶段", "zh", stage1.getPlanFinish(), stage1.get_id()));
-			workService.closeStage(Command.newInstance("关闭阶段", "zh", stage1.getPlanFinish(), stage1.get_id()));
+			workService.finishStage(
+					Command.newInstance("完成阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanFinish(), stage1.get_id()));
+			workService.closeStage(
+					Command.newInstance("关闭阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanFinish(), stage1.get_id()));
 
-			workService.startStage(Command.newInstance("启动阶段", "zh", stage2.getPlanStart(), stage2.get_id()));
-			workService.distributeWorkPlan(Command.newInstance("下达阶段计划", "zh", stage2.getPlanStart(), stage2.get_id()));
-			workService.startWork(Command.newInstance("开始工作", "zh", start, work2.get_id()));
+			workService.startStage(
+					Command.newInstance("启动阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanStart(), stage2.get_id()));
+			workService.distributeWorkPlan(
+					Command.newInstance("下达阶段计划", "zh", "钟华", "zh", "钟华", stage2.getPlanStart(), stage2.get_id()));
+			workService.startWork(Command.newInstance("开始工作", "zh", "钟华", "zh", "钟华", start, work2.get_id()));
 			System.out.println("开始工作" + work2);
-			workService.finishWork(Command.newInstance("完成工作", "zh", finish, work2.get_id()));
+			workService.finishWork(Command.newInstance("完成工作", "zh", "钟华", "zh", "钟华", finish, work2.get_id()));
 			System.out.println("完成工作" + work2);
-			workService.finishStage(Command.newInstance("完成阶段", "zh", stage2.getPlanFinish(), stage2.get_id()));
-			workService.closeStage(Command.newInstance("关闭阶段", "zh", stage2.getPlanFinish(), stage2.get_id()));
+			workService.finishStage(
+					Command.newInstance("完成阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanFinish(), stage2.get_id()));
+			workService.closeStage(
+					Command.newInstance("关闭阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanFinish(), stage2.get_id()));
 
 			createProjectBudgetAndCost(project, start, finish);
 
-			projectService.finishProject(Command.newInstance("完成项目", "zh", finish, project_id));
+			projectService.finishProject(Command.newInstance("完成项目", "zh", "钟华", "zh", "钟华", finish, project_id));
 			System.out.println("完成项目:" + project);
 
-			projectService.closeProject(Command.newInstance("关闭项目:", "zh", finish, project_id));
+			projectService.closeProject(Command.newInstance("关闭项目:", "zh", "钟华", "zh", "钟华", finish, project_id));
 			System.out.println("关闭项目:" + project);
 
 			project = projectService.get(project_id);

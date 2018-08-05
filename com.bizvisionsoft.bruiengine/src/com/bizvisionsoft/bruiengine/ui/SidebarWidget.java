@@ -36,6 +36,11 @@ import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
+import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.datatools.Query;
+import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.serviceconsumer.Services;
+import com.mongodb.BasicDBObject;
 
 public class SidebarWidget {
 
@@ -210,7 +215,7 @@ public class SidebarWidget {
 
 		createHomeToolitem(bar);
 
-		createUserSettingToolitem(bar);
+		createSwitchConsignUserToolitem(bar);
 
 		sidebar.getToolbarItems().forEach(a -> {
 			Label btn = new Label(bar, SWT.NONE);
@@ -263,15 +268,45 @@ public class SidebarWidget {
 		});
 	}
 
-	private void createUserSettingToolitem(Composite bar) {
+	private void createSwitchConsignUserToolitem(Composite bar) {
+		BasicDBObject condition = new Query().filter(new BasicDBObject("consigner", service.getCurrentUserId())).bson();
+		List<User> users = Services.get(UserService.class).createDataSet(condition);
+		if (users.isEmpty()) {
+			return;
+		}
 		Composite btn = new Composite(bar, SWT.NONE);
-		btn.setToolTipText("用户设置");
+		btn.setToolTipText("切换代管账户");
 		btn.setLayoutData(new RowData(24, 24));
 		WidgetHandler.getHandler(btn).setHtmlContent(
 				"<i class='layui-icon layui-icon-user' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
 
 		btn.addListener(SWT.MouseDown, e -> {
+			if (users.size() == 1) {
+				switchUser(users.get(0));
+			} else {
+				ActionMenu actionMenu = new ActionMenu(service);
+				List<Action> actions = new ArrayList<>();
+				users.forEach(user -> {
+					Action action = new Action();
+					String id = user.getUserId();
+					action.setName(id);
+					action.setText("代管账户<br/>" + user.getName() + " [" + user.getUserId() + "]");
+					action.setStyle("normal");
+					actions.add(action);
+					actionMenu.handleActionExecute(id, a -> {
+						switchUser(user);
+						return false;
+					});
+				});
+				actionMenu.setActions(actions).open();
+			}
 		});
+	}
+
+	private void switchUser(User user) {
+		if (service.confirm("代管账户", "请确认将要切换到代管账户：" + user)) {
+			service.consign(user);
+		}
 	}
 
 	private void createPackSidebarToolitem(Composite bar) {
