@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -22,7 +23,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
@@ -199,23 +203,75 @@ public class SidebarWidget {
 		layout.marginRight = 4;
 		layout.marginHeight = 12;
 		layout.marginWidth = 0;
-		layout.spacing = 24;
+		layout.spacing = 12;
 		bar.setLayout(layout);
 
 		createPackSidebarToolitem(bar);
+
+		createHomeToolitem(bar);
+
+		createUserSettingToolitem(bar);
 
 		sidebar.getToolbarItems().forEach(a -> {
 			Label btn = new Label(bar, SWT.NONE);
 			btn.setToolTipText(a.getTooltips());
 			bruiToolkit.enableMarkup(btn);
 			btn.setText("<img alter='packButton' src='" + service.getResourceURL(a.getImage())
-					+ "' style='cursor:pointer;' width='24px' height='24px'></img>");
+					+ "' style='cursor:pointer;' width='20px' height='20px'></img>");
 			btn.setLayoutData(new RowData(24, 24));
 			btn.addListener(SWT.MouseDown, e -> {
 				run(a, e);
 			});
 		});
 		return bar;
+	}
+
+	private void createHomeToolitem(Composite bar) {
+		final List<AssemblyLink> pageContents = PermissionUtil.listRolebasedPageContents(service.getCurrentUserInfo(),
+				view.getPage(), context.getRootInput());
+		if (pageContents.isEmpty()) {
+			return;
+		}
+
+		final Composite btn = new Composite(bar, SWT.NONE);
+		btn.setLayoutData(new RowData(24, 24));
+		WidgetHandler.getHandler(btn).setHtmlContent(
+				"<i class='layui-icon layui-icon-app' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
+
+		btn.addListener(SWT.MouseDown, e -> {
+			if (pageContents.size() == 1) {
+				service.switchContent(pageContents.get(0).getName(), null);
+			} else {
+				ActionMenu actionMenu = new ActionMenu(service);
+				List<Action> actions = new ArrayList<>();
+				pageContents.forEach(al -> {
+					Action action = new Action();
+					String id = al.getId();
+					final Assembly assm = ModelLoader.site.getAssembly(id);
+					action.setName(id);
+					action.setText(al.getText());
+					action.setImage(al.getImage());
+					action.setStyle("normal");
+					actions.add(action);
+					actionMenu.handleActionExecute(id, a -> {
+						service.switchContent(assm, null);
+						return false;
+					});
+				});
+				actionMenu.setActions(actions).open();
+			}
+		});
+	}
+
+	private void createUserSettingToolitem(Composite bar) {
+		Composite btn = new Composite(bar, SWT.NONE);
+		btn.setToolTipText("”√ªß…Ë÷√");
+		btn.setLayoutData(new RowData(24, 24));
+		WidgetHandler.getHandler(btn).setHtmlContent(
+				"<i class='layui-icon layui-icon-user' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
+
+		btn.addListener(SWT.MouseDown, e -> {
+		});
 	}
 
 	private void createPackSidebarToolitem(Composite bar) {
@@ -241,10 +297,10 @@ public class SidebarWidget {
 		String content;
 		if (packed) {
 			text = "’πø™≤‡±ﬂ¿∏";
-			content = "<i class='layui-icon layui-icon-spread-left' style='font-size:20px;color:#ffffff;'></i>";
+			content = "<i class='layui-icon layui-icon-spread-left' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>";
 		} else {
 			text = "’€µ˛≤‡±ﬂ¿∏";
-			content = "<i class='layui-icon layui-icon-shrink-right' style='font-size:20px;color:#ffffff;'></i>";
+			content = "<i class='layui-icon layui-icon-shrink-right' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>";
 		}
 
 		btn.setToolTipText(text);

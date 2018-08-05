@@ -71,5 +71,24 @@ public class AssemblyLink extends ModelObject{
 		return excludeRole;
 	}
 	
+	private String image;
+	
+	private String text;
+	
+	public String getImage() {
+		return image;
+	}
+	
+	public String getText() {
+		return text;
+	}
+	
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
+	}
 
 }

@@ -42,6 +42,14 @@ public class PermissionUtil {
 	}
 	
 	public static Assembly getRolebasedPageContent(User user,Page page, Object iac) {
+		List<AssemblyLink> matched = listRolebasedPageContents(user, page, iac);
+		Assert.isLegal(!matched.isEmpty(), "缺少对应角色的内容区组件。");
+		Assembly assembly = ModelLoader.site.getAssembly(matched.get(0).getId());
+		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
+		return assembly;
+	}
+
+	public static List<AssemblyLink> listRolebasedPageContents(User user, Page page, Object iac) {
 		List<AssemblyLink> links = page.getContentArea().getAssemblyLinks();
 		Assert.isTrue(links != null && links.size() > 0, "缺少内容区组件。");
 
@@ -74,10 +82,7 @@ public class PermissionUtil {
 		if(matched.isEmpty()) {
 			matched.addAll(defaultLink);
 		}
-		Assert.isLegal(!matched.isEmpty(), "缺少对应角色的内容区组件。");
-		Assembly assembly = ModelLoader.site.getAssembly(matched.get(0).getId());
-		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
-		return assembly;
+		return matched;
 	}
 	
 	public static boolean checkAction(User user,Action action,IBruiContext context) {
