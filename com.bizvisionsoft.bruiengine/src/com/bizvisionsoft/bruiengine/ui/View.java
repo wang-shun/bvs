@@ -55,8 +55,7 @@ public class View extends Part {
 		this.context = UserSession.newAssemblyContext();
 		this.context.setInput(input);
 
-		sidebarWidget = new SidebarWidget(page.getSidebar(), service, context);
-
+		sidebarWidget = new SidebarWidget(this,page.getSidebar(), service, context);
 	}
 
 	@Override
@@ -182,6 +181,25 @@ public class View extends Part {
 
 	public Page getPage() {
 		return page;
+	}
+
+	public void packSidebar(boolean packed) {
+		FormData fd = new FormData();
+		if(packed) {
+			sidebar.setLayoutData(fd);
+			fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
+			fd.left = new FormAttachment();
+			fd.width = 48;
+			fd.bottom = footbar != null ? new FormAttachment(footbar) : new FormAttachment(100);
+		}else {
+			fd = new FormData();
+			sidebar.setLayoutData(fd);
+			fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
+			fd.left = new FormAttachment();
+			fd.width = page.getSidebar().getWidth();
+			fd.bottom = footbar != null ? new FormAttachment(footbar) : new FormAttachment(100);
+		}
+		parent.layout(true);
 	}
 
 }

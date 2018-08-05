@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
@@ -83,7 +84,20 @@ public class SidebarWidget {
 
 	private BruiAssemblyContext context;
 
-	public SidebarWidget(Sidebar sidebar, BruiService service, BruiAssemblyContext parentContext) {
+	private boolean packed;
+
+	private View view;
+
+	private Composite packButton;
+
+	private Control menu;
+
+	private Control toolbar;
+
+	private Control header;
+
+	public SidebarWidget(View view, Sidebar sidebar, BruiService service, BruiAssemblyContext parentContext) {
+		this.view = view;
 		this.sidebar = sidebar;
 		this.service = service;
 		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext));
@@ -95,12 +109,51 @@ public class SidebarWidget {
 
 	public SidebarWidget createUI(Composite parent) {
 		panel = new Composite(parent, SWT.NONE);
+		panel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 		panel.setLayout(new FormLayout());
-		Control header = null;
 		header = createHeader(panel);
-		Control menu = createSidebarMenu(panel);
-		Control toolbar = createToolbar(panel);
+		menu = createSidebarMenu(panel);
+		toolbar = createToolbar(panel);
+		layout();
+		return this;
+	}
 
+	private void layout() {
+		if (packed) {
+			packedLayout();
+		} else {
+			extendLayout();
+		}
+	}
+
+	private void packedLayout() {
+		FormData fd;
+		if (header != null) {
+			fd = new FormData();
+			header.setLayoutData(fd);
+			fd.top = new FormAttachment();
+			fd.left = new FormAttachment();
+			fd.right = new FormAttachment(100);
+			fd.height = 48;
+			fd.width = 48;
+		}
+
+		if (toolbar != null) {
+			fd = new FormData();
+			toolbar.setLayoutData(fd);
+			fd.bottom = new FormAttachment(100);
+			fd.left = new FormAttachment();
+			fd.width = 48;
+			fd.height = 48;
+		}
+
+		fd = new FormData();
+		menu.setLayoutData(fd);
+		fd.width = 0;
+		fd.height = 0;
+	}
+
+	private void extendLayout() {
 		FormData fd;
 		if (header != null) {
 			fd = new FormData();
@@ -128,7 +181,6 @@ public class SidebarWidget {
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 
-		return this;
 	}
 
 	public Composite getControl() {
@@ -139,21 +191,24 @@ public class SidebarWidget {
 		Composite bar = new Composite(parent, SWT.NONE);
 		bar.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		bar.setBackground(BruiColors.getColor(BruiColor.Grey_900));
-		bar.setOrientation(SWT.RIGHT_TO_LEFT);
+		// bar.setOrientation(SWT.RIGHT_TO_LEFT);
 		RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 		layout.marginTop = 0;
-		layout.marginLeft = 0;
+		layout.marginLeft = 12;
 		layout.marginBottom = 0;
-		layout.marginRight = 0;
+		layout.marginRight = 4;
 		layout.marginHeight = 12;
-		layout.marginWidth = 12;
+		layout.marginWidth = 0;
 		layout.spacing = 24;
 		bar.setLayout(layout);
+
+		createPackSidebarToolitem(bar);
+
 		sidebar.getToolbarItems().forEach(a -> {
 			Label btn = new Label(bar, SWT.NONE);
 			btn.setToolTipText(a.getTooltips());
 			bruiToolkit.enableMarkup(btn);
-			btn.setText("<img alter='btn' src='" + service.getResourceURL(a.getImage())
+			btn.setText("<img alter='packButton' src='" + service.getResourceURL(a.getImage())
 					+ "' style='cursor:pointer;' width='24px' height='24px'></img>");
 			btn.setLayoutData(new RowData(24, 24));
 			btn.addListener(SWT.MouseDown, e -> {
@@ -161,6 +216,39 @@ public class SidebarWidget {
 			});
 		});
 		return bar;
+	}
+
+	private void createPackSidebarToolitem(Composite bar) {
+		packButton = new Composite(bar, SWT.NONE);
+		packButton.setLayoutData(new RowData(24, 24));
+		updatePackButtonLabel(packButton);
+
+		packButton.addListener(SWT.MouseDown, e -> {
+			packed = !packed;
+			pack();
+		});
+
+	}
+
+	private void pack() {
+		updatePackButtonLabel(packButton);
+		layout();
+		view.packSidebar(packed);
+	}
+
+	private void updatePackButtonLabel(final Composite btn) {
+		String text;
+		String content;
+		if (packed) {
+			text = "Õ¹¿ª²à±ßÀ¸";
+			content = "<i class='layui-icon layui-icon-spread-left' style='font-size:20px;color:#ffffff;'></i>";
+		} else {
+			text = "ÕÛµþ²à±ßÀ¸";
+			content = "<i class='layui-icon layui-icon-shrink-right' style='font-size:20px;color:#ffffff;'></i>";
+		}
+
+		btn.setToolTipText(text);
+		WidgetHandler.getHandler(btn).setHtmlContent(content);
 	}
 
 	private void run(Action action, Event e) {
