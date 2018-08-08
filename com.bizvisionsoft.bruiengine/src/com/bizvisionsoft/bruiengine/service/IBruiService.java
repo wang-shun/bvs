@@ -53,9 +53,4 @@ public interface IBruiService extends IServiceWithId {
 	public boolean confirm(String title, String message);
 
 	Command command(ObjectId target_id,Date date,String name);
-
-	Command command(ObjectId target_id,Date date);
-
-	Command command(ObjectId target_id);
-
 }

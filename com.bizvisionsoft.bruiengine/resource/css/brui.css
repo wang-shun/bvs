@@ -228,3 +228,13 @@
   font-weight: lighter;
 }
 
+.level1_task {
+	border: 1px solid #303f9f !important;
+	background: #5c6bc0 !important;
+}
+
+.level2_task {
+	border: 1px solid #0288d1 !important;
+	background: #03a9f4 !important;
+}
+

@@ -137,17 +137,4 @@ public class BruiService implements IBruiService {
 		return Command.newInstance(name, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
 	}
 
-
-	@Override
-	public Command command(ObjectId target_id, Date date) {
-		return Command.newInstance(null, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
-	}
-
-	@Override
-	public Command command(ObjectId target_id) {
-		return Command.newInstance(null, getCurrentUserInfo(),getCurrentConsignerInfo(), new Date(), target_id);
-	}
-
-
-
 }
