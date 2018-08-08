@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.service.model.Result;
 
-public class ResultHandler {
+public class CommandHandler {
 
 	public static final int OK = 0;
 
@@ -55,7 +55,7 @@ public class ResultHandler {
 			returnType = OK;
 		} else {
 			if (hasError) {
-				MessageDialog.openError(shell, title, message + "<br>" + failureMsg);
+				MessageDialog.openError(shell, failureMsg, message );
 				returnType = ERROR;
 			} else if (hasWarning) {
 				if (continueProcess != null) {
@@ -86,9 +86,9 @@ public class ResultHandler {
 			return;
 		}
 		if (doConfirmed != null) {
-			int code = ResultHandler.handle(runWithCheck.get(), title, successMsg, failureMsg, c -> {
+			int code = CommandHandler.handle(runWithCheck.get(), title, successMsg, failureMsg, c -> {
 				if (CONTINUE == c) {
-					int _r = ResultHandler.handle(doConfirmed.get(), title, successMsg, failureMsg);
+					int _r = CommandHandler.handle(doConfirmed.get(), title, successMsg, failureMsg);
 					if (_r == OK || _r == WARNING)
 						return OK;
 				}
@@ -97,7 +97,7 @@ public class ResultHandler {
 			if (OK == code)
 				doOK.accept(OK);
 		} else {
-			if (OK == ResultHandler.handle(runWithCheck.get(), title, successMsg, failureMsg))
+			if (OK == CommandHandler.handle(runWithCheck.get(), title, successMsg, failureMsg))
 				doOK.accept(OK);
 		}
 	}
