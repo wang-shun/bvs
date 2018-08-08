@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.util;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -9,7 +10,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.bizivisionsoft.widgets.util.Layer;
-import com.bizvisionsoft.service.model.ICommand;
 import com.bizvisionsoft.service.model.Result;
 
 public class ResultHandler {
@@ -29,7 +29,7 @@ public class ResultHandler {
 	}
 
 	public static int handle(List<Result> result, String title, String successMsg, String failureMsg,
-			Consumer<Integer> continueProcess) {
+			Function<Integer, Integer> continueProcess) {
 		Shell shell = Display.getCurrent().getActiveShell();
 
 		boolean hasError = false;
@@ -40,12 +40,12 @@ public class ResultHandler {
 			for (Result r : result)
 				if (Result.TYPE_ERROR == r.type) {
 					hasError = true;
-					message += "错误：" + r.message + "<br>";
+					message += "<span class='layui-badge'>错误</span> " + r.message + "<br>";
 				} else if (Result.TYPE_WARNING == r.type) {
-					hasError = true;
-					message += "警告：" + r.message + "<br>";
+					hasWarning = true;
+					message += "<span class='layui-badge layui-bg-orange'>警告</span> " + r.message + "<br>";
 				} else {
-					message += "信息：" + r.message + "<br>";
+					message += "<span class='layui-badge layui-bg-blue'>信息</span> " + r.message + "<br>";
 				}
 		}
 
@@ -55,23 +55,23 @@ public class ResultHandler {
 			returnType = OK;
 		} else {
 			if (hasError) {
-				MessageDialog.openError(shell, title, message + "<br><br>" + failureMsg);
+				MessageDialog.openError(shell, title, message + "<br>" + failureMsg);
 				returnType = ERROR;
 			} else if (hasWarning) {
 				if (continueProcess != null) {
-					boolean confirm = MessageDialog.openQuestion(shell, title, message + "<br><br>是否继续？");
+					boolean confirm = MessageDialog.openQuestion(shell, title, message + "<br>是否继续？");
 					if (confirm) {
 						returnType = CONTINUE;
 					} else {
 						returnType = CANCEL;
 					}
-					continueProcess.accept(returnType);
+					returnType = continueProcess.apply(returnType);
 				} else {
-					MessageDialog.openWarning(shell, title, message + "<br><br>");
+					MessageDialog.openWarning(shell, title, message);
 					returnType = WARNING;
 				}
 			} else {
-				MessageDialog.openInformation(shell, title, message + "<br><br>" + successMsg);
+				MessageDialog.openInformation(shell, title, message);
 				returnType = OK;
 			}
 		}
@@ -79,18 +79,32 @@ public class ResultHandler {
 		return returnType;
 	}
 
-	public static void run(String title, String successMsg, String failureMsg, Supplier<List<Result>> doCheck,
-			Supplier<List<Result>> doConfirmed, Consumer<Integer> switchPage) {
-		List<Result> result = doCheck.get();
-		ResultHandler.handle(result, title, successMsg, failureMsg, c -> {
-			if (ResultHandler.CONTINUE == c) {
-				List<Result> _result = doConfirmed.get();
-				int _r = ResultHandler.handle(_result, ICommand.Start_Project, successMsg, failureMsg);
-				if (_r == ResultHandler.OK || _r == ResultHandler.WARNING) {
-					switchPage.accept(_r);
+	public static void run(String title, String confirmMsg, String successMsg, String failureMsg,
+			Supplier<List<Result>> runWithCheck, Supplier<List<Result>> doConfirmed, Consumer<Integer> doOK) {
+		Shell shell = Display.getCurrent().getActiveShell();
+		if (!MessageDialog.openConfirm(shell, title, confirmMsg)) {
+			return;
+		}
+		if (doConfirmed != null) {
+			int code = ResultHandler.handle(runWithCheck.get(), title, successMsg, failureMsg, c -> {
+				if (CONTINUE == c) {
+					int _r = ResultHandler.handle(doConfirmed.get(), title, successMsg, failureMsg);
+					if (_r == OK || _r == WARNING)
+						return OK;
 				}
-			}
-		});
+				return c;
+			});
+			if (OK == code)
+				doOK.accept(OK);
+		} else {
+			if (OK == ResultHandler.handle(runWithCheck.get(), title, successMsg, failureMsg))
+				doOK.accept(OK);
+		}
+	}
+
+	public static void run(String title, String confirmMsg, String successMsg, String failureMsg,
+			Supplier<List<Result>> runWithCheck, Consumer<Integer> doOK) {
+		run(title, confirmMsg, successMsg, failureMsg, runWithCheck, null, doOK);
 	}
 
 }
