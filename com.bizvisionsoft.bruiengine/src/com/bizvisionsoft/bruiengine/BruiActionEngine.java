@@ -21,6 +21,7 @@ import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
+import com.bizvisionsoft.bruiengine.service.TraceUserUtil;
 import com.bizvisionsoft.bruiengine.util.Util;
 
 public class BruiActionEngine extends BruiEngine {
@@ -115,7 +116,7 @@ public class BruiActionEngine extends BruiEngine {
 		if (!PermissionUtil.checkAction(Brui.sessionManager.getUser(), action, context)) {
 			return;
 		}
-
+		TraceUserUtil.traceAction(action,context);
 		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
 				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,

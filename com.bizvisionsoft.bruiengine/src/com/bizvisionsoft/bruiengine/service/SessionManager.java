@@ -61,11 +61,14 @@ public class SessionManager {
 		final UserSession session = UserSession.current();
 		session.setLoginUser(user);
 		session.setLoginTime(new Date());
+		
+		TraceUserUtil.trace("登录系统");
 	}
 
 	public void logout() {
 		clearSessionUserInfo();
 		UserSession.current().getEntryPoint().home();
+		TraceUserUtil.trace("登出系统");
 	}
 
 	private void clearSessionUserInfo() {
@@ -91,6 +94,7 @@ public class SessionManager {
 		session.setLoginUser(user);
 		session.setConsignUser(loginUser);
 		UserSession.current().getEntryPoint().home();
+		TraceUserUtil.trace("代理用户");
 	}
 
 	public User getConsigner() {
@@ -100,7 +104,7 @@ public class SessionManager {
 	public void updateSessionUserInfo() {
 		HttpSession hs = RWT.getRequest().getSession();
 		User user = (User) hs.getAttribute(ATT_USRINFO);
-		User consigner = (User)hs.getAttribute(ATT_CONSIGNINFO);
+		User consigner = (User) hs.getAttribute(ATT_CONSIGNINFO);
 		Date date = (Date) hs.getAttribute(ATT_LOGINTIME);
 
 		UserSession session = UserSession.current();
