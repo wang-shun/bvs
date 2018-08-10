@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -323,9 +322,8 @@ public class Util {
 		return Util.getFormatText(budget, MONEY_NUMBER_FORMAT, RWT.getLocale());
 	}
 
-	public static String getRandomHTMLDarkColor() {
-		int idx = new Random().nextInt(BruiColors.deepColor.length - 1 - 0);
-		return BruiColors.getHtmlColor(BruiColors.deepColor[idx].getRgb());
+	public static String getHTMLDarkColor(Object seed) {
+		return BruiColors.getHtmlColor(BruiColors.deepColor[seed.hashCode()%BruiColors.deepColor.length].getRgb());
 	}
 
 	// i, u, v都不做声母, 跟随前面的字母

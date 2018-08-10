@@ -12,6 +12,7 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -231,7 +232,7 @@ public class SidebarWidget {
 		return bar;
 	}
 
-	private void createHomeToolitem(Composite bar) {
+	private void createHomeToolitem(final Composite bar) {
 		final List<AssemblyLink> pageContents = PermissionUtil.listRolebasedPageContents(service.getCurrentUserInfo(),
 				view.getPage(), context.getRootInput());
 		if (pageContents.isEmpty()) {
@@ -247,7 +248,7 @@ public class SidebarWidget {
 			if (pageContents.size() == 1) {
 				service.switchContent(pageContents.get(0).getName(), null);
 			} else {
-				ActionMenu actionMenu = new ActionMenu(service);
+				ListMenu actionMenu = new ListMenu(service);
 				List<Action> actions = new ArrayList<>();
 				pageContents.forEach(al -> {
 					Action action = new Action();
@@ -263,7 +264,10 @@ public class SidebarWidget {
 						return false;
 					});
 				});
-				actionMenu.setActions(actions).open();
+				actionMenu.setActions(actions)//
+						.setSize(size -> new Point(bar.getSize().x, size.y))
+						.setLocation(size -> new Point(0, btn.toDisplay(0, 0).y - size.y - 16))//
+						.open();
 			}
 		});
 	}

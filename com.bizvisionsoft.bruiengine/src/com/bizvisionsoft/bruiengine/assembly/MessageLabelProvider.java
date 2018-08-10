@@ -42,17 +42,18 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 	private String getMessageText(Object element) {
 		StringBuffer sb = new StringBuffer();
 
-		// Boolean read = Boolean.TRUE.equals(AUtil.readValue(element, cName, "是否已读",
-		// true));
+		Boolean read = Boolean.TRUE.equals(AUtil.readValue(element, cName, "是否已读", false));
 		// String url = (String) AUtil.readValue(element, cName, "链接", null);
 		// String receiver = (String) AUtil.readValue(element, cName, "接收者", null);
 
-		// TODO 是否已读
-
 		// 头像
-		sb.append("<div style='height:74px;display:block;'>");
+		if(read) {
+			sb.append("<div style='height:74px;display:block;cursor:pointer;'>");
+		}else {
+			sb.append("<div style='font-weight:bold;height:74px;display:block;cursor:pointer;'>");
+		}
 		String sender = (String) AUtil.readValue(element, cName, "发送者", null);
-		String senderName = sender;//.substring(0, sender.indexOf("[")).trim();
+		String senderName = sender;// .substring(0, sender.indexOf("[")).trim();
 		String headPicURL = (String) AUtil.readValue(element, cName, "头像", null);
 		if (headPicURL != null) {
 			sb.append("<img src=" + headPicURL
@@ -61,21 +62,22 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 			try {
 				String alpha = Util.getAlphaString(senderName);
 				headPicURL = "/bvs/svg?text=" + URLEncoder.encode(alpha, "utf-8") + "&color=ffffff";
-				sb.append("<img src=" + headPicURL + " style='float:left;margin-top:4px;margin-left:4px;background-color:"
-						+ Util.getRandomHTMLDarkColor() + ";border-radius:28px;width:48px;height:48px;'/>");
+				sb.append(
+						"<img src=" + headPicURL + " style='float:left;margin-top:4px;margin-left:4px;background-color:"
+								+ Util.getHTMLDarkColor(alpha) + ";border-radius:28px;width:48px;height:48px;'/>");
 			} catch (UnsupportedEncodingException e) {
 			}
 		}
 
-		sb.append("<div style='float:right;'><span>" + senderName +  "</span>&nbsp;&nbsp;&nbsp;");
+		sb.append("<div style='float:right;'><span>" + senderName + "</span>&nbsp;&nbsp;&nbsp;");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("<span'>"+Util.getFormatText(sendDate, Util.DATE_FORMAT_DATE, RWT.getLocale()) +"</span></div>");
+		sb.append("<span>" + Util.getFormatText(sendDate, Util.DATE_FORMAT_DATE, RWT.getLocale()) + "</span></div>");
 
 		// 内容区
 		sb.append("<div style='margin-left:64px'>");
 
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
-		sb.append("<div class='label_title'>" + subject + "</div>");
+		sb.append("<div class='label_subhead''>" + subject + "</div>");
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
 		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;'>" + content + "</div>");
 

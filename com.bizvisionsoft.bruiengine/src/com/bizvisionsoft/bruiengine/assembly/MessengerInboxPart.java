@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
@@ -178,7 +179,45 @@ public class MessengerInboxPart implements IQueryEnable {
 
 		context.setSelectionProvider(viewer);
 
+		viewer.addPostSelectionChangedListener(c -> {
+			open(c.getStructuredSelection().getFirstElement());
+		});
+
 		return grid;
+	}
+
+	private void open(Object element) {
+		if (element == null) {
+			return;
+		}
+		String cName = this.config.getName();
+		StringBuffer sb = new StringBuffer();
+
+		// 头像
+		sb.append("<div style='display:block;'>");
+		String sender = (String) AUtil.readValue(element, cName, "发送者", null);
+		String senderName = sender;// .substring(0, sender.indexOf("[")).trim();
+
+		// 内容区
+		sb.append("<div  class='label_subhead'> ");
+
+		String subject = (String) AUtil.readValue(element, cName, "标题", null);
+		sb.append("<div style='font-weight:bold;'>" + subject + "</div>");
+		sb.append("<div>发送者：" + senderName + "&nbsp;&nbsp;&nbsp;");
+		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
+		sb.append("发送日期：" + Util.getFormatText(sendDate, Util.DATE_FORMAT_DATE, RWT.getLocale()) + "</div>");
+		sb.append("</div>");
+
+		String content = (String) AUtil.readValue(element, cName, "内容", null);
+		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;;margin-top:8px'>" + content + "</div>");
+
+		sb.append("</div>");
+		Layer.alert(sb.toString(), 460, 300);
+		
+		Object _id = AUtil.readValue(element, cName, "_id", null);
+		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id));
+		AUtil.writeValue(element, cName, "是否已读", true);
+		viewer.update(element, null);
 	}
 
 	protected GridTreeViewer createGridViewer(Composite parent) {
@@ -251,7 +290,6 @@ public class MessengerInboxPart implements IQueryEnable {
 	public Assembly getConfig() {
 		return config;
 	}
-
 
 	public void setCount(long count) {
 		this.count = count;
