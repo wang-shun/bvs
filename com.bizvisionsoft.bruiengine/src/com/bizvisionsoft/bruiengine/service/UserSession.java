@@ -222,7 +222,7 @@ public class UserSession {
 		return result;
 	}
 
-	public User getLoginUser() {
+	public User getUser() {
 		return loginUser;
 	}
 	

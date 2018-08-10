@@ -60,9 +60,13 @@ public class BruiService implements IBruiService {
 	}
 	
 	public void consign(User user) {
-		Brui.sessionManager.setSessionUserInfo(user);
+		Brui.sessionManager.consign(user);
 	}
-
+	
+	public void logout() {
+		Brui.sessionManager.logout();
+		
+	}
 
 	@Override
 	public String getResourceURL(String resPath) {
@@ -136,5 +140,7 @@ public class BruiService implements IBruiService {
 	public Command command(ObjectId target_id, Date date, String name) {
 		return Command.newInstance(name, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
 	}
+
+
 
 }

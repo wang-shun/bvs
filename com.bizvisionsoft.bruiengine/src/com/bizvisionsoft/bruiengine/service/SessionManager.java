@@ -21,6 +21,8 @@ public class SessionManager {
 
 	public static final String ATT_LOGINTIME = "logintime";
 
+	private static final String ATT_CONSIGNINFO = "cuseinfo";
+
 	public List<UserSession> userSessions = new ArrayList<UserSession>();
 
 	public List<UserSession> getUserSessions() {
@@ -61,9 +63,34 @@ public class SessionManager {
 		session.setLoginTime(new Date());
 	}
 
-	public void setConsigner(User user) {
+	public void logout() {
+		clearSessionUserInfo();
+		UserSession.current().getEntryPoint().home();
+	}
+
+	private void clearSessionUserInfo() {
+		HttpSession hs = RWT.getRequest().getSession();
+		hs.removeAttribute(ATT_USRINFO);
+		hs.removeAttribute(ATT_CONSIGNINFO);
+		hs.removeAttribute(ATT_LOGINTIME);
+
+		UserSession session = UserSession.current();
+		session.setLoginUser(null);
+		session.setConsignUser(null);
+		session.setLoginTime(null);
+	}
+
+	public void consign(User user) {
 		final UserSession session = UserSession.current();
-		session.setConsignUser(user);
+		User loginUser = session.getUser();
+
+		HttpSession hs = RWT.getRequest().getSession();
+		hs.setAttribute(ATT_USRINFO, user);
+		hs.setAttribute(ATT_CONSIGNINFO, loginUser);
+
+		session.setLoginUser(user);
+		session.setConsignUser(loginUser);
+		UserSession.current().getEntryPoint().home();
 	}
 
 	public User getConsigner() {
@@ -73,10 +100,12 @@ public class SessionManager {
 	public void updateSessionUserInfo() {
 		HttpSession hs = RWT.getRequest().getSession();
 		User user = (User) hs.getAttribute(ATT_USRINFO);
+		User consigner = (User)hs.getAttribute(ATT_CONSIGNINFO);
 		Date date = (Date) hs.getAttribute(ATT_LOGINTIME);
 
 		UserSession session = UserSession.current();
 		session.setLoginUser(user);
+		session.setConsignUser(consigner);
 		session.setLoginTime(date);
 	}
 

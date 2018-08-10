@@ -190,6 +190,10 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		});
 		switchPage(ModelLoader.site.getHomePage(), null, true);
 	}
+	
+	public void home() {
+		switchPage(ModelLoader.site.getHomePage(), null, true);
+	}
 
 	public void switchPage(Page page, String inputUid, boolean addHistory) {
 		if (currentView != null && !currentView.isDisposed()) {
@@ -219,5 +223,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 			service.pushState(page.getId() + uid, name);
 		}
 	}
+
+
 
 }

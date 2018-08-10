@@ -38,10 +38,8 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.UserService;
-import com.bizvisionsoft.service.datatools.Query;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
-import com.mongodb.BasicDBObject;
 
 public class SidebarWidget {
 
@@ -257,7 +255,6 @@ public class SidebarWidget {
 					action.setName(id);
 					action.setText(al.getText());
 					action.setImage(al.getImage());
-					action.setStyle("normal");
 					actions.add(action);
 					actionMenu.handleActionExecute(id, a -> {
 						service.switchContent(assm, null);
@@ -273,38 +270,75 @@ public class SidebarWidget {
 	}
 
 	private void createSwitchConsignUserToolitem(Composite bar) {
-		BasicDBObject condition = new Query().filter(new BasicDBObject("consigner", service.getCurrentUserId())).bson();
-		List<User> users = Services.get(UserService.class).createDataSet(condition);
-		if (users.isEmpty()) {
-			return;
-		}
 		Composite btn = new Composite(bar, SWT.NONE);
-		btn.setToolTipText("切换代管账户");
+		btn.setToolTipText("账户管理");
 		btn.setLayoutData(new RowData(24, 24));
 		WidgetHandler.getHandler(btn).setHtmlContent(
 				"<i class='layui-icon layui-icon-user' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
 
 		btn.addListener(SWT.MouseDown, e -> {
-			if (users.size() == 1) {
-				switchUser(users.get(0));
-			} else {
-				ActionMenu actionMenu = new ActionMenu(service);
-				List<Action> actions = new ArrayList<>();
-				users.forEach(user -> {
-					Action action = new Action();
-					String id = user.getUserId();
-					action.setName(id);
-					action.setText("代管账户<br/>" + user.getName() + " [" + user.getUserId() + "]");
-					action.setStyle("normal");
-					actions.add(action);
-					actionMenu.handleActionExecute(id, a -> {
-						switchUser(user);
-						return false;
+			ListMenu actionMenu = new ListMenu(service);
+			List<Action> actions = new ArrayList<>();
+			
+			Action editUSerInfo = new Action();
+			editUSerInfo.setName("editUSerInfo");
+			editUSerInfo.setText("账户信息");
+			actions.add(editUSerInfo);
+			actionMenu.handleActionExecute("editUSerInfo", a -> {
+				editUserInfo();
+				return false;
+			});
+			
+			Services.get(UserService.class).listConsigned(service.getCurrentUserId())//
+					.forEach(user -> {
+						Action action = new Action();
+						String id = user.getUserId();
+						action.setName(id);
+						action.setText("切换代管账户:" + user.getName() + " [" + user.getUserId() + "]");
+						actions.add(action);
+						actionMenu.handleActionExecute(id, a -> {
+							switchUser(user);
+							return false;
+						});
 					});
-				});
-				actionMenu.setActions(actions).open();
-			}
+			
+			Action changePSW = new Action();
+			changePSW.setName("changePSW");
+			changePSW.setText("更改密码");
+			actions.add(changePSW);
+			actionMenu.handleActionExecute("changepsw", a -> {
+				changePSW();
+				return false;
+			});
+
+			Action logout = new Action();
+			logout.setName("logout");
+			logout.setText("登出系统");
+			logout.setImage("/img/logout_w.svg");
+			actions.add(logout);
+			actionMenu.handleActionExecute("logout", a -> {
+				logout();
+				return false;
+			});
+			actionMenu.setActions(actions)//
+					.setSize(size -> new Point(bar.getSize().x, size.y))
+					.setLocation(size -> new Point(0, btn.toDisplay(0, 0).y - size.y - 16))//
+					.open();
 		});
+	}
+
+	private void editUserInfo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void changePSW() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void logout() {
+		service.logout();
 	}
 
 	private void switchUser(User user) {

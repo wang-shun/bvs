@@ -96,7 +96,7 @@ public class ListMenu extends Part {
 
 	private void createPage() {
 		page = new Composite(parent, SWT.NONE);
-		
+
 		GridLayout layout = new GridLayout(1, true);
 		layout.horizontalSpacing = 1;
 		layout.verticalSpacing = 1;
@@ -125,11 +125,20 @@ public class ListMenu extends Part {
 	}
 
 	private String getButtonText(Action a) {
-		String url = BruiToolkit.getResourceURL(a.getImage());
 		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
 		String text = "<div style='display:block;width:300px'>";
-		text += "<img src='" + url + "' style='float:left; cursor:pointer;margin:4px;' width='24px' height='24px'></img>";
-		text += "<div style='float:left;color:#fff;font-size:14px;font-weight:lighter;margin:6px;'>" + buttonText + "</div></div>";
+		String margin;
+		String image = a.getImage();
+		if (!Util.isEmptyOrNull(image)) {
+			String url = BruiToolkit.getResourceURL(image);
+			text += "<img src='" + url
+					+ "' style='float:left; cursor:pointer;margin:4px;' width='24px' height='24px'></img>";
+			margin = "6px";
+		}else {
+			margin = "38px";
+		}
+		text += "<div style='float:left;color:#fff;font-size:14px;font-weight:lighter;margin-top:6px;margin-left:"+margin+";'>" + buttonText
+				+ "</div></div>";
 		return text;
 	}
 
