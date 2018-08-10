@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizivisionsoft.widgets.util.Layer;
@@ -42,6 +44,7 @@ import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
+import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
@@ -108,6 +111,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	protected boolean asEditorField;
 
+	private BruiEventEngine eventEngine;
+
 	public GridPart() {
 	}
 
@@ -142,6 +147,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 		// 注册渲染器
 		renderEngine = BruiGridRenderEngine.create(config, bruiService, context);
+
+		eventEngine = BruiEventEngine.create(config, bruiService, context);
 
 		// 注册数据集引擎
 		if (!disableDateSetEngine)
@@ -223,6 +230,44 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		setViewerInput();
 
 		renderEngine.uiCreated();
+
+		if (dataSetEngine != null) {
+			dataSetEngine.attachListener((eventCode, m) -> {
+				addEventListener(eventCode, e1 -> {
+					try {
+						m.invoke(dataSetEngine.getTarget(), e1);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
+						e2.printStackTrace();
+					}
+				});
+			});
+		}
+
+		// 处理客户端事件侦听
+		if (eventEngine != null) {
+			eventEngine.attachListener((eventCode, m) -> {
+				addEventListener(eventCode, e1 -> {
+					try {
+						m.invoke(eventEngine.getTarget(), e1);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
+						e2.printStackTrace();
+					}
+				});
+			});
+		}
+	}
+
+	private void addEventListener(String eventCode, Listener listener) {
+		int eventType;
+		if (eventCode.toLowerCase().equals("MouseDoubleClick".toLowerCase())) {
+			eventType = SWT.MouseDoubleClick;
+		} else if (eventCode.toLowerCase().equals("Selection".toLowerCase())) {
+			eventType = SWT.Selection;
+		} else {
+			return;
+		}
+		viewer.getGrid().addListener(eventType, listener);
+
 	}
 
 	protected void layoutVertiacal(Composite panel, Control queryPanel, Control grid, Control pagec) {

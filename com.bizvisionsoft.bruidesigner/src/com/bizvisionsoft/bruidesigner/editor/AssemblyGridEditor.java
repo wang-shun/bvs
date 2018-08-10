@@ -25,7 +25,7 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "唯一标识符：", inputData, "id", SWT.READ_ONLY);
 
 		createTextField(parent, "组件名称：", inputData, "name", SWT.BORDER);
-		
+
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
 		createCheckboxField(parent, "显示表格边框：", inputData, "gridHasBorder", SWT.CHECK);
@@ -57,7 +57,7 @@ public class AssemblyGridEditor extends ModelEditor {
 		createIntegerField(parent, "固定列数（0代表不固定）：", inputData, "gridFix", SWT.BORDER, 0, 999);
 
 		createCheckboxField(parent, "翻页加载数据：", inputData, "gridPageControl", SWT.CHECK);
-		
+
 		createIntegerField(parent, "每页加载多少条（0表示默认，30条）：", inputData, "gridPageCount", SWT.BORDER, 0, 500);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
@@ -92,9 +92,19 @@ public class AssemblyGridEditor extends ModelEditor {
 		createTextField(parent, "查询构造模型（Bundle Id）:", inputData, "queryBuilderBundle", SWT.BORDER);
 
 		createTextField(parent, "查询构造模型完整的类名:", inputData, "queryBuilderClass", SWT.BORDER);
-		
+
+		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		l = new Label(parent, SWT.NONE);
+		l.setText("事件侦听器：");
+		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+		createTextField(parent, "插件唯一标识符（Bundle Id）：", inputData, "eventHandlerBundleId", SWT.BORDER);
+
+		createTextField(parent, "完整的类名:", inputData, "eventHandlerClassName", SWT.BORDER);
+
 		parent = createTabItemContent("容器设置");
-		
+
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
@@ -103,11 +113,11 @@ public class AssemblyGridEditor extends ModelEditor {
 		createCheckboxField(parent, "是否在标题栏上显示根上下文传入对象名称：", inputData, "displayRootInputLabelInTitlebar", SWT.CHECK);
 
 		createCheckboxField(parent, "容器上边框：", inputData, "borderTop", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器右边框：", inputData, "borderRight", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器下边框：", inputData, "borderBottom", SWT.CHECK);
-		
+
 		createCheckboxField(parent, "容器左边框：", inputData, "borderLeft", SWT.CHECK);
 
 		parent = createTabItemContent("表格列");
@@ -121,7 +131,7 @@ public class AssemblyGridEditor extends ModelEditor {
 		if (actions == null)
 			((Assembly) inputData).setRowActions(actions = new ArrayList<Action>());
 		new ActionsEditPane(parent, actions, true, this);
-		
+
 		parent = createTabItemContent("工具栏操作");
 		List<Action> toolbarActions = ((Assembly) inputData).getActions();
 		if (toolbarActions == null)
