@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -38,8 +39,10 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.UserService;
+import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
+import com.mongodb.BasicDBObject;
 
 public class SidebarWidget {
 
@@ -279,7 +282,7 @@ public class SidebarWidget {
 		btn.addListener(SWT.MouseDown, e -> {
 			ListMenu actionMenu = new ListMenu(service);
 			List<Action> actions = new ArrayList<>();
-			
+
 			Action editUSerInfo = new Action();
 			editUSerInfo.setName("editUSerInfo");
 			editUSerInfo.setText("账户信息");
@@ -288,7 +291,7 @@ public class SidebarWidget {
 				editUserInfo();
 				return false;
 			});
-			
+
 			Services.get(UserService.class).listConsigned(service.getCurrentUserId())//
 					.forEach(user -> {
 						Action action = new Action();
@@ -301,12 +304,12 @@ public class SidebarWidget {
 							return false;
 						});
 					});
-			
+
 			Action changePSW = new Action();
 			changePSW.setName("changePSW");
 			changePSW.setText("更改密码");
 			actions.add(changePSW);
-			actionMenu.handleActionExecute("changepsw", a -> {
+			actionMenu.handleActionExecute("changePSW", a -> {
 				changePSW();
 				return false;
 			});
@@ -328,13 +331,26 @@ public class SidebarWidget {
 	}
 
 	private void editUserInfo() {
-		// TODO Auto-generated method stub
-		
+		UserService ser = Services.get(UserService.class);
+		User user = ser.get(service.getCurrentConsignerId());
+		Editor.open("用户信息编辑器", context, user, (r, d) -> {
+			r.remove("_id");
+			r.remove("userId");
+			ser.update(new FilterAndUpdate().filter(new BasicDBObject("userId", d.getUserId())).set(r).bson());
+		});
 	}
 
 	private void changePSW() {
-		// TODO Auto-generated method stub
-		
+		UserService ser = Services.get(UserService.class);
+		User user = ser.get(service.getCurrentConsignerId());
+		if (service.confirm("修改账户密码", "请确认修改密码，当前账户：" + user + "，修改后需要重新登陆系统。")) {
+			Editor.open("修改账户密码", context, user, (r, d) -> {
+				ser.update(new FilterAndUpdate().filter(new BasicDBObject("userId", d.getUserId()))
+						.set(new BasicDBObject("password", r.get("password"))).bson());
+				Layer.message("密码已修改");
+				logout();
+			});
+		}
 	}
 
 	private void logout() {
