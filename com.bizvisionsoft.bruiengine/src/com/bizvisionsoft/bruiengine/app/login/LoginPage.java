@@ -62,7 +62,7 @@ public class LoginPage {
 			try {
 				login(tName.getText().trim(), tPassword.getText().trim());
 			} catch (Exception e1) {
-				Layer.message(e1.getMessage(), Layer.ICON_CANCEL);
+				Layer.message(e1.getMessage(), Layer.ICON_LOCK);
 			}
 		});
 	}

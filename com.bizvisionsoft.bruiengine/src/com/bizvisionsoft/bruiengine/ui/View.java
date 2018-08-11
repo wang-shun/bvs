@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
@@ -73,7 +74,11 @@ public class View extends Part {
 		} else if (page.isForceCheckLogin()) {
 			new Popup(la, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open();
 		} else {
-			service.loginUser();
+			try {
+				service.loginUser();
+			} catch (Exception e) {
+				Layer.message(e.getMessage(), Layer.ICON_LOCK);
+			}
 		}
 
 		int result = super.open();
