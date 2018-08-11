@@ -85,8 +85,12 @@ public class AlertASM {
 		fd.top = new FormAttachment(mntPanel, 36);
 		fd.height = 38;
 		backupBtn.moveAbove(backupPanel);
-		backupBtn.addListener(SWT.Selection, e -> brui.backup());
+		backupBtn.addListener(SWT.Selection, e -> backup());
 
+	}
+
+	private void backup() {
+		brui.backup();
 	}
 
 	private void switchMnt(Button mntBtn) {

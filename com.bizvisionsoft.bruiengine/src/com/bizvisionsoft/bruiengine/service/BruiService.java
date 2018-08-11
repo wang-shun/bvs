@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -196,10 +197,14 @@ public class BruiService implements IBruiService {
 			Layer.message("必须先启动系统维护。", Layer.ICON_CANCEL);
 			return;
 		}
-		if (!confirm("系统备份", "请确认开始进行系统备份。")) {
+
+		InputDialog id = new InputDialog(getCurrentShell(), "系统备份", "请填写备份说明，并确定开始进行系统备份", "", null)
+				.setTextMultiline(true);
+		if (id.open() != InputDialog.OK) {
 			return;
 		}
-		String path = Services.get(SystemService.class).mongodbDump();
+
+		String path = Services.get(SystemService.class).mongodbDump(id.getValue());
 		MessageDialog.openInformation(getCurrentShell(), "系统备份", "系统备份完成。<br>" + path);
 	}
 }
