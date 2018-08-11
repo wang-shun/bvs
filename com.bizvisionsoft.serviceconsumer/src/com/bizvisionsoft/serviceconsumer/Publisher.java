@@ -13,6 +13,7 @@ import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
@@ -30,42 +31,41 @@ public class Publisher {
 
 				(String) context.getBundleContext().getProperty("com.bizvisionsoft.service.url"),
 
-				new Class<?>[] {
+				new Class<?>[] { SystemService.class,
 
 						FileService.class,
-						
+
 						CommonService.class,
 
 						UserService.class,
 
 						OrganizationService.class,
-						
+
 						OBSService.class,
-						
+
 						CBSService.class,
-						
+
 						RiskService.class,
 
 						WorkService.class,
-						
+
 						ProjectService.class,
 
 						ProjectSetService.class,
 
 						ProductService.class,
-						
+
 						DocumentService.class,
 
 						ProjectTemplateService.class,
 
 						EPSService.class,
-						
-						WorkSpaceService.class,
-						
-						WorkReportService.class,
-						
-						PermissionService.class
 
+						WorkSpaceService.class,
+
+						WorkReportService.class,
+
+						PermissionService.class
 
 				},
 

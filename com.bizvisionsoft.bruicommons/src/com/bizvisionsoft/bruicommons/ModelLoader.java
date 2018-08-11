@@ -1,8 +1,10 @@
 package com.bizvisionsoft.bruicommons;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.osgi.framework.Bundle;
@@ -35,6 +37,16 @@ public class ModelLoader implements BundleActivator {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void saveSite() throws IOException {
+		String json = new GsonBuilder().setPrettyPrinting().create().toJson(site);
+		FileWriter fw = new FileWriter(new File(ModelLoader.sitePath));
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(json.toCharArray()); // Ð´ÈëcharÊý×é
+		bw.close();
+		fw.close();
+	}
+
 
 	public void stop(BundleContext context) throws Exception {
 	}

@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruicommons.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -325,5 +326,15 @@ public class Site extends ModelObject {
 	public void setHeadLogoWidth(Integer headLogoWidth) {
 		this.headLogoWidth = headLogoWidth;
 	}
+	
+	public Date getShutDown() {
+		return ShutDown;
+	}
 
+	public void setShutDown(Date shutDown) {
+		ShutDown = shutDown;
+	}
+
+	private Date ShutDown;
+	
 }

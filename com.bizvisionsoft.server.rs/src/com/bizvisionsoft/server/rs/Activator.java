@@ -20,6 +20,7 @@ import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
@@ -38,6 +39,7 @@ import com.bizvisionsoft.serviceimpl.ProjectServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectSetServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectTemplateServiceImpl;
 import com.bizvisionsoft.serviceimpl.RiskServiceImpl;
+import com.bizvisionsoft.serviceimpl.SystemServiceImpl;
 import com.bizvisionsoft.serviceimpl.UserServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkReportServiceImpl;
 import com.bizvisionsoft.serviceimpl.WorkServiceImpl;
@@ -67,6 +69,8 @@ public class Activator implements BundleActivator {
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 下面开始注册服务
+		regs.add(bc.registerService(SystemService.class.getName(), new SystemServiceImpl(), null));
+		
 		regs.add(bc.registerService(FileService.class.getName(), new FileServiceImpl(), null));
 
 		regs.add(bc.registerService(CommonService.class.getName(), new CommonServiceImpl(), null));

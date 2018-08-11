@@ -21,6 +21,7 @@ import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.ProjectSetService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
@@ -38,6 +39,7 @@ public class Services implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		Services.bundleContext = bundleContext;
 		// ×¢²á·þÎñÃû
+		register(SystemService.class);
 		register(FileService.class);
 		register(CommonService.class);
 		register(UserService.class);

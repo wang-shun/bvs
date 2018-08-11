@@ -33,7 +33,7 @@ public class BruiService implements IBruiService {
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getUser();
 	}
-	
+
 	public User getCurrentConsignerInfo() {
 		return Brui.sessionManager.getConsigner();
 	}
@@ -52,20 +52,23 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void loginUser(User user) {
+		if (!user.isAdmin() && !user.isBuzAdmin() && !user.isSU() && ModelLoader.site.getShutDown() != null) {
+			throw new RuntimeException( "系统维护中，禁止用户登录系统。<br>如需咨询，请联系系统管理员。");
+		}
 		Brui.sessionManager.setSessionUserInfo(user);
 	}
 
 	public void loginUser() {
 		Brui.sessionManager.updateSessionUserInfo();
 	}
-	
+
 	public void consign(User user) {
 		Brui.sessionManager.consign(user);
 	}
-	
+
 	public void logout() {
 		Brui.sessionManager.logout();
-		
+
 	}
 
 	@Override
@@ -126,7 +129,7 @@ public class BruiService implements IBruiService {
 	public String getCurrentUserId() {
 		return getCurrentUserInfo().getUserId();
 	}
-	
+
 	public String getCurrentConsignerId() {
 		return getCurrentConsignerInfo().getUserId();
 	}
@@ -138,9 +141,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public Command command(ObjectId target_id, Date date, String name) {
-		return Command.newInstance(name, getCurrentUserInfo(),getCurrentConsignerInfo(), date, target_id);
+		return Command.newInstance(name, getCurrentUserInfo(), getCurrentConsignerInfo(), date, target_id);
 	}
-
-
 
 }
