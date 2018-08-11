@@ -54,7 +54,7 @@ public interface IBruiService extends IServiceWithId {
 
 	Command command(ObjectId target_id,Date date,String name);
 
-	public void switchMnt(boolean selection);
+	public boolean switchMnt(boolean selection);
 
 	public void backup();
 }

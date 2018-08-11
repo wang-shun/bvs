@@ -42,7 +42,7 @@ public class AlertASM {
 		infoPanel.setLayoutData(fd);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.top = new FormAttachment(titlePanel, 72);
+		fd.top = new FormAttachment(titlePanel, 32);
 		fd.height = 120;
 
 		Composite mntPanel = new Composite(parent, SWT.NONE);
@@ -73,7 +73,7 @@ public class AlertASM {
 		backupPanel.setLayoutData(fd);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.top = new FormAttachment(mntPanel, 24);
+		fd.top = new FormAttachment(mntPanel, 48);
 		fd.height = 120;
 
 		Button backupBtn = new Button(parent, SWT.PUSH);
@@ -82,7 +82,7 @@ public class AlertASM {
 		fd = new FormData();
 		backupBtn.setLayoutData(fd);
 		fd.right = new FormAttachment(100, -12);
-		fd.top = new FormAttachment(mntPanel, 36);
+		fd.top = new FormAttachment(mntPanel, 58);
 		fd.height = 38;
 		backupBtn.moveAbove(backupPanel);
 		backupBtn.addListener(SWT.Selection, e -> backup());
@@ -94,7 +94,8 @@ public class AlertASM {
 	}
 
 	private void switchMnt(Button mntBtn) {
-		brui.switchMnt(mntBtn.getSelection());
+		boolean selection = brui.switchMnt(mntBtn.getSelection());
+		mntBtn.setSelection(selection);
 		updateMntBtn(mntBtn);
 	}
 
@@ -126,7 +127,7 @@ public class AlertASM {
 
 	private String getBackupInfo() {
 		return "<blockquote class='layui-elem-quote' style='border-left: 5px solid #03a9f4;'>"
-				+ "<div class='label_headline'>备份系统设置和业务基础数据？</div>"
+				+ "<div class='label_headline'>备份系统数据？</div>"
 				+ "<br>对系统进行备份是避免错误的维护操作造成不可挽回影响的有效措施，对整个运行系统进行备份需要进入维护状态。如果需要防止因基础设置故障造成数据的损失时（如硬件损坏或操作系统崩溃等情况），您应当采用多机的复制集模式，而不是系统备份。"
 				+ "</blockquote>";
 	}

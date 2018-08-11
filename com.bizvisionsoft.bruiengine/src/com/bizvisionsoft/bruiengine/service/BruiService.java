@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
@@ -157,14 +158,16 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void switchMnt(boolean b) {
+	public boolean switchMnt(boolean b) {
 		if (b) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.HOUR_OF_DAY, 1);
 			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护",
-					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
-					d -> d == null || d.before(new Date()) ? "必须选择启用时间（晚于当前时间）" : null)
+					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", cal.getTime(),
+					d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null)
 							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
 			if (dt.open() != DateTimeInputDialog.OK) {
-				return;
+				return false;
 			}
 
 			Date date = dt.getValue();
@@ -174,19 +177,23 @@ public class BruiService implements IBruiService {
 				ModelLoader.site.setShutDown(date);
 				try {
 					ModelLoader.saveSite();
+					return true;
 				} catch (IOException e) {
 					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 				}
 			}
+			return false;
 		} else {
 			if (confirm("完成系统维护", "请确认系统维护已经完成，并开放用户登录。")) {
 				ModelLoader.site.setShutDown(null);
 				try {
 					ModelLoader.saveSite();
+					return false;
 				} catch (IOException e) {
 					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 				}
 			}
+			return true;
 		}
 
 	}
