@@ -1,20 +1,27 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
+import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiService implements IBruiService {
 
@@ -53,12 +60,16 @@ public class BruiService implements IBruiService {
 	@Override
 	public void loginUser(User user) {
 		if (!user.isAdmin() && !user.isBuzAdmin() && !user.isSU() && ModelLoader.site.getShutDown() != null) {
-			throw new RuntimeException( "系统维护中，禁止用户登录系统。<br>如需咨询，请联系系统管理员。");
+			throw new RuntimeException("系统维护中，禁止用户登录系统。<br>如需咨询，请联系系统管理员。");
 		}
 		Brui.sessionManager.setSessionUserInfo(user);
 	}
 
 	public void loginUser() {
+		User user = Brui.sessionManager.getUser();
+		if (!user.isAdmin() && !user.isBuzAdmin() && !user.isSU() && ModelLoader.site.getShutDown() != null) {
+			throw new RuntimeException("系统维护中，禁止用户登录系统。<br>如需咨询，请联系系统管理员。");
+		}
 		Brui.sessionManager.updateSessionUserInfo();
 	}
 
@@ -144,4 +155,51 @@ public class BruiService implements IBruiService {
 		return Command.newInstance(name, getCurrentUserInfo(), getCurrentConsignerInfo(), date, target_id);
 	}
 
+	@Override
+	public void switchMnt(boolean b) {
+		if (b) {
+			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护",
+					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
+					d -> d == null || d.before(new Date()) ? "必须选择启用时间（晚于当前时间）" : null)
+							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
+			if (dt.open() != DateTimeInputDialog.OK) {
+				return;
+			}
+
+			Date date = dt.getValue();
+			if (confirm("启动系统维护", "启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于"
+					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
+				Brui.sessionManager.getUserSessions().forEach(u -> u.logout(date));
+				ModelLoader.site.setShutDown(date);
+				try {
+					ModelLoader.saveSite();
+				} catch (IOException e) {
+					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
+				}
+			}
+		} else {
+			if (confirm("完成系统维护", "请确认系统维护已经完成，并开放用户登录。")) {
+				ModelLoader.site.setShutDown(null);
+				try {
+					ModelLoader.saveSite();
+				} catch (IOException e) {
+					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void backup() {
+		if (ModelLoader.site.getShutDown() == null) {
+			Layer.message("必须先启动系统维护。", Layer.ICON_CANCEL);
+			return;
+		}
+		if (!confirm("系统备份", "请确认开始进行系统备份。")) {
+			return;
+		}
+		String path = Services.get(SystemService.class).mongodbDump();
+		MessageDialog.openInformation(getCurrentShell(), "系统备份", "系统备份完成。<br>" + path);
+	}
 }

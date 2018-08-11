@@ -53,4 +53,8 @@ public interface IBruiService extends IServiceWithId {
 	public boolean confirm(String title, String message);
 
 	Command command(ObjectId target_id,Date date,String name);
+
+	public void switchMnt(boolean selection);
+
+	public void backup();
 }

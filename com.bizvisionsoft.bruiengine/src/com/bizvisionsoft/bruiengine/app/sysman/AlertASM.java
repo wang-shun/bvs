@@ -1,9 +1,5 @@
 package com.bizvisionsoft.bruiengine.app.sysman;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -12,15 +8,11 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
-import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.ModelLoader;
-import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
 
 public class AlertASM {
 
@@ -70,7 +62,10 @@ public class AlertASM {
 		fd.top = new FormAttachment(infoPanel, 30);
 		fd.height = 38;
 		mntBtn.moveAbove(mntPanel);
-		mntBtn.addListener(SWT.Selection, e -> switchMnt(mntBtn.getSelection()));
+		mntBtn.setOrientation(SWT.RIGHT_TO_LEFT);
+		mntBtn.addListener(SWT.Selection, e -> switchMnt(mntBtn));
+		mntBtn.setSelection(ModelLoader.site.getShutDown() != null);
+		updateMntBtn(mntBtn);
 
 		Composite backupPanel = new Composite(parent, SWT.NONE);
 		WidgetHandler.getHandler(backupPanel).setHtmlContent(getBackupInfo());
@@ -90,41 +85,21 @@ public class AlertASM {
 		fd.top = new FormAttachment(mntPanel, 36);
 		fd.height = 38;
 		backupBtn.moveAbove(backupPanel);
+		backupBtn.addListener(SWT.Selection, e -> brui.backup());
 
 	}
 
-	private void switchMnt(boolean b) {
-		if (b) {
-			DateTimeInputDialog dt = new DateTimeInputDialog(brui.getCurrentShell(), "启动系统维护",
-					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
-					d -> d == null || d.before(new Date()) ? "必须选择启用时间（晚于当前时间）" : null)
-							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
-			if (dt.open() != DateTimeInputDialog.OK) {
-				return;
-			}
+	private void switchMnt(Button mntBtn) {
+		brui.switchMnt(mntBtn.getSelection());
+		updateMntBtn(mntBtn);
+	}
 
-			Date date = dt.getValue();
-			if (brui.confirm("启动系统维护", "启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于"
-					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
-				Brui.sessionManager.getUserSessions().forEach(u -> u.logout(date));
-				ModelLoader.site.setShutDown(date);
-				try {
-					ModelLoader.saveSite();
-				} catch (IOException e) {
-					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
-				}
-			}
+	private void updateMntBtn(Button mntBtn) {
+		if (mntBtn.getSelection()) {
+			mntBtn.setText("" + ModelLoader.site.getShutDown());
 		} else {
-			if (brui.confirm("完成系统维护", "请确认系统维护已经完成，并开放用户登录。")) {
-				ModelLoader.site.setShutDown(null);
-				try {
-					ModelLoader.saveSite();
-				} catch (IOException e) {
-					Layer.message(e.getMessage(), Layer.ICON_CANCEL);
-				}
-			}
+			mntBtn.setText("");
 		}
-
 	}
 
 	private String getTitle() {
@@ -140,14 +115,15 @@ public class AlertASM {
 
 	private String getMntInfo() {
 		return "<blockquote class='layui-elem-quote'>" + "<div class='label_headline'>是否需要启动系统维护？</div>"
-				+ "<br/>启用系统维护后，所有用户将在维护开始后无法使用系统，直到您关闭系统维护。当维护起始时间尚未到来以前，已登录的用户将收到提示，并可继续未完的操作，当维护起始时间到来时，这些用户将被强制退出。"
-				+ "</blockquote>";
+				+ "<br/>启用系统维护后，除了<b style='color:red'>su</b>、<b style='color:red'>业务管理员</b>和<b style='color:red'>系统管理员</b>账户以外的"
+				+ "所有用户将在维护开始后<b style='color:red'>无法使用系统</b>，" + "直到您关闭系统维护。当维护起始时间尚未到来以前，已登录的用户将收到提示，"
+				+ "并可继续未完的操作，当维护起始时间到来时，这些用户将被<b style='color:red'>强制退出。" + "</blockquote>";
 	}
 
 	private String getBackupInfo() {
 		return "<blockquote class='layui-elem-quote' style='border-left: 5px solid #03a9f4;'>"
 				+ "<div class='label_headline'>备份系统设置和业务基础数据？</div>"
-				+ "<br/>对系统进行备份是避免误操作造成不可挽回影响的有效措施。对整个运行系统进行备份需要进入维护状态，并可能需要很长的时间。但如果仅是避免误操作，您可以备份系统设置数据。"
+				+ "<br>对系统进行备份是避免错误的维护操作造成不可挽回影响的有效措施，对整个运行系统进行备份需要进入维护状态。如果需要防止因基础设置故障造成数据的损失时（如硬件损坏或操作系统崩溃等情况），您应当采用多机的复制集模式，而不是系统备份。"
 				+ "</blockquote>";
 	}
 
