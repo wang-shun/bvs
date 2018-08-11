@@ -283,36 +283,38 @@ public class SidebarWidget {
 			ListMenu actionMenu = new ListMenu(service);
 			List<Action> actions = new ArrayList<>();
 
-			Action editUSerInfo = new Action();
-			editUSerInfo.setName("editUSerInfo");
-			editUSerInfo.setText("账户信息");
-			actions.add(editUSerInfo);
-			actionMenu.handleActionExecute("editUSerInfo", a -> {
-				editUserInfo();
-				return false;
-			});
+			if (!service.getCurrentConsignerInfo().isSU()) {
+				Action editUSerInfo = new Action();
+				editUSerInfo.setName("editUSerInfo");
+				editUSerInfo.setText("账户信息");
+				actions.add(editUSerInfo);
+				actionMenu.handleActionExecute("editUSerInfo", a -> {
+					editUserInfo();
+					return false;
+				});
 
-			Services.get(UserService.class).listConsigned(service.getCurrentUserId())//
-					.forEach(user -> {
-						Action action = new Action();
-						String id = user.getUserId();
-						action.setName(id);
-						action.setText("切换代管账户:" + user.getName() + " [" + user.getUserId() + "]");
-						actions.add(action);
-						actionMenu.handleActionExecute(id, a -> {
-							switchUser(user);
-							return false;
+				Services.get(UserService.class).listConsigned(service.getCurrentUserId())//
+						.forEach(user -> {
+							Action action = new Action();
+							String id = user.getUserId();
+							action.setName(id);
+							action.setText("切换代管账户:" + user.getName() + " [" + user.getUserId() + "]");
+							actions.add(action);
+							actionMenu.handleActionExecute(id, a -> {
+								switchUser(user);
+								return false;
+							});
 						});
-					});
 
-			Action changePSW = new Action();
-			changePSW.setName("changePSW");
-			changePSW.setText("更改密码");
-			actions.add(changePSW);
-			actionMenu.handleActionExecute("changePSW", a -> {
-				changePSW();
-				return false;
-			});
+				Action changePSW = new Action();
+				changePSW.setName("changePSW");
+				changePSW.setText("更改密码");
+				actions.add(changePSW);
+				actionMenu.handleActionExecute("changePSW", a -> {
+					changePSW();
+					return false;
+				});
+			}
 
 			Action logout = new Action();
 			logout.setName("logout");
