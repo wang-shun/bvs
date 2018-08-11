@@ -130,6 +130,12 @@ public class DateTimeInputDialog extends Dialog {
 		if (value != null) {
 			text.setDate(value);
 		}
+		if(validator!=null && validator.apply(value)!=null) {
+			okButton.setEnabled(false);
+		}
+		if(validator2!=null&&validator2.apply(value, endDate)!=null) {
+			okButton.setEnabled(false);
+		}
 	}
 
 	/*

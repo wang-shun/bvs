@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
@@ -160,10 +159,8 @@ public class BruiService implements IBruiService {
 	@Override
 	public boolean switchMnt(boolean b) {
 		if (b) {
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.HOUR_OF_DAY, 1);
 			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护",
-					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", cal.getTime(),
+					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
 					d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null)
 							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
 			if (dt.open() != DateTimeInputDialog.OK) {
