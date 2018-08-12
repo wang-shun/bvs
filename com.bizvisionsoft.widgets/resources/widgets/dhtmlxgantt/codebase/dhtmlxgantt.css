@@ -481,6 +481,12 @@
 .gantt_tree_icon.gantt_file {
   background-image: url(/resource/image/work.gif);
 }
+.gantt_tree_icon.gantt_file_started {
+  background-image: url(/resource/image/work_wip.png);
+}
+.gantt_tree_icon.gantt_file_finished {
+  background-image: url(/resource/image/work_finish.png);
+}
 .gantt_grid_head_cell .gantt_sort {
   position: absolute;
   right: 5px;

@@ -56,6 +56,10 @@
 				this.genericConfig(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
+				// 任务图标配置
+				this.configTaskIcon(this.config);
+
+				// ////////////////////////////////////////////////////////////////////////////////
 				// 表格菜单配置
 				this.configGridMenu(this.config);
 
@@ -121,7 +125,7 @@
 			this.gantt.config.auto_scheduling_move_projects = false;
 			this.gantt.config.auto_scheduling_initial = false;
 			this.gantt.config.auto_types = true;
-			
+
 			this.gantt.config.fit_tasks = true;
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
@@ -158,6 +162,18 @@
 			this.gantt.config.show_progress = false;
 			this.gantt.config.smart_rendering = true;
 			this.gantt.config.static_background = true;
+		},
+
+		configTaskIcon : function(config) {
+			this.gantt.templates.grid_file = function(item) {
+				if (item.actualFinish) {
+					return "<div class='gantt_tree_icon gantt_file_finished'></div>";
+				} else if (item.actualStart) {
+					return "<div class='gantt_tree_icon gantt_file_started'></div>";
+				} else {
+					return "<div class='gantt_tree_icon gantt_file'></div>";
+				}
+			};
 		},
 
 		configGridMenu : function(config) {
@@ -343,8 +359,7 @@
 				}
 				return "";
 			};
-			
-			
+
 		},
 
 		configHolidays : function(config) {
@@ -366,9 +381,9 @@
 				gantt.templates.rightside_text = function(start, end, task) {
 					var text = "";
 					if (task.type == gantt.config.types.milestone) {
-						text = task.text+"&nbsp;";
+						text = task.text + "&nbsp;";
 					}
-					text += formatFunc(end) +"&nbsp;";
+					text += formatFunc(end) + "&nbsp;";
 					if (task.end_date1) {
 						var overdue = Math.ceil(Math
 								.abs((end.getTime() - task.end_date1.getTime())
@@ -387,10 +402,10 @@
 				gantt.templates.leftside_text = function(start, end, task) {
 					return formatFunc(start);
 				};
-			}else{
-				gantt.templates.rightside_text = function (start, end, task) {
+			} else {
+				gantt.templates.rightside_text = function(start, end, task) {
 					if (task.type == gantt.config.types.milestone) {
-						return task.text+"&nbsp;"+formatFunc(start) ;
+						return task.text + "&nbsp;" + formatFunc(start);
 					}
 					return "";
 				};
