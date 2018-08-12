@@ -199,20 +199,21 @@ public class MessengerInboxPart implements IQueryEnable {
 		String senderName = sender;// .substring(0, sender.indexOf("[")).trim();
 
 		// 内容区
-		sb.append("<div  class='label_subhead'> ");
+		sb.append("<div> ");
 
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
-		sb.append("<div style='font-weight:bold;'>" + subject + "</div>");
-		sb.append("<div>发送者：" + senderName + "&nbsp;&nbsp;&nbsp;");
+		sb.append("<div>发送者：" + senderName + "</div>");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("发送日期：" + Util.getFormatText(sendDate, Util.DATE_FORMAT_DATE, RWT.getLocale()) + "</div>");
+		sb.append("<div>发送日期：" + Util.getFormatText(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
 		sb.append("</div>");
-
+		
+		sb.append("<hr class='layui-bg-green'>");
+		
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
 		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;;margin-top:8px'>" + content + "</div>");
 
 		sb.append("</div>");
-		Layer.alert(sb.toString(), 460, 300);
+		Layer.alert(subject,sb.toString(), 460, 300);
 		
 		Object _id = AUtil.readValue(element, cName, "_id", null);
 		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id));
