@@ -155,11 +155,11 @@
 				this.gantt.config.drag_project = true;
 				this.gantt.config.drag_links = true;
 				this.gantt.config.drag_move = true;
-				this.gantt.config.drag_progress = true;
+				this.gantt.config.drag_progress = false;
 				this.gantt.config.drag_resize = true;
 			}
 
-			this.gantt.config.show_progress = false;
+			this.gantt.config.show_progress = true;
 			this.gantt.config.smart_rendering = true;
 			this.gantt.config.static_background = true;
 		},
