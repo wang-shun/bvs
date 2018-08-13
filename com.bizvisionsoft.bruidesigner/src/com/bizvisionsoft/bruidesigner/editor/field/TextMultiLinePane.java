@@ -22,6 +22,10 @@ public class TextMultiLinePane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
 		
 		editor.createIntegerField(parent, "字数限定（0代表不限定）：", element, "textLimit", SWT.BORDER, 0, 999);
+		
+		editor.createCheckboxField(parent, "纵向填充剩余空间：", element, "grabVertical", SWT.CHECK);
+		
+		editor.createIntegerField(parent, "内容区高度（0代表默认）：", element, "height", SWT.BORDER, 0, 600);
 
 	}
 

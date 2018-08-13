@@ -322,8 +322,8 @@ public class EditorPart {
 		}
 		fields.put(f, fieldPart.setCompact(context.isEmbedded()).setEditable(editable).setEditorConfig(config)
 				.setFieldConfig(f).setInput(input));
-		fieldPart.setEditor(this).createUI(parent)// 创建UI
-				.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));// 布局
+		GridData ld = new GridData(SWT.FILL, SWT.FILL, true, f.isGrabVertical());
+		fieldPart.setEditor(this).createUI(parent).setLayoutData(ld);
 		return fieldPart.getContainer();
 	}
 

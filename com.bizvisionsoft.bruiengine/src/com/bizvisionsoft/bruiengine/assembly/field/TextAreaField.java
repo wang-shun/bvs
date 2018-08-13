@@ -19,7 +19,7 @@ public class TextAreaField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		control = new Text(parent, SWT.BORDER | SWT.MULTI|SWT.WRAP);
+		control = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP);
 
 		// 设置文本是否只读
 		control.setEditable(!isReadOnly());
@@ -49,7 +49,16 @@ public class TextAreaField extends EditorField {
 	@Override
 	protected Object getControlLayoutData() {
 		GridData gd = (GridData) super.getControlLayoutData();
-		gd.heightHint = 60;
+		if (!fieldConfig.isGrabVertical()) {
+			int bh = fieldConfig.getHeight();
+			if (bh == 0) {
+				gd.heightHint = 64;
+			} else {
+				gd.heightHint = bh;
+			}
+		}else {
+			gd.grabExcessVerticalSpace = true;
+		}
 		return gd;
 	}
 

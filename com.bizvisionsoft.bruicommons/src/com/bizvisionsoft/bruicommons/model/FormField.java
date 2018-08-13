@@ -469,5 +469,15 @@ public class FormField extends ModelObject {
 		this.staticContent = staticContent;
 	}
 	
+	//////////////////////////////////////////////////////////////
+	//∂‡––
+	private boolean grabVertical;
 	
+	public boolean isGrabVertical() {
+		return grabVertical;
+	}
+	
+	public void setGrabVertical(boolean grabVertical) {
+		this.grabVertical = grabVertical;
+	}
 }
