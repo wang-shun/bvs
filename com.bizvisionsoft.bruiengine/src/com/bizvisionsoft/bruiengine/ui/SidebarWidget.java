@@ -451,8 +451,10 @@ public class SidebarWidget {
 
 				String html = "<div style='display:inline-flex;justify-content:space-between;width:100%;padding-right:8px;'>";
 				html += text;
-				if (bv != null && bv.intValue() != 0)
+				if (bv != null && bv.intValue() != 0) {
 					html += "<div class='layui-badge' style='margin-top:2px;'>" + bv + "</div>";
+				}
+				
 				html += "</div>";
 
 				cell.setText(html);
