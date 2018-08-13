@@ -379,11 +379,17 @@ public class ActionsEditPane extends SashForm {
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-			.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 			editor.createTextField(parent, "角色（多个#分割）", action, "role", SWT.BORDER);
 
 			editor.createTextField(parent, "排除角色（多个#分割）", action, "excludeRole", SWT.BORDER);
+
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			editor.createTextField(parent, "Budget取数插件唯一标识符（Bundle Id）:", action, "budgetBundleId", SWT.BORDER);
+			editor.createTextField(parent, "Budget取数完整的类名:", action, "budgetClassName", SWT.BORDER);
+			editor.createTextField(parent, "Budget取数服务:", action, "budgetServiceName", SWT.BORDER);
 
 			action.addPropertyChangeListener("name", listener);
 		}

@@ -302,6 +302,35 @@ public class Action extends ModelObject {
 	public String getExcludeRole() {
 		return excludeRole;
 	}
+	
+	private String budgetBundleId;
 
+	private String budgetClassName;
+	
+	private String budgetServiceName;
+	
+	public String getBudgetBundleId() {
+		return budgetBundleId;
+	}
+	
+	public void setBudgetBundleId(String budgetBundleId) {
+		this.budgetBundleId = budgetBundleId;
+	}
+	
+	public String getBudgetClassName() {
+		return budgetClassName;
+	}
+	
+	public void setBudgetClassName(String budgetClassName) {
+		this.budgetClassName = budgetClassName;
+	}
+	
+	public String getBudgetServiceName() {
+		return budgetServiceName;
+	}
+	
+	public void setBudgetServiceName(String budgetServiceName) {
+		this.budgetServiceName = budgetServiceName;
+	}
 	
 }

@@ -18,6 +18,7 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.bruiengine.util.Util;
 import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
@@ -210,5 +211,10 @@ public class BruiService implements IBruiService {
 
 		String path = Services.get(SystemService.class).mongodbDump(id.getValue());
 		MessageDialog.openInformation(getCurrentShell(), "系统备份", "系统备份完成。<br>" + path);
+	}
+
+	@Override
+	public void updateSidebarActionBudget(String actionName) {
+		Util.ifInstanceThen(part, View.class, p->p.updateSidebarActionBudget(actionName));
 	}
 }

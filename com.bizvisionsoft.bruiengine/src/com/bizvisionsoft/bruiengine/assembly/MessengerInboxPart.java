@@ -204,10 +204,10 @@ public class MessengerInboxPart implements IQueryEnable {
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
 		sb.append("<div>发送者：" + senderName + "</div>");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("<div>发送日期：" + Util.getFormatText(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
+		sb.append("<div>日期：" + Util.getFormatText(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
 		sb.append("</div>");
 		
-		sb.append("<hr class='layui-bg-green'>");
+		sb.append("<hr>");
 		
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
 		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;;margin-top:8px'>" + content + "</div>");

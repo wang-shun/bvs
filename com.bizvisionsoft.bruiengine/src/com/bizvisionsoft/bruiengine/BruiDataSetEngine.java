@@ -26,7 +26,7 @@ import com.mongodb.BasicDBObject;
 
 public class BruiDataSetEngine extends BruiEngine {
 
-	private Assembly assembly;
+	private String cName;
 
 	public BruiDataSetEngine(Class<?> clazz) {
 		super(clazz);
@@ -72,12 +72,12 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public BruiDataSetEngine setAssembly(Assembly assembly) {
-		this.assembly = assembly;
+		this.cName = assembly.getName();
 		return this;
 	}
 
 	public Object query(Integer skip, Integer limit, BasicDBObject filter, IBruiContext context) {
-		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.LIST, a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.LIST, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
@@ -107,24 +107,13 @@ public class BruiDataSetEngine extends BruiEngine {
 			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
 					t -> t.value());
 
-			// try {
-			// method.setAccessible(true);
-			// return method.invoke(getTarget(), args);
-			// } catch (IllegalAccessException | IllegalArgumentException e) {//
-			// 访问错误，参数错误视作没有定义该方法。
-			//
-			// } catch (InvocationTargetException e) {
-			// String message = assembly.getName() + "的数据源注解DataSet的list方法调用出错。" +
-			// e.getTargetException().getMessage();
-			// throw new RuntimeException(message, e.getTargetException());
-			// }
 		}
-		throw new RuntimeException(assembly.getName() + "的数据源没有注解DataSet的list方法。");
+		throw new RuntimeException(cName + "的数据源没有注解DataSet的list方法。");
 	}
 
 	public long count(BasicDBObject filter, IBruiContext context) {
 		Method method = AUtil
-				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.COUNT, a -> a.value())
+				.getContainerMethod(clazz, DataSet.class, cName, DataSet.COUNT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
@@ -132,7 +121,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			names.add(MethodParam.FILTER);
 			values.add(filter);
-
+			
 			injectContextInputParameters(context, names, values);
 
 			injectPageContextInputParameters(context, names, values);
@@ -144,9 +133,9 @@ public class BruiDataSetEngine extends BruiEngine {
 			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
 					MethodParam.class, t -> t.value());
 		}
-		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 count的方法。");
+		throw new RuntimeException(cName + " 数据源没有注解DataSet值为 count的方法。");
 	}
-
+	
 	private void injectContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
 		if (context != null) {
 			Object input = context.getInput();
@@ -214,18 +203,18 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	private Object noParamDataSetMethodInvoke(String paramValue) {
-		Method m = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), paramValue, a -> a.value())
+		Method m = AUtil.getContainerMethod(clazz, DataSet.class, cName, paramValue, a -> a.value())
 				.orElse(null);
 		if (m != null) {
 			try {
 				return m.invoke(getTarget());
 			} catch (IllegalAccessException | IllegalArgumentException e) {
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException(assembly.getName() + " 数据源注解DataSet值为" + paramValue + "的无参方法调用错误。",
+				throw new RuntimeException(cName + " 数据源注解DataSet值为" + paramValue + "的无参方法调用错误。",
 						e.getTargetException());
 			}
 		}
-		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为" + paramValue + "的无参方法。");
+		throw new RuntimeException(cName + " 数据源没有注解DataSet值为" + paramValue + "的无参方法。");
 	}
 
 	/**
@@ -233,8 +222,9 @@ public class BruiDataSetEngine extends BruiEngine {
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	public Date[] getGanttInitDateRange() {
-		return (Date[]) AUtil.read(clazz, DataSet.class, getTarget(), assembly.getName(), "initDateRange", null,
+		return (Date[]) AUtil.read(clazz, DataSet.class, getTarget(), cName, "initDateRange", null,
 				a -> a.value());
 	}
 
@@ -251,7 +241,7 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public Object query(BasicDBObject filter, IBruiContext context, String fName) {
-		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), fName, a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, fName, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
@@ -271,12 +261,12 @@ public class BruiDataSetEngine extends BruiEngine {
 					MethodParam.class, t -> t.value());
 
 		}
-		throw new RuntimeException(assembly.getName() + " 数据源没有注解DataSet值为 " + fName + "的方法。");
+		throw new RuntimeException(cName + " 数据源没有注解DataSet值为 " + fName + "的方法。");
 	}
 
 	public void replace(Object element, BasicDBObject data) {
 		Method method = AUtil
-				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.UPDATE, a -> a.value())
+				.getContainerMethod(clazz, DataSet.class, cName, DataSet.UPDATE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			try {
@@ -306,7 +296,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 	public Object insert(Object parent, Object element) {
 		Method method = AUtil
-				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.INSERT, a -> a.value())
+				.getContainerMethod(clazz, DataSet.class, cName, DataSet.INSERT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] values;
@@ -327,7 +317,7 @@ public class BruiDataSetEngine extends BruiEngine {
 
 	public void delete(Object element, Object parent) {
 		Method method = AUtil
-				.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.DELETE, a -> a.value())
+				.getContainerMethod(clazz, DataSet.class, cName, DataSet.DELETE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] values;
@@ -346,7 +336,7 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public Object query(Object element) {
-		Method method = AUtil.getContainerMethod(clazz, DataSet.class, assembly.getName(), DataSet.GET, a -> a.value())
+		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.GET, a -> a.value())
 				.orElse(null);
 		if (method != null) {
 			Object[] values;
@@ -368,7 +358,7 @@ public class BruiDataSetEngine extends BruiEngine {
 					String[] loc = values[i].split("/");
 					if (loc.length == 1) {
 						listenerName = loc[0].trim();
-					} else if (loc.length > 1 && assembly.getName().equals(loc[0].trim())) {
+					} else if (loc.length > 1 && cName.equals(loc[0].trim())) {
 						listenerName = loc[1].trim();
 					}
 					if (listenerName != null) {

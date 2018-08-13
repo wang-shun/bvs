@@ -56,7 +56,7 @@ public class View extends Part {
 		this.context = UserSession.newAssemblyContext();
 		this.context.setInput(input);
 
-		sidebarWidget = new SidebarWidget(this,page.getSidebar(), service, context);
+		sidebarWidget = new SidebarWidget(this, page.getSidebar(), service, context);
 	}
 
 	@Override
@@ -190,13 +190,13 @@ public class View extends Part {
 
 	public void packSidebar(boolean packed) {
 		FormData fd = new FormData();
-		if(packed) {
+		if (packed) {
 			sidebar.setLayoutData(fd);
 			fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
 			fd.left = new FormAttachment();
 			fd.width = 48;
 			fd.bottom = footbar != null ? new FormAttachment(footbar) : new FormAttachment(100);
-		}else {
+		} else {
 			fd = new FormData();
 			sidebar.setLayoutData(fd);
 			fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
@@ -205,6 +205,12 @@ public class View extends Part {
 			fd.bottom = footbar != null ? new FormAttachment(footbar) : new FormAttachment(100);
 		}
 		parent.layout(true);
+	}
+
+	public void updateSidebarActionBudget(String actionName) {
+		if(sidebarWidget!=null) {
+			sidebarWidget.updateSidebarActionBudget(actionName);
+		}
 	}
 
 }

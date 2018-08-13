@@ -57,4 +57,6 @@ public interface IBruiService extends IServiceWithId {
 	public boolean switchMnt(boolean selection);
 
 	public void backup();
+
+	public void updateSidebarActionBudget(String actionName);
 }

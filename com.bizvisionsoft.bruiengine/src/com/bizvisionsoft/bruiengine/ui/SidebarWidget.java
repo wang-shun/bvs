@@ -32,6 +32,7 @@ import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
+import com.bizvisionsoft.bruiengine.BruiBudgetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
@@ -106,6 +107,8 @@ public class SidebarWidget {
 	private Control toolbar;
 
 	private Control header;
+
+	private GridTreeViewer viewer;
 
 	public SidebarWidget(View view, Sidebar sidebar, BruiService service, BruiAssemblyContext parentContext) {
 		this.view = view;
@@ -187,7 +190,7 @@ public class SidebarWidget {
 
 		fd = new FormData();
 		menu.setLayoutData(fd);
-		fd.top = header != null ? new FormAttachment(header) : new FormAttachment();
+		fd.top = header != null ? new FormAttachment(header, 8) : new FormAttachment(0, 8);
 		fd.bottom = toolbar != null ? new FormAttachment(toolbar) : new FormAttachment(100);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
@@ -413,7 +416,7 @@ public class SidebarWidget {
 	}
 
 	private Control createSidebarMenu(Composite parent) {
-		GridTreeViewer viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION);
+		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION);
 		viewer.getGrid().setLinesVisible(false);
 		viewer.getGrid().setData(RWT.CUSTOM_VARIANT, "menu");
 		viewer.getGrid().setHideIndentionImage(true);
@@ -432,16 +435,26 @@ public class SidebarWidget {
 				GridItem item = (GridItem) cell.getViewerRow().getItem();
 				GridItem parentItem = item.getParentItem();
 
-				String html = action.getText();
-				html = (html == null || html.isEmpty()) ? action.getName() : html;
+				String text = action.getText();
+				text = (text == null || text.isEmpty()) ? action.getName() : text;
+
 				if (parentItem == null) {
 					item.setHeight(42);
-					html = "<div style='float:left;margin-top:4px;'>" + html + "</div>";
+					text = "<div style='float:left;margin-top:4px;margin-left:8px;'>" + text + "</div>";
 				} else {
 					item.setHeight(36);
 					cell.setBackground(BruiColors.getColor(BruiColor.Grey_900));
-					html = "<div style='font-size:14px;float:left;margin-top:2px;'>" + html + "</div>";
+					text = "<div style='font-size:14px;float:left;margin-top:2px;margin-left:8px;'>" + text + "</div>";
 				}
+
+				Integer bv = BruiBudgetEngine.getBudgetValue(action, context, service);
+
+				String html = "<div style='display:inline-flex;justify-content:space-between;width:100%;padding-right:8px;'>";
+				html += text;
+				if (bv != null && bv.intValue() != 0)
+					html += "<div class='layui-badge' style='margin-top:2px;'>" + bv + "</div>";
+				html += "</div>";
+
 				cell.setText(html);
 
 			}
@@ -467,6 +480,25 @@ public class SidebarWidget {
 	public SidebarWidget setContext(BruiAssemblyContext context) {
 		this.context = context;
 		return this;
+	}
+
+	public void updateSidebarActionBudget(String actionName) {
+		Action action = findAction(viewer.getGrid().getItems(), actionName);
+		viewer.update(action, null);
+	}
+
+	private Action findAction(GridItem[] items, String actionName) {
+		for (int i = 0; i < items.length; i++) {
+			Action a = (Action) items[i].getData();
+			if (a != null && a.getName().equals(actionName)) {
+				return a;
+			}
+			a = findAction(items[i].getItems(), actionName);
+			if (a != null) {
+				return a;
+			}
+		}
+		return null;
 	}
 
 }
