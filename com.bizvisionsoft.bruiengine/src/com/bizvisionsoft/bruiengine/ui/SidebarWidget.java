@@ -447,14 +447,17 @@ public class SidebarWidget {
 					text = "<div style='font-size:14px;float:left;margin-top:2px;margin-left:8px;'>" + text + "</div>";
 				}
 
-				Integer bv = BruiBudgetEngine.getBudgetValue(action, context, service);
+				Object bv = BruiBudgetEngine.getBudgetValue(action, context, service);
 
 				String html = "<div style='display:inline-flex;justify-content:space-between;width:100%;padding-right:8px;'>";
 				html += text;
-				if (bv != null && bv.intValue() != 0) {
+				if (bv instanceof Number && ((Number)bv).intValue() != 0) {
 					html += "<div class='layui-badge' style='margin-top:2px;'>" + bv + "</div>";
 				}
-				
+
+				if (bv instanceof Boolean && Boolean.TRUE.equals(bv)) {
+					html += "<div class='layui-badge-dot' style='margin-top:16px;'></div>";
+				}
 				html += "</div>";
 
 				cell.setText(html);

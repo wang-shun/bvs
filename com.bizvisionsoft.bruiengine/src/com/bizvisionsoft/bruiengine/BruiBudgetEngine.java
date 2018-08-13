@@ -155,7 +155,7 @@ public class BruiBudgetEngine extends BruiEngine {
 		return (BruiBudgetEngine) super.newInstance();
 	}
 
-	public static Integer getBudgetValue(Action action, BruiAssemblyContext context, BruiService service) {
+	public static Object getBudgetValue(Action action, BruiAssemblyContext context, BruiService service) {
 		String budgetBundleId = action.getBudgetBundleId();
 		String budgetClassName = action.getBudgetClassName();
 		String budgetService = action.getBudgetServiceName();
@@ -166,6 +166,8 @@ public class BruiBudgetEngine extends BruiEngine {
 			Object value = engine.query(context);
 			if(value instanceof Number) {
 				return ((Number) value).intValue();
+			}else if(value instanceof Boolean) {
+				return Boolean.TRUE.equals(value);
 			}
 		}
 		return null;
