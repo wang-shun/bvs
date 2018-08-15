@@ -473,19 +473,25 @@
   width: 18px;
 }
 .gantt_tree_icon.gantt_folder_open {
-  background-image: url(/resource/image/project_open.png);
+  background-image: url(/resource/image/summary.svg);
 }
 .gantt_tree_icon.gantt_folder_closed {
-  background-image: url(/resource/image/project.png);
+  background-image: url(/resource/image/summary_closed.svg);
 }
 .gantt_tree_icon.gantt_file {
-  background-image: url(/resource/image/work.gif);
+  background-image: url(/resource/image/task.svg);
 }
 .gantt_tree_icon.gantt_file_started {
-  background-image: url(/resource/image/work_wip.png);
+  background-image: url(/resource/image/task_wip.svg);
 }
 .gantt_tree_icon.gantt_file_finished {
-  background-image: url(/resource/image/work_finish.png);
+  background-image: url(/resource/image/task_finished.svg);
+}
+.gantt_tree_icon.gantt_milestone {
+  background-image: url(/resource/image/milestone.svg);
+}
+.gantt_tree_icon.gantt_milestone_finished {
+  background-image: url(/resource/image/milestone_finished.svg);
 }
 .gantt_grid_head_cell .gantt_sort {
   position: absolute;

@@ -166,12 +166,22 @@
 
 		configTaskIcon : function(config) {
 			this.gantt.templates.grid_file = function(item) {
-				if (item.actualFinish) {
-					return "<div class='gantt_tree_icon gantt_file_finished'></div>";
-				} else if (item.actualStart) {
-					return "<div class='gantt_tree_icon gantt_file_started'></div>";
+				if (item.type == gantt.config.types.milestone) {
+					if (item.actualFinish) {
+						return "<div class='gantt_tree_icon gantt_milestone_finished'></div>";
+					} else if (item.actualStart) {
+						return "<div class='gantt_tree_icon gantt_milestone_finished'></div>";
+					} else {
+						return "<div class='gantt_tree_icon gantt_milestone'></div>";
+					}
 				} else {
-					return "<div class='gantt_tree_icon gantt_file'></div>";
+					if (item.actualFinish) {
+						return "<div class='gantt_tree_icon gantt_file_finished'></div>";
+					} else if (item.actualStart) {
+						return "<div class='gantt_tree_icon gantt_file_started'></div>";
+					} else {
+						return "<div class='gantt_tree_icon gantt_file'></div>";
+					}
 				}
 			};
 		},
