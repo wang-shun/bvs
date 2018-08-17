@@ -323,7 +323,7 @@ public class Util {
 	}
 
 	public static String getHTMLDarkColor(Object seed) {
-		return BruiColors.getHtmlColor(BruiColors.deepColor[seed.hashCode()%BruiColors.deepColor.length].getRgb());
+		return BruiColors.getHtmlColor(BruiColors.deepColor[seed.hashCode() % BruiColors.deepColor.length].getRgb());
 	}
 
 	// i, u, v都不做声母, 跟随前面的字母
@@ -441,6 +441,20 @@ public class Util {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+
+	public static double getDoubleInput(String input) {
+		double inputAmount;
+		try {
+			if ("".equals(input)) {
+				inputAmount = 0;
+			} else {
+				inputAmount = Double.parseDouble(input.toString());
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("需要输入合法数字");
+		}
+		return inputAmount;
 	}
 
 }
