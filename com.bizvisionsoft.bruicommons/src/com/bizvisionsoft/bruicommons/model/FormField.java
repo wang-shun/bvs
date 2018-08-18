@@ -480,4 +480,16 @@ public class FormField extends ModelObject {
 	public void setGrabVertical(boolean grabVertical) {
 		this.grabVertical = grabVertical;
 	}
+	
+	
+	private String valueFieldName;
+	
+	public void setValueFieldName(String valueFieldName) {
+		this.valueFieldName = valueFieldName;
+	}
+	
+	public String getValueFieldName() {
+		return valueFieldName;
+	}
+	
 }

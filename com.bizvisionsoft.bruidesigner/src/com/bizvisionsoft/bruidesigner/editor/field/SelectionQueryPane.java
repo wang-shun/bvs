@@ -18,6 +18,9 @@ public class SelectionQueryPane extends TypeSelectionPane {
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
 		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
+
+		editor.createTextField(parent, "选择器返回字段名：", element, "valueFieldName", SWT.BORDER);
+
 	}
 
 }

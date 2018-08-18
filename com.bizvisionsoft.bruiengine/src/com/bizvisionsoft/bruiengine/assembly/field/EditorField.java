@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.assembly.field;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.util.Util;
 
 public abstract class EditorField {
 
@@ -66,9 +68,9 @@ public abstract class EditorField {
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		if(isRemoveBorder()) {
+		if (isRemoveBorder()) {
 			layout.horizontalSpacing = compact ? 8 : 16;
-		}else {
+		} else {
 			layout.horizontalSpacing = 0;
 		}
 		layout.verticalSpacing = 0;
@@ -146,7 +148,24 @@ public abstract class EditorField {
 			saveBefore();
 		}
 		check(save);
-		AUtil.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), getValue());
+
+		Object value = convertValueToWrite();
+
+		AUtil.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), value);
+	}
+
+	private Object convertValueToWrite()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Object value = getValue();
+		if (value != null) {
+			String vf = fieldConfig.getValueFieldName();
+			if (!Util.isEmptyOrNull(vf)) {
+				Field field = value.getClass().getDeclaredField(vf);
+				field.setAccessible(true);
+				value = field.get(value);
+			}
+		}
+		return value;
 	}
 
 	protected void saveBefore() throws Exception {

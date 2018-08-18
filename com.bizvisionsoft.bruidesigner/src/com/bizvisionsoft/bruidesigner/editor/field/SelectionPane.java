@@ -24,6 +24,9 @@ public class SelectionPane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
 		
 		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
+		
+		editor.createTextField(parent, "选择器返回字段名：", element, "valueFieldName", SWT.BORDER);
+
 	}
 
 }
