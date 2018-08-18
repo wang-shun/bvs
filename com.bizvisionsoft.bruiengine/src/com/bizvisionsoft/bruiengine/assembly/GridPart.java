@@ -704,6 +704,13 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	public void refresh(Object parent) {
 		viewer.refresh(parent);
 	}
+	
+	public void refreshAndExpand(Object parent) {
+		viewer.refresh(parent);
+		if(!Arrays.asList(viewer.getExpandedElements()).contains(parent)) {
+			viewer.expandToLevel(parent, 1);
+		}
+	}
 
 	@Override
 	public void refreshAll() {
@@ -785,6 +792,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 				remove(parentElement, element);
 				String label = AUtil.readLabel(element);
 				Layer.message(Optional.ofNullable(label).map(m -> "ÒÑÉ¾³ý " + m).orElse("ÒÑÉ¾³ý"));
+				if (parentElement != null) {
+					refresh(parentElement);
+				}
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());
 			}

@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
@@ -342,6 +342,10 @@ public class WidgetToolkit {
 
 	public static boolean isEmptyOrNull(List<?> s) {
 		return s == null || s.isEmpty();
+	}
+	
+	public static String escapeHtml(String text) {
+		return StringEscapeUtils.escapeHtml4(text);
 	}
 
 }
