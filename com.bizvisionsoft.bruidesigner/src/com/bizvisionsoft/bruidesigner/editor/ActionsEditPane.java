@@ -354,7 +354,7 @@ public class ActionsEditPane extends SashForm {
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if (Action.TYPE_INSERT.equals(action.getType())) {
+			if (Action.TYPE_INSERT.equals(action.getType())||Action.TYPE_INSERT_SUBITEM.equals(action.getType())) {
 				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
 				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId",
 						SWT.BORDER);

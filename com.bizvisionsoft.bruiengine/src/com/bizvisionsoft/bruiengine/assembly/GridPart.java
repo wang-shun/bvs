@@ -783,6 +783,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 				Object parentElement = getParentElement(element);
 				dataSetEngine.delete(element, parentElement);
 				remove(parentElement, element);
+				String label = AUtil.readLabel(element);
+				Layer.message(Optional.ofNullable(label).map(m -> "ÒÑÉ¾³ý " + m).orElse("ÒÑÉ¾³ý"));
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());
 			}
