@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
@@ -109,7 +110,24 @@ public abstract class EditorField {
 			titleLabel = new Label(parent, SWT.CENTER);
 			titleLabel.setData(RWT.CUSTOM_VARIANT, "field");
 		}
-		titleLabel.setText(fieldConfig.getFieldText());
+
+		UserSession.bruiToolkit().enableMarkup(titleLabel);
+
+		String tooltips = fieldConfig.getTooltips();
+		String fieldText = fieldConfig.getFieldText();
+		if (fieldConfig.isRequired() && !fieldConfig.isReadOnly() && editorIsEditable) {
+			fieldText = fieldText + "*";
+		}
+		String text;
+		if (!Util.isEmptyOrNull(tooltips)) {
+			text = Layer.onClick(fieldText, tooltips);
+			titleLabel.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		} else {
+			text = fieldText;
+		}
+
+		titleLabel.setText(text);
+
 		return titleLabel;
 	}
 

@@ -2,14 +2,14 @@
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="-4 -4 24 24" enable-background="new -4 -4 24 24" xml:space="preserve">
-<polygon fill="#424A60" points="11.257,-2.34 9.724,-2.34 9.724,-1.192 6.277,-1.192 6.277,-2.34 4.743,-2.34 -1,-2.34 -1,19.106 
-	17,19.106 17,-2.34 "/>
-<rect x="6.277" y="-3.106" fill="#303644" width="3.446" height="1.914"/>
-<polygon fill="#EDEADA" points="12.403,-1.192 12.403,-0.042 3.597,-0.042 3.597,-1.192 0.15,-1.192 0.15,17.957 15.85,17.957 
-	15.85,-1.192 "/>
-<polygon fill="#7383BF" points="9.724,-2.34 9.724,-1.192 6.277,-1.192 6.277,-2.34 3.597,-2.34 3.597,-0.042 12.403,-0.042 
-	12.403,-2.34 "/>
-<line fill="none" stroke="#424A60" stroke-miterlimit="10" x1="4.672" y1="8.582" x2="7.195" y2="11.105"/>
-<line fill="none" stroke="#424A60" stroke-linecap="square" stroke-miterlimit="10" x1="7.195" y1="11.105" x2="11.328" y2="6.973"/>
+	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<polygon fill="#424A60" points="15.257,1.66 13.725,1.66 13.725,2.808 10.277,2.808 10.277,1.66 8.743,1.66 3,1.66 3,23.105 
+	21,23.105 21,1.66 "/>
+<rect x="10.277" y="0.894" fill="#303644" width="3.446" height="1.914"/>
+<polygon fill="#FFFDE7" points="16.402,2.808 16.402,3.958 7.597,3.958 7.597,2.808 4.15,2.808 4.15,21.957 19.85,21.957 
+	19.85,2.808 "/>
+<polygon fill="#7383BF" points="13.725,1.66 13.725,2.808 10.277,2.808 10.277,1.66 7.597,1.66 7.597,3.958 16.402,3.958 
+	16.402,1.66 "/>
+<line fill="none" stroke="#424A60" stroke-miterlimit="10" x1="8.672" y1="12.582" x2="11.195" y2="15.105"/>
+<line fill="none" stroke="#424A60" stroke-linecap="square" stroke-miterlimit="10" x1="11.195" y1="15.105" x2="15.328" y2="10.973"/>
 </svg>

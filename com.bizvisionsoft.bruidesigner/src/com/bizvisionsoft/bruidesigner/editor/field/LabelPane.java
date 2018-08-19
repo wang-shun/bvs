@@ -16,6 +16,8 @@ public class LabelPane extends TypeSelectionPane {
 		editor.createTextField(parent, "字段显示文本（不超过120像素的宽度显示）：", element, "text", SWT.BORDER);
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
+		
+		editor.createTextField(parent, "工具提示：", element, "tooltips", SWT.BORDER);
 
 		editor.createTextField(parent, "数据显示格式：", element, "format", SWT.BORDER);
 		

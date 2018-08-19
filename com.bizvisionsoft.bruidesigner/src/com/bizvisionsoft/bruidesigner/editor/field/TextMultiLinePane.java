@@ -16,6 +16,8 @@ public class TextMultiLinePane extends TypeSelectionPane {
 		editor.createTextField(parent, "字段显示文本（不超过120像素的宽度显示）：", element, "text", SWT.BORDER);
 
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
+		
+		editor.createTextField(parent, "工具提示：", element, "tooltips", SWT.BORDER);
 
 		editor.createCheckboxField(parent, "不可为空：", element, "required", SWT.CHECK);
 

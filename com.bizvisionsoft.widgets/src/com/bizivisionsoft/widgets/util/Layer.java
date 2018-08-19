@@ -59,4 +59,21 @@ public class Layer {
 		return output;
 	}
 	
+	public static String onClick(String text, String message) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div onclick='layer.tips(\"" + //
+				message + "\", this, {tips: [1, \"#3595CC\"],time:3000,area:\"300px\"})'>");//
+		sb.append(text);
+		sb.append("</div>");
+		return sb.toString();
+	}	
+	
+	public static String onMouseOver(String text, String message) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div onMouseOver='layer.tips(\"" + //
+				message + "\", this, {tips: [1, \"#3595CC\"],time:3000,area:\"300px\"})'>");//
+		sb.append(text);
+		sb.append("</div>");
+		return sb.toString();
+	}
 }

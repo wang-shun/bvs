@@ -18,6 +18,8 @@ public class TextQueryPane extends TypeSelectionPane {
 		editor.createTextField(parent, "描述：", element, "description", SWT.BORDER);
 
 		editor.createTextField(parent, "文本框内提示信息：", element, "textMessage", SWT.BORDER);
+		
+		editor.createTextField(parent, "工具提示：", element, "tooltips", SWT.BORDER);
 
 		editor.createComboField(parent,
 				new String[] { FormField.TEXT_QUERY_TYPE_NUMBER, FormField.TEXT_QUERY_TYPE_STRING },

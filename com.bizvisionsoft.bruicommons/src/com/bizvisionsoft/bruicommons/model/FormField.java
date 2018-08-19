@@ -131,6 +131,16 @@ public class FormField extends ModelObject {
 	public void setTextMessage(String textMessage) {
 		this.textMessage = textMessage;
 	}
+	
+	private String tooltips;
+	
+	public void setTooltips(String tooltips) {
+		this.tooltips = tooltips;
+	}
+	
+	public String getTooltips() {
+		return tooltips;
+	}
 
 	// ---------------------------------------------------------------------------------
 	// 文本框是否显示为密码

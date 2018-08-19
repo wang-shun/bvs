@@ -51,7 +51,7 @@ public class SelectionField extends EditorField {
 			text.addListener(SWT.MouseDown, e -> {
 				showSelector();
 			});
-
+			text.setCursor(text.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 			FormData fd = new FormData();
 			select.setLayoutData(fd);
 			fd.right = new FormAttachment(100);
