@@ -17,7 +17,7 @@ import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.PermissionService;
 import com.bizvisionsoft.service.ProductService;
 import com.bizvisionsoft.service.ProjectService;
-import com.bizvisionsoft.service.ProjectSetService;
+import com.bizvisionsoft.service.ProgramService;
 import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.SystemService;
@@ -36,7 +36,7 @@ import com.bizvisionsoft.serviceimpl.OrganizationServiceImpl;
 import com.bizvisionsoft.serviceimpl.PermissionServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProductServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectServiceImpl;
-import com.bizvisionsoft.serviceimpl.ProjectSetServiceImpl;
+import com.bizvisionsoft.serviceimpl.ProgramServiceImpl;
 import com.bizvisionsoft.serviceimpl.ProjectTemplateServiceImpl;
 import com.bizvisionsoft.serviceimpl.RiskServiceImpl;
 import com.bizvisionsoft.serviceimpl.SystemServiceImpl;
@@ -93,7 +93,7 @@ public class Activator implements BundleActivator {
 		
 		regs.add(bc.registerService(ProductService.class.getName(), new ProductServiceImpl(), null));
 
-		regs.add(bc.registerService(ProjectSetService.class.getName(), new ProjectSetServiceImpl(), null));
+		regs.add(bc.registerService(ProgramService.class.getName(), new ProgramServiceImpl(), null));
 
 		regs.add(bc.registerService(DocumentService.class.getName(), new DocumentServiceImpl(), null));
 
