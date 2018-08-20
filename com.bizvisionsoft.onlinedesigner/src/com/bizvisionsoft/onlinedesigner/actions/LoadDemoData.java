@@ -1,10 +1,8 @@
 package com.bizvisionsoft.onlinedesigner.actions;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import org.bson.types.ObjectId;
@@ -12,13 +10,9 @@ import org.bson.types.ObjectId;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.service.CBSService;
-import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.ProjectService;
 import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
-import com.bizvisionsoft.service.model.AccountItem;
-import com.bizvisionsoft.service.model.CBSSubject;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.Project;
 import com.bizvisionsoft.service.model.SalesItem;
@@ -63,9 +57,9 @@ public class LoadDemoData {
 
 	private WorkService workService;
 
-	private CommonService commonService;
+//	private CommonService commonService;
 
-	private CBSService cbsService;
+//	private CBSService cbsService;
 
 	@Execute
 	public void execute() {
@@ -75,9 +69,9 @@ public class LoadDemoData {
 
 		workService = Services.get(WorkService.class);
 
-		commonService = Services.get(CommonService.class);
+//		commonService = Services.get(CommonService.class);
 
-		cbsService = Services.get(CBSService.class);
+//		cbsService = Services.get(CBSService.class);
 
 		Project template = projectService.get(new ObjectId("5b1c2413e37dab4080433de6"));
 
@@ -148,7 +142,7 @@ public class LoadDemoData {
 			workService.closeStage(
 					Command.newInstance("关闭阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanFinish(), stage2.get_id()));
 
-			createProjectBudgetAndCost(project, start, finish);
+//			createProjectBudgetAndCost(project, start, finish);
 
 			projectService.finishProject(Command.newInstance("完成项目", "zh", "钟华", "zh", "钟华", finish, project_id));
 			System.out.println("完成项目:" + project);
@@ -189,63 +183,63 @@ public class LoadDemoData {
 
 	}
 
-	private void createProjectBudgetAndCost(Project project, Date start, Date finish) {
-		List<AccountItem> accounts = commonService.getAccoutItemRoot();
-		// 测试只考虑一级
-		List<String> anos = new ArrayList<>();
-		accounts.forEach(a -> anos.add(a.getId()));
-		// 考虑seed
-		List<Double> seed = new ArrayList<Double>();
-		accounts.forEach(a -> {
-			if (a.getName().contains("财务")) {
-				seed.add(0.5);
-			} else if (a.getName().contains("制造")) {
-				seed.add(3.0);
-			} else if (a.getName().contains("研发")) {
-				seed.add(1.5);
-			} else if (a.getName().contains("设计")) {
-				seed.add(1.5);
-			} else if (a.getName().contains("管理")) {
-				seed.add(0.1);
-			} else {
-				seed.add(1.0);
-			}
-		});
-
-		Calendar _s = Calendar.getInstance();
-		_s.setTime(start);
-
-		Calendar _f = Calendar.getInstance();
-		_f.setTime(finish);
-		_f.add(Calendar.MONTH, 1);
-		_f.set(Calendar.DATE, 1);
-		_f.set(Calendar.HOUR_OF_DAY, 0);
-		_f.set(Calendar.MINUTE, 0);
-		_f.set(Calendar.SECOND, 0);
-		_f.add(Calendar.SECOND, -1);
-
-		while (_s.getTime().before(_f.getTime())) {
-			String id = new SimpleDateFormat("yyyyMM").format(_s.getTime());
-
-			ObjectId cbsItem_id = project.getCBS_id();
-
-			for (int i = 0; i < anos.size(); i++) {
-				CBSSubject cbsSubject = new CBSSubject();
-				cbsSubject.setCBSItem_id(cbsItem_id).setBudget((double) new Random().nextInt(10) * seed.get(i))
-						.setSubjectNumber(anos.get(i)).setId(id);
-				cbsService.upsertCBSSubjectBudget(cbsSubject);
-			}
-
-			for (int i = 0; i < anos.size(); i++) {
-				CBSSubject cbsSubject = new CBSSubject();
-				cbsSubject.setCBSItem_id(cbsItem_id).setCost((double) new Random().nextInt(10) * seed.get(i))
-						.setSubjectNumber(anos.get(i)).setId(id);
-				cbsService.upsertCBSSubjectCost(cbsSubject);
-			}
-			_s.add(Calendar.MONTH, 1);
-		}
-		System.out.println("创建预算和成本数据");
-	}
+//	private void createProjectBudgetAndCost(Project project, Date start, Date finish) {
+//		List<AccountItem> accounts = commonService.getAccoutItemRoot();
+//		// 测试只考虑一级
+//		List<String> anos = new ArrayList<>();
+//		accounts.forEach(a -> anos.add(a.getId()));
+//		// 考虑seed
+//		List<Double> seed = new ArrayList<Double>();
+//		accounts.forEach(a -> {
+//			if (a.getName().contains("财务")) {
+//				seed.add(0.5);
+//			} else if (a.getName().contains("制造")) {
+//				seed.add(3.0);
+//			} else if (a.getName().contains("研发")) {
+//				seed.add(1.5);
+//			} else if (a.getName().contains("设计")) {
+//				seed.add(1.5);
+//			} else if (a.getName().contains("管理")) {
+//				seed.add(0.1);
+//			} else {
+//				seed.add(1.0);
+//			}
+//		});
+//
+//		Calendar _s = Calendar.getInstance();
+//		_s.setTime(start);
+//
+//		Calendar _f = Calendar.getInstance();
+//		_f.setTime(finish);
+//		_f.add(Calendar.MONTH, 1);
+//		_f.set(Calendar.DATE, 1);
+//		_f.set(Calendar.HOUR_OF_DAY, 0);
+//		_f.set(Calendar.MINUTE, 0);
+//		_f.set(Calendar.SECOND, 0);
+//		_f.add(Calendar.SECOND, -1);
+//
+//		while (_s.getTime().before(_f.getTime())) {
+//			String id = new SimpleDateFormat("yyyyMM").format(_s.getTime());
+//
+//			ObjectId cbsItem_id = project.getCBS_id();
+//
+//			for (int i = 0; i < anos.size(); i++) {
+//				CBSSubject cbsSubject = new CBSSubject();
+//				cbsSubject.setCBSItem_id(cbsItem_id).setBudget((double) new Random().nextInt(10) * seed.get(i))
+//						.setSubjectNumber(anos.get(i)).setId(id);
+//				cbsService.upsertCBSSubjectBudget(cbsSubject);
+//			}
+//
+//			for (int i = 0; i < anos.size(); i++) {
+//				CBSSubject cbsSubject = new CBSSubject();
+//				cbsSubject.setCBSItem_id(cbsItem_id).setCost((double) new Random().nextInt(10) * seed.get(i))
+//						.setSubjectNumber(anos.get(i)).setId(id);
+//				cbsService.upsertCBSSubjectCost(cbsSubject);
+//			}
+//			_s.add(Calendar.MONTH, 1);
+//		}
+//		System.out.println("创建预算和成本数据");
+//	}
 
 	private WorkInfo createWork(String name, Workspace space, WorkInfo parent, Date start, Date finish) {
 		if (finish == null) {
