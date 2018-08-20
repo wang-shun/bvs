@@ -24,8 +24,6 @@ public abstract class EditorField {
 
 	private Label titleLabel;
 
-	private Label infoLabel;
-
 	protected Composite container;
 
 	protected Object input;
@@ -68,17 +66,19 @@ public abstract class EditorField {
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = compact ? 8 : 16;
+		if(hasBorder()) {
+			layout.horizontalSpacing = 0;
+		}else {
+			layout.horizontalSpacing = compact ? 8 : 16;
+		}
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-		layout.numColumns = fieldConfig.isHasInfoLabel() ? 3 : 2;
+		layout.numColumns = 2;
 		container.setLayout(layout);
 
-		Optional.ofNullable(createTitleLabel(container)).ifPresent(l->l.setLayoutData(getLabelLayoutData()));
+		Optional.ofNullable(createTitleLabel(container)).ifPresent(l -> l.setLayoutData(getLabelLayoutData()));
 		createControl(container).setLayoutData(getControlLayoutData());
-		if (fieldConfig.isHasInfoLabel())
-			createInfoLabel(container).setLayoutData(getInfoLayoutData());
 
 		update();
 
@@ -91,30 +91,24 @@ public abstract class EditorField {
 	protected void dispose() {
 
 	}
-	
+
 	public void update() {
 		setValue(AUtil.readValue(input, assemblyConfig.getName(), fieldConfig.getName(), null));
 	}
 
 	public abstract void setValue(Object value);
 
-	protected Control createInfoLabel(Composite parent) {
-		infoLabel = new Label(parent, SWT.NONE);
-		return infoLabel;
-	}
-
 	protected abstract Control createControl(Composite parent);
 
 	protected Control createTitleLabel(Composite parent) {
-		titleLabel = new Label(parent, SWT.RIGHT);
+		if (!hasBorder()) {
+			titleLabel = new Label(parent, SWT.RIGHT);
+		} else {
+			titleLabel = new Label(parent, SWT.CENTER);
+			titleLabel.setData(RWT.CUSTOM_VARIANT, "field");
+		}
 		titleLabel.setText(fieldConfig.getFieldText());
 		return titleLabel;
-	}
-
-	protected Object getInfoLayoutData() {
-		GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
-		gd.verticalIndent = 8;
-		return gd;
 	}
 
 	protected Object getControlLayoutData() {
@@ -123,10 +117,24 @@ public abstract class EditorField {
 	}
 
 	protected Object getLabelLayoutData() {
-		GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
-		gd.widthHint = compact ? 60 : 100;
-		gd.verticalIndent = 8;
-		return gd;
+		if (!hasBorder()) {
+			GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
+			gd.widthHint = compact ? 60 : 100;
+			gd.verticalIndent = 8;
+			return gd;
+		} else {
+			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+			gd.widthHint = compact ? 60 : 100;
+			return gd;
+		}
+	}
+
+	protected boolean isVertivalLayout() {
+		return false;
+	}
+
+	protected boolean hasBorder() {
+		return assemblyConfig.isHasFieldBorder();
 	}
 
 	public EditorField setInput(Object input) {

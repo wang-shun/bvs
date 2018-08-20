@@ -730,5 +730,15 @@ public class Assembly extends ModelObject {
 	public void setAddToParentContext(boolean addToParentContext) {
 		this.addToParentContext = addToParentContext;
 	}
+	
+	private boolean hasFieldBorder;
+	
+	public boolean isHasFieldBorder() {
+		return hasFieldBorder;
+	}
+	
+	public void setHasFieldBorder(boolean hasFieldBorder) {
+		this.hasFieldBorder = hasFieldBorder;
+	}
 
 }

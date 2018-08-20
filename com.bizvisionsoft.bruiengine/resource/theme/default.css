@@ -743,7 +743,7 @@ Label {
   cursor: default;
   opacity: 1;
   text-shadow: none;
-  padding: 0;
+  padding: 0px;
 }
 
 Label[BORDER] {
@@ -844,6 +844,16 @@ Label.display3 {
 
 Label.display4 {
   font: 112px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+}
+
+Label.field {
+  font: 14px 'Microsoft YaHei' ,"Segoe UI", Calibri, Tahoma, "Lucida Sans Unicode", sans-serif;
+  color: #4d4d4d;
+  background-color: #fbfbfb;
+  border-bottom: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
+  padding: 8px 0px 0px 0px;
 }
 
 /* Link default theme */

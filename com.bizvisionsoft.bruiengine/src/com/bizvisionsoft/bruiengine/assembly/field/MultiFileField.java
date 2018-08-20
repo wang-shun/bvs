@@ -75,6 +75,11 @@ public class MultiFileField extends EditorField {
 		pushSession = new ServerPushSession();
 		uploadPanels = new ArrayList<UploadPanel>();
 	}
+	
+	@Override
+	protected boolean isVertivalLayout() {
+		return true;
+	}
 
 	@Override
 	protected Control createControl(Composite parent) {

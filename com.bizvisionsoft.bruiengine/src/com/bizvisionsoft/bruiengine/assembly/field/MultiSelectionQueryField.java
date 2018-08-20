@@ -14,5 +14,5 @@ public class MultiSelectionQueryField extends MultiSelectionField {
 	@Override
 	protected void check(boolean saveCheck) throws Exception {
 	}
-
+	
 }

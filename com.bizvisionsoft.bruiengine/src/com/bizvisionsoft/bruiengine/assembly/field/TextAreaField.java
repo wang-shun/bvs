@@ -15,6 +15,11 @@ public class TextAreaField extends EditorField {
 
 	public TextAreaField() {
 	}
+	
+	@Override
+	protected boolean isVertivalLayout() {
+		return true;
+	}
 
 	@Override
 	protected Control createControl(Composite parent) {

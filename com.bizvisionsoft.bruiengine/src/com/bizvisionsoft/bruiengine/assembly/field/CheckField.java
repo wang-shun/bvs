@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.assembly.field;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -18,12 +19,15 @@ public class CheckField extends EditorField {
 
 	@Override
 	protected Control createControl(Composite parent) {
-
+		Composite panel = new Composite(parent,hasBorder()?SWT.BORDER:SWT.NONE);
+		FillLayout layout = new FillLayout();
+		panel.setLayout(layout);
+		layout.marginWidth = 16;
 		if (FormField.CHECK_STYLE_SWITCH.equals(fieldConfig.getCheckStyle())) {
-			control = new Button(parent, SWT.CHECK);
+			control = new Button(panel, SWT.CHECK);
 			control.setData(RWT.CUSTOM_VARIANT, "switch");
 		} else {
-			control = new Button(parent, SWT.CHECK);
+			control = new Button(panel, SWT.CHECK);
 		}
 		//////////////////////////////////////////////////////////////////////////////////////
 		// 读取配置进行设置
@@ -40,7 +44,7 @@ public class CheckField extends EditorField {
 			});
 		}
 		// 设置修改
-		return control;
+		return panel;
 	}
 
 	@Override

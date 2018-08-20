@@ -25,6 +25,11 @@ public class MultiSelectionField extends SelectionField {
 
 	public MultiSelectionField() {
 	}
+	
+	@Override
+	protected boolean isVertivalLayout() {
+		return true;
+	}
 
 	@Override
 	protected Control createControl(Composite parent) {
