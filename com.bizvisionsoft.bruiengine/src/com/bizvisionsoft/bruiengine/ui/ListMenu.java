@@ -90,6 +90,8 @@ public class ListMenu extends Part {
 	protected void createContents(Composite parent) {
 		this.parent = parent;
 		parent.setBackground(BruiColors.getColor(BruiColor.Teal_500));
+//		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+//		parent.setHtmlAttribute("class", "gradient-teal");
 		parent.setLayout(new FillLayout());
 		createPage();
 	}

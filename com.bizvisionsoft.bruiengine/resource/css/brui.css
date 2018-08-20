@@ -5,6 +5,13 @@
 	background: linear-gradient(15deg, #5c6bc0, #1a237e) !important;
 }
 
+.gradient-teal {
+	background: -webkit-linear-gradient(15deg, #26a69a, #004d40) !important;
+	background: -o-linear-gradient(15deg, #26a69a, #004d40) !important;
+	background: -moz-linear-gradient(15deg, #26a69a, #004d40) !important;
+	background: linear-gradient(15deg, #26a69a, #004d40) !important;
+}
+
 .gradient-red {
 	background: -webkit-linear-gradient(15deg, #e84e40, #b0120a) !important;
 	background: -o-linear-gradient(15deg, #e84e40, #b0120a) !important;
