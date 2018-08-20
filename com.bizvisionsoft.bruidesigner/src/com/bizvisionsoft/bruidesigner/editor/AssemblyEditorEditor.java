@@ -30,7 +30,7 @@ public class AssemblyEditorEditor extends ModelEditor {
 
 		createCheckboxField(parent, "小尺寸（显示为标准尺寸的2/3）：", inputData, "smallEditor", SWT.CHECK);
 		
-		createCheckboxField(parent, "字段边框：", inputData, "hasFieldBorder", SWT.CHECK);
+		createCheckboxField(parent, "去掉字段边框：", inputData, "removeBorder", SWT.CHECK);
 		
 		createCheckboxField(parent, "加入到父上下文（选择类型字段数据集需获取根上下文时需要选中）：", inputData, "addToParentContext", SWT.CHECK);
 

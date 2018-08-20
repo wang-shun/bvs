@@ -66,10 +66,10 @@ public abstract class EditorField {
 		locale = RWT.getLocale();
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		if(hasBorder()) {
-			layout.horizontalSpacing = 0;
-		}else {
+		if(isRemoveBorder()) {
 			layout.horizontalSpacing = compact ? 8 : 16;
+		}else {
+			layout.horizontalSpacing = 0;
 		}
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
@@ -101,7 +101,7 @@ public abstract class EditorField {
 	protected abstract Control createControl(Composite parent);
 
 	protected Control createTitleLabel(Composite parent) {
-		if (!hasBorder()) {
+		if (isRemoveBorder()) {
 			titleLabel = new Label(parent, SWT.RIGHT);
 		} else {
 			titleLabel = new Label(parent, SWT.CENTER);
@@ -117,7 +117,7 @@ public abstract class EditorField {
 	}
 
 	protected Object getLabelLayoutData() {
-		if (!hasBorder()) {
+		if (isRemoveBorder()) {
 			GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
 			gd.widthHint = compact ? 60 : 100;
 			gd.verticalIndent = 8;
@@ -133,8 +133,8 @@ public abstract class EditorField {
 		return false;
 	}
 
-	protected boolean hasBorder() {
-		return assemblyConfig.isHasFieldBorder();
+	protected boolean isRemoveBorder() {
+		return assemblyConfig.isRemoveBorder();
 	}
 
 	public EditorField setInput(Object input) {

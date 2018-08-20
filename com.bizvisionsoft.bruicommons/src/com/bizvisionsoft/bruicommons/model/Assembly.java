@@ -8,7 +8,6 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class Assembly extends ModelObject {
 
-
 	@ReadValue(ReadValue.TYPE)
 	private String getTypeName() {
 		String text = "组件";
@@ -45,28 +44,26 @@ public class Assembly extends ModelObject {
 	}
 
 	public static final String TYPE_STICKER = "sticker";
-	
+
 	public static final String TYPE_INFOPAD = "infopad";
 
 	public static final String TYPE_GRID = "grid";
-	
+
 	public static final String TYPE_TREE = "tree";
 
 	public static final String TYPE_EDITOR = "editor";
 
 	public static final String TYPE_GANTT = "gantt";
-	
+
 	public static final String TYPE_SCHEDULER = "scheduler";
 
 	public static final String TYPE_SELECTOR = "selector";
 
 	public static final String TYPE_ACTION_PANEL = "actionpanel";
-	
+
 	public static final String TYPE_MESSENGER = "messenger";
-	
+
 	public static final String TYPE_CHART = "chart";
-
-
 
 	private String id;
 
@@ -223,7 +220,7 @@ public class Assembly extends ModelObject {
 	private String gridDataSetBundleId;
 
 	private String gridDataSetClassName;
-	
+
 	private int gridPageCount;
 
 	private List<Column> columns;
@@ -232,11 +229,11 @@ public class Assembly extends ModelObject {
 	private List<FormField> fields;
 
 	private boolean gridAutoColumnWidth;
-	
+
 	public int getGridPageCount() {
 		return gridPageCount;
 	}
-	
+
 	public void setGridPageCount(int gridPageCount) {
 		this.gridPageCount = gridPageCount;
 	}
@@ -534,7 +531,7 @@ public class Assembly extends ModelObject {
 	 * now, only gantt used！！！
 	 */
 	private boolean readonly;
-	
+
 	private boolean enableGanttCompare;
 
 	public boolean isReadonly() {
@@ -544,27 +541,27 @@ public class Assembly extends ModelObject {
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
 	}
-	
+
 	public boolean isEnableGanttCompare() {
 		return enableGanttCompare;
 	}
-	
+
 	public void setEnableGanttCompare(boolean enableGanttCompare) {
 		this.enableGanttCompare = enableGanttCompare;
 	}
-	
+
 	private String ganttTimeScaleType;
-	
+
 	public void setGanttTimeScaleType(String ganttTimeScaleType) {
 		this.ganttTimeScaleType = ganttTimeScaleType;
 	}
-	
+
 	public String getGanttTimeScaleType() {
 		return ganttTimeScaleType;
 	}
 
 	private boolean ganttGridWidthCalculate;
-	
+
 	public boolean isGanttGridWidthCalculate() {
 		return ganttGridWidthCalculate;
 	}
@@ -670,23 +667,23 @@ public class Assembly extends ModelObject {
 	}
 
 	private String message;
-	
+
 	public String getMessage() {
 		return message;
 	}
-	
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	public int actionPanelColumnCount;
 
 	private String nullValueAllowedFields;
-	
+
 	public void setActionPanelColumnCount(int actionPanelColumnCount) {
 		this.actionPanelColumnCount = actionPanelColumnCount;
 	}
-	
+
 	public int getActionPanelColumnCount() {
 		return actionPanelColumnCount;
 	}
@@ -698,27 +695,27 @@ public class Assembly extends ModelObject {
 	public void setNullValueAllowedFields(String nullValueAllowedFields) {
 		this.nullValueAllowedFields = nullValueAllowedFields;
 	}
-	
+
 	private boolean smallEditor;
-	
+
 	public boolean isSmallEditor() {
 		return smallEditor;
 	}
-	
+
 	public void setSmallEditor(boolean smallEditor) {
 		this.smallEditor = smallEditor;
 	}
 
-	//scheduler的属性, schedule, timeline两种
-	
+	// scheduler的属性, schedule, timeline两种
+
 	private String schedulerType;
 
 	private boolean addToParentContext;
-	
+
 	public void setSchedulerType(String schedulerType) {
 		this.schedulerType = schedulerType;
 	}
-	
+
 	public String getSchedulerType() {
 		return schedulerType;
 	}
@@ -726,19 +723,18 @@ public class Assembly extends ModelObject {
 	public boolean isAddToParentContext() {
 		return addToParentContext;
 	}
-	
+
 	public void setAddToParentContext(boolean addToParentContext) {
 		this.addToParentContext = addToParentContext;
 	}
-	
-	private boolean hasFieldBorder;
-	
-	public boolean isHasFieldBorder() {
-		return hasFieldBorder;
-	}
-	
-	public void setHasFieldBorder(boolean hasFieldBorder) {
-		this.hasFieldBorder = hasFieldBorder;
+
+	private boolean removeBorder;
+
+	public boolean isRemoveBorder() {
+		return removeBorder;
 	}
 
+	public void setRemoveBorder(boolean removeBorder) {
+		this.removeBorder = removeBorder;
+	}
 }

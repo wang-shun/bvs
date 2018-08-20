@@ -19,7 +19,7 @@ public class CheckField extends EditorField {
 
 	@Override
 	protected Control createControl(Composite parent) {
-		Composite panel = new Composite(parent,hasBorder()?SWT.BORDER:SWT.NONE);
+		Composite panel = new Composite(parent,isRemoveBorder()?SWT.NONE:SWT.BORDER);
 		FillLayout layout = new FillLayout();
 		panel.setLayout(layout);
 		layout.marginWidth = 16;
