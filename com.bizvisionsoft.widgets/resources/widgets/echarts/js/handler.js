@@ -33,7 +33,9 @@
 
 			this.option = JSON.parse(s, function(k, v) {
 				if (v && v.indexOf && v.indexOf('function') > -1) {
-					return eval("(function(){return " + v + " })()")
+					return eval("(function(){return " + v + " })()");
+				}else if(v && v.indexOf && v.indexOf('new') > -1){
+					return eval( v );
 				}
 				return v;
 			});
