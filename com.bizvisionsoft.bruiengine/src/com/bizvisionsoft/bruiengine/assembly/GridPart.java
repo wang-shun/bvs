@@ -651,10 +651,14 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	}
 
 	protected GridViewerColumn createColumn(Object parent, Column c) {
+		return createColumn(parent, c, -1);
+	}
+
+	protected GridViewerColumn createColumn(Object parent, Column c, int index) {
 
 		GridColumn col;
 		if (parent instanceof Grid)
-			col = new GridColumn((Grid) parent, SWT.NONE);
+			col = new GridColumn((Grid) parent, SWT.NONE, index);
 		else
 			col = new GridColumn((GridColumnGroup) parent, SWT.NONE);
 
@@ -704,10 +708,10 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	public void refresh(Object parent) {
 		viewer.refresh(parent);
 	}
-	
+
 	public void refreshAndExpand(Object parent) {
 		viewer.refresh(parent);
-		if(!Arrays.asList(viewer.getExpandedElements()).contains(parent)) {
+		if (!Arrays.asList(viewer.getExpandedElements()).contains(parent)) {
 			viewer.expandToLevel(parent, 1);
 		}
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
-import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.RoleBased;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
@@ -22,7 +21,7 @@ public class PermissionUtil {
 		boolean administrator = user.isSU();
 		boolean buzAdmin = user.isBuzAdmin();
 
-		List<String> roles = readUserRoles(user,iac);
+		List<String> roles = readUserRoles(user, iac);
 
 		List<Action> result = new ArrayList<>();
 		if (actions != null) {
@@ -38,10 +37,10 @@ public class PermissionUtil {
 		}
 		return result;
 	}
-	
-	public static List<String> getRolebasedPageContent(User user,Page page, Object iac) {
+
+	public static List<String> getRolebasedPageContent(User user, Page page, Object iac) {
 		List<String> result = new ArrayList<String>();
-		listRolebasedPageContents(user, page, iac).forEach(al->result.add(al.getId()));
+		listRolebasedPageContents(user, page, iac).forEach(al -> result.add(al.getId()));
 		Assert.isLegal(!result.isEmpty(), "缺少对应角色的内容区组件。");
 		return result;
 	}
@@ -54,7 +53,7 @@ public class PermissionUtil {
 		List<AssemblyLink> excluded = new ArrayList<>();
 		List<AssemblyLink> defaultLink = new ArrayList<>();
 
-		List<String> userRoles = readUserRoles(user,iac);
+		List<String> userRoles = readUserRoles(user, iac);
 
 		for (int i = 0; i < links.size(); i++) {
 			AssemblyLink link = links.get(i);
@@ -76,22 +75,16 @@ public class PermissionUtil {
 		}
 
 		matched.removeAll(excluded);
-		if(matched.isEmpty()) {
+		if (matched.isEmpty()) {
 			matched.addAll(defaultLink);
 		}
 		return matched;
 	}
-	
-	public static boolean checkAction(User user,Action action,IBruiContext context) {
-		List<Action> a = PermissionUtil.getPermitActions(user, Arrays.asList(action), context.getRootInput());
-		if (a.isEmpty()) {
-			Layer.message("用户" + user + "没有<span style='color:red;'>" + action.getName() + "</span>的权限。",
-					Layer.ICON_LOCK);
-			return false;
-		}
-		return true;
+
+	public static boolean checkAction(User user, Action action, IBruiContext context) {
+		return !PermissionUtil.getPermitActions(user, Arrays.asList(action), context.getRootInput()).isEmpty();
 	}
-	
+
 	private static List<String> readRoles(String role) {
 		if (role == null || role.trim().isEmpty())
 			return new ArrayList<>();
@@ -99,7 +92,7 @@ public class PermissionUtil {
 		Arrays.asList(role.split("#")).forEach(s -> result.add(s.trim()));
 		return result;
 	}
-	
+
 	private static boolean matchedRole(List<String> userRoles, List<String> reqRoles) {
 		if (reqRoles.isEmpty()) {// 没有需求的角色
 			return true;
@@ -114,7 +107,7 @@ public class PermissionUtil {
 		}
 		return false;
 	}
-	
+
 	private static boolean exculeRole(List<String> userRoles, List<String> reqRoles) {
 		if (reqRoles.isEmpty()) {// 没有需求的角色
 			return false;
@@ -129,9 +122,9 @@ public class PermissionUtil {
 		}
 		return false;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private static List<String> readUserRoles(User user,Object iac) {
+	private static List<String> readUserRoles(User user, Object iac) {
 		List<String> roles = null;
 		if (iac != null) {// 带有输入对象控制权限的
 			Method method = AUtil.getMethod(iac.getClass(), RoleBased.class).orElse(null);

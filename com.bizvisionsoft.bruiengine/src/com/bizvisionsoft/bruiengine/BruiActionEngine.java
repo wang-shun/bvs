@@ -114,9 +114,11 @@ public class BruiActionEngine extends BruiEngine {
 	 */
 	public void invokeExecute(Event event, IBruiContext context) {
 		if (!PermissionUtil.checkAction(Brui.sessionManager.getUser(), action, context)) {
+			Layer.message("用户" + Brui.sessionManager.getUser() + "没有<span style='color:red;'>" + action.getName()
+					+ "</span>的权限。", Layer.ICON_LOCK);
 			return;
 		}
-		TraceUserUtil.traceAction(action,context);
+		TraceUserUtil.traceAction(action, context);
 		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
 				context.getRootInput(), Brui.sessionManager.getUser() };
 		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,

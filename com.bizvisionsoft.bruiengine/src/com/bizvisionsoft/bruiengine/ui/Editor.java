@@ -32,11 +32,14 @@ public class Editor<T> extends Popup {
 
 	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input, boolean modifyInput) {
 		Assembly editorConfig = ModelLoader.site.getAssemblyByName(name);
+		if (editorConfig == null) {
+			throw new RuntimeException("Ãû³Æ£º"+name+",±à¼­Æ÷²»´æÔÚ");
+		}
 		return new Editor<M>(editorConfig, parentContext).setInput(modifyInput, input);
 	}
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {
-		super(assembly, parentContext,assembly.isAddToParentContext());
+		super(assembly, parentContext, assembly.isAddToParentContext());
 		setShellStyle(SWT.TITLE | SWT.RESIZE | SWT.ON_TOP | SWT.APPLICATION_MODAL);
 		String title = assembly.getTitle();
 		setTitle(title == null ? assembly.getName() : title);
