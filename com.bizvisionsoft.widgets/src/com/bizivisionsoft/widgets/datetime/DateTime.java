@@ -66,23 +66,26 @@ public class DateTime extends Composite {
 	}
 
 	public void setDate(Date date) {
+		this.date1 = date;
 		if (date == null) {
 			return;
 		}
 		String type = setting.getType();
-		String format;
-		if (DateTimeSetting.TYPE_DATE.equals(type)) {
-			format = DateTimeSetting.FORMAT_DATE;
-		} else if (DateTimeSetting.TYPE_DATETIME.equals(type)) {
-			format = DateTimeSetting.FORMAT_DATETIME;
-		} else if (DateTimeSetting.TYPE_YEAR.equals(type)) {
-			format = DateTimeSetting.FORMAT_YEAR;
-		} else if (DateTimeSetting.TYPE_MONTH.equals(type)) {
-			format = DateTimeSetting.FORMAT_MONTH;
-		} else if (DateTimeSetting.TYPE_TIME.equals(type)) {
-			format = DateTimeSetting.FORMAT_TIME;
-		} else {
-			return;
+		String format = setting.getFormat();
+		if (format == null || format.isEmpty()) {
+			if (DateTimeSetting.TYPE_DATE.equals(type)) {
+				format = DateTimeSetting.FORMAT_DATE;
+			} else if (DateTimeSetting.TYPE_DATETIME.equals(type)) {
+				format = DateTimeSetting.FORMAT_DATETIME;
+			} else if (DateTimeSetting.TYPE_YEAR.equals(type)) {
+				format = DateTimeSetting.FORMAT_YEAR;
+			} else if (DateTimeSetting.TYPE_MONTH.equals(type)) {
+				format = DateTimeSetting.FORMAT_MONTH;
+			} else if (DateTimeSetting.TYPE_TIME.equals(type)) {
+				format = DateTimeSetting.FORMAT_TIME;
+			} else {
+				return;
+			}
 		}
 
 		String value = new SimpleDateFormat(format).format(date);
