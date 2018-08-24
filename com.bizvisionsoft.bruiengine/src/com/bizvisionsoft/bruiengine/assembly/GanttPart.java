@@ -35,7 +35,7 @@ import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart implements IPostSelectionProvider {
@@ -79,8 +79,8 @@ public class GanttPart implements IPostSelectionProvider {
 		ganttConfig = Config.defaultConfig(config.isReadonly());
 
 		// 配置操作列
-		ganttConfig.brui_RowMenuEnable = !Util.isEmptyOrNull(config.getRowActions());
-		ganttConfig.brui_HeadMenuEnable = !Util.isEmptyOrNull(config.getHeadActions());
+		ganttConfig.brui_RowMenuEnable = !EngUtil.isEmptyOrNull(config.getRowActions());
+		ganttConfig.brui_HeadMenuEnable = !EngUtil.isEmptyOrNull(config.getHeadActions());
 
 		ganttConfig.columns = new ArrayList<>();
 		// 配置列和表格宽度

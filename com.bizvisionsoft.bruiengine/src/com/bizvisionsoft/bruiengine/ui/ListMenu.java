@@ -27,7 +27,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class ListMenu extends Part {
 
@@ -131,11 +131,11 @@ public class ListMenu extends Part {
 	}
 
 	private String getButtonText(Action a) {
-		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
+		String buttonText = EngUtil.isEmptyOrNull(a.getText()) ? "" : a.getText();
 		String text = "<div style='display:block;width:300px'>";
 		String margin;
 		String image = a.getImage();
-		if (!Util.isEmptyOrNull(image)) {
+		if (!EngUtil.isEmptyOrNull(image)) {
 			String url = BruiToolkit.getResourceURL(image);
 			text += "<img src='" + url
 					+ "' style='float:left; cursor:pointer;margin:4px;' width='24px' height='24px'></img>";

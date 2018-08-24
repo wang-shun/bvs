@@ -12,7 +12,7 @@ import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiAssemblyContext implements IBruiContext {
@@ -228,8 +228,8 @@ public class BruiAssemblyContext implements IBruiContext {
 		Object contextInput = getInput();
 		Object rootInput = getRootInput();
 		User user = Brui.sessionManager.getUser();
-		Object inputid = Optional.ofNullable(contextInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
-		Object rootInputId = Optional.ofNullable(rootInput).map(m -> Util.getBson(m).get("_id")).orElse(null);
+		Object inputid = Optional.ofNullable(contextInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+		Object rootInputId = Optional.ofNullable(rootInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
 		return new Object[] { contextInput, inputid, rootInput, rootInputId, user, user.getUserId() };
 	}
 

@@ -54,7 +54,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
 public class GridPart implements IStructuredDataPart, IQueryEnable {
@@ -363,7 +363,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (!Util.isEmptyOrNull(bundleId) && !Util.isEmptyOrNull(classId)) {
+		if (!EngUtil.isEmptyOrNull(bundleId) && !EngUtil.isEmptyOrNull(classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();

@@ -29,7 +29,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 	public void receive(InputStream dataStream, FileDetails details) throws IOException {
 		File targetFile = createTargetFile(details);
 		FileOutputStream outputStream = new FileOutputStream(targetFile);
-		Util.copyStream(dataStream, outputStream, true);
+		EngUtil.copyStream(dataStream, outputStream, true);
 		targetFiles.add(targetFile);
 		targetFileDetails.add(details);
 		File contentTypeFile = createContentTypeFile(targetFile, details);
@@ -55,7 +55,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 	}
 
 	protected File createContentTypeFile(File uploadedFile, FileDetails details) throws IOException {
-		String fileName = Util.DEFAULT_CONTENT_TYPE_FILE_NAME;
+		String fileName = EngUtil.DEFAULT_CONTENT_TYPE_FILE_NAME;
 		File result = null;
 		if (details != null && details.getContentType() != null) {
 			result = new File(uploadedFile.getParentFile(), fileName);

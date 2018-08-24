@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class ActionPanelPart {
 
@@ -137,7 +137,7 @@ public class ActionPanelPart {
 		text += "<div style='width:" + size.x + "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
 				+ "</div>";
 
-		if (!Util.isEmptyOrNull(desc)) {
+		if (!EngUtil.isEmptyOrNull(desc)) {
 			text += "<div style='width:" + size.x + "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc
 					+ "</div>";
 		}

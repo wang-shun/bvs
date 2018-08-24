@@ -15,6 +15,7 @@ import static org.eclipse.swt.internal.widgets.MarkupUtil.isMarkupEnabledFor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.nebula.widgets.grid.internal.IGridAdapter;
 import org.eclipse.nebula.widgets.grid.internal.IScrollBarProxy;
@@ -3601,6 +3602,22 @@ public class Grid extends Composite {
 		}
 		return visualIndex < getFixedColumns();
 	}
+	
+	public void handleItems(GridItem[] items, Consumer<GridItem> handler) {
+		for (int i = 0; i < items.length; i++) {
+			handler.accept(items[i]);
+			GridItem[] children = items[i].getItems();
+			if (children.length > 0) {
+				handleItems(children, handler);
+			}
+		}
+	}
+	
+	public void handleItems(Consumer<GridItem> handler) {
+		handleItems(getItems(), handler);
+	}
+	
 	// ADD--
 
+	
 }

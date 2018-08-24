@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import com.bizvisionsoft.annotations.AUtil;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.tools.Util;
 
 public class TextPageField extends EditorField {
 

@@ -23,7 +23,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class BruiToolkit {
 
@@ -216,7 +216,7 @@ public class BruiToolkit {
 		Button btn = new Button(parent, SWT.PUSH);
 		enableMarkup(btn);
 		String imageUrl = a.getImage();
-		String buttonText = Util.isEmptyOrNull(a.getText()) ? "" : a.getText();
+		String buttonText = EngUtil.isEmptyOrNull(a.getText()) ? "" : a.getText();
 
 		String text = "";
 		if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -260,7 +260,7 @@ public class BruiToolkit {
 	public void runAction(Action action, Event event, IBruiService service, IBruiContext context) {
 		Assembly assembly = context.getAssembly();
 		List<Action> ca = action.getChildren();
-		if (Util.isEmptyOrNull(ca)) {
+		if (EngUtil.isEmptyOrNull(ca)) {
 			BruiActionEngine.execute(action, event, context, service);
 		} else {
 			// œ‘ æ≤Àµ•

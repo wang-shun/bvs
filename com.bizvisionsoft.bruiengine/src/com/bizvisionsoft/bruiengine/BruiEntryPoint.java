@@ -30,7 +30,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
@@ -143,7 +143,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		bgimg.setStyleAttribute("background-repeat", "no-repeat");
 		bgimg.setStyleAttribute("background-position", "center");
 		String css = ModelLoader.site.getPageBackgroundImageCSS();
-		if(!Util.isEmptyOrNull(css)) {
+		if(!EngUtil.isEmptyOrNull(css)) {
 			bgimg.setHtmlAttribute("class", css);
 		}
 	}
@@ -201,7 +201,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		}
 
 		String name = page.getTitle();
-		if (Util.isEmptyOrNull(name)) {
+		if (EngUtil.isEmptyOrNull(name)) {
 			name = page.getName();
 		}
 		View view;

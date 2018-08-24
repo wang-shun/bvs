@@ -10,16 +10,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -31,11 +26,11 @@ import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
 import org.eclipse.rap.rwt.RWT;
 
-import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.mongocodex.codec.CodexProvider;
+import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
 
-public class Util {
+public class EngUtil {
 
 	private static final String MONEY_NUMBER_FORMAT = "#,##0.0";
 
@@ -78,42 +73,7 @@ public class Util {
 	}
 
 	public static String getFormatText(Object object) {
-		return getFormatText(object, null, RWT.getLocale());
-	}
-
-	public static String getFormatText(Object value, String format, Locale locale) {
-		String text;
-		if (value instanceof Date) {
-			if (Util.isEmptyOrNull(format)) {
-				return new SimpleDateFormat(DATE_FORMAT_DATE, locale).format(value);
-			} else {
-				return new SimpleDateFormat(format, locale).format(value);
-			}
-		} else if (value instanceof Integer || value instanceof Long || value instanceof Short) {
-			text = Optional.ofNullable(format)//
-					.map(f -> {
-						return new DecimalFormat(f).format(value);
-					}).orElse(value.toString());
-		} else if (value instanceof Float || value instanceof Double) {
-			return new DecimalFormat(Optional.ofNullable(format).orElse("0.0")).format(value);
-		} else if (value instanceof Boolean) {
-			text = (boolean) value ? "ÊÇ" : "·ñ";
-		} else if (value instanceof String) {
-			text = (String) value;
-		} else if (value instanceof List<?>) {
-			text = "";
-			for (int i = 0; i < ((List<?>) value).size(); i++) {
-				if (i != 0) {
-					text += ", ";
-				}
-				text += getFormatText(((List<?>) value).get(i), format, locale);
-			}
-		} else if (value instanceof Object) {
-			text = Optional.ofNullable(AUtil.readLabel(value)).orElse("");
-		} else {
-			text = "";
-		}
-		return text;
+		return Util.getFormatText(object, null, RWT.getLocale());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

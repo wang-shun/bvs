@@ -32,7 +32,8 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
 
 public class MessengerInboxPart implements IQueryEnable {
@@ -248,7 +249,7 @@ public class MessengerInboxPart implements IQueryEnable {
 		String currentDate = null;
 		for (int i = 0; i < input.size(); i++) {
 			Date date = (Date) AUtil.readValue(input.get(i), cName, fName, defaultDate);
-			String _date = Util.getFormatText(date, Util.DATE_FORMAT_DATE, RWT.getLocale());
+			String _date = Util.getFormatText(date, EngUtil.DATE_FORMAT_DATE, RWT.getLocale());
 			if (!_date.equals(currentDate)) {
 				result.add(_date);
 				currentDate = _date;

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.SessionDiskUploadReceiver;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
@@ -183,7 +183,7 @@ public class FileField extends EditorField implements FileUploadListener {
 			FileService fs = Services.get(FileService.class);
 			File file = receiver.getTargetFiles()[receiver.getTargetFiles().length - 1];
 			RemoteFile remoteFile = fs.upload(new FileInputStream(file), file.getName(), fieldConfig.getFileNamespace(),
-					Util.getContentType(file, null), Brui.sessionManager.getUser().getUserId());
+					EngUtil.getContentType(file, null), Brui.sessionManager.getUser().getUserId());
 			if (value == null)
 				value = new ArrayList<RemoteFile>();
 			else

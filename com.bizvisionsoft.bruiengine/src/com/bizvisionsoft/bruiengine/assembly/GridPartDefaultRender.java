@@ -12,7 +12,7 @@ import org.eclipse.swt.graphics.Image;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.service.tools.Util;
 
 public class GridPartDefaultRender {
 

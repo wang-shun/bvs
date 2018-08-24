@@ -18,7 +18,7 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
@@ -61,7 +61,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 
 		String serivceName = grid.getGridDataSetService();
-		if (!Util.isEmptyOrNull(serivceName)) {
+		if (!EngUtil.isEmptyOrNull(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
@@ -143,7 +143,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = Util.getBson(input).get("_id");
+				Object _id = EngUtil.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -159,7 +159,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = Util.getBson(input).get("_id");
+				Object _id = EngUtil.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -175,7 +175,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = Util.getBson(input).get("_id");
+				Object _id = EngUtil.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -283,7 +283,7 @@ public class BruiDataSetEngine extends BruiEngine {
 					method.invoke(getTarget(), filterAndUpdate);
 				} else {
 					String[] names = { MethodParam._ID, MethodParam.OBJECT, MethodParam.FILTER_N_UPDATE };
-					Object[] values = { Util.getBson(element).get("_id"), element, filterAndUpdate };
+					Object[] values = { EngUtil.getBson(element).get("_id"), element, filterAndUpdate };
 					invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
 				}
 			} catch (IllegalAccessException | IllegalArgumentException e) {
@@ -302,10 +302,10 @@ public class BruiDataSetEngine extends BruiEngine {
 			Object[] values;
 			String[] names;
 			if (parent == null) {
-				values = new Object[] { Util.getBson(element).get("_id"), element };
+				values = new Object[] { EngUtil.getBson(element).get("_id"), element };
 				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
 			} else {
-				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
+				values = new Object[] { EngUtil.getBson(parent).get("_id"), parent, EngUtil.getBson(element).get("_id"),
 						element };
 				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
 						MethodParam.OBJECT };
@@ -323,10 +323,10 @@ public class BruiDataSetEngine extends BruiEngine {
 			Object[] values;
 			String[] names;
 			if (parent == null) {
-				values = new Object[] { Util.getBson(element).get("_id"), element };
+				values = new Object[] { EngUtil.getBson(element).get("_id"), element };
 				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
 			} else {
-				values = new Object[] { Util.getBson(parent).get("_id"), parent, Util.getBson(element).get("_id"),
+				values = new Object[] { EngUtil.getBson(parent).get("_id"), parent, EngUtil.getBson(element).get("_id"),
 						element };
 				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
 						MethodParam.OBJECT };
@@ -341,7 +341,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (method != null) {
 			Object[] values;
 			String[] names;
-			values = new Object[] { Util.getBson(element).get("_id"), element };
+			values = new Object[] { EngUtil.getBson(element).get("_id"), element };
 			names = new String[] { MethodParam._ID, MethodParam.OBJECT };
 			return invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
 		}

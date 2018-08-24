@@ -12,7 +12,8 @@ import org.eclipse.rap.rwt.RWT;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Util;
 
 public class MessageLabelProvider extends ColumnLabelProvider {
 
@@ -60,18 +61,18 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 					+ " style='float:left;margin-top:4px;margin-left:4px;border-radius:28px;width:48px;height:48px;'/>");
 		} else {
 			try {
-				String alpha = Util.getAlphaString(senderName);
+				String alpha = EngUtil.getAlphaString(senderName);
 				headPicURL = "/bvs/svg?text=" + URLEncoder.encode(alpha, "utf-8") + "&color=ffffff";
 				sb.append(
 						"<img src=" + headPicURL + " style='float:left;margin-top:4px;margin-left:4px;background-color:"
-								+ Util.getHTMLDarkColor(alpha) + ";border-radius:28px;width:48px;height:48px;'/>");
+								+ EngUtil.getHTMLDarkColor(alpha) + ";border-radius:28px;width:48px;height:48px;'/>");
 			} catch (UnsupportedEncodingException e) {
 			}
 		}
 
 		sb.append("<div style='float:right;'><span>" + senderName + "</span>&nbsp;&nbsp;&nbsp;");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("<span>" + Util.getFormatText(sendDate, Util.DATE_FORMAT_DATE, RWT.getLocale()) + "</span></div>");
+		sb.append("<span>" + Util.getFormatText(sendDate, EngUtil.DATE_FORMAT_DATE, RWT.getLocale()) + "</span></div>");
 
 		// 内容区
 		sb.append("<div style='margin-left:64px'>");

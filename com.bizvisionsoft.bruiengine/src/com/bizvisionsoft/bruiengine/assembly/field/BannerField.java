@@ -6,7 +6,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Util;
 
 public class BannerField extends EditorField {
 
@@ -23,7 +24,7 @@ public class BannerField extends EditorField {
 		handler = WidgetHandler.getHandler(control);
 
 		String sh = fieldConfig.getText();
-		if (!Util.isEmptyOrNull(sh)) {
+		if (!EngUtil.isEmptyOrNull(sh)) {
 			setText(sh);
 		}
 

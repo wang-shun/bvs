@@ -19,7 +19,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.assembly.GridPartDefaultRender;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.util.Util;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class BruiGridRenderEngine extends BruiEngine {
 
@@ -32,7 +32,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private static BruiGridRenderEngine load(String bundleId, String className) {
-		if (!Util.isEmptyOrNull(bundleId) && !Util.isEmptyOrNull(className)) {
+		if (!EngUtil.isEmptyOrNull(bundleId) && !EngUtil.isEmptyOrNull(className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiGridRenderEngine(bundle.loadClass(className));
