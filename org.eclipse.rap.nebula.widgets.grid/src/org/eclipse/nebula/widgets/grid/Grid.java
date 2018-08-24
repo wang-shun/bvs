@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.nebula.widgets.grid.internal.IGridAdapter;
 import org.eclipse.nebula.widgets.grid.internal.IScrollBarProxy;
@@ -3602,7 +3603,7 @@ public class Grid extends Composite {
 		}
 		return visualIndex < getFixedColumns();
 	}
-	
+
 	public void handleItems(GridItem[] items, Consumer<GridItem> handler) {
 		for (int i = 0; i < items.length; i++) {
 			handler.accept(items[i]);
@@ -3612,12 +3613,31 @@ public class Grid extends Composite {
 			}
 		}
 	}
-	
+
 	public void handleItems(Consumer<GridItem> handler) {
 		handleItems(getItems(), handler);
 	}
-	
+
+	public GridItem findItem(Function<GridItem, Boolean> condition) {
+		return findItem(getItems(), condition);
+	}
+
+	public GridItem findItem(GridItem[] items, Function<GridItem, Boolean> condition) {
+		for (int i = 0; i < items.length; i++) {
+			if (Boolean.TRUE.equals(condition.apply(items[i]))) {
+				return items[i];
+			}
+			GridItem[] children = items[i].getItems();
+			if (children.length > 0) {
+				GridItem item = findItem(children, condition);
+				if (item != null) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	// ADD--
 
-	
 }
