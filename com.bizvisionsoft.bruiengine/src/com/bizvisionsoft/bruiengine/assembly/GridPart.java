@@ -882,4 +882,12 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		this.filter = filter;
 	}
 
+	public void expand(int i) {
+		viewer.expandToLevel(i);
+	}
+
+	public void collapse() {
+		viewer.collapseAll();
+	}
+
 }

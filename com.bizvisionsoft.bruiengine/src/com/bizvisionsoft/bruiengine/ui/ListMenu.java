@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -43,6 +44,7 @@ public class ListMenu extends Part {
 	private Map<String, Function<Action, Boolean>> listener = new HashMap<String, Function<Action, Boolean>>();
 	private Function<Point, Point> locFunc;
 	private Function<Point, Point> sizeFunc;
+	private Function<Composite, Color> bgFunc;
 
 	public ListMenu(IBruiService service) {
 		super(service.getCurrentShell());
@@ -89,9 +91,14 @@ public class ListMenu extends Part {
 	@Override
 	protected void createContents(Composite parent) {
 		this.parent = parent;
-		parent.setBackground(BruiColors.getColor(BruiColor.Teal_500));
-//		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
-//		parent.setHtmlAttribute("class", "gradient-teal");
+		if (bgFunc == null) {
+			parent.setBackground(BruiColors.getColor(BruiColor.Teal_500));
+			// parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+			// parent.setHtmlAttribute("class", "gradient-teal");
+		} else {
+			Color color = bgFunc.apply(parent);
+			parent.setBackground(color);
+		}
 		parent.setLayout(new FillLayout());
 		createPage();
 	}
@@ -195,6 +202,11 @@ public class ListMenu extends Part {
 
 	public ListMenu setSize(Function<Point, Point> sizeFunc) {
 		this.sizeFunc = sizeFunc;
+		return this;
+	}
+
+	public ListMenu modifyBackground(Function<Composite, Color> bgFunc) {
+		this.bgFunc = bgFunc;
 		return this;
 	}
 
