@@ -31,15 +31,8 @@ public class ExpandNCollapseGridTree {
 	private void showMenu(GridPart part, Event event) {
 		ListMenu listMenu = new ListMenu(bruiService);
 		List<Action> actions = new ArrayList<>();
-		Action action = new Action();
-		action.setName("expand");
-		action.setText("展开全部");
-		actions.add(action);
-		listMenu.handleActionExecute("expand", a -> {
-			part.expand(-1);
-			return false;
-		});
-
+		Action 
+		
 		action = new Action();
 		action.setName("expand1");
 		action.setText("展开1层");
@@ -71,13 +64,14 @@ public class ExpandNCollapseGridTree {
 		});
 
 		action = new Action();
-		action.setName("collapse");
-		action.setText("收起全部");
+		action.setName("expand");
+		action.setText("展开全部");
 		actions.add(action);
-		listMenu.handleActionExecute("collapse", a -> {
-			part.collapse();
+		listMenu.handleActionExecute("expand", a -> {
+			part.expand(-1);
 			return false;
 		});
+		
 		
 		listMenu.setActions(actions).setLocation(p -> {
 			Control item = (Control) event.widget;
