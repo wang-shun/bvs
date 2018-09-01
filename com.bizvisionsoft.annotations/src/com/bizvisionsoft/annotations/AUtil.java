@@ -69,7 +69,7 @@ public class AUtil {
 
 	public static Object readImageUrl(Object element, String cName, String fName, Object defaultValue) {
 		if (element instanceof Map<?, ?>) {
-			return ((Map<?, ?>) element).get(fName);
+			return ((Map<?, ?>) element).get(fName+".img");
 		} else {
 			return read(element.getClass(), ImageURL.class, element, cName, fName, defaultValue, a -> a.value());
 		}

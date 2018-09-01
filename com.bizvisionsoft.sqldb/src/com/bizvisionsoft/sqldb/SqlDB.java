@@ -5,11 +5,13 @@ import java.sql.Connection;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class SqlDB implements BundleActivator {
 
 	private static BundleContext context;
 
 	private ConnectionManager connectionManager;
+
+	public static SqlDB s;
 
 	static BundleContext getContext() {
 		return context;
@@ -22,8 +24,9 @@ public class Activator implements BundleActivator {
 	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
+		SqlDB.context = bundleContext;
 		initConnection();
+		s = this;
 	}
 
 	/*
@@ -33,12 +36,17 @@ public class Activator implements BundleActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
+		s = null;
 		destoryConnection();
-		Activator.context = null;
+		SqlDB.context = null;
 	}
 
 	private void initConnection() {
-		connectionManager = ConnectionManager.getInstance();
+		String dataSourcePath = context.getProperty("com.bizvisionsoft.sqldb.datasource");
+		if(dataSourcePath==null||dataSourcePath.isEmpty()) {
+			throw new IllegalArgumentException("缺少SqlDB数据源定义。启动参数:com.bizvisionsoft.sqldb.datasource");
+		}
+		connectionManager = ConnectionManager.getInstance(dataSourcePath);
 	}
 
 	private void destoryConnection() {
@@ -60,5 +68,6 @@ public class Activator implements BundleActivator {
 	public void freeConnection(String poolName, Connection connection) {
 		connectionManager.freeConnection(poolName, connection);
 	}
+	
 
 }

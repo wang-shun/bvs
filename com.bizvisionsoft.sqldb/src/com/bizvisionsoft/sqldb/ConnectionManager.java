@@ -31,12 +31,14 @@ public class ConnectionManager {
 	/**
 	 * 返回唯一实例.如果是第一次调用此方法,则创建实例
 	 * 
+	 * @param dataSourcePath
+	 * 
 	 * 
 	 * @return DBConnectionManager 唯一实例
 	 */
-	static synchronized public ConnectionManager getInstance() {
+	static synchronized public ConnectionManager getInstance(String dataSourcePath) {
 		if (instance == null) {
-			instance = new ConnectionManager();
+			instance = new ConnectionManager(dataSourcePath);
 		}
 		clients++;
 		return instance;
@@ -44,9 +46,11 @@ public class ConnectionManager {
 
 	/**
 	 * 建构函数私有以防止其它对象创建本类实例
+	 * 
+	 * @param dataSourcePath
 	 */
-	private ConnectionManager() {
-		init();
+	private ConnectionManager(String dataSourcePath) {
+		init(dataSourcePath);
 	}
 
 	/**
@@ -177,11 +181,12 @@ public class ConnectionManager {
 
 	/**
 	 * 读取属性完成初始化
+	 * 
+	 * @param dataSourcePath
 	 */
-	private void init() {
+	private void init(String dataSourcePath) {
 		try {
-			InputStream is = new BufferedInputStream(
-					new FileInputStream(System.getProperty("user.dir") + "/configuration/db.properties"));
+			InputStream is = new BufferedInputStream(new FileInputStream(dataSourcePath));
 			Properties dbProps = new Properties();
 			dbProps.load(is);
 			loadDrivers(dbProps);
