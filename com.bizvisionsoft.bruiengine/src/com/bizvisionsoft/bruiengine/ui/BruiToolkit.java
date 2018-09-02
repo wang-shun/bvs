@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
@@ -23,7 +24,9 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.model.User;
 
 public class BruiToolkit {
 
@@ -269,12 +272,72 @@ public class BruiToolkit {
 		}
 	}
 
-	public boolean isAcceptableBehavior(Object element, IBruiContext context, Assembly assembly, Action action) {
+	public boolean isAcceptAction(Object element, IBruiContext context, Assembly assembly, Action action) {
+		String cName = assembly.getName();
+		return isAcceptAction(element, context, action, cName);
+	}
+
+	public boolean isAcceptAction(Object element, IBruiContext context, Action action, String cName) {
 		String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT, MethodParam.CONTEXT_INPUT_OBJECT_ID,
 				MethodParam.ROOT_CONTEXT_INPUT_OBJECT, MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID,
 				MethodParam.CURRENT_USER, MethodParam.CURRENT_USER_ID };
 		Object[] parameterValues = context.getContextParameters(paramemterNames);
-		return AUtil.readBehavior(element, assembly.getName(), action.getName(), parameterValues, paramemterNames);
+		return AUtil.readBehavior(element, cName, action.getName(), parameterValues, paramemterNames);
+	}
+
+	public List<Action> getAcceptedActions(Assembly assembly, User user, IBruiContext context) {
+		List<Action> list = assembly.getActions();
+		String cName = assembly.getName();
+		return getAcceptedActions(user, context, list, cName);
+	}
+
+	public List<Action> getAcceptedActions(User user, IBruiContext context, List<Action> list, String cName) {
+		final List<Action> actions = new ArrayList<Action>();
+		// 权限控制
+		list = PermissionUtil.getPermitActions(user, list, context.getRootInput());
+
+		if (list != null) {
+			final Object input = context.getInput();
+			final Object root = context.getRootInput();
+			list.forEach(action -> {
+				if (isAcceptAction(context, cName, input, root, action))
+					actions.add(action);
+			});
+		}
+		return actions;
+	}
+
+	private boolean isAcceptAction(IBruiContext context, String cName, Object input, Object root, Action action) {
+		///////////////////////////////////
+		// 先判断action是否设置了对象行为控制
+		if (action.isObjectBehavier()) {
+			if (input != null) {
+				if (isAcceptAction(input, context, action, cName)) {
+					return true;
+				}
+			} else if (root != null) {
+				if (isAcceptAction(root, context, action, cName)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		////////////////////////////////
+		// 再判断action实现是否具有行为控制
+		if (action.isActionBehavier()) {
+			try {
+				Object target = BruiActionEngine.create(action, context).getTarget();
+				if (target != null) {
+					if (isAcceptAction(target, context, action, cName)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} catch (Exception e) {
+			}
+		}
+		return true;
 	}
 
 }

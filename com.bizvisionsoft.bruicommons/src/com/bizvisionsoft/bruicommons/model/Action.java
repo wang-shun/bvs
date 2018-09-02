@@ -56,6 +56,8 @@ public class Action extends ModelObject {
 	
 	private boolean objectBehavier;
 
+	private boolean actionBehavier;
+
 	public String getId() {
 		return id;
 	}
@@ -217,6 +219,14 @@ public class Action extends ModelObject {
 		return objectBehavier;
 	}
 	
+	public boolean isActionBehavier() {
+		return actionBehavier;
+	}
+	
+	public void setActionBehavier(boolean actionBehavier) {
+		this.actionBehavier = actionBehavier;
+	}
+	
 	public void setObjectBehavier(boolean objectBehavier) {
 		this.objectBehavier = objectBehavier;
 		
@@ -332,5 +342,5 @@ public class Action extends ModelObject {
 	public void setBudgetServiceName(String budgetServiceName) {
 		this.budgetServiceName = budgetServiceName;
 	}
-	
+
 }

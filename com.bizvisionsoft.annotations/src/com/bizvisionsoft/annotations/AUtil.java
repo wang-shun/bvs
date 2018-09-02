@@ -69,7 +69,7 @@ public class AUtil {
 
 	public static Object readImageUrl(Object element, String cName, String fName, Object defaultValue) {
 		if (element instanceof Map<?, ?>) {
-			return ((Map<?, ?>) element).get(fName+".img");
+			return ((Map<?, ?>) element).get(fName + ".img");
 		} else {
 			return read(element.getClass(), ImageURL.class, element, cName, fName, defaultValue, a -> a.value());
 		}
@@ -452,14 +452,23 @@ public class AUtil {
 
 	public static boolean readBehavior(Object element, String cName, String fName, Object[] parameterValues,
 			String[] paramemterNames) {
-		return Boolean.TRUE.equals(
-				readValue(element, cName, fName, parameterValues, paramemterNames, Behavior.class, a -> a.value()));
+		return readBehavior(element, cName, fName, parameterValues, paramemterNames, false);
+	}
+
+	public static Boolean readBehavior(Object element, String cName, String fName, Object[] parameterValues,
+			String[] paramemterNames, Boolean nullValue) {
+		Object v = readValue(element, cName, fName, parameterValues, paramemterNames, Behavior.class, a -> a.value());
+		if (v == null) {
+			return nullValue;
+		} else {
+			return Boolean.TRUE.equals(v);
+		}
 	}
 
 	public static Object readEditorConfig(Object element, String cName, String fName, Object[] parameterValues,
 			String[] paramemterNames) {
-		return readValue(element, cName, fName, parameterValues, paramemterNames,
-				ReadEditorConfig.class, a -> a.value());
+		return readValue(element, cName, fName, parameterValues, paramemterNames, ReadEditorConfig.class,
+				a -> a.value());
 	}
 
 	public static <T extends Annotation> Object readValue(Object element, String cName, String fName,
