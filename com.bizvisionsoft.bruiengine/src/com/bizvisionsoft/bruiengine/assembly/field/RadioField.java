@@ -31,37 +31,31 @@ public class RadioField extends EditorField {
 	@Override
 	protected Control createControl(Composite parent) {
 
-		control = new Composite(parent, SWT.NONE);
-
-		//////////////////////////////////////////////////////////////////////////////////////
-		// 读取配置进行设置
-
-		// 设置文本是否只读
-		control.setEnabled(!isReadOnly());
-
-		// 设置选项
-		setOptions();
-
-		// 创建选项
 
 		RowLayout layout = new RowLayout();
-		control.setLayout(layout);
 		layout.fill = true;
 		layout.marginBottom = 0;
-		layout.marginLeft = 0;
+		layout.marginLeft = 8;
 		layout.marginRight = 0;
 		layout.marginTop = 0;
 		layout.wrap = false;
 		if (FormField.RADIO_STYLE_CLASSIC.equals(fieldConfig.getRadioStyle())) {
 			layout.spacing = 16;
 			layout.type = SWT.HORIZONTAL;
+			control = new Composite(parent, SWT.BORDER);
+			control.setLayout(layout);
 		} else if (FormField.RADIO_STYLE_VERTICAL.equals(fieldConfig.getRadioStyle())) {
 			layout.spacing = 16;
 			layout.type = SWT.VERTICAL;
+			control = new Composite(parent, SWT.BORDER);
+			control.setLayout(layout);
 		} else {
-			layout.spacing = 0;
+			control = new Composite(parent, SWT.NONE);
 			control.setLayout(new FillLayout());
 		}
+		control.setEnabled(!isReadOnly());
+		// 设置选项
+		setOptions();
 
 		buttons = new ArrayList<Button>();
 		for (int i = 0; i < choice.size(); i++) {
