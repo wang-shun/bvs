@@ -533,8 +533,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 						total += cols[i].getWidth();
 				}
 				for (int i = 0; i < cols.length; i++) {
-					if (!Boolean.TRUE.equals(cols[i].getData("fixedRight")))
+					if (total != 0 && !Boolean.TRUE.equals(cols[i].getData("fixedRight"))) {
 						cols[i].setWidth(width * cols[i].getWidth() / total);
+					}
 				}
 			});
 		}

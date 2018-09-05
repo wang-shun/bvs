@@ -27,6 +27,7 @@ import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -62,6 +63,8 @@ public class FlowPart {
 	private BasicDBObject filter;
 
 	private FigureCanvas canvas;
+
+	private ScrolledComposite sc;
 
 	public FlowPart() {
 	}
@@ -104,7 +107,7 @@ public class FlowPart {
 		panel.setLayout(new FillLayout());
 		createControl(panel);
 		setViewerInput();
-
+		sc.setMinSize(canvas.computeSize(2000, 1200));
 	}
 
 	private Composite createSticker(Composite parent) {
@@ -116,9 +119,12 @@ public class FlowPart {
 	}
 
 	protected FigureCanvas createControl(Composite parent) {
-		canvas = new FigureCanvas(parent);
-		canvas.getViewport().setContentsTracksHeight(true);
-		canvas.getViewport().setContentsTracksWidth(true);
+		sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		canvas = new FigureCanvas(sc);
+		canvas.setScrollBarVisibility(FigureCanvas.NEVER);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		sc.setContent(canvas);
 		return canvas;
 	}
 
