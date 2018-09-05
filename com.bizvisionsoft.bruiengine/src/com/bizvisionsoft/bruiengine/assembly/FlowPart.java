@@ -17,8 +17,10 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
@@ -66,6 +68,8 @@ public class FlowPart {
 
 	private ScrolledComposite sc;
 
+	private DirectedGraph graph;
+
 	public FlowPart() {
 	}
 
@@ -107,7 +111,9 @@ public class FlowPart {
 		panel.setLayout(new FillLayout());
 		createControl(panel);
 		setViewerInput();
-		sc.setMinSize(canvas.computeSize(2400, 2400));
+		Dimension size = graph.getLayoutSize();
+		Insets insets = graph.getMargin();
+		sc.setMinSize(size.width + insets.getWidth() + 100, size.height + insets.getHeight() + 100);// 100是半个块的宽度
 	}
 
 	private Composite createSticker(Composite parent) {
@@ -161,7 +167,8 @@ public class FlowPart {
 		nodeData.forEach(elem -> nodes.add(createNode(elem)));
 		linkData.forEach(elem -> edges.add(createEdge(nodes, elem)));
 
-		DirectedGraph graph = new DirectedGraph();
+		graph = new DirectedGraph();
+		graph.setDirection(PositionConstants.EAST);
 		graph.nodes = nodes;
 		graph.edges = edges;
 
