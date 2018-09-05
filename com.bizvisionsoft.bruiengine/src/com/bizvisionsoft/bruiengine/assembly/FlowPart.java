@@ -249,13 +249,13 @@ public class FlowPart {
 
 		Document data = (Document) node.data;
 
-		Color color = Optional.ofNullable(getColor(data.get(NodeProperty.backgroundColor.name())))
+		Color color = Optional.ofNullable(getColor(data.get(NodeProperty.background.name())))
 				.orElse(BruiColors.getColor(BruiColor.light_blue_500));
 		label.setBackgroundColor(color);
 
-		color = Optional.ofNullable(getColor(data.get(NodeProperty.foregroundColor.name())))
+		color = Optional.ofNullable(getColor(data.get(NodeProperty.foreground.name())))
 				.orElse(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-		label.setBackgroundColor(color);
+		label.setForegroundColor(color);
 
 		label.setOpaque(true);
 
