@@ -105,6 +105,19 @@ public class BruiColors {
 		}
 		return color;
 	}
+	
+	public static Color getColorFromRGB(String hexString) {
+		Color color = JFaceResources.getColorRegistry().get(hexString);
+		if (color == null) {
+			int r = Integer.parseInt(hexString.substring(0, 2),16);
+			int g = Integer.parseInt(hexString.substring(2, 4),16);
+			int b = Integer.parseInt(hexString.substring(4, 6),16);
+			RGB rgb = new RGB(r, g, b);
+			color = new Color(null, rgb);
+			JFaceResources.getColorRegistry().put(hexString, rgb);
+		}
+		return color;
+	}
 
 	public static Color getColor(BruiColor bruiColor) {
 		Color color = JFaceResources.getColorRegistry().get(bruiColor.name());

@@ -12,7 +12,7 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 
-public class AssemblyChartEditor extends ModelEditor {
+public class AssemblyFlowEditor extends ModelEditor {
 
 	@Override
 	public void createContent() {
@@ -26,7 +26,7 @@ public class AssemblyChartEditor extends ModelEditor {
 		createTextField(parent, "组件标题:", inputData, "title", SWT.BORDER);
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
-
+		
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		Label l = new Label(parent, SWT.NONE);

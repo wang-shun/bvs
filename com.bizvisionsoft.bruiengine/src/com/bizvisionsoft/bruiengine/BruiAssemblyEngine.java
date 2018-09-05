@@ -17,6 +17,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.assembly.ActionPanelPart;
 import com.bizvisionsoft.bruiengine.assembly.ChartPart;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
+import com.bizvisionsoft.bruiengine.assembly.FlowPart;
 import com.bizvisionsoft.bruiengine.assembly.GanttPart;
 import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.assembly.InfopadPart;
@@ -70,6 +71,8 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new MessengerInboxPart(assembly));
 		} else if (Assembly.TYPE_CHART.equals(type)) {
 			brui = new BruiAssemblyEngine(new ChartPart(assembly));
+		} else if (Assembly.TYPE_FLOW.equals(type)) {
+			brui = new BruiAssemblyEngine(new FlowPart(assembly));
 		} else {
 			brui = load(assembly.getBundleId(), assembly.getClassName())// load
 					.newInstance();

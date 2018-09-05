@@ -2236,6 +2236,7 @@ public class Tree extends Composite {
   }
 
   @Override
+protected
   int getVScrollBarWidth() {
     int result = 0;
     if( hasVScrollBar() ) {
@@ -2245,6 +2246,7 @@ public class Tree extends Composite {
   }
 
   @Override
+protected
   int getHScrollBarHeight() {
     int result = 0;
     if( hasHScrollBar() ) {

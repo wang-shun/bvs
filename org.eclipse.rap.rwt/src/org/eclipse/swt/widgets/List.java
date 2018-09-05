@@ -1253,6 +1253,7 @@ public class List extends Scrollable {
   }
 
   @Override
+protected
   int getVScrollBarWidth() {
     int result = 0;
     if( hasVScrollBar() ) {
@@ -1262,6 +1263,7 @@ public class List extends Scrollable {
   }
 
   @Override
+protected
   int getHScrollBarHeight() {
     int result = 0;
     if( hasHScrollBar() ) {

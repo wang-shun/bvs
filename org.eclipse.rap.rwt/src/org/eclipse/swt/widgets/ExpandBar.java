@@ -519,6 +519,7 @@ public class ExpandBar extends Composite {
   // Helping methods - various
 
   @Override
+protected
   int getVScrollBarWidth() {
     int result = 0;
     if( ( style & SWT.V_SCROLL ) != 0 ) {

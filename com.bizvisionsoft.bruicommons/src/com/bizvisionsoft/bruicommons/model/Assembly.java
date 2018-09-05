@@ -8,6 +8,7 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class Assembly extends ModelObject {
 
+
 	@ReadValue(ReadValue.TYPE)
 	private String getTypeName() {
 		String text = "组件";
@@ -33,6 +34,8 @@ public class Assembly extends ModelObject {
 			text += " - 消息收件箱";
 		} else if (TYPE_CHART.equals(type)) {
 			text += " - 图表";
+		} else if (TYPE_FLOW.equals(type)) {
+			text += " - 流程图";
 		}
 		return text;
 	}
@@ -64,6 +67,8 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_MESSENGER = "messenger";
 
 	public static final String TYPE_CHART = "chart";
+	
+	public static final String TYPE_FLOW = "flow";
 
 	private String id;
 

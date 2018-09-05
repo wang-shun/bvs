@@ -207,7 +207,7 @@ public abstract class Scrollable extends Control {
     }
   }
 
-  int getVScrollBarWidth() {
+  protected int getVScrollBarWidth() {
     int result = 0;
     if( verticalBar != null && verticalBar.getVisible() ) {
       result = verticalBar.getSize().x;
@@ -215,7 +215,7 @@ public abstract class Scrollable extends Control {
     return result;
   }
 
-  int getHScrollBarHeight() {
+  protected int getHScrollBarHeight() {
     int result = 0;
     if( horizontalBar != null && horizontalBar.getVisible() ) {
       result = horizontalBar.getSize().y;
