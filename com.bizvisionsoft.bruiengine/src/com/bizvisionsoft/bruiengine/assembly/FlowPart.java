@@ -107,7 +107,7 @@ public class FlowPart {
 		panel.setLayout(new FillLayout());
 		createControl(panel);
 		setViewerInput();
-		sc.setMinSize(canvas.computeSize(2000, 1200));
+		sc.setMinSize(canvas.computeSize(2400, 2400));
 	}
 
 	private Composite createSticker(Composite parent) {
