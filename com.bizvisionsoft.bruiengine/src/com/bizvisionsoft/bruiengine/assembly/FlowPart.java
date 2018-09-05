@@ -113,7 +113,7 @@ public class FlowPart {
 		setViewerInput();
 		Dimension size = graph.getLayoutSize();
 		Insets insets = graph.getMargin();
-		sc.setMinSize(size.width + insets.getWidth() + 100, size.height + insets.getHeight() + 100);// 100是半个块的宽度
+		sc.setMinSize(size.width + insets.getWidth() + 60, size.height + insets.getHeight() + 60);// 100是半个块的宽度（自西向东 应为高）
 	}
 
 	private Composite createSticker(Composite parent) {
