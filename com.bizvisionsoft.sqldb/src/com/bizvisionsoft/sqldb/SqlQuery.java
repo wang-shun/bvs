@@ -15,6 +15,8 @@ public class SqlQuery {
 
 	private String sql;
 
+	private boolean lower;
+
 	public SqlQuery(String datasource) {
 		this.datasource = datasource;
 	}
@@ -41,7 +43,7 @@ public class SqlQuery {
 				for (int i = 1; i < meta.getColumnCount() + 1; i++) {
 					String name = meta.getColumnName(i);
 					Object value = rs.getObject(name);
-					doc.put(name.toUpperCase(), value);
+					doc.put(getKey(name), value);
 				}
 			}
 			rs.close();
@@ -50,6 +52,14 @@ public class SqlQuery {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private String getKey(String name) {
+		if (lower)
+			return name.toLowerCase();
+		else
+			return name.toUpperCase();
+
 	}
 
 	public void forEach(Consumer<Document> each) {
@@ -63,7 +73,7 @@ public class SqlQuery {
 				for (int i = 1; i < meta.getColumnCount() + 1; i++) {
 					String name = meta.getColumnName(i);
 					Object value = rs.getObject(name);
-					doc.put(name.toUpperCase(), value);
+					doc.put(getKey(name), value);
 				}
 				each.accept(doc);
 			}
@@ -72,6 +82,11 @@ public class SqlQuery {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public SqlQuery changeKeyCase(boolean lower) {
+		this.lower = lower;
+		return this;
 	}
 
 }
