@@ -53,12 +53,15 @@ public class Layer {
 	}
 
 	public static String esc(String input) {
+		if (input == null) {
+			return "";
+		}
 		String output = input.replaceAll("'", "&#x27;");
 		output = output.replaceAll("\"", "&quot;");
 		output = output.replaceAll("\\n", "");
 		return output;
 	}
-	
+
 	public static String onClick(String text, String message) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div onclick='layer.tips(\"" + //
@@ -66,8 +69,8 @@ public class Layer {
 		sb.append(text);
 		sb.append("</div>");
 		return sb.toString();
-	}	
-	
+	}
+
 	public static String onMouseOver(String text, String message) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div onMouseOver='layer.tips(\"" + //
