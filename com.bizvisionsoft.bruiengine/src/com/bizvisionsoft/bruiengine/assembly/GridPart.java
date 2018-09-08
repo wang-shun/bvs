@@ -210,6 +210,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	@CreateUI
 	public void createUI(Composite parent) {
+		//如果初始化时不加载数据，queryOn必须打开
+		if(config.isDisableInitLoadData()) {
+			queryOn = true;
+		}
+		
 		Composite panel;
 		if (config.isHasTitlebar() && itemSelector == null && !asEditorField) {
 			panel = createSticker(parent);
@@ -227,7 +232,12 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		} else {
 			layoutHorizontal(panel, queryPanel, grid, pagec);
 		}
-		setViewerInput();
+
+		if (!config.isDisableInitLoadData()) {
+			setViewerInput();
+		}else {
+			setViewerInput(new ArrayList<>());
+		}
 
 		renderEngine.uiCreated();
 

@@ -8,7 +8,6 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 
 public class Assembly extends ModelObject {
 
-
 	@ReadValue(ReadValue.TYPE)
 	private String getTypeName() {
 		String text = "×é¼þ";
@@ -67,7 +66,7 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_MESSENGER = "messenger";
 
 	public static final String TYPE_CHART = "chart";
-	
+
 	public static final String TYPE_FLOW = "flow";
 
 	private String id;
@@ -741,5 +740,15 @@ public class Assembly extends ModelObject {
 
 	public void setRemoveBorder(boolean removeBorder) {
 		this.removeBorder = removeBorder;
+	}
+
+	private boolean disableInitLoadData;
+
+	public boolean isDisableInitLoadData() {
+		return disableInitLoadData;
+	}
+
+	public void setDisableInitLoadData(boolean disableInitLoadData) {
+		this.disableInitLoadData = disableInitLoadData;
 	}
 }
