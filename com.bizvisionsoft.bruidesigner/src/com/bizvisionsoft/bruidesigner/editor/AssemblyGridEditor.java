@@ -75,6 +75,8 @@ public class AssemblyGridEditor extends ModelEditor {
 		l = new Label(parent, SWT.NONE);
 		l.setText("自定义表格如何取数，您可以使用插件或选择调用服务：");
 		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		
+		createCheckboxField(parent, "禁止初始化时加载数据：", inputData, "disableInitLoadData", SWT.CHECK);
 
 		createTextField(parent, "取数插件唯一标识符（Bundle Id）:", inputData, "gridDataSetBundleId", SWT.BORDER);
 
