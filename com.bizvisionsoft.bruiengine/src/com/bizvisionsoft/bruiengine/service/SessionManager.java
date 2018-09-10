@@ -61,7 +61,7 @@ public class SessionManager {
 		final UserSession session = UserSession.current();
 		session.setLoginUser(user);
 		session.setLoginTime(new Date());
-		
+
 		TraceUserUtil.trace("µÇÂ¼ÏµÍ³");
 	}
 
@@ -153,6 +153,22 @@ public class SessionManager {
 
 	public SessionManager stop() {
 		return this;
+	}
+
+	public void saveDefaultPageAssembly(String pageId, String assemblyId) {
+		String user = getUser().getUserId();
+		SettingStore store = RWT.getSettingStore();
+		try {
+			store.setAttribute(user+"_page_"+pageId, assemblyId);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getDefaultPageAssembly(String pageId) {
+		String user = getUser().getUserId();
+		SettingStore store = RWT.getSettingStore();
+		return store.getAttribute(user+"_page_"+pageId);
 	}
 
 }

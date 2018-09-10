@@ -104,22 +104,26 @@ public class ListMenu extends Part {
 		layout.marginWidth = 0;
 		page.setLayout(layout);
 
-		actions.forEach(a -> {
-			Label button = new Label(page, SWT.NONE);
-			button.setCursor(page.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
-			UserSession.bruiToolkit().enableMarkup(button);
-			button.setText(getButtonText(a));
-			GridData gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-			gridData.heightHint = 32;
-			button.setLayoutData(gridData);
-			button.addListener(SWT.MouseUp, e -> {
-				close();
-				Function<Action, Boolean> lis = listener.get(a.getName());
-				if (lis != null && !Boolean.TRUE.equals(lis.apply(a))) {
-					return;
-				}
-				BruiActionEngine.execute(a, event, context, service);
-			});
+		actions.forEach(a -> createMenuItem(a));
+
+	}
+
+	private void createMenuItem(Action a) {
+
+		Label button = new Label(page, SWT.NONE);
+		button.setCursor(page.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		UserSession.bruiToolkit().enableMarkup(button);
+		button.setText(getButtonText(a));
+		GridData gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gridData.heightHint = 32;
+		button.setLayoutData(gridData);
+		button.addListener(SWT.MouseUp, e -> {
+			close();
+			Function<Action, Boolean> lis = listener.get(a.getName());
+			if (lis != null && !Boolean.TRUE.equals(lis.apply(a))) {
+				return;
+			}
+			BruiActionEngine.execute(a, event, context, service);
 		});
 
 	}
@@ -134,11 +138,11 @@ public class ListMenu extends Part {
 			text += "<img src='" + url
 					+ "' style='float:left; cursor:pointer;margin:4px;' width='24px' height='24px'></img>";
 			margin = "6px";
-		}else {
+		} else {
 			margin = "38px";
 		}
-		text += "<div style='float:left;color:#fff;font-size:14px;font-weight:lighter;margin-top:6px;margin-left:"+margin+";'>" + buttonText
-				+ "</div></div>";
+		text += "<div style='float:left;color:#fff;font-size:14px;font-weight:lighter;margin-top:6px;margin-left:"
+				+ margin + ";'>" + buttonText + "</div></div>";
 		return text;
 	}
 

@@ -11,9 +11,7 @@ import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.RoleBased;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.AssemblyLink;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.service.model.User;
@@ -41,12 +39,11 @@ public class PermissionUtil {
 		return result;
 	}
 	
-	public static Assembly getRolebasedPageContent(User user,Page page, Object iac) {
-		List<AssemblyLink> matched = listRolebasedPageContents(user, page, iac);
-		Assert.isLegal(!matched.isEmpty(), "缺少对应角色的内容区组件。");
-		Assembly assembly = ModelLoader.site.getAssembly(matched.get(0).getId());
-		Assert.isNotNull(assembly, "内容区组件id对应组件不存在。");
-		return assembly;
+	public static List<String> getRolebasedPageContent(User user,Page page, Object iac) {
+		List<String> result = new ArrayList<String>();
+		listRolebasedPageContents(user, page, iac).forEach(al->result.add(al.getId()));
+		Assert.isLegal(!result.isEmpty(), "缺少对应角色的内容区组件。");
+		return result;
 	}
 
 	public static List<AssemblyLink> listRolebasedPageContents(User user, Page page, Object iac) {

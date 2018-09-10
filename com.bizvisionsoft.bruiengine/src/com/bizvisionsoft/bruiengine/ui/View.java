@@ -16,6 +16,7 @@ import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Page;
+import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
@@ -107,9 +108,14 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		Assembly assembly = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page,
+		List<String> assembiesId = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page,
 				context.getRootInput());
-		createContentArea(assembly, null, false);
+		String id = Brui.sessionManager.getDefaultPageAssembly(page.getId());
+		if(id==null||!assembiesId.contains(id)) {
+			id = assembiesId.get(0);
+		}
+		
+		createContentArea(ModelLoader.site.getAssembly(id), null, false);
 
 		FormData fd;
 		if (headbar != null) {
@@ -211,6 +217,10 @@ public class View extends Part {
 		if(sidebarWidget!=null) {
 			sidebarWidget.updateSidebarActionBudget(actionName);
 		}
+	}
+
+	public void saveDefaultHomePageAssm(Assembly assm) {
+		Brui.sessionManager.saveDefaultPageAssembly(page.getId(),assm.getId());
 	}
 
 }

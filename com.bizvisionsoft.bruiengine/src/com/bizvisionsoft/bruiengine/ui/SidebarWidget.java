@@ -264,6 +264,7 @@ public class SidebarWidget {
 					action.setImage(al.getImage());
 					actions.add(action);
 					actionMenu.handleActionExecute(id, a -> {
+						view.saveDefaultHomePageAssm(assm);
 						service.switchContent(assm, null);
 						return false;
 					});
@@ -275,6 +276,7 @@ public class SidebarWidget {
 			}
 		});
 	}
+
 
 	private void createSwitchConsignUserToolitem(Composite bar) {
 		Composite btn = new Composite(bar, SWT.NONE);
