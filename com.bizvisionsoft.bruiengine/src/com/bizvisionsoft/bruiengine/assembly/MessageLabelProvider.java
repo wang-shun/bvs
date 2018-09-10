@@ -80,8 +80,17 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
 		sb.append("<div class='label_subhead''>" + subject + "</div>");
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
-		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;'>" + content + "</div>");
-
+		
+		sb.append("<div style='height:38px;" // 2行文字高度
+				+ "white-space:normal; word-break:break-all;" //
+				+ "text-overflow: ellipsis;"//
+				+ "text-overflow:-o-ellipsis-lastline;"//
+				+ "overflow: hidden;"//
+				+ "display: -webkit-box;"//
+				+ "-webkit-box-orient:vertical;"//
+				+ "-webkit-line-clamp:2;"// 谷歌上行显示省略号
+				+ "'>" + content + "</div>");
+		
 		sb.append("</div>");
 		sb.append("</div>");
 		return sb.toString();
