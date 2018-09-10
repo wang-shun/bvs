@@ -60,7 +60,7 @@ rwt.qx.Class.define( "rwt.widgets.base.GridColumnLabel", {
     },
     
     updateLeftBorder : function(){
-    	this.$el.css( "box-shadow", "-1px 0px 8px rgba(0, 0, 0, 0.4)" );
+    	this.$el.css( "box-shadow", "-1px 0px 8px rgba(0, 0, 0, 0.2)" );
     },
     //ADD---
 

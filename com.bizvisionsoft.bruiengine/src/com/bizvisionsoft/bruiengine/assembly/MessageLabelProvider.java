@@ -91,8 +91,6 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 				+ "-webkit-line-clamp:2;"// 谷歌上行显示省略号
 				+ "'>" + content + "</div>");
 		
-//		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;'>" + content + "</div>");
-
 		sb.append("</div>");
 		sb.append("</div>");
 		return sb.toString();
