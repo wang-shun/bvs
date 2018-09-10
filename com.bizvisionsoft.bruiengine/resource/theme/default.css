@@ -679,7 +679,7 @@ Combo-List-Item,CCombo-List-Item {
   background-image: none;
   text-decoration: none;
   text-shadow: none;
-  padding: 8px 12px 8px 12px;
+  padding: 8px 8px 8px 8px;
 }
 
 Combo-List-Item:hover, Combo-List-Item:even:hover,CCombo-List-Item:hover, CCombo-List-Item:even:hover  {
@@ -692,7 +692,7 @@ Combo-List-Item:selected, Combo-List-Item:even:selected,CCombo-List-Item:selecte
 }
 
 Combo-Field,CCombo-Field {
-  padding: 8px 12px 8px 12px;
+  padding: 8px 8px 8px 8px;
 }
 
 Combo-FocusIndicator,CCombo-FocusIndicator {

@@ -78,7 +78,7 @@ public class TextQueryField extends EditorField {
 		}
 		operator.add(NUL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
-		gd.widthHint = 120;
+		gd.widthHint = 88;
 		operator.setLayoutData(gd);
 		control = new Text(pane, SWT.BORDER);
 		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));

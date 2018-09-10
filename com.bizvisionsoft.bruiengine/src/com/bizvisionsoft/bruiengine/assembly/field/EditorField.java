@@ -118,13 +118,12 @@ public abstract class EditorField {
 
 	protected Object getLabelLayoutData() {
 		if (isRemoveBorder()) {
-			GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
+			GridData gd = new GridData(SWT.RIGHT, SWT.FILL, false, false);
 			gd.widthHint = compact ? 60 : 100;
-			gd.verticalIndent = 8;
 			return gd;
 		} else {
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
-			gd.widthHint = compact ? 60 : 100;
+			gd.widthHint = 100;
 			return gd;
 		}
 	}

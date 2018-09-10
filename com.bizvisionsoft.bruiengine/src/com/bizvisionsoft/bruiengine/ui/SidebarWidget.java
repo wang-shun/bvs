@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -488,8 +489,7 @@ public class SidebarWidget {
 	}
 
 	public void updateSidebarActionBudget(String actionName) {
-		Action action = findAction(viewer.getGrid().getItems(), actionName);
-		viewer.update(action, null);
+		Optional.ofNullable(findAction(viewer.getGrid().getItems(), actionName)).ifPresent(a->viewer.update(a, null));
 	}
 
 	private Action findAction(GridItem[] items, String actionName) {
