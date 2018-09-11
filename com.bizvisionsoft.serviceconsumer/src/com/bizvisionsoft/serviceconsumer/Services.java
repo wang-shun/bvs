@@ -23,6 +23,7 @@ import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RevenueService;
 import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.SystemService;
+import com.bizvisionsoft.service.UniversalDataService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
@@ -59,6 +60,7 @@ public class Services implements BundleActivator {
 		register(WorkSpaceService.class);
 		register(WorkReportService.class);
 		register(PermissionService.class);
+		register(UniversalDataService.class);
 	}
 
 	private void register(Class<?> type) {

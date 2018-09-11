@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.ui.common.Execute;
+import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
@@ -227,17 +229,42 @@ public class BruiAssemblyContext implements IBruiContext {
 	public Object[] getContextParameters(String[] paramemterNames) {
 		Object contextInput = getInput();
 		Object rootInput = getRootInput();
+		Object pageInput = getContentPageInput();
 		User user = Brui.sessionManager.getUser();
-		Object inputid = Optional.ofNullable(contextInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
-		Object rootInputId = Optional.ofNullable(rootInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
-		return new Object[] { contextInput, inputid, rootInput, rootInputId, user, user.getUserId() };
+
+		Object[] result = new Object[paramemterNames.length];
+
+		for (int i = 0; i < result.length; i++) {
+			if (MethodParam.CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
+				result[i] = contextInput;
+			} else if (MethodParam.CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
+				result[i] = Optional.ofNullable(contextInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+			} else if (MethodParam.ROOT_CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
+				result[i] = rootInput;
+			} else if (MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
+				result[i] = Optional.ofNullable(rootInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+			} else if (MethodParam.CURRENT_USER.equals(paramemterNames[i])) {
+				result[i] = user;
+			} else if (MethodParam.CURRENT_USER_ID.equals(paramemterNames[i])) {
+				result[i] = user.getUserId();
+			} else if (Execute.PARAM_CONTEXT.equals(paramemterNames[i])) {
+				result[i] = this;
+			} else if (Execute.PAGE_CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
+				result[i] = pageInput;
+			} else if (MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
+				result[i] = Optional.ofNullable(pageInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+			}
+
+		}
+
+		return result;
 	}
 
 	@Override
 	public <T> T search_sele_root(Class<T> clas) {
-		return search(clas, SEARCH_NO_HIERARCHY, SEARCH_STRATEGY_SELECTED,SEARCH_STRATEGY_ROOT_INPUT);
+		return search(clas, SEARCH_NO_HIERARCHY, SEARCH_STRATEGY_SELECTED, SEARCH_STRATEGY_ROOT_INPUT);
 	}
-	
+
 	@Override
 	public <T> T search(Class<T> clas, int dir, int... strategy) {
 		T result = null;
@@ -293,7 +320,5 @@ public class BruiAssemblyContext implements IBruiContext {
 			return (T) data;
 		return null;
 	}
-
-
 
 }

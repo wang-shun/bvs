@@ -23,7 +23,7 @@ public @interface MethodParam {
 	String LIMIT = "limit";
 
 	String FILTER = "filter";
-	
+
 	String FILTER_N_UPDATE = "filter_and_update";
 
 	String CONDITION = "condition";
@@ -43,7 +43,7 @@ public @interface MethodParam {
 	String CONTEXT_INPUT_OBJECT = "context_input_object";
 
 	String ROOT_CONTEXT_INPUT_OBJECT_ID = "root_context_input_object_id";
-	
+
 	String PAGE_CONTEXT_INPUT_OBJECT_ID = "page_context_input_object_id";
 
 	String CONTEXT_INPUT_OBJECT_ID = "context_input_object_id";
@@ -51,6 +51,8 @@ public @interface MethodParam {
 	String CURRENT_USER = "current_user";
 
 	String CURRENT_USER_ID = "current_user_id";
+
+	String COMMAND = "command";
 
 	String value();
 

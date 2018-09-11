@@ -105,6 +105,10 @@ public class EngUtil {
 	public static BasicDBObject getBson(Object input, String... ignoreFields) {
 		return getBson(input, true, null, ignoreFields);
 	}
+	
+	public Object get_id(Object m) {
+		return getBson(m).get("_id");
+	}
 
 	public static <T, R> List<R> getList(List<T> source, Function<T, R> func) {
 		ArrayList<R> result = new ArrayList<R>();

@@ -12,3 +12,4 @@ Export-Package: com.bizvisionsoft.annotations,
  com.bizvisionsoft.annotations.ui.grid
 Require-Bundle: com.google.gson;bundle-version="2.7.0",
  org.eclipse.osgi
+Import-Package: org.bson

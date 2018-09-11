@@ -418,12 +418,25 @@ public class AUtil {
 	public static <T extends Annotation> Object invokeMethodInjectParams(Object target, Method method,
 			Object[] parameterValues, String[] paramemterNames, Class<T> parameterAnnotationClass,
 			Function<T, String> howToGetParameterNameFromAnnotation) {
-		Object[] args;
+		boolean byCommand = isCommandParameter(method, parameterAnnotationClass, howToGetParameterNameFromAnnotation);
+		// 判断是否使用command
+		if (byCommand) {
+			return invokeMethodInjectCommandParams(target, method, parameterValues, paramemterNames);
+		} else {
+			return invokeMethodInjectNormalParams(target, method, parameterValues, paramemterNames,
+					parameterAnnotationClass, howToGetParameterNameFromAnnotation);
+		}
+	}
+
+	private static <T extends Annotation> Object invokeMethodInjectNormalParams(Object target, Method method,
+			Object[] parameterValues, String[] paramemterNames, Class<T> parameterAnnotationClass,
+			Function<T, String> howToGetParameterNameFromAnnotation) {
+		Object[] args = null;
+		Parameter[] para = method.getParameters();
 		if (paramemterNames == null) {
 			args = parameterValues;
 		} else {
 			args = new Object[method.getParameterCount()];
-			Parameter[] para = method.getParameters();
 			for (int i = 0; i < para.length; i++) {
 				T emp = para[i].getAnnotation(parameterAnnotationClass);
 				if (emp != null) {
@@ -448,6 +461,43 @@ public class AUtil {
 			throw createTargetException(e1, e1.getTargetException().getMessage());
 		}
 		return null;
+	}
+
+	private static Object invokeMethodInjectCommandParams(Object target, Method method, Object[] parameterValues,
+			String[] paramemterNames) {
+		UniversalCommand command = new UniversalCommand();
+		for (int i = 0; i < paramemterNames.length; i++) {
+			if(UniversalCommand.PARAM_TARGET_CLASS.equals(paramemterNames[i])) {
+				command.setTargetClassName((String) parameterValues[i]);
+			}else {
+				command.addParameter(paramemterNames[i], parameterValues[i]);
+			}
+		}
+		command.setTargetClassName("com.bizvisionsoft.service.model.Docu");
+		try {
+			method.setAccessible(true);
+			UniversalResult ur = (UniversalResult) method.invoke(target, new Object[] { command });
+			return ur.getValue();
+		} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
+		} catch (InvocationTargetException e1) {
+			throw createTargetException(e1, e1.getTargetException().getMessage());
+		}
+		return null;
+	}
+
+	private static <T extends Annotation> boolean isCommandParameter(Method method, Class<T> parameterAnnotationClass,
+			Function<T, String> howToGetParameterNameFromAnnotation) {
+		Parameter[] para = method.getParameters();
+		if (para.length == 1) {
+			T emp = para[0].getAnnotation(parameterAnnotationClass);
+			if (emp != null && howToGetParameterNameFromAnnotation != null) {
+				String paramName = howToGetParameterNameFromAnnotation.apply(emp);
+				if (MethodParam.COMMAND.equals(paramName)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static boolean readBehavior(Object element, String cName, String fName, Object[] parameterValues,

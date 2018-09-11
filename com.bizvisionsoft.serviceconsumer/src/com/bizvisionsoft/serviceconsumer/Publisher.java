@@ -15,6 +15,7 @@ import com.bizvisionsoft.service.ProjectTemplateService;
 import com.bizvisionsoft.service.RevenueService;
 import com.bizvisionsoft.service.RiskService;
 import com.bizvisionsoft.service.SystemService;
+import com.bizvisionsoft.service.UniversalDataService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.WorkReportService;
 import com.bizvisionsoft.service.WorkService;
@@ -68,7 +69,10 @@ public class Publisher {
 
 						WorkReportService.class,
 
-						PermissionService.class
+						PermissionService.class,
+						
+						UniversalDataService.class
+
 
 				},
 
