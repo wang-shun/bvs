@@ -48,9 +48,9 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 		// String receiver = (String) AUtil.readValue(element, cName, "接收者", null);
 
 		// 头像
-		if(read) {
+		if (read) {
 			sb.append("<div style='height:74px;display:block;cursor:pointer;'>");
-		}else {
+		} else {
 			sb.append("<div style='font-weight:bold;height:74px;display:block;cursor:pointer;'>");
 		}
 		String sender = (String) AUtil.readValue(element, cName, "发送者", null);
@@ -80,7 +80,7 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
 		sb.append("<div class='label_subhead''>" + subject + "</div>");
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
-		
+
 		sb.append("<div style='height:38px;" // 2行文字高度
 				+ "white-space:normal; word-break:break-all;" //
 				+ "text-overflow: ellipsis;"//
@@ -90,7 +90,7 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 				+ "-webkit-box-orient:vertical;"//
 				+ "-webkit-line-clamp:2;"// 谷歌上行显示省略号
 				+ "'>" + content + "</div>");
-		
+
 		sb.append("</div>");
 		sb.append("</div>");
 		return sb.toString();

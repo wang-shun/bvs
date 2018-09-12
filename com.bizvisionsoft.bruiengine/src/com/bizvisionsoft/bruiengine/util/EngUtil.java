@@ -313,19 +313,20 @@ public class EngUtil {
 	 * @param String
 	 *            SourceStr 包含一个汉字的字符串
 	 */
-	public static String getAlphaString(String SourceStr) {
-
-		String Result = ""; //$NON-NLS-1$
-		int StrLength = SourceStr.length();
+	public static String getAlphaString(String src) {
+		if(src==null) {
+			return "";
+		}
+		String result = ""; //$NON-NLS-1$
 		int i;
 		try {
-			for (i = 0; i < StrLength; i++) {
-				Result += char2Alpha(SourceStr.charAt(i));
+			for (i = 0; i < src.length(); i++) {
+				result += char2Alpha(src.charAt(i));
 			}
 		} catch (Exception e) {
-			Result = ""; //$NON-NLS-1$
+			result = ""; //$NON-NLS-1$
 		}
-		return Result;
+		return result;
 	}
 
 	/**
@@ -355,7 +356,7 @@ public class EngUtil {
 		}
 
 		if (i >= 26)
-			return '0';
+			return ' ';
 		else
 			return alphatable[i];
 	}
