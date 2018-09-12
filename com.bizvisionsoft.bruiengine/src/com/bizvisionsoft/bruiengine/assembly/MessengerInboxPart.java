@@ -217,7 +217,7 @@ public class MessengerInboxPart implements IQueryEnable {
 		Layer.alert(subject,sb.toString(), 460, 300);
 		
 		Object _id = AUtil.readValue(element, cName, "_id", null);
-		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id));
+		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id),context);
 		AUtil.writeValue(element, cName, " «∑Ò“—∂¡", true);
 		viewer.update(element, null);
 	}

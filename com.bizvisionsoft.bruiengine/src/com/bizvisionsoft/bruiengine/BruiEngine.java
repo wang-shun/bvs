@@ -4,14 +4,19 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.UniversalCommand;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.annotations.ui.common.Init;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
+import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.model.User;
 
 public class BruiEngine {
 
@@ -45,16 +50,15 @@ public class BruiEngine {
 	final protected <T extends Annotation> Object invokeMethodInjectParams(Class<T> methodAnnotation,
 			Object[] parameters, String[] paramAnnotations, Object defaultValueForNoMethod) {
 		return AUtil.getMethod(clazz, methodAnnotation).map(method -> {
-			return invokeMethodInjectParams(method, parameters, paramAnnotations, MethodParam.class,
-					m -> m.value());
+			return invokeMethodInjectParams(method, parameters, paramAnnotations, MethodParam.class, m -> m.value());
 		}).orElse(defaultValueForNoMethod);
 	}
 
 	protected <T extends Annotation> Object invokeMethodInjectParams(Method method, Object[] parameters,
 			String[] paramAnnotations, Class<T> parameterAnnotationClass,
 			Function<T, String> howToGetParameterNameFromAnnotation) {
-		return AUtil.invokeMethodInjectParams(getTarget(), method, parameters, paramAnnotations, parameterAnnotationClass,
-				howToGetParameterNameFromAnnotation);
+		return AUtil.invokeMethodInjectParams(getTarget(), method, parameters, paramAnnotations,
+				parameterAnnotationClass, howToGetParameterNameFromAnnotation);
 	}
 
 	// final protected <T extends Annotation> Object getFieldValue(Class<T>
@@ -140,11 +144,11 @@ public class BruiEngine {
 						f.setAccessible(true);
 						f.set(target, value);
 					} catch (NullPointerException e) {
-						throw new RuntimeException("注入字段"+f.getName()+"时目标对象空指针异常。", e);
+						throw new RuntimeException("注入字段" + f.getName() + "时目标对象空指针异常。", e);
 					} catch (IllegalAccessException e) {
-						throw new RuntimeException("注入字段"+f.getName()+"时目标对象无法访问。", e);
+						throw new RuntimeException("注入字段" + f.getName() + "时目标对象无法访问。", e);
 					} catch (IllegalArgumentException e) {
-						throw new RuntimeException("注入字段"+f.getName()+"时目标对象参数错误。", e);
+						throw new RuntimeException("注入字段" + f.getName() + "时目标对象参数错误。", e);
 					}
 				}
 			}
@@ -154,6 +158,90 @@ public class BruiEngine {
 
 	public Object getTarget() {
 		return target;
+	}
+
+	protected void injectCommonParameters(IBruiContext context, List<String> names, List<Object> values,
+			String modelClassName) {
+		if (context != null) {
+			injectContextInputParameters(context, names, values);
+
+			injectPageContextInputParameters(context, names, values);
+
+			injectRootContextInputParameters(context, names, values);
+		}
+
+		injectUniversalCommandParameters(names, values, modelClassName);
+
+		injectUserParameters(names, values);
+	}
+
+	private void injectUserParameters(List<String> names, List<Object> values) {
+		try {
+			User user = Brui.sessionManager.getUser();
+			if (user != null) {
+				names.add(MethodParam.CURRENT_USER);
+				values.add(user);
+
+				names.add(MethodParam.CURRENT_USER_ID);
+				values.add(user.getUserId());
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	private void injectContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getInput();
+			if (input != null) {
+				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = EngUtil.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
+	private void injectPageContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getContentPageInput();
+			if (input != null) {
+				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = EngUtil.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
+	private void injectRootContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Object input = context.getRootInput();
+			if (input != null) {
+				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
+				values.add(input);
+
+				Object _id = EngUtil.getBson(input).get("_id");
+				if (_id != null) {
+					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
+					values.add(_id);
+				}
+			}
+		}
+	}
+
+	private void injectUniversalCommandParameters(List<String> names, List<Object> values, String modelClassName) {
+		if (modelClassName != null && !modelClassName.isEmpty()) {
+			names.add(UniversalCommand.PARAM_TARGET_CLASS);
+			values.add(modelClassName);
+		}
 	}
 
 }

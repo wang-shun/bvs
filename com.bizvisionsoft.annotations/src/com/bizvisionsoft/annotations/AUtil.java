@@ -473,7 +473,6 @@ public class AUtil {
 				command.addParameter(paramemterNames[i], parameterValues[i]);
 			}
 		}
-		command.setTargetClassName("com.bizvisionsoft.service.model.Docu");
 		try {
 			method.setAccessible(true);
 			UniversalResult ur = (UniversalResult) method.invoke(target, new Object[] { command });

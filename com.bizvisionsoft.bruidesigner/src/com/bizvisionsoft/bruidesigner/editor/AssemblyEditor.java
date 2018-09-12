@@ -44,7 +44,7 @@ public class AssemblyEditor extends ModelEditor {
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：UserService.list");
-
+		
 		parent = createTabItemContent("布局和子组件");
 		List<Layout> layouts = ((Assembly) inputData).getLayout();
 		if (layouts == null)

@@ -11,5 +11,6 @@ Export-Package: com.bizvisionsoft.annotations,
  com.bizvisionsoft.annotations.ui.common,
  com.bizvisionsoft.annotations.ui.grid
 Require-Bundle: com.google.gson;bundle-version="2.7.0",
- org.eclipse.osgi
+ org.eclipse.osgi,
+ org.mongodb.mongo-java-driver
 Import-Package: org.bson

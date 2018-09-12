@@ -791,7 +791,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	public void doModify(Object element, Object newElement, BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.replace(element, newData);
+				dataSetEngine.replace(element, newData,context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
@@ -803,7 +803,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		if (dataSetEngine != null) {
 			try {
 				Object parentElement = getParentElement(element);
-				dataSetEngine.delete(element, parentElement);
+				dataSetEngine.delete(element, parentElement,context);
 				remove(parentElement, element);
 				String label = AUtil.readLabel(element);
 				Layer.message(Optional.ofNullable(label).map(m -> "已删除 " + m).orElse("已删除"));
@@ -824,7 +824,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public void doCreate(Object parent, Object element) {
 		if (dataSetEngine != null) {
-			Object newElement = dataSetEngine.insert(parent, element);
+			Object newElement = dataSetEngine.insert(parent, element,context);
 			insert(newElement);
 			viewer.setSelection(new StructuredSelection(newElement), true);
 		}
@@ -832,7 +832,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public void doCreateSubItem(Object parent, Object element) {
 		if (dataSetEngine != null) {
-			dataSetEngine.insert(parent, element);
+			dataSetEngine.insert(parent, element,context);
 			refresh(parent);
 			if (!viewer.getExpandedState(parent)) {
 				viewer.expandToLevel(parent, 1);
@@ -842,7 +842,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public Object doGetEditInput(Object em) {
 		if (dataSetEngine != null) {
-			return dataSetEngine.query(em);
+			return dataSetEngine.query(em,context);
 		}
 		return null;
 	}

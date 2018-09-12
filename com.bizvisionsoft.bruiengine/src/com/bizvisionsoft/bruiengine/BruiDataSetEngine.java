@@ -20,13 +20,13 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
-import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
 public class BruiDataSetEngine extends BruiEngine {
 
 	private String cName;
+	private String modelClassName;
 
 	public BruiDataSetEngine(Class<?> clazz) {
 		super(clazz);
@@ -72,7 +72,8 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	public BruiDataSetEngine setAssembly(Assembly assembly) {
-		this.cName = assembly.getName();
+		cName = assembly.getName();
+		modelClassName = assembly.getModelClassName();
 		return this;
 	}
 
@@ -94,15 +95,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			names.add(MethodParam.CONDITION);
 			values.add(new BasicDBObject().append("skip", skip).append("limit", limit).append("filter", filter));
 
-			if (context != null) {
-				injectContextInputParameters(context, names, values);
-
-				injectPageContextInputParameters(context, names, values);
-
-				injectRootContextInputParameters(context, names, values);
-			}
-
-			injectUserParameters(names, values);
+			injectCommonParameters(context, names, values, modelClassName);
 
 			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
 					t -> t.value());
@@ -121,13 +114,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			names.add(MethodParam.FILTER);
 			values.add(filter);
 
-			injectContextInputParameters(context, names, values);
-
-			injectPageContextInputParameters(context, names, values);
-
-			injectRootContextInputParameters(context, names, values);
-
-			injectUserParameters(names, values);
+			injectCommonParameters(context, names, values, modelClassName);
 
 			return (long) invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]),
 					MethodParam.class, t -> t.value());
@@ -135,72 +122,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		throw new RuntimeException(cName + " 数据源没有注解DataSet值为 count的方法。");
 	}
 
-	private void injectContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
-		if (context != null) {
-			Object input = context.getInput();
-			if (input != null) {
-				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
-				values.add(input);
-
-				Object _id = EngUtil.getBson(input).get("_id");
-				if (_id != null) {
-					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
-					values.add(_id);
-				}
-			}
-		}
-	}
-
-	private void injectPageContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
-		if (context != null) {
-			Object input = context.getContentPageInput();
-			if (input != null) {
-				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
-				values.add(input);
-
-				Object _id = EngUtil.getBson(input).get("_id");
-				if (_id != null) {
-					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
-					values.add(_id);
-				}
-			}
-		}
-	}
-
-	private void injectRootContextInputParameters(IBruiContext context, List<String> names, List<Object> values) {
-		if (context != null) {
-			Object input = context.getRootInput();
-			if (input != null) {
-				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
-				values.add(input);
-
-				Object _id = EngUtil.getBson(input).get("_id");
-				if (_id != null) {
-					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
-					values.add(_id);
-				}
-			}
-		}
-	}
-
-	private void injectUserParameters(List<String> names, List<Object> values) {
-		try {
-			User user = Brui.sessionManager.getUser();
-			if (user != null) {
-				names.add(MethodParam.CURRENT_USER);
-				values.add(user);
-
-				names.add(MethodParam.CURRENT_USER_ID);
-				values.add(user.getUserId());
-			}
-		} catch (Exception e) {
-		}
-	}
-
+	@Deprecated
 	public Object query() {
 		return noParamDataSetMethodInvoke(DataSet.LIST);
 	}
 
+	@Deprecated
 	private Object noParamDataSetMethodInvoke(String paramValue) {
 		Method m = AUtil.getContainerMethod(clazz, DataSet.class, cName, paramValue, a -> a.value()).orElse(null);
 		if (m != null) {
@@ -237,6 +164,14 @@ public class BruiDataSetEngine extends BruiEngine {
 		return query(workFilter, context, "data");
 	}
 
+	/**
+	 * 非表格类GridPart的使用
+	 * 
+	 * @param filter
+	 * @param context
+	 * @param fName
+	 * @return
+	 */
 	public Object query(BasicDBObject filter, IBruiContext context, String fName) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, fName, a -> a.value()).orElse(null);
 		if (method != null) {
@@ -246,12 +181,8 @@ public class BruiDataSetEngine extends BruiEngine {
 				names.add(MethodParam.FILTER);
 				values.add(filter);
 			}
-
-			injectContextInputParameters(context, names, values);
-
-			injectRootContextInputParameters(context, names, values);
-
-			injectUserParameters(names, values);
+			
+			injectCommonParameters(context, names, values, modelClassName);
 
 			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
 					t -> t.value());
@@ -260,7 +191,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		throw new RuntimeException(cName + " 数据源没有注解DataSet值为 " + fName + "的方法。");
 	}
 
-	public void replace(Object element, BasicDBObject data) {
+	public void replace(Object element, BasicDBObject data, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.UPDATE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
@@ -274,12 +205,19 @@ public class BruiDataSetEngine extends BruiEngine {
 				BasicDBObject filterAndUpdate = new FilterAndUpdate().filter(new BasicDBObject("_id", _id)).set(data)
 						.bson();
 				method.setAccessible(true);
-				if (method.getParameterCount() == 1) {// 兼容简写模式，无注解
+				if (method.getParameterCount() == 1 && method.getParameterTypes()[0].equals(BasicDBObject.class)) {
+					// 兼容简写模式，无注解
 					method.invoke(getTarget(), filterAndUpdate);
 				} else {
-					String[] names = { MethodParam._ID, MethodParam.OBJECT, MethodParam.FILTER_N_UPDATE };
-					Object[] values = { EngUtil.getBson(element).get("_id"), element, filterAndUpdate };
-					invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
+					List<String> names = new ArrayList<String>();
+					List<Object> values = new ArrayList<Object>();
+					names.addAll(Arrays
+							.asList(new String[] { MethodParam._ID, MethodParam.OBJECT, MethodParam.FILTER_N_UPDATE }));
+					values.addAll(Arrays
+							.asList(new Object[] { EngUtil.getBson(element).get("_id"), element, filterAndUpdate }));
+					injectCommonParameters(context, names, values, modelClassName);
+					invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
+							MethodParam.class, t -> t.value());
 				}
 			} catch (IllegalAccessException | IllegalArgumentException e) {
 				e.printStackTrace();
@@ -289,54 +227,66 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 	}
 
-	public Object insert(Object parent, Object element) {
+	public Object insert(Object parent, Object element, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.INSERT, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] values;
-			String[] names;
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+
 			if (parent == null) {
-				values = new Object[] { EngUtil.getBson(element).get("_id"), element };
-				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
+				names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
+				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
 			} else {
-				values = new Object[] { EngUtil.getBson(parent).get("_id"), parent, EngUtil.getBson(element).get("_id"),
-						element };
-				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
-						MethodParam.OBJECT };
+				names.addAll(Arrays.asList(new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT,
+						MethodParam._ID, MethodParam.OBJECT }));
+				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(parent).get("_id"), parent,
+						EngUtil.getBson(element).get("_id"), element }));
 			}
-			return invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
+
+			injectCommonParameters(context, names, values, modelClassName);
+
+			return invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
+					MethodParam.class, t -> t.value());
 		}
 		return new RuntimeException("DateSet缺少Insert注解的方法");
 	}
 
-	public void delete(Object element, Object parent) {
+	public void delete(Object element, Object parent, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.DELETE, a -> a.value())
 				.orElse(null);
 		if (method != null) {
-			Object[] values;
-			String[] names;
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+
 			if (parent == null) {
-				values = new Object[] { EngUtil.getBson(element).get("_id"), element };
-				names = new String[] { MethodParam._ID, MethodParam.OBJECT };
+				names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
+				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
 			} else {
-				values = new Object[] { EngUtil.getBson(parent).get("_id"), parent, EngUtil.getBson(element).get("_id"),
-						element };
-				names = new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT, MethodParam._ID,
-						MethodParam.OBJECT };
+				names.addAll(Arrays.asList(new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT,
+						MethodParam._ID, MethodParam.OBJECT }));
+				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(parent).get("_id"), parent,
+						EngUtil.getBson(element).get("_id"), element }));
 			}
-			invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
+
+			injectCommonParameters(context, names, values, modelClassName);
+
+			invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
+					MethodParam.class, t -> t.value());
 		}
 	}
 
-	public Object query(Object element) {
+	public Object query(Object element, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, DataSet.class, cName, DataSet.GET, a -> a.value()).orElse(null);
 		if (method != null) {
-			Object[] values;
-			String[] names;
-			values = new Object[] { EngUtil.getBson(element).get("_id"), element };
-			names = new String[] { MethodParam._ID, MethodParam.OBJECT };
-			return invokeMethodInjectParams(method, values, names, MethodParam.class, t -> t.value());
-		}
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
+			values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
+			injectCommonParameters(context, names, values, element.getClass().getName());
+
+			return invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
+					MethodParam.class, t -> t.value());		}
 		return null;
 	}
 

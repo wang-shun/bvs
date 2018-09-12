@@ -147,7 +147,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	public void doModify(Object element, Object newElement, BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.replace(element, newData);
+				dataSetEngine.replace(element, newData,context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "¸üÐÂ", e.getMessage());
@@ -159,7 +159,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	public void doDelete(Object element) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.delete(element, null);
+				dataSetEngine.delete(element, null,context);
 				tree.deleteItem(element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "É¾³ý", e.getMessage());
@@ -184,7 +184,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Override
 	public Object doGetEditInput(Object element) {
-		return dataSetEngine.query(element);
+		return dataSetEngine.query(element,context);
 	}
 
 	@Override

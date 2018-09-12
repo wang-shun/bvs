@@ -84,6 +84,8 @@ public class AssemblyGridEditor extends ModelEditor {
 
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：UserService.list");
+		
+		createTextField(parent, "使用通用服务，需定义模型类名:", inputData, "modelClassName", SWT.BORDER);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));

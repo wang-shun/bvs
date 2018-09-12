@@ -751,4 +751,14 @@ public class Assembly extends ModelObject {
 	public void setDisableInitLoadData(boolean disableInitLoadData) {
 		this.disableInitLoadData = disableInitLoadData;
 	}
+	
+	private String modelClassName;
+	
+	public void setModelClassName(String modelClassName) {
+		this.modelClassName = modelClassName;
+	}
+	
+	public String getModelClassName() {
+		return modelClassName;
+	}
 }
