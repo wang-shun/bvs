@@ -48,6 +48,7 @@ public class SqlQuery {
 			}
 			rs.close();
 			stat.close();
+			SqlDB.s.freeConnection(datasource, conn);
 			return doc;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -79,6 +80,7 @@ public class SqlQuery {
 			}
 			rs.close();
 			stat.close();
+			SqlDB.s.freeConnection(datasource, conn);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
