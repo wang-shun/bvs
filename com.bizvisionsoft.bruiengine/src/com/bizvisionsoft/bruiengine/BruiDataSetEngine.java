@@ -48,6 +48,7 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	private static BruiDataSetEngine load(Assembly grid) {
+		
 		String bundleId = grid.getGridDataSetBundleId();
 		String className = grid.getGridDataSetClassName();
 
@@ -60,7 +61,12 @@ public class BruiDataSetEngine extends BruiEngine {
 			}
 		}
 
-		String serivceName = grid.getGridDataSetService();
+		String serivceName;
+		if(!EngUtil.isEmptyOrNull(grid.getModelClassName())){
+			serivceName ="com.bizvisionsoft.service.UniversalDataService";
+		}else {
+			serivceName = grid.getGridDataSetService();
+		}
 		if (!EngUtil.isEmptyOrNull(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
