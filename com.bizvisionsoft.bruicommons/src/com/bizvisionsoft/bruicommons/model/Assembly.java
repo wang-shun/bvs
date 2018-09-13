@@ -771,4 +771,5 @@ public class Assembly extends ModelObject {
 	public boolean isTinyEditor() {
 		return tinyEditor;
 	}
+
 }
