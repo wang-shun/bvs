@@ -28,7 +28,9 @@ public class AssemblyEditorEditor extends ModelEditor {
 
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
-		createCheckboxField(parent, "小尺寸（显示为标准尺寸的2/3）：", inputData, "smallEditor", SWT.CHECK);
+		createCheckboxField(parent, "窄（显示为宽度标准尺寸的2/3）：", inputData, "smallEditor", SWT.CHECK);
+		
+		createCheckboxField(parent, "短（显示为高度标准尺寸的2/3）：", inputData, "tinyEditor", SWT.CHECK);
 		
 		createCheckboxField(parent, "去掉字段边框：", inputData, "removeBorder", SWT.CHECK);
 		

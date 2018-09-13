@@ -706,8 +706,14 @@ public class Assembly extends ModelObject {
 		return smallEditor;
 	}
 
+	private boolean tinyEditor;
+
 	public void setSmallEditor(boolean smallEditor) {
 		this.smallEditor = smallEditor;
+	}
+
+	public void setTinyEditor(boolean tinyEditor) {
+		this.tinyEditor = tinyEditor;
 	}
 
 	// scheduler的属性, schedule, timeline两种
@@ -751,14 +757,18 @@ public class Assembly extends ModelObject {
 	public void setDisableInitLoadData(boolean disableInitLoadData) {
 		this.disableInitLoadData = disableInitLoadData;
 	}
-	
+
 	private String modelClassName;
-	
+
 	public void setModelClassName(String modelClassName) {
 		this.modelClassName = modelClassName;
 	}
-	
+
 	public String getModelClassName() {
 		return modelClassName;
+	}
+
+	public boolean isTinyEditor() {
+		return tinyEditor;
 	}
 }

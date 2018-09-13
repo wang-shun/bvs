@@ -33,7 +33,7 @@ public class Editor<T> extends Popup {
 	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input, boolean modifyInput) {
 		Assembly editorConfig = ModelLoader.site.getAssemblyByName(name);
 		if (editorConfig == null) {
-			throw new RuntimeException("名称："+name+",编辑器不存在");
+			throw new RuntimeException("名称：" + name + ",编辑器不存在");
 		}
 		return new Editor<M>(editorConfig, parentContext).setInput(modifyInput, input);
 	}
@@ -115,7 +115,7 @@ public class Editor<T> extends Popup {
 		Rectangle disb = Display.getCurrent().getBounds();
 		if (disb.width < minWidth || disb.height < minHeight) {
 			getShell().setMaximized(true);
-			return new Point(disb.width,disb.height);
+			return new Point(disb.width, disb.height);
 		}
 
 		int perfWidth = 2 * disb.width / 3;
@@ -125,10 +125,13 @@ public class Editor<T> extends Popup {
 		int h = Math.max(minHeight, perfHeight);
 
 		if (getAssembly().isSmallEditor()) {
-			return new Point(2 * w / 3, h );
-		} else {
-			return new Point(w, h);
+			w = 2 * w / 3;
 		}
+
+		if (getAssembly().isTinyEditor()) {
+			h = 2 * h / 3;
+		}
+		return new Point(w, h);
 	}
 
 	public Object getResult() {
