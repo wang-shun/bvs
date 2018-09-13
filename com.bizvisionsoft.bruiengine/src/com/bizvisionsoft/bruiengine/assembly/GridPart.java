@@ -288,7 +288,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 			fd.top = new FormAttachment();
 			fd.left = new FormAttachment();
 			fd.right = new FormAttachment(100);
-			fd.height = 210;
+			fd.height = 256;
 
 			sep = new Label(panel, SWT.HORIZONTAL | SWT.SEPARATOR);
 			fd = new FormData();

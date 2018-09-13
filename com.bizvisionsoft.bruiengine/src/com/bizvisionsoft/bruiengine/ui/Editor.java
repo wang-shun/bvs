@@ -109,12 +109,13 @@ public class Editor<T> extends Popup {
 		// size.x = size.x>maxWidth?maxWidth:size.x;
 		// size.y = size.y>maxHeight?maxHeight:size.y;
 
-		int minWidth = 960;
-		int minHeight = 600;
+		int minWidth = 1024;
+		int minHeight = 768;
 
 		Rectangle disb = Display.getCurrent().getBounds();
-		if (disb.x < minWidth || disb.y < minHeight) {
+		if (disb.width < minWidth || disb.height < minHeight) {
 			getShell().setMaximized(true);
+			return new Point(disb.width,disb.height);
 		}
 
 		int perfWidth = 2 * disb.width / 3;
@@ -124,7 +125,7 @@ public class Editor<T> extends Popup {
 		int h = Math.max(minHeight, perfHeight);
 
 		if (getAssembly().isSmallEditor()) {
-			return new Point(2 * w / 3, 3 * h / 4);
+			return new Point(2 * w / 3, h );
 		} else {
 			return new Point(w, h);
 		}
