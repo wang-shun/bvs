@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -15,7 +16,6 @@ import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 
 public class ContentWidget {
 
-
 	private BruiService service;
 
 	private AssemblyContainer assemblyContainer;
@@ -26,18 +26,20 @@ public class ContentWidget {
 
 	private Assembly assembly;
 
+	private Consumer<BruiAssemblyContext> callback;
+
 	// private BruiEngine brui;
 
-	public ContentWidget(Assembly assembly, BruiService service,BruiAssemblyContext parentContext) {
+	public ContentWidget(Assembly assembly, BruiService service, BruiAssemblyContext parentContext) {
 		this.assembly = assembly;
 		this.service = service;
 		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext));
 	}
 
-	public ContentWidget createUI(Composite parent,Object input, boolean closeable) {
+	public ContentWidget createUI(Composite parent, Object input, boolean closeable) {
 		contentContainer = new Composite(parent, SWT.NONE);
 		contentContainer.setLayout(new FillLayout());
-		switchAssembly(assembly,input,closeable);
+		switchAssembly(assembly, input, closeable);
 		contentContainer.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 		return this;
 	}
@@ -48,15 +50,24 @@ public class ContentWidget {
 		Arrays.asList(contentContainer.getChildren()).stream().filter(c -> !c.isDisposed())
 				.forEach(ctl -> ctl.dispose());
 
-		assemblyContainer = new AssemblyContainer(contentContainer,context);
+		assemblyContainer = new AssemblyContainer(contentContainer, context);
 		assemblyContainer.setCloseable(closeable);
 		assemblyContainer.setInput(input);
 		assemblyContainer.setAssembly(assembly).setServices(service).create();
 		contentContainer.layout(true, true);
+		
+		if(callback!=null) {
+			contentContainer.addListener(SWT.Dispose, e->callback.accept(assemblyContainer.getContext()));
+		}
 	}
 
 	public Composite getControl() {
 		return contentContainer;
 	}
+
+	public void setCloseCallback(Consumer<BruiAssemblyContext> callback) {
+		this.callback = callback;
+	}
+
 
 }

@@ -58,7 +58,7 @@ public class AssemblyContainer {
 	}
 
 	public AssemblyContainer create() {
-		if(assembly ==null) {
+		if (assembly == null) {
 			throw new RuntimeException("缺少组件定义。");// 否则没有创建任何组件，出错。
 		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ public class AssemblyContainer {
 	public BruiAssemblyContext getContext() {
 		return context;
 	}
-	
+
 	public Composite getContainer() {
 		return container;
 	}

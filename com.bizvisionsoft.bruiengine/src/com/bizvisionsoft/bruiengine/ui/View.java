@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -115,7 +116,7 @@ public class View extends Part {
 			id = assembiesId.get(0);
 		}
 		
-		createContentArea(ModelLoader.site.getAssembly(id), null, false);
+		createContentArea(ModelLoader.site.getAssembly(id), null, false,null);
 
 		FormData fd;
 		if (headbar != null) {
@@ -147,8 +148,9 @@ public class View extends Part {
 
 	}
 
-	private Composite createContentArea(Assembly assembly, Object input, boolean closeable) {
+	private Composite createContentArea(Assembly assembly, Object input, boolean closeable, Consumer<BruiAssemblyContext> callback) {
 		contentWidget = new ContentWidget(assembly, service, context);
+		contentWidget.setCloseCallback(callback);
 		Composite contentArea = contentWidget.createUI(parent, input, closeable).getControl();
 		FormData fd = new FormData();
 		contentArea.setLayoutData(fd);
@@ -171,9 +173,9 @@ public class View extends Part {
 		return sidebarWidget.createUI(parent).getControl();
 	}
 
-	public void openAssemblyInContentArea(Assembly assembly, Object input) {
+	public void openAssemblyInContentArea(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback) {
 		previous.add(contentWidget);
-		Composite contentArea = createContentArea(assembly, input, true);
+		Composite contentArea = createContentArea(assembly, input, true,callback);
 		contentArea.moveAbove(null);
 		parent.layout();
 	}

@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.service;
 
 import java.util.Date;
+import java.util.function.Consumer;
 
 import org.bson.types.ObjectId;
 import org.eclipse.swt.widgets.Shell;
@@ -37,6 +38,8 @@ public interface IBruiService extends IServiceWithId {
 	public void switchContent(String assemblyName, Object input);
 
 	public void openContent(Assembly assembly, Object input);
+	
+	public void openContent(Assembly assembly, Object input,Consumer<BruiAssemblyContext> callback);
 
 	public void switchPage(String pageName, String inputUid);
 

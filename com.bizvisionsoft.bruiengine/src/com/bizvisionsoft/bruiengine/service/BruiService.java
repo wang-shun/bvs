@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.service;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import org.bson.types.ObjectId;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -107,8 +108,13 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void openContent(Assembly assembly, Object input) {
+		openContent(assembly, input, null);
+	}
+
+	@Override
+	public void openContent(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback) {
 		if (part instanceof View) {
-			((View) part).openAssemblyInContentArea(assembly, input);
+			((View) part).openAssemblyInContentArea(assembly, input, callback);
 		}
 	}
 
@@ -215,6 +221,6 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void updateSidebarActionBudget(String actionName) {
-		EngUtil.ifInstanceThen(part, View.class, p->p.updateSidebarActionBudget(actionName));
+		EngUtil.ifInstanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
 }
