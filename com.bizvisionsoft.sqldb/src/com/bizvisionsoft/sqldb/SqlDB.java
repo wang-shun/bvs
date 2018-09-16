@@ -43,20 +43,20 @@ public class SqlDB implements BundleActivator {
 
 	private void initConnection() {
 		String dataSourcePath = context.getProperty("com.bizvisionsoft.sqldb.datasource");
-		if(dataSourcePath==null||dataSourcePath.isEmpty()) {
+		if (dataSourcePath == null || dataSourcePath.isEmpty()) {
 			throw new IllegalArgumentException("缺少SqlDB数据源定义。启动参数:com.bizvisionsoft.sqldb.datasource");
 		}
 		connectionManager = ConnectionManager.getInstance(dataSourcePath);
 	}
 
 	private void destoryConnection() {
-		connectionManager.release();		
+		connectionManager.release();
 	}
 
 	public ConnectionManager getConnectionManager() {
 		return connectionManager;
 	}
-	
+
 	public Connection getConnection(String dataSourceName) {
 		return connectionManager.getConnection(dataSourceName);
 	}
@@ -69,5 +69,4 @@ public class SqlDB implements BundleActivator {
 		connectionManager.freeConnection(poolName, connection);
 	}
 	
-
 }

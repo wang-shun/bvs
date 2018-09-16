@@ -6,6 +6,8 @@ import java.util.List;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.service.CBSService;
 import com.bizvisionsoft.service.CommonService;
@@ -52,6 +54,8 @@ import com.bizvisionsoft.serviceimpl.WorkSpaceServiceImpl;
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
+	
+	final static Logger logger = LoggerFactory.getLogger(Activator.class);
 
 	@SuppressWarnings("rawtypes")
 	private final List<ServiceRegistration> regs = new ArrayList<>();
@@ -68,9 +72,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bc) throws Exception {
 		Activator.context = bc;
-
+		
 		regs.add(bc.registerService(BsonProvider.class.getName(), new BsonProvider<Object>(), null));
-
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 下面开始注册服务
 		regs.add(bc.registerService(SystemService.class.getName(), new SystemServiceImpl(), null));
@@ -113,6 +116,8 @@ public class Activator implements BundleActivator {
 		
 		regs.add(bc.registerService(UniversalDataService.class.getName(), new UniversalDataServiceImpl(), null));
 		
+		logger.info("RS服务已注册");
+
 	}
 
 	/*

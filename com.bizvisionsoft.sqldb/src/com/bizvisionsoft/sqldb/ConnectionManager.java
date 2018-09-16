@@ -16,6 +16,9 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 管理类DBConnectionManager支持对一个或多个由属性文件定义的数据库连接
@@ -27,6 +30,7 @@ public class ConnectionManager {
 
 	private CopyOnWriteArrayList<Driver> drivers = new CopyOnWriteArrayList<Driver>();
 	private Map<String, DBConnectionPool> pools = new ConcurrentHashMap<String, DBConnectionPool>();
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 返回唯一实例.如果是第一次调用此方法,则创建实例
@@ -160,12 +164,12 @@ public class ConnectionManager {
 				try {
 					max = Integer.valueOf(maxconn).intValue();
 				} catch (NumberFormatException e) {
-					System.err.println("ERROR SETTING OF: MAX CONNECTION COUNT" + maxconn + " .POOL NAME: " + poolName);
+					logger.warn("ERROR SETTING OF: MAX CONNECTION COUNT" + maxconn + " .POOL NAME: " + poolName, e);
 					max = 10;
 				}
 				DBConnectionPool pool = new DBConnectionPool(poolName, url, user, password, max);
 				pools.put(poolName, pool);
-				System.out.println("CONNECTION POOL:" + poolName + " INIT...OK");
+				logger.info("CONNECTION POOL:" + poolName + " INIT...OK");
 			}
 		}
 	}
