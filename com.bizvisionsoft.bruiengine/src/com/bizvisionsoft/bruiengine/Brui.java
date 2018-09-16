@@ -22,6 +22,7 @@ public class Brui implements BundleActivator {
 		Hashtable<String, String> properties = new Hashtable<String, String>();
 		registration = context.registerService(ApplicationConfiguration.class.getName(),
 				new BruiApplicationConfiguration(), properties);
+//		InternalPlatform.getDefault().getLog(context.getBundle()).log(new Status(Status.ERROR,"com.bizvisionsoft.bruiengine","Started!!!"));
 	}
 
 

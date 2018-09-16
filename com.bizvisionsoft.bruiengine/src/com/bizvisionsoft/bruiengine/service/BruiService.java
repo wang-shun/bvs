@@ -223,4 +223,5 @@ public class BruiService implements IBruiService {
 	public void updateSidebarActionBudget(String actionName) {
 		EngUtil.ifInstanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
+	
 }
