@@ -15,8 +15,6 @@ public class TestModelACT {
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
 		
 		Editor.open("TestEditor", context, new TestModel(), (o, t) -> {
-			System.out.println(o);
-			System.out.println(t);
 			
 		});
 	}

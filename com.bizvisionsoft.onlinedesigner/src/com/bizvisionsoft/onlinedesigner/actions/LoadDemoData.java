@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Random;
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
@@ -22,6 +24,8 @@ import com.bizvisionsoft.service.model.Workspace;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class LoadDemoData {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/*
 	 * 清除程序 db.getCollection("project").remove({_id:{"$gt":ObjectId(
@@ -78,7 +82,7 @@ public class LoadDemoData {
 		int year = 2017;
 
 		for (int i = 0; i < 120; i++) {
-			System.out.println(eps[i % eps.length]);
+			logger.debug(""+eps[i % eps.length]);
 		}
 
 		for (int i = 0; i < 120; i++) {
@@ -88,44 +92,44 @@ public class LoadDemoData {
 
 			// 创建
 			Project project = projectService.insert(template);
-			System.out.println("创建项目:" + project);
+			logger.debug("创建项目:" + project);
 
 			// 检出
 			Workspace workspace = project.getWorkspace();
 			workSpaceService.checkout(workspace, "zh", true);
 			workspace = project.getWorkspace();
-			System.out.println("检出项目:" + project);
+			logger.debug("检出项目:" + project);
 
 			// 创建阶段
 			Date start = project.getPlanStart();
 			Date finish = project.getPlanFinish();
 			WorkInfo stage1 = createStage("立项策划", project, workspace, start, null);
-			System.out.println("创建" + stage1);
+			logger.debug("创建" + stage1);
 			WorkInfo stage2 = createStage("方案阶段", project, workspace, stage1.getPlanFinish(), finish);
-			System.out.println("创建" + stage2);
+			logger.debug("创建" + stage2);
 			createWorkLinkInfo(project, workspace, stage1, stage2);
-			System.out.println("创建阶段关联");
+			logger.debug("创建阶段关联");
 			WorkInfo work1 = createWork("编制立项策划书", workspace, stage1, start, null);
 			WorkInfo work2 = createWork("编制总体方案", workspace, stage2, stage1.getPlanFinish(), finish);
 
 			// 检入工作
 			workSpaceService.checkin(workspace);
-			System.out.println("检入工作");
+			logger.debug("检入工作");
 
 			// 启动
 			projectService.startProject(Command.newInstance("开始项目", "zh", "钟华", "zh", "钟华", start, project_id));
-			System.out.println("开始项目" + project);
+			logger.debug("开始项目" + project);
 
 			projectService
 					.distributeProjectPlan(Command.newInstance("下达项目计划", "zh", "钟华", "zh", "钟华", start, project_id));
-			System.out.println("下达项目计划");
+			logger.debug("下达项目计划");
 
 			workService.startStage(
 					Command.newInstance("启动阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanStart(), stage1.get_id()));
 			workService.startWork(Command.newInstance("开始工作", "zh", "钟华", "zh", "钟华", start, work1.get_id()));
-			System.out.println("开始工作" + work1);
+			logger.debug("开始工作" + work1);
 			workService.finishWork(Command.newInstance("完成工作", "zh", "钟华", "zh", "钟华", finish, work1.get_id()));
-			System.out.println("完成工作" + work1);
+			logger.debug("完成工作" + work1);
 			workService.finishStage(
 					Command.newInstance("完成阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanFinish(), stage1.get_id()));
 			workService.closeStage(
@@ -134,9 +138,9 @@ public class LoadDemoData {
 			workService.startStage(
 					Command.newInstance("启动阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanStart(), stage2.get_id()));
 			workService.startWork(Command.newInstance("开始工作", "zh", "钟华", "zh", "钟华", start, work2.get_id()));
-			System.out.println("开始工作" + work2);
+			logger.debug("开始工作" + work2);
 			workService.finishWork(Command.newInstance("完成工作", "zh", "钟华", "zh", "钟华", finish, work2.get_id()));
-			System.out.println("完成工作" + work2);
+			logger.debug("完成工作" + work2);
 			workService.finishStage(
 					Command.newInstance("完成阶段", "zh", "钟华", "zh", "钟华", stage2.getPlanFinish(), stage2.get_id()));
 			workService.closeStage(
@@ -145,10 +149,10 @@ public class LoadDemoData {
 //			createProjectBudgetAndCost(project, start, finish);
 
 			projectService.finishProject(Command.newInstance("完成项目", "zh", "钟华", "zh", "钟华", finish, project_id));
-			System.out.println("完成项目:" + project);
+			logger.debug("完成项目:" + project);
 
 			projectService.closeProject(Command.newInstance("关闭项目:", "zh", "钟华", "zh", "钟华", finish, project_id));
-			System.out.println("关闭项目:" + project);
+			logger.debug("关闭项目:" + project);
 
 			project = projectService.get(project_id);
 			createSales(project);
@@ -238,7 +242,7 @@ public class LoadDemoData {
 //			}
 //			_s.add(Calendar.MONTH, 1);
 //		}
-//		System.out.println("创建预算和成本数据");
+//		logger.debug("创建预算和成本数据");
 //	}
 
 	private WorkInfo createWork(String name, Workspace space, WorkInfo parent, Date start, Date finish) {

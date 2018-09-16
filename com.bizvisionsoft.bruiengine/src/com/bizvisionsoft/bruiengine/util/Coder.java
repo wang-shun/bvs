@@ -8,6 +8,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class Coder {
@@ -114,36 +116,38 @@ public abstract class Coder {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		Logger logger = LoggerFactory.getLogger(Coder.class);
+		
 		String psw;
 
-		System.out.println("\n[BASE 64加密解密]");
+		logger.debug("\n[BASE 64加密解密]");
 		psw = "abc.中文支持";
-		System.out.println("原文:"+psw);
+		logger.debug("原文:"+psw);
 		psw = Coder.encryptBASE64(psw.getBytes());
-		System.out.println("密文"+psw);
+		logger.debug("密文"+psw);
 		byte[] res = Coder.decryptBASE64(psw);
 		psw = new String(res);
-		System.out.println("明文"+psw);
+		logger.debug("明文"+psw);
 		
-		System.out.println("\n[生成MD5码]");
+		logger.debug("\n[生成MD5码]");
 		psw = "abc.中文支持";
-		System.out.println("原文:"+psw);
+		logger.debug("原文:"+psw);
 		byte[] bytes = Coder.encryptMD5(psw.getBytes());
 		psw = new String(bytes);
-		System.out.println("密文"+psw);
+		logger.debug("密文"+psw);
 		
-		System.out.println("\n[RSA加密解密]");
+		logger.debug("\n[RSA加密解密]");
 		psw = "abc.中文支持";
-		System.out.println("原文:"+psw);
+		logger.debug("原文:"+psw);
 		String[] keys = RSACoderUtil.getKeys();
-		System.out.println("公钥:" + keys[0]);
-		System.out.println("私钥:" + keys[1]);
+		logger.debug("公钥:" + keys[0]);
+		logger.debug("私钥:" + keys[1]);
 
 		byte[] data = psw.getBytes();
 		byte[] encrypted = RSACoder.encryptByPublicKey(data, keys[0]);
-		System.out.println("密文"+new String(encrypted));
+		logger.debug("密文"+new String(encrypted));
 		byte[] decrypted = RSACoder.decryptByPrivateKey(encrypted, keys[1]);
-		System.out.println("明文"+new String(decrypted));
+		logger.debug("明文"+new String(decrypted));
 
 	}
 }

@@ -69,10 +69,7 @@ public class PresentationUtil {
         //UNSUPPORTED - DragUtil in internal package.
 //        Point eventLoc = DragUtil.getEventLoc(event);
       Point eventLoc = getEventLoc(event);
-//        System.out.println("First Drag Loc: "+eventLoc);
         int distance = Geometry.distanceSquared(eventLoc, anchor);
-//        System.out.println(distance + " ENOUGH? "+(distance >= HYSTERESIS
-//            * HYSTERESIS));
 //        return distance >= HYSTERESIS
 //                * HYSTERESIS;
         return distance >= HYSTERESIS;
@@ -102,7 +99,6 @@ public class PresentationUtil {
                 //UNSUPPORTED - DragUtil in internal package.
 //                anchor = DragUtil.getEventLoc(event);
                 anchor = getEventLoc(event);
-//                System.out.println("Anchor: "+anchor);
                 if (dragEvent != null && (dragEvent.widget != dragSource)) {
                     dragEvent = null;
                 }

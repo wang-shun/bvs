@@ -215,9 +215,9 @@ public class ConnectionManager {
 				Driver driver = (Driver) Class.forName(driverClassName).newInstance();
 				DriverManager.registerDriver(driver);
 				drivers.add(driver);
-				// System.out.println(" 成功注册JDBC驱动程序" + driverClassName);
+				logger.info("已注册JDBC驱动程序" + driverClassName);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("注册JDBC驱动程序失败" + driverClassName, e);
 			}
 		}
 	}
@@ -299,12 +299,10 @@ public class ConnectionManager {
 				freeConnections.remove(0);
 				try {
 					if (con.isClosed()) {
-						// System.out.println("从连接池" + name + "删除一个无效连接");
-						// 递归调用自己,尝试再次获取可用连接
 						con = getConnection();
 					}
 				} catch (SQLException e) {
-					System.out.println("从连接池" + name + "删除一个无效连接");
+					logger.info("从连接池" + name + "删除一个无效连接");
 					// 递归调用自己,尝试再次获取可用连接
 					con = getConnection();
 				}
@@ -366,9 +364,9 @@ public class ConnectionManager {
 				} else {
 					con = DriverManager.getConnection(URL, user, password);
 				}
-				// System.out.println("连接池" + name + "创建一个新的连接");
+				logger.info("连接池" + name + "创建一个新的连接");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("创建连接失败", e);
 				return null;
 			}
 			return con;

@@ -5,14 +5,19 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TestNetworkDiagram {
+	
+	private static Logger logger = LoggerFactory.getLogger(TestNetworkDiagram.class);
+
 
 	public static void main(String[] args) {
 		// 1. 首先要分析输入的task包括几张图。
 //		test3();
 		
 		
-		System.out.println();
 	}
 
 	/**
@@ -49,8 +54,8 @@ public class TestNetworkDiagram {
 		Graphic gh = new Graphic(Arrays.asList(a, b, c, d, e, f, g, h, i), Arrays.asList(a_b, a_c, d_b, c_e, g_h, h_f,i_g,j_e));
 		
 		List<Route> start = gh.getStartRoute();
-		System.out.println("起始节点：");
-		System.out.println(start);
+		logger.debug("起始节点：");
+		logger.debug(""+start);
 		// 得出的起始节点为a, d, i
 		
 		//假定项目开始时间为2018年6月1日
@@ -81,12 +86,12 @@ public class TestNetworkDiagram {
 		gh.schedule();
 		
 		//项目总工期为
-		System.out.println("项目工期：");
+		logger.debug("项目工期：");
 		float pjDuration = gh.getT();
-		System.out.println(pjDuration);
+		logger.debug(""+pjDuration);
 		pjStart.add(Calendar.DATE, (int)pjDuration);
-		System.out.println("项目完工日期");
-		System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(pjStart.getTime()));
+		logger.debug("项目完工日期");
+		logger.debug(new SimpleDateFormat("yyyy-MM-dd").format(pjStart.getTime()));
 		
 		//显示任务的计划
 		displayTaskInfo(gh, "c");
@@ -95,23 +100,23 @@ public class TestNetworkDiagram {
 	}
 
 	private static void displayTaskInfo(Graphic gh, String taskId) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-		System.out.println("任务"+taskId+": ");
+		logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		logger.debug("任务"+taskId+": ");
 		Task taskC = gh.getTask(taskId);
-		System.out.println("工期："+taskC.getD());
+		logger.debug("工期："+taskC.getD());
 		
 		Calendar cStart = Calendar.getInstance();
 		cStart.set(2018, 5, 1);
 		cStart.add(Calendar.DATE, taskC.getES().intValue());
-		System.out.println("计划开始："+new SimpleDateFormat("yyyy-MM-dd").format(cStart.getTime()));
+		logger.debug("计划开始："+new SimpleDateFormat("yyyy-MM-dd").format(cStart.getTime()));
 
 		Calendar cFinish = Calendar.getInstance();
 		cFinish.set(2018, 5, 1);
 		cFinish.add(Calendar.DATE, taskC.getEF().intValue());
-		System.out.println("计划完成："+new SimpleDateFormat("yyyy-MM-dd").format(cFinish.getTime()));
+		logger.debug("计划完成："+new SimpleDateFormat("yyyy-MM-dd").format(cFinish.getTime()));
 		
 		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 
 	public static void test0() {
@@ -173,35 +178,35 @@ public class TestNetworkDiagram {
 		/////////////////////////////////////////////////// 调节模拟次数获得精确结果
 		int times = 100000;
 		////////////////////////////////////////////////////////////////////////////////
-		System.out.println("考虑风险，进行蒙特卡罗模拟：" + times);
+		logger.debug("考虑风险，进行蒙特卡罗模拟：" + times);
 
 		long _s = System.currentTimeMillis();
 		mcs.simulate(times);
 		long _e = System.currentTimeMillis();
-		System.out.println("完成模拟，耗时（秒）：" + ((_e - _s) / 1000));
-		System.out.println("指标说明：");
-		System.out.println("对于ACI 和ACP 都较高的工序,理应将其作为进度管理中的重中之重,此类工序不仅是实现工期赶工或压缩工");
-		System.out.println("期的关键途经,此外,同时还应加强风险管理以消除或降低其不确定性影响;相反,而对于那些ACI 和ACP 都较低的工");
-		System.out.println("序,则可相应降低管理要求。");
-		System.out.println("对于ACP 高、ACI 低或是ACP 低、ACI 高的工序则应予以特殊考虑。");
-		System.out.println("①对于前一种类型的工序,管理者应主要关注于如何缩短此类型工序的持续时间(比如对于那些资源驱动工期的");
-		System.out.println("工序投入更多的资源) 。理由如下:ACP 高意味着此类型工序极有可能位于关键线路成为关键工序,也就是说此类型工");
-		System.out.println("序往往成为影响项目总工期的“瓶颈”,是工期赶工或压缩能否实现的关键所在。另一方面,ACI 低则意味着此项工序并");
-		System.out.println("非高风险,不作为工期风险管理的重点。");
-		System.out.println("②后一类型的工序应列入风险防范及管理的重点,对其有必要采取强有力的进度风险管理措施。理由如下:风险");
-		System.out.println("管理理论中,十分强调对于“稀少事件”的管理[7 ] ,这种类型的工序类似于“稀少事件”中被称为“零—无穷小”(Zero - In2");
-		System.out.println("finity Dilemmas) 的风险情况(例如核电站的重大事故) :虽然其关键概率很小,但ACI 高很大程度上便意味着高风险,一旦");
-		System.out.println("该工序位于关键线路上成为关键工序,它便会严重影响到项目总工期。");
-		System.out.println("对于RCI指标高的风险意味着他的发生对项目进度的影响较大，应当重点关注");
+		logger.debug("完成模拟，耗时（秒）：" + ((_e - _s) / 1000));
+		logger.debug("指标说明：");
+		logger.debug("对于ACI 和ACP 都较高的工序,理应将其作为进度管理中的重中之重,此类工序不仅是实现工期赶工或压缩工");
+		logger.debug("期的关键途经,此外,同时还应加强风险管理以消除或降低其不确定性影响;相反,而对于那些ACI 和ACP 都较低的工");
+		logger.debug("序,则可相应降低管理要求。");
+		logger.debug("对于ACP 高、ACI 低或是ACP 低、ACI 高的工序则应予以特殊考虑。");
+		logger.debug("①对于前一种类型的工序,管理者应主要关注于如何缩短此类型工序的持续时间(比如对于那些资源驱动工期的");
+		logger.debug("工序投入更多的资源) 。理由如下:ACP 高意味着此类型工序极有可能位于关键线路成为关键工序,也就是说此类型工");
+		logger.debug("序往往成为影响项目总工期的“瓶颈”,是工期赶工或压缩能否实现的关键所在。另一方面,ACI 低则意味着此项工序并");
+		logger.debug("非高风险,不作为工期风险管理的重点。");
+		logger.debug("②后一类型的工序应列入风险防范及管理的重点,对其有必要采取强有力的进度风险管理措施。理由如下:风险");
+		logger.debug("管理理论中,十分强调对于“稀少事件”的管理[7 ] ,这种类型的工序类似于“稀少事件”中被称为“零—无穷小”(Zero - In2");
+		logger.debug("finity Dilemmas) 的风险情况(例如核电站的重大事故) :虽然其关键概率很小,但ACI 高很大程度上便意味着高风险,一旦");
+		logger.debug("该工序位于关键线路上成为关键工序,它便会严重影响到项目总工期。");
+		logger.debug("对于RCI指标高的风险意味着他的发生对项目进度的影响较大，应当重点关注");
 
-		tasks.forEach(t -> System.out.println(t.getId() + "  ACI:" + t.getACI() + ", ACP:" + t.getACP()));
-		risks.forEach(r -> System.out.println(r.id + " RCI:" + r.RCI + " ,T:" + r.T));
+		tasks.forEach(t -> logger.debug(t.getId() + "  ACI:" + t.getACI() + ", ACP:" + t.getACP()));
+		risks.forEach(r -> logger.debug(r.id + " RCI:" + r.RCI + " ,T:" + r.T));
 
-		System.out.println("无风险时，项目工期为：" + mcs.noRiskT);
-		System.out.print("工期为：" + mcs.noRiskT + "天的概率为：");
+		logger.debug("无风险时，项目工期为：" + mcs.noRiskT);
+		logger.debug("工期为：" + mcs.noRiskT + "天的概率为：");
 		Integer cnt = mcs.TMap.get(mcs.noRiskT);
 		if (cnt != null) {
-			System.out.println(1f * cnt / times);
+			logger.debug(""+1f * cnt / times);
 		}
 	}
 

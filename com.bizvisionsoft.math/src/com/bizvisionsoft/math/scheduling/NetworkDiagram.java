@@ -78,14 +78,14 @@ public class NetworkDiagram {
 		// 6.求总工期
 		T = end.getLF();
 
-		// System.out.println("\n============================排程/工期计算============================");
-		// System.out.println("工作排程-------------------------------");
-		// tasks.forEach(t -> System.out.println(t));
-		// System.out.println("网络图-----------------------------");
-		// routes.forEach(r -> System.out.println(r));
-		// System.out.println("总工期-------------------------------");
-		// System.out.println(T);
-		// System.out.println("=================================================================");
+		// logger.debug("\n============================排程/工期计算============================");
+		// logger.debug("工作排程-------------------------------");
+		// tasks.forEach(t -> logger.debug((t));
+		// logger.debug("网络图-----------------------------");
+		// routes.forEach(r -> logger.debug((r));
+		// logger.debug("总工期-------------------------------");
+		// logger.debug(T);
+		// logger.debug("=================================================================");
 
 		return tasks;
 	}

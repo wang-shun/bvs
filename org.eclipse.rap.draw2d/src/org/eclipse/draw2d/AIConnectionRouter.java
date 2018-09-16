@@ -71,21 +71,21 @@ public class AIConnectionRouter extends AbstractRouter {
 	public void route(Connection conn) {
 		// testChildren(conn);
 		Point startPoint = getStartPoint(conn).getCopy();
-		// System.out.println("startPoint: " + startPoint);
+		// logger.debug("startPoint: " + startPoint);
 		conn.translateToRelative(startPoint);
-		// System.out.println("relativeStartPoint: " + startPoint);
+		// logger.debug("relativeStartPoint: " + startPoint);
 		points.addPoint(startPoint);
 
 		endPoint = getEndPoint(conn).getCopy();
-		// System.out.println("endPoint: " + endPoint);
+		// logger.debug("endPoint: " + endPoint);
 		conn.translateToRelative(endPoint);
 
 		if (validConn(conn)) {
 			Vector sdirection = getStartDirection(conn);
-			// System.out.println("startDirection: " + direction);
+			// logger.debug("startDirection: " + direction);
 			endDirection = getEndDirection(conn);
 
-			// System.out.println("endDirection: " + endDirection);
+			// logger.debug("endDirection: " + endDirection);
 			processPoints(startPoint, sdirection, null);
 		}
 
@@ -258,7 +258,7 @@ public class AIConnectionRouter extends AbstractRouter {
 		List<IFigure> list = content.getChildren();
 		for (IFigure f : list) {
 			Rectangle fr = f.getBounds();
-			// System.out.println(fr.width);
+			// logger.debug(fr.width);
 			if (containPoint(fr, endPoint) || containPoint(fr, startPoint)
 					|| fr.y > endPoint.y)
 				continue;
@@ -305,7 +305,7 @@ public class AIConnectionRouter extends AbstractRouter {
 		}
 		if (!newStartPoint.equals(startPoint))
 			points.addPoint(newStartPoint);
-		// System.out.println("point:" + newStartPoint.toString());
+		// logger.debug("point:" + newStartPoint.toString());
 
 		// next row point
 		Vector newDirection = LEFT;
@@ -468,12 +468,12 @@ public class AIConnectionRouter extends AbstractRouter {
 	// // conn.translateToRelative(r.getCopy());
 	// Rectangle rc = r.getCopy();
 	// content.translateToRelative(rc.getCopy());
-	// System.out.println(rc.toString());
+	// logger.debug(rc.toString());
 	// // if(f instanceof HandleBounds){
 	// //
 	// // }
 	// }
-	// System.out.println("\n");
+	// logger.debug("\n");
 	// }
 
 }

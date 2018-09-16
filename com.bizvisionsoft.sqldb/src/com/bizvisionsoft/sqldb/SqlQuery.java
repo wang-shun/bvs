@@ -16,7 +16,7 @@ public class SqlQuery {
 	private String sql;
 
 	private boolean lower;
-
+	
 	public SqlQuery(String datasource) {
 		this.datasource = datasource;
 	}

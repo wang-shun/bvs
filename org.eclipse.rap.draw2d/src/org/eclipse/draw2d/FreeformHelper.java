@@ -55,7 +55,7 @@ class FreeformHelper implements FreeformListener {
 			host.translateToParent(freeformExtent);
 			freeformExtent.expand(insets);
 		}
-		// System.out.println("New extent calculated for " + host + " = " +
+		// logger.debug("New extent calculated for " + host + " = " +
 		// freeformExtent);
 		return freeformExtent;
 	}

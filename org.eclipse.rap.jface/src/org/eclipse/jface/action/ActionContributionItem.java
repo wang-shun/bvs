@@ -553,7 +553,6 @@ public class ActionContributionItem extends ContributionItem {
 				long ms = 0L;
 				if (trace) {
 					ms = System.currentTimeMillis();
-					System.out.println("Running action: " + action.getText()); //$NON-NLS-1$
 				}				
 				
 				IPropertyChangeListener resultListener = null;
