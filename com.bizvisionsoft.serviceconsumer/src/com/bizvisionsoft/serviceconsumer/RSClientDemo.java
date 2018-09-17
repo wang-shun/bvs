@@ -23,6 +23,7 @@ public class RSClientDemo {
 		testWorkService(config);
 	}
 
+	@SuppressWarnings("unused")
 	public static void testWorkService(ClientConfig config) {
 		WorkService service = ConsumerFactory.createConsumer("http://127.0.0.1:9158/services",config, WorkService.class);		
 		List<Work> ds = service.createTaskDataSet(new BasicDBObject());
