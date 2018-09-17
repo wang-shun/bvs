@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizivisionsoft.widgets.util.Layer;
@@ -58,6 +60,8 @@ import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
 public class GridPart implements IStructuredDataPart, IQueryEnable {
+
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	private IBruiService bruiService;
@@ -633,6 +637,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 			try {
 				setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
 			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 				Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 			}
 		}

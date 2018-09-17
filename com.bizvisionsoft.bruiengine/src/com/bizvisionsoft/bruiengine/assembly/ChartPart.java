@@ -9,6 +9,8 @@ import org.eclipse.rap.json.JsonValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.chart.ECharts;
 import com.bizivisionsoft.widgets.util.Layer;
@@ -25,6 +27,8 @@ import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
 
 public class ChartPart implements IQueryEnable {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	private IBruiService bruiService;
@@ -105,7 +109,7 @@ public class ChartPart implements IQueryEnable {
 		try {
 			setViewerInput(dataSetEngine.query(filter, context, "list"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 		}
 	}

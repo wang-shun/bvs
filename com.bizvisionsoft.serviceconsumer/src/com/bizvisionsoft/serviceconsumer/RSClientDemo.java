@@ -37,7 +37,6 @@ public class RSClientDemo {
 			fileInputStream = new FileInputStream("D:/documents/M01.00项目基本信息.csv");
 			service.upload(fileInputStream, "M01.00项目基本信息.csv", "tempfs","image/jpeg","ok");
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 

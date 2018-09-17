@@ -10,11 +10,15 @@ import java.io.IOException;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.bruicommons.model.Site;
 import com.google.gson.GsonBuilder;
 
 public class ModelLoader implements BundleActivator {
+
+	public static Logger logger = LoggerFactory.getLogger(ModelLoader.class);
 
 	public static boolean reloadSiteForSession;
 	public static Site site;
@@ -34,7 +38,7 @@ public class ModelLoader implements BundleActivator {
 		try {
 			reader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

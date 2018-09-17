@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.UniversalCommand;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
@@ -24,6 +27,7 @@ public class BruiEngine {
 	protected Class<?> clazz;
 	protected Object target;
 	protected IServiceWithId[] services;
+	public static Logger logger = LoggerFactory.getLogger(BruiEngine.class);
 
 	protected BruiEngine(Class<?> clazz) {
 		this.clazz = clazz;

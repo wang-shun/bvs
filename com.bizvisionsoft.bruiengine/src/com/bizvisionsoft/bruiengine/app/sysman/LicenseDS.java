@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.google.gson.GsonBuilder;
@@ -21,6 +24,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 public class LicenseDS {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@DataSet(DataSet.LIST)
 	private List<LicenseItem> listLicenseItem() {
@@ -31,7 +36,7 @@ public class LicenseDS {
 			}.getType();
 			return new GsonBuilder().create().fromJson(new FileReader(new File(siteFile)), type);
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return new ArrayList<LicenseItem>();
 	}

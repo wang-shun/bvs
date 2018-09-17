@@ -87,13 +87,15 @@ public class BruiPageInputDataSetEngine extends BruiEngine {
 				method.setAccessible(true);
 				return method.invoke(getTarget(), args);
 			} catch (IllegalAccessException | IllegalArgumentException e) {// 访问错误，参数错误视作没有定义该方法。
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 				throw new RuntimeException(e.getMessage());
 			} catch (InvocationTargetException e) {
-				e.getTargetException().printStackTrace();
-				throw new RuntimeException(e.getTargetException().getMessage());
+				Throwable targetException = e.getTargetException();
+				logger.error(targetException.getMessage(), targetException);
+				throw new RuntimeException(targetException.getMessage());
 			}
 		}else {
+			logger.error(page.getName() + "的数据源没有注解DataSet值为 Input的方法。");
 			throw new RuntimeException(page.getName() + "的数据源没有注解DataSet值为 Input的方法。");
 		}
 	}

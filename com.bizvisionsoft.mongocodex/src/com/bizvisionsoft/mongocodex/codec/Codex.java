@@ -337,7 +337,6 @@ public class Codex<T> implements CollectibleCodec<T> {
 							m.setAccessible(true);
 							m.invoke(model, value);
 						} catch (Exception e) {
-							e.printStackTrace();
 						}
 					});
 		}

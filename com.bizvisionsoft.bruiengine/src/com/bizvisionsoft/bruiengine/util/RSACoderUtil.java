@@ -2,7 +2,12 @@ package com.bizvisionsoft.bruiengine.util;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RSACoderUtil {
+	
+	public static Logger logger = LoggerFactory.getLogger(RSACoderUtil.class);
 
 	public static String[] getKeys() {
 		try {
@@ -29,7 +34,7 @@ public class RSACoderUtil {
 			byte[] decodedData = RSACoder.decryptByPrivateKey(encodedData, privateKey);
 			return new String(decodedData);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return null;
 	}

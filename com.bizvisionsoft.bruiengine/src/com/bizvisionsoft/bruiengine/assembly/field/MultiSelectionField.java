@@ -19,7 +19,7 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 
 public class MultiSelectionField extends SelectionField {
-
+	
 	protected List<Object> value;
 	private GridPart grid;
 
@@ -112,7 +112,7 @@ public class MultiSelectionField extends SelectionField {
 			return true;
 		} catch (Exception e) {
 			if (e instanceof RuntimeException) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "´íÎó", e.getMessage());
 			return false;

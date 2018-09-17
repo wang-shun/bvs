@@ -143,7 +143,7 @@ public class BruiAssemblyEngine extends BruiEngine {
 			try {
 				return f.get(target);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return null;

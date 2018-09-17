@@ -17,6 +17,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.gantt.ColumnConfig;
 import com.bizivisionsoft.widgets.gantt.Config;
@@ -39,6 +41,8 @@ import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
 public class GanttPart implements IPostSelectionProvider {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	private IBruiService bruiService;
@@ -168,6 +172,7 @@ public class GanttPart implements IPostSelectionProvider {
 			// …Ë÷√Œ™gantt ‰»Î
 			gantt.setInputData(tasks, links);
 		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 		}
 
@@ -182,7 +187,7 @@ public class GanttPart implements IPostSelectionProvider {
 				try {
 					m.invoke(dataSetEngine.getTarget(), e1);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
-					e2.printStackTrace();
+					logger.error(e2.getMessage(), e2);
 				}
 			});
 		});
@@ -194,7 +199,7 @@ public class GanttPart implements IPostSelectionProvider {
 					try {
 						m.invoke(eventEngine.getTarget(), e1);
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
-						e2.printStackTrace();
+						logger.error(e2.getMessage(), e2);
 					}
 				});
 			});

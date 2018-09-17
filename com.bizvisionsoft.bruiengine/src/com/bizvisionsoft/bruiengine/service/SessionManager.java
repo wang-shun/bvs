@@ -11,11 +11,15 @@ import javax.servlet.http.HttpSession;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.service.SettingStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.bruiengine.util.Coder;
 import com.bizvisionsoft.service.model.User;
 
 public class SessionManager {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static final String ATT_USRINFO = "usrinfo";
 
@@ -161,7 +165,7 @@ public class SessionManager {
 		try {
 			store.setAttribute(user+"_page_"+pageId, assemblyId);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

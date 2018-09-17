@@ -25,12 +25,16 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
 import org.eclipse.rap.rwt.RWT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.mongocodex.codec.CodexProvider;
 import com.bizvisionsoft.service.tools.Util;
 import com.mongodb.BasicDBObject;
 
 public class EngUtil {
+	
+	public static Logger logger = LoggerFactory.getLogger(EngUtil.class);
 
 	private static final String MONEY_NUMBER_FORMAT = "#,##0.0";
 
@@ -221,14 +225,14 @@ public class EngUtil {
 					br = new BufferedReader(new InputStreamReader(new FileInputStream(cTypeFile)));
 					contentType = br.readLine();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				} finally {
 					try {
 						if (br != null) {
 							br.close();
 						}
 					} catch (IOException ce) {
-						ce.printStackTrace();
+						logger.error(ce.getMessage(), ce);
 					}
 				}
 			}

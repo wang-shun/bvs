@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.SelectionValidation;
@@ -73,6 +75,8 @@ import com.bizvisionsoft.service.model.User;
 import com.mongodb.BasicDBObject;
 
 public class EditorPart {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	private Assembly config;
 
@@ -190,6 +194,7 @@ public class EditorPart {
 					}
 					bruiService.closeCurrentPart();
 				} catch (Exception e1) {
+					logger.error(e1.getMessage(), e1);
 					MessageDialog.openError(bruiService.getCurrentShell(), "´íÎó", e1.getMessage());
 				}
 			});

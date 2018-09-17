@@ -33,8 +33,9 @@ public class BruiActionEngine extends BruiEngine {
 			BruiActionEngine eng = create(action, services);
 			eng.invokeExecute(event, context);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Layer.message("运行错误<br/>操作:" + action.getName() + "<br/>" + "错误信息:" + e.getMessage(), Layer.ICON_CANCEL);
+			String message = e.getMessage();
+			logger.error("运行错误，Action:" + action.getName() + "[" + action.getId() + "]。错误信息:" + message, e);
+			Layer.message("运行错误<br/>操作:" + action.getName() + "<br/>" + "错误信息:" + message, Layer.ICON_CANCEL);
 		}
 	}
 

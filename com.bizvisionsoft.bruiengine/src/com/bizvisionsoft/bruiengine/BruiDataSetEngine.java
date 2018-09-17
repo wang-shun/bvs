@@ -226,7 +226,7 @@ public class BruiDataSetEngine extends BruiEngine {
 							MethodParam.class, t -> t.value());
 				}
 			} catch (IllegalAccessException | IllegalArgumentException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getTargetException().getMessage());
 			}

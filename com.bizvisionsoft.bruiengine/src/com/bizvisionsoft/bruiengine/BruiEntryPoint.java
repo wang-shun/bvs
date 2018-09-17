@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -33,6 +35,8 @@ import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
+
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	private Display display;
 	private Shell shell;
@@ -44,7 +48,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 			try {
 				ModelLoader.loadSite();
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 
 		display = new Display();

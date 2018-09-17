@@ -34,6 +34,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
@@ -51,6 +53,8 @@ import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.mongodb.BasicDBObject;
 
 public class FlowPart {
+	
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	private IBruiService bruiService;
@@ -152,6 +156,7 @@ public class FlowPart {
 				links = (List<?>) object;
 
 			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 				Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 			}
 			setViewerInput(nodes, links);

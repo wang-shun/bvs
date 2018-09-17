@@ -134,7 +134,7 @@ public class ConnectionManager {
 			try {
 				DriverManager.deregisterDriver(driver);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -196,7 +196,7 @@ public class ConnectionManager {
 			loadDrivers(dbProps);
 			createPools(dbProps);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -347,7 +347,7 @@ public class ConnectionManager {
 				try {
 					con.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 			freeConnections.clear();
