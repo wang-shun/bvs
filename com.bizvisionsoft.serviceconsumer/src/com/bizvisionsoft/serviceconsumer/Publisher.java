@@ -73,7 +73,6 @@ public class Publisher {
 						
 						UniversalDataService.class
 
-
 				},
 
 				new Object[] {
