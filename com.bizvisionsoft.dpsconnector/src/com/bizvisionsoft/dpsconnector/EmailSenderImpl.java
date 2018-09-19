@@ -1,22 +1,26 @@
 package com.bizvisionsoft.dpsconnector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.bizvisionsoft.service.dps.EmailClient;
+import com.bizvisionsoft.service.dps.EmailSender;
 import com.bizvpm.dps.client.IProcessorManager;
 import com.bizvpm.dps.client.Task;
 
-public class EmailClientImpl implements EmailClient{
+public class EmailSenderImpl implements EmailSender{
 
 	public static final String EMAIL = "com.bizvpm.dps.processor.email:email.send";
+	
+	public void send(String appName, String to, String subject, String emailBody, String from)
+			throws Exception {
+		send(appName, null, true, Arrays.asList(to), null, subject, emailBody, from, null);
+	}
 
 	public void send(String appName, String emailType, String to, String subject, String emailBody, String from)
 			throws Exception {
-		List<String> _to = new ArrayList<String>();
-		_to.add(to);
-		send(appName, emailType, true, _to, null, subject, emailBody, from, null);
+		send(appName, emailType, true, Arrays.asList(to), null, subject, emailBody, from, null);
 	}
 
 	public void send(String appName, String emailType, boolean useServerAddress, List<String> to,
@@ -50,6 +54,8 @@ public class EmailClientImpl implements EmailClient{
 
 		if (attachment != null && attachment.size() > 0) {
 			task.setValue("attachment", attachment);
+		}else {
+			task.setValue("attachment", new ArrayList<>());
 		}
 
 		// Result result = manager.runTask(task, EMAIL);

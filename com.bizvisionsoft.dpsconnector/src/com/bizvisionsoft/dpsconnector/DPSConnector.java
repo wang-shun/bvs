@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.service.dps.DWGConvertor;
-import com.bizvisionsoft.service.dps.EmailClient;
+import com.bizvisionsoft.service.dps.EmailSender;
 import com.bizvisionsoft.service.dps.OfficeConvertor;
 import com.bizvisionsoft.service.dps.ReportCreator;
 import com.bizvpm.dps.client.DPS;
@@ -44,14 +44,14 @@ public class DPSConnector implements BundleActivator {
 				logger.warn("没有配置DPS服务器，请使用启动参数-Dcom.bizvisionsoft.service.DPSList=<RS服务器IP>:<端口号>，使用;分割多个服务器。");
 			} else {
 				dpsServerList = str.split(";");
-				logger.info("DPS服务器:" + dpsServerList);
+				logger.info("DPS服务器:" + str);
 			}
 		} catch (Exception e) {
 			logger.error("DPS服务器配置错误", e);
 		}
 		
 		//
-		regs.add(bc.registerService(EmailClient.class.getName(), new EmailClientImpl(), null));
+		regs.add(bc.registerService(EmailSender.class.getName(), new EmailSenderImpl(), null));
 
 		regs.add(bc.registerService(DWGConvertor.class.getName(), new DWGConvertorImpl(), null));
 
