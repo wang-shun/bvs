@@ -2,20 +2,19 @@ package com.bizvisionsoft.dpsconnector;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
-import javax.servlet.ServletOutputStream;
-
+import com.bizvisionsoft.service.dps.ReportCreator;
 import com.bizvpm.dps.client.IProcessorManager;
 import com.bizvpm.dps.client.Result;
 import com.bizvpm.dps.client.Task;
 
-public class ReportCreator {
+public class ReportCreatorImpl implements ReportCreator {
 
 	public static final String REPORT = "com.bizvpm.dps.processor.report:birtreport";
 
-	public static void createReport(String dataURL, File templateFile, ServletOutputStream os, String id, String db,
-			String col) throws Exception {
+	public void createReport(String dataURL, File templateFile, OutputStream os) throws Exception {
 		IProcessorManager manager = DPSConnector.getProcessManager();
 		Task task = new Task();
 		task.setName("Create report");
@@ -27,8 +26,6 @@ public class ReportCreator {
 		HashMap<String, String> map = new HashMap<String, String>();
 		if (dataURL != null) {
 			map.put("FILELIST", dataURL);
-		} else {
-			map.put("FILELIST", "http://127.0.0.1/xmlpo?id=" + id + "&db=" + db + "&col=" + col);
 		}
 		task.setValue("datasource_parameter", map);
 		Result result = manager.runTask(task, REPORT);

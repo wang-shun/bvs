@@ -2,15 +2,16 @@ package com.bizvisionsoft.dpsconnector;
 
 import java.io.File;
 
+import com.bizvisionsoft.service.dps.OfficeConvertor;
 import com.bizvpm.dps.client.IProcessorManager;
 import com.bizvpm.dps.client.Result;
 import com.bizvpm.dps.client.Task;
 
-public class MSOfficeConvertor {
+public class OfficeConvertorMSImpl implements  OfficeConvertor{
 
 	public static final String MSOFFICE_PDF = "com.bizvpm.dps.processor.msoffice:msoffice.msofficeconverter";
 
-	public static void convert(File inputFile, File outputFile)
+	public void convert(File inputFile, File outputFile)
 			throws Exception {
 		IProcessorManager manager = DPSConnector.getProcessManager();
 		Task task = new Task();

@@ -11,6 +11,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/com.bizvpm.dps.client.jar,
  .
 Require-Bundle: slf4j.api,
- javax.servlet
-Export-Package: com.bizvisionsoft.dpsconnector,
- com.bizvpm.dps.client
+ javax.servlet,
+ com.bizvisionsoft.service;bundle-version="1.0.0"

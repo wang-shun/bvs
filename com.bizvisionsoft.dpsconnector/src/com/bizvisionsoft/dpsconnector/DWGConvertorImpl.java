@@ -2,16 +2,16 @@ package com.bizvisionsoft.dpsconnector;
 
 import java.io.File;
 
+import com.bizvisionsoft.service.dps.DWGConvertor;
 import com.bizvpm.dps.client.IProcessorManager;
 import com.bizvpm.dps.client.Result;
 import com.bizvpm.dps.client.Task;
 
-public class DWGConvertor {
+public class DWGConvertorImpl implements DWGConvertor {
 
 	public static final String DWG_PDF = "com.bizvpm.dps.processor.acmecad:acmecad.acmecadconverter";
 
-	public static void convertDWG(File inputFile, File outputFile)
-			throws Exception {
+	public void convertDWG(File inputFile, File outputFile) throws Exception {
 		IProcessorManager manager = DPSConnector.getProcessManager();
 		Task task = new Task();
 		task.setName("Convert DWG to PDF");
@@ -28,6 +28,5 @@ public class DWGConvertor {
 		Result result = manager.runTask(task, DWG_PDF);
 		result.writeToFile("file", outputFile);
 	}
-
 
 }
