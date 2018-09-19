@@ -191,6 +191,7 @@
 		},
 
 		configGridMenu : function(config) {
+			var gantt = this.gantt;
 			if (config.brui_HeadMenuEnable || config.brui_RowMenuEnable) {
 				var remoteId = rap.getRemoteObject(this)._.id;
 				var colHeader;
@@ -221,6 +222,13 @@
 					label : colHeader,
 					template : colContent
 				})
+				
+				//处理标准模板
+				config.columns.forEach(function(col){  
+					if(col.name=="wbs"){
+						col.template = gantt.getWBSCode;
+					}
+				});
 
 			}
 		},
