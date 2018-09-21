@@ -27,12 +27,19 @@ public class Popup extends Part {
 
 	private BruiService service;
 
+	protected boolean addToParentContext;
+
 	public Popup(Assembly assembly, IBruiContext parentContext) {
+		this(assembly, parentContext, true);
+	}
+
+	public Popup(Assembly assembly, IBruiContext parentContext, boolean addToParentContext) {
 		super(Display.getCurrent().getActiveShell());
+		this.addToParentContext = addToParentContext;
 		service = new BruiService(this);
 
 		this.assembly = assembly;
-		if(assembly ==null) {
+		if (assembly == null) {
 			throw new RuntimeException("×é¼þÅäÖÃÎª¿Õ");
 		}
 		setBlockOnOpen(true);
@@ -48,7 +55,11 @@ public class Popup extends Part {
 	}
 
 	protected BruiAssemblyContext createContext(IBruiContext parentContext) {
-		return UserSession.newAssemblyContext().setParent(parentContext);
+		BruiAssemblyContext c = UserSession.newAssemblyContext();
+		if (addToParentContext) {
+			c.setParent(parentContext);
+		}
+		return c;
 	}
 
 	public Assembly getAssembly() {

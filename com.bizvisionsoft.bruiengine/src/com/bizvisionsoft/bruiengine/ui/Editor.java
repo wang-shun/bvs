@@ -36,7 +36,7 @@ public class Editor<T> extends Popup {
 	}
 
 	public Editor(Assembly assembly, IBruiContext parentContext) {
-		super(assembly, parentContext);
+		super(assembly, parentContext,assembly.isAddToParentContext());
 		setShellStyle(SWT.TITLE | SWT.RESIZE | SWT.ON_TOP | SWT.APPLICATION_MODAL);
 		String title = assembly.getTitle();
 		setTitle(title == null ? assembly.getName() : title);

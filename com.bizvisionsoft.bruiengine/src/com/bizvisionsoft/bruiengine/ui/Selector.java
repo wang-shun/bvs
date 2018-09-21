@@ -29,6 +29,10 @@ public class Selector extends Popup {
 	}
 
 	public Selector(Assembly assembly, IBruiContext parentContext) {
+		this(assembly,parentContext,false);
+	}
+	
+	public Selector(Assembly assembly, IBruiContext parentContext,boolean addToParentContext) {
 		super(assembly, parentContext);
 		setShellStyle(SWT.TITLE | SWT.RESIZE | SWT.ON_TOP | SWT.APPLICATION_MODAL);
 		String title = assembly.getTitle();
@@ -43,7 +47,11 @@ public class Selector extends Popup {
 
 	@Override
 	protected BruiEditorContext createContext(IBruiContext parentContext) {
-		return UserSession.newEditorContext();
+		BruiEditorContext c = UserSession.newEditorContext();
+		if (addToParentContext) {
+			c.setParent(parentContext);
+		}
+		return c;
 	}
 
 	public Selector setEditable(boolean editable) {
