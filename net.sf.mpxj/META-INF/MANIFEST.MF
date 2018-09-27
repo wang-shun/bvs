@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mpxj
+Bundle-SymbolicName: net.sf.mpxj
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/rtfparserkit-1.11.0.jar,
+ lib/sqlite-jdbc-3.8.10.1.jar,
+ lib/poi-3.17.jar,
+ lib/jgoodies-binding-2.10.0.jar,
+ lib/jgoodies-common-1.8.0.jar,
+ .
+Require-Bundle: org.apache.commons.commons-collections4;bundle-version="4.2.0"
