@@ -18,7 +18,7 @@ import com.bizvisionsoft.bruiengine.util.Coder;
 import com.bizvisionsoft.service.model.User;
 
 public class SessionManager {
-	
+
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static final String ATT_USRINFO = "usrinfo";
@@ -67,6 +67,13 @@ public class SessionManager {
 		session.setLoginTime(new Date());
 
 		TraceUserUtil.trace("登录系统");
+
+		if (logger.isDebugEnabled()) {
+			String msg = "HttpSession设置用户信息：";
+			msg += ATT_USRINFO + "-" + hs.getAttribute(ATT_USRINFO) + ";";
+			msg += ATT_LOGINTIME + "-" + hs.getAttribute(ATT_LOGINTIME) + ";";
+			logger.debug(msg);
+		}
 	}
 
 	public void logout() {
@@ -77,6 +84,15 @@ public class SessionManager {
 
 	private void clearSessionUserInfo() {
 		HttpSession hs = RWT.getRequest().getSession();
+
+		if (logger.isDebugEnabled()) {
+			String msg = "HttpSession清除用户信息：";
+			msg += ATT_USRINFO + "-" + hs.getAttribute(ATT_USRINFO) + ";";
+			msg += ATT_CONSIGNINFO + "-" + hs.getAttribute(ATT_CONSIGNINFO) + ";";
+			msg += ATT_LOGINTIME + "-" + hs.getAttribute(ATT_LOGINTIME) + ";";
+			logger.debug(msg);
+		}
+
 		hs.removeAttribute(ATT_USRINFO);
 		hs.removeAttribute(ATT_CONSIGNINFO);
 		hs.removeAttribute(ATT_LOGINTIME);
@@ -99,6 +115,13 @@ public class SessionManager {
 		session.setConsignUser(loginUser);
 		UserSession.current().getEntryPoint().home();
 		TraceUserUtil.trace("代理用户");
+
+		if (logger.isDebugEnabled()) {
+			String msg = "HttpSession注册代理用户信息：";
+			msg += ATT_USRINFO + "-" + hs.getAttribute(ATT_USRINFO) + ";";
+			msg += ATT_CONSIGNINFO + "-" + hs.getAttribute(ATT_CONSIGNINFO) + ";";
+			logger.debug(msg);
+		}
 	}
 
 	public User getConsigner() {
@@ -115,6 +138,14 @@ public class SessionManager {
 		session.setLoginUser(user);
 		session.setConsignUser(consigner);
 		session.setLoginTime(date);
+
+		if (logger.isDebugEnabled()) {
+			String msg = "更新UserSession用户信息：";
+			msg += ATT_USRINFO + "-" + hs.getAttribute(ATT_USRINFO) + ";";
+			msg += ATT_CONSIGNINFO + "-" + hs.getAttribute(ATT_CONSIGNINFO) + ";";
+			msg += ATT_LOGINTIME + "-" + hs.getAttribute(ATT_LOGINTIME) + ";";
+			logger.debug(msg);
+		}
 	}
 
 	public String[] loadClientLogin() {
@@ -163,16 +194,16 @@ public class SessionManager {
 		String user = getUser().getUserId();
 		SettingStore store = RWT.getSettingStore();
 		try {
-			store.setAttribute(user+"_page_"+pageId, assemblyId);
+			store.setAttribute(user + "_page_" + pageId, assemblyId);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
 	public String getDefaultPageAssembly(String pageId) {
 		String user = getUser().getUserId();
 		SettingStore store = RWT.getSettingStore();
-		return store.getAttribute(user+"_page_"+pageId);
+		return store.getAttribute(user + "_page_" + pageId);
 	}
 
 }
