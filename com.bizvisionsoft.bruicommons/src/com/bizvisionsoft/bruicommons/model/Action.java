@@ -19,6 +19,8 @@ public class Action extends ModelObject {
 	public static final String TYPE_OPENPAGE = "openpage";
 
 	public static final String TYPE_INSERT_SUBITEM = "insertsub";
+
+	public static final String TYPE_EXPORT = "export";
 	
 	private String id;
 
