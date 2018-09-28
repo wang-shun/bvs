@@ -33,7 +33,7 @@ public class Selector extends Popup {
 	}
 	
 	public Selector(Assembly assembly, IBruiContext parentContext,boolean addToParentContext) {
-		super(assembly, parentContext);
+		super(assembly, parentContext,addToParentContext);
 		setShellStyle(SWT.TITLE | SWT.RESIZE | SWT.ON_TOP | SWT.APPLICATION_MODAL);
 		String title = assembly.getTitle();
 		setTitle(title == null ? assembly.getName() : title);
