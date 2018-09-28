@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.service.CBSService;
-import com.bizvisionsoft.service.CommonService;
 import com.bizvisionsoft.service.DocumentService;
 import com.bizvisionsoft.service.EPSService;
 import com.bizvisionsoft.service.FileService;
@@ -31,7 +30,6 @@ import com.bizvisionsoft.service.WorkService;
 import com.bizvisionsoft.service.WorkSpaceService;
 import com.bizvisionsoft.service.provider.BsonProvider;
 import com.bizvisionsoft.serviceimpl.CBSServiceImpl;
-import com.bizvisionsoft.serviceimpl.CommonServiceImpl;
 import com.bizvisionsoft.serviceimpl.DocumentServiceImpl;
 import com.bizvisionsoft.serviceimpl.EPSServiceImpl;
 import com.bizvisionsoft.serviceimpl.FileServiceImpl;
@@ -79,9 +77,7 @@ public class Activator implements BundleActivator {
 		regs.add(bc.registerService(SystemService.class.getName(), new SystemServiceImpl(), null));
 		
 		regs.add(bc.registerService(FileService.class.getName(), new FileServiceImpl(), null));
-
-		regs.add(bc.registerService(CommonService.class.getName(), new CommonServiceImpl(), null));
-
+		
 		regs.add(bc.registerService(UserService.class.getName(), new UserServiceImpl(), null));
 
 		regs.add(bc.registerService(OrganizationService.class.getName(), new OrganizationServiceImpl(), null));

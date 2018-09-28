@@ -322,4 +322,9 @@ public class BruiDataSetEngine extends BruiEngine {
 		return (BruiDataSetEngine) super.newInstance();
 	}
 
+	public void export() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

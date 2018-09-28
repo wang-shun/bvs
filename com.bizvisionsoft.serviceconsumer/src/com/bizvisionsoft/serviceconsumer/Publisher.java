@@ -46,7 +46,7 @@ public class Publisher {
 						OBSService.class,
 
 						CBSService.class,
-						
+
 						RevenueService.class,
 
 						RiskService.class,
@@ -70,7 +70,7 @@ public class Publisher {
 						WorkReportService.class,
 
 						PermissionService.class,
-						
+
 						UniversalDataService.class
 
 				},

@@ -52,7 +52,7 @@ import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.mongodb.BasicDBObject;
 
-public class FlowPart {
+public class FlowPart implements IDataSetEngineProvider{
 	
 	public Logger logger = LoggerFactory.getLogger(getClass());
 

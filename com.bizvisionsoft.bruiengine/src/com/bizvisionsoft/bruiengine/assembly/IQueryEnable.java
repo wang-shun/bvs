@@ -12,7 +12,7 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
-public interface IQueryEnable {
+public interface IQueryEnable extends IDataSetEngineProvider{
 
 	IBruiContext getContext();
 
@@ -54,8 +54,6 @@ public interface IQueryEnable {
 	void setCount(long cnt);
 
 	BasicDBObject getFilter();
-
-	BruiDataSetEngine getDataSetEngine();
 
 	void setSkip(int i);
 

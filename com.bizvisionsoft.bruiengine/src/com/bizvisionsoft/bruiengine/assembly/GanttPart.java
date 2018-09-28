@@ -40,7 +40,7 @@ import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart implements IPostSelectionProvider {
+public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider{
 	
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -327,6 +327,11 @@ public class GanttPart implements IPostSelectionProvider {
 	
 	public boolean isDirty() {
 		return gantt.isDirty();
+	}
+
+	@Override
+	public BruiDataSetEngine getDataSetEngine() {
+		return dataSetEngine;
 	}
 
 }

@@ -28,7 +28,7 @@ import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
-public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
+public class TreePart implements IStructuredDataPart, IPostSelectionProvider, IDataSetEngineProvider {
 
 	@Inject
 	private IBruiService bruiService;
@@ -51,7 +51,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	private void init() {
 		config = context.getAssembly();
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
-		Assert.isNotNull(dataSetEngine,config.getName()+ "组件缺少数据集定义");
+		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 	}
 
 	private Composite createSticker(Composite parent) {
@@ -119,7 +119,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Override
 	public ISelection getSelection() {
-		if(selectedItem==null) {
+		if (selectedItem == null) {
 			return StructuredSelection.EMPTY;
 		}
 		return new StructuredSelection(selectedItem);
@@ -147,7 +147,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	public void doModify(Object element, Object newElement, BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.replace(element, newData,context);
+				dataSetEngine.replace(element, newData, context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
@@ -159,7 +159,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 	public void doDelete(Object element) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.delete(element, null,context);
+				dataSetEngine.delete(element, null, context);
 				tree.deleteItem(element);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
@@ -179,18 +179,23 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider {
 
 	@Override
 	public void refresh(Object parent) {
-		//TODO 刷新树
+		// TODO 刷新树
 	}
 
 	@Override
 	public Object doGetEditInput(Object element) {
-		return dataSetEngine.query(element,context);
+		return dataSetEngine.query(element, context);
 	}
 
 	@Override
 	public void refreshAll() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public BruiDataSetEngine getDataSetEngine() {
+		return dataSetEngine;
 	}
 
 }

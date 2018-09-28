@@ -549,5 +549,5 @@ public class Gantt extends Composite {
 	public boolean isDirty() {
 		return dirty;
 	}
-
+	
 }

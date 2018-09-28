@@ -37,7 +37,7 @@ import com.bizvisionsoft.bruiengine.assembly.field.TextPageField;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 
-public class InfopadPart {
+public class InfopadPart implements IDataSetEngineProvider{
 
 	private Assembly config;
 
@@ -211,6 +211,11 @@ public class InfopadPart {
 			sc.setMinHeight(size.y);
 		});
 		return sc;
+	}
+
+	@Override
+	public BruiDataSetEngine getDataSetEngine() {
+		return dataSetEngine;
 	}
 
 
