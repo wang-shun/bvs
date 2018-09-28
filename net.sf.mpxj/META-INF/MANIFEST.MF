@@ -11,4 +11,5 @@ Bundle-ClassPath: lib/rtfparserkit-1.11.0.jar,
  lib/jgoodies-common-1.8.0.jar,
  .
 Require-Bundle: org.apache.commons.commons-collections4;bundle-version="4.2.0"
-Export-Package: net.sf.mpxj
+Export-Package: net.sf.mpxj,
+ net.sf.mpxj.mpx

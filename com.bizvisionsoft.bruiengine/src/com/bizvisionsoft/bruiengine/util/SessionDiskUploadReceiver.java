@@ -10,12 +10,10 @@ import java.util.List;
 
 import org.eclipse.rap.fileupload.FileDetails;
 import org.eclipse.rap.fileupload.FileUploadReceiver;
-import org.eclipse.rap.rwt.RWT;
 
 public class SessionDiskUploadReceiver extends FileUploadReceiver {
 
 	private static final String DEFAULT_TARGET_FILE_NAME = "upload.tmp";
-	private static final String TEMP_DIRECTORY_PREFIX = "BVS_";
 
 	private final List<File> targetFiles;
 	private final List<FileDetails> targetFileDetails;
@@ -49,7 +47,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 		if (details != null && details.getFileName() != null) {
 			fileName = details.getFileName();
 		}
-		File result = new File(createTempDirectory(), fileName);
+		File result = new File(EngUtil.createTempDirectory(), fileName);
 		result.createNewFile();
 		return result;
 	}
@@ -64,17 +62,6 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 		return result;
 	}
 
-	private static File createTempDirectory() throws IOException {
-		File result = File.createTempFile(TEMP_DIRECTORY_PREFIX,
-				"_" + RWT.getRequest().getSession().getId().toUpperCase());
-		result.delete();
-		if (result.mkdir()) {
-			result.deleteOnExit();
-		} else {
-			throw new IOException("无法创建临时文件夹 " + result.getAbsolutePath());
-		}
-		return result;
-	}
 
 	public void clear() {
 		targetFileDetails.clear();

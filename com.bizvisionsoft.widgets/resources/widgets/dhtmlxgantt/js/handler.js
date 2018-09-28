@@ -222,15 +222,15 @@
 					label : colHeader,
 					template : colContent
 				})
-				
-				//处理标准模板
-				config.columns.forEach(function(col){  
-					if(col.name=="wbs"){
-						col.template = gantt.getWBSCode;
-					}
-				});
 
 			}
+
+			//处理标准模板
+			config.columns.forEach(function(col){  
+				if(col.name=="wbs"){
+					col.template = gantt.getWBSCode;
+				}
+			});
 		},
 
 		// 月周日

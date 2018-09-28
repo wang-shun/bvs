@@ -42,6 +42,8 @@ public class EngUtil {
 	public static Logger logger = LoggerFactory.getLogger(EngUtil.class);
 
 	private static final String MONEY_NUMBER_FORMAT = "#,##0.0";
+	
+	private static final String TEMP_DIRECTORY_PREFIX = "BVS_";
 
 	private static char[] array = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
 
@@ -474,7 +476,7 @@ public class EngUtil {
 	 * @param param
 	 *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
 	 * @return URL所代表远程资源的响应结果
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void httpPost(String url, String param,
 			BiConsumer<Map<String, List<String>>, InputStream> handleResponse) throws IOException {
@@ -503,5 +505,16 @@ public class EngUtil {
 			if (is != null)
 				is.close();
 		}
+	}
+
+	public static File createTempDirectory() throws IOException {
+		File result = File.createTempFile(TEMP_DIRECTORY_PREFIX, "_" + RWT.getRequest().getSession().getId().toUpperCase());
+		result.delete();
+		if (result.mkdir()) {
+			result.deleteOnExit();
+		} else {
+			throw new IOException("无法创建临时文件夹 " + result.getAbsolutePath());
+		}
+		return result;
 	}
 }

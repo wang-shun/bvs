@@ -13,6 +13,7 @@ import org.osgi.framework.Bundle;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.DataSet;
+import com.bizvisionsoft.annotations.md.service.Export;
 import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -322,9 +323,20 @@ public class BruiDataSetEngine extends BruiEngine {
 		return (BruiDataSetEngine) super.newInstance();
 	}
 
-	public void export() {
-		// TODO Auto-generated method stub
-		
+	public void export(String fName, IBruiContext context) {
+		Method method = AUtil.getContainerMethod(clazz, Export.class, cName, fName, a -> a.value()).orElse(null);
+		if (method != null) {
+			List<String> names = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			
+			injectCommonParameters(context, names, values, modelClassName);
+
+			invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
+					t -> t.value());
+
+		}else {
+			throw new RuntimeException(cName + " 数据源没有注解Export值为 " + fName + "的方法。");		
+		}
 	}
 
 }
