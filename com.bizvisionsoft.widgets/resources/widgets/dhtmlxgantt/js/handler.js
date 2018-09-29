@@ -82,6 +82,10 @@
 				this.configLayout(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
+				// 配置任务提示
+				this.configTaskTips(this.config);
+
+				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置任务样式
 				this.configTaskStyle(this.config);
 
@@ -304,6 +308,27 @@
 			} ];
 		},
 
+		configTaskTips : function(config) {
+			if (config.readonly && !config.grid_width) {
+				var gantt = this.gantt;
+				var fFunc = gantt.date.date_to_str("%Y-%m-%d %H:%i");
+				gantt.attachEvent("onTaskClick",function(id, e) {//
+					var task = gantt.getTask(id);//
+					layer.tips("开始："+ fFunc(task.start_date)//
+							+ "<br>完成："+ fFunc(task.end_date)//
+							+ "<br>工期："+ task.duration+ "天"//
+							+ (task.chargerInfo ? ("<br>负责：" + task.chargerInfo): "")//
+							+ (task.actualFinish ? " 已完成": (task.actualStart?"已开始":""))//
+							,$("div[task_id$='"+ task.id + "'")[0],//
+							{
+								tips : [ 1, '#3595CC' ],
+								time : 4000
+							});
+					return true;
+				});
+			}
+		},
+
 		configLayout : function(config) {
 			if (config.grid_width != 0) {
 				this.gantt.config.layout = {
@@ -406,6 +431,9 @@
 									+ overdue + "d</span>";
 						}
 					}
+					if(task.chargerInfo){
+						text += "&nbsp;"+ task.chargerInfo;
+					}
 					return text;
 				};
 
@@ -417,7 +445,7 @@
 					if (task.type == gantt.config.types.milestone) {
 						return task.text + "&nbsp;" + formatFunc(start);
 					}
-					return "";
+					return task.chargerInfo?task.chargerInfo:"";
 				};
 			}
 		},
