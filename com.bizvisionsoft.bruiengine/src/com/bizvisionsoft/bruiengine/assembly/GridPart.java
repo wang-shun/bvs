@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
@@ -49,6 +51,7 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
+import com.bizvisionsoft.bruiengine.exporter.ExcelExp;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -59,7 +62,7 @@ import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart, IQueryEnable {
+public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -214,11 +217,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	@CreateUI
 	public void createUI(Composite parent) {
-		//如果初始化时不加载数据，queryOn必须打开
-		if(config.isDisableInitLoadData()) {
+		// 如果初始化时不加载数据，queryOn必须打开
+		if (config.isDisableInitLoadData()) {
 			queryOn = true;
 		}
-		
+
 		Composite panel;
 		if (config.isHasTitlebar() && itemSelector == null && !asEditorField) {
 			panel = createSticker(parent);
@@ -239,7 +242,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 		if (!config.isDisableInitLoadData()) {
 			setViewerInput();
-		}else {
+		} else {
 			setViewerInput(new ArrayList<>());
 		}
 
@@ -796,7 +799,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 	public void doModify(Object element, Object newElement, BasicDBObject newData) {
 		if (dataSetEngine != null) {
 			try {
-				dataSetEngine.replace(element, newData,context);
+				dataSetEngine.replace(element, newData, context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
 				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
@@ -808,7 +811,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 		if (dataSetEngine != null) {
 			try {
 				Object parentElement = getParentElement(element);
-				dataSetEngine.delete(element, parentElement,context);
+				dataSetEngine.delete(element, parentElement, context);
 				remove(parentElement, element);
 				String label = AUtil.readLabel(element);
 				Layer.message(Optional.ofNullable(label).map(m -> "已删除 " + m).orElse("已删除"));
@@ -829,7 +832,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public void doCreate(Object parent, Object element) {
 		if (dataSetEngine != null) {
-			Object newElement = dataSetEngine.insert(parent, element,context);
+			Object newElement = dataSetEngine.insert(parent, element, context);
 			insert(newElement);
 			viewer.setSelection(new StructuredSelection(newElement), true);
 		}
@@ -837,7 +840,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public void doCreateSubItem(Object parent, Object element) {
 		if (dataSetEngine != null) {
-			dataSetEngine.insert(parent, element,context);
+			dataSetEngine.insert(parent, element, context);
 			refresh(parent);
 			if (!viewer.getExpandedState(parent)) {
 				viewer.expandToLevel(parent, 1);
@@ -847,7 +850,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public Object doGetEditInput(Object em) {
 		if (dataSetEngine != null) {
-			return dataSetEngine.query(em,context);
+			return dataSetEngine.query(em, context);
 		}
 		return null;
 	}
@@ -904,6 +907,42 @@ public class GridPart implements IStructuredDataPart, IQueryEnable {
 
 	public void collapse() {
 		viewer.collapseAll();
+	}
+
+	@Override
+	public void export() {
+		// 获取导出文件名。使用StickerTitle作为文件名。
+		String fileName = config.getStickerTitle();
+		// 构建弹出menu，选择是全部导出还是导出当前结果
+		Action current = new Action();
+		current.setName("current");
+		current.setText("当前数据");
+		current.setStyle("normal");
+
+		Action all = new Action();
+		all.setName("all");
+		all.setText("所有数据");
+		all.setStyle("normal");
+
+		new ActionMenu(bruiService).setActions(Arrays.asList(current, all)).handleActionExecute("current", a -> {
+			// 导出所有时，传入viewer和dataSetEngine
+			try {
+				Object input = dataSetEngine.query(filter, context, DataSet.LIST);
+				new ExcelExp().setViewer(viewer).setInput(input).export(fileName);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			return false;
+		}).handleActionExecute("all", a -> {
+			// 导出当前结果时，只用传入viewer
+			try {
+				new ExcelExp().setViewer(viewer).setInput(viewer.getInput()).export(fileName);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			return false;
+		}).open();
+
 	}
 
 }
