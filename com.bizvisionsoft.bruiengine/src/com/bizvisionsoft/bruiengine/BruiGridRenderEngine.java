@@ -81,8 +81,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 		if (defaultRender != null) {
 			defaultRender.renderCell(cell, column, value, image, callBack);
 		} else {
-			invokeMethodInjectParams(GridRenderUpdateCell.class,
-					new Object[] { cell, column, value, image, inputElement, callBack },
+			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value, image, callBack },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
 							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE,
 							GridRenderUpdateCell.PARAM_CALLBACK },

@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
@@ -49,6 +50,7 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
+import com.bizvisionsoft.bruiengine.exporter.ExcelExp;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -908,8 +910,37 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 
 	@Override
 	public void export() {
-		
+		// 获取导出文件名。使用StickerTitle作为文件名。
+		String fileName = config.getStickerTitle();
+		// 构建弹出menu，选择是全部导出还是导出当前结果
+		Action current = new Action();
+		current.setName("current");
+		current.setText("当前数据");
+		current.setStyle("normal");
 
+		Action all = new Action();
+		all.setName("all");
+		all.setText("所有数据");
+		all.setStyle("normal");
+
+		new ActionMenu(bruiService).setActions(Arrays.asList(current, all)).handleActionExecute("current", a -> {
+			// 导出所有时，传入viewer和dataSetEngine获取的值
+			exportExcel(fileName, dataSetEngine.query(filter, context, DataSet.LIST));
+			return false;
+		}).handleActionExecute("all", a -> {
+			// 导出当前结果时，只用传入viewer的input
+			exportExcel(fileName, viewer.getInput());
+			return false;
+		}).open();
+
+	}
+
+	private void exportExcel(String fileName, Object input) {
+		try {
+			new ExcelExp().setViewer(viewer).setInput(input).setFileName(fileName).export();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
