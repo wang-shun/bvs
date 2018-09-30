@@ -3,12 +3,8 @@ package com.bizvisionsoft.bruiengine.exporter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.parser.ParserDelegator;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -23,6 +19,8 @@ import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.UrlLauncher;
+import org.htmlparser.Parser;
+import org.htmlparser.visitors.TextExtractingVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,6 +92,7 @@ public class ExcelExp {
 		FileOutputStream fos = new FileOutputStream(filePath);
 		wb.write(fos); // 写文件
 		fos.close(); // 关闭文件
+		wb.close();
 
 		// 构建下载地址并打开
 		String url = UserSession.bruiToolkit().createLocalFileDownloadURL(filePath);
@@ -262,7 +261,7 @@ public class ExcelExp {
 			// 获取文本，对HTML格式的内容进行解析，只保留HTML内容。
 			try {
 				text = getPlainText3(text);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO 提示信息
 				logger.error(fileName + "导出Excel 第" + (cell.getRowIndex() + 1) + "行，第" + (cell.getColumnIndex() + 1)
 						+ "列，数据错误：" + e.getMessage());
@@ -278,44 +277,20 @@ public class ExcelExp {
 	}
 
 	/**
-	 * HTML解析
+	 * HTML解析,使用HtmlParser解析HTML
 	 * 
 	 * @param html
 	 *            需解析的文本
 	 * @return
 	 * @throws IOException
 	 */
-	private String getPlainText3(String html) throws IOException {
-		Html2Text html2Text = new Html2Text();
-		html2Text.parse(html);
-		return html2Text.getText();
-	}
-
-	/**
-	 * 读取html文本类，使用HTMLEditorKit将html中的内容解析成文本
-	 * 
-	 * @author gdiyang
-	 *
-	 */
-	class Html2Text extends HTMLEditorKit.ParserCallback {
-		StringBuffer s;
-
-		public Html2Text() {
-		}
-
-		public void parse(String HtmlString) throws IOException {
-			s = new StringBuffer();
-			ParserDelegator delegator = new ParserDelegator();
-			delegator.parse(new StringReader(HtmlString), this, Boolean.TRUE);
-		}
-
-		public void handleText(char[] text, int pos) {
-			s.append(text);
-		}
-
-		public String getText() {
-			return s.toString();
-		}
+	private String getPlainText3(String html) throws Exception {
+		// 构建HtmlParser解析器，传入的String不是以HTML标记开头时，Parser认为是从文件夹中的文件中获取。
+		Parser parser = new Parser("<div>" + html + "</div>");
+		// 构建Text遍历器,TextExtractingVisitor将遍历html中所有的标记，并获取html标记中
+		TextExtractingVisitor textVisitor = new TextExtractingVisitor();
+		parser.visitAllNodesWith(textVisitor);
+		return textVisitor.getExtractedText();
 	}
 
 }
