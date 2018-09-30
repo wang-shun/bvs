@@ -156,6 +156,8 @@ public class ExcelExp {
 				final XSSFCell cell = row.createCell(i);
 				// 根据LabelProvider获取填充到单元格中的内容
 				GridPartColumnLabelProvider labelProvider = (GridPartColumnLabelProvider) viewer.getLabelProvider(i);
+				// TODO
+				// 需检查所有继承与GridPartDefaultRender的Class，其中的GridRenderUpdateCell注解是否使用了ViewerCell,如使用了ViewerCell则需要单独进行处理。
 				labelProvider.update(element, (txt, img) -> {
 					parseHtml(cell, txt, isMarkupValue);
 				});
@@ -236,6 +238,13 @@ public class ExcelExp {
 
 			// 获取列头文本
 			String text = columns[i].getText();
+
+			// 判斷是否存在分組，如果存在分組，并且该列不在分组中，则合并上下两行。
+			if (groupRow != null && columns[i].getColumnGroup() == null) {
+				CellRangeAddress region = new CellRangeAddress(0, 1, i, i);
+				sheet.addMergedRegion(region);
+				cell = groupRow.getCell(i);
+			}
 
 			// 将列头文本放到cell
 			parseHtml(cell, text, isColumnMarkupValue);
