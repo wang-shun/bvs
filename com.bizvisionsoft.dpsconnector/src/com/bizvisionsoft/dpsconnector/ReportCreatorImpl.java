@@ -14,20 +14,15 @@ public class ReportCreatorImpl implements ReportCreator {
 
 	public static final String REPORT = "com.bizvpm.dps.processor.report:birtreport";
 
-	public void createReport(String dataURL, File templateFile, OutputStream os) throws Exception {
+	public void createReport(HashMap<String, String> parameter, String outputType ,File templateFile, OutputStream os) throws Exception {
 		IProcessorManager manager = DPSConnector.getProcessManager();
 		Task task = new Task();
 		task.setName("Create report");
 		task.setPriority(Task.PRIORITY_1);
 		task.setValue("design", templateFile);
-		task.setValue("output", "pdf");
-		// task.setValue("output", "excel");
+		task.setValue("output", outputType);
 
-		HashMap<String, String> map = new HashMap<String, String>();
-		if (dataURL != null) {
-			map.put("FILELIST", dataURL);
-		}
-		task.setValue("datasource_parameter", map);
+		task.setValue("datasource_parameter", parameter);
 		Result result = manager.runTask(task, REPORT);
 		InputStream is = result.getInputStream("result");
 		byte[] data = new byte[1024];
