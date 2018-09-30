@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -35,6 +36,11 @@ public class GridPartDefaultRender {
 	}
 
 	public void renderCell(ViewerCell cell, Column column, Object value, Object image) {
+		renderCell(cell, column, value, image, null);
+	}
+
+	public void renderCell(ViewerCell cell, Column column, Object value, Object image,
+			BiConsumer<String, Object> callback) {
 		String text;
 		if ((value instanceof Number) && ((Number) value).doubleValue() == 0 && !column.isForceDisplayZero()) {
 			text = "";
@@ -63,22 +69,29 @@ public class GridPartDefaultRender {
 				}
 			}
 		}
-		if (image instanceof Image) {
-			cell.setImage((Image) image);
-		} else if (image instanceof String) {
-			GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
-			int size = gridItem.getHeight() - 16;
-			text = "<img src='" + BruiToolkit.getResourceURL((String) image) + "' style='margin-right:8px;' width='"
-					+ size + "px' height='" + size + "px'></img>" + text;
+
+		if (cell != null) {
+			if (image instanceof Image) {
+				cell.setImage((Image) image);
+			} else if (image instanceof String) {
+				GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
+				int size = gridItem.getHeight() - 16;
+				text = "<img src='" + BruiToolkit.getResourceURL((String) image) + "' style='margin-right:8px;' width='"
+						+ size + "px' height='" + size + "px'></img>" + text;
+			}
+			cell.setText(text);
+			// 默认不处理以下的配置
+			// cell.setBackground(getBackground(element));
+			// cell.setForeground(getForeground(element));
+			// cell.setFont(getFont(element));
+			// int colSpan = getColumnSpan(element);
+			// GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
+			// gridItem.setColumnSpan(cell.getColumnIndex(), colSpan);
 		}
-		cell.setText(text);
-		// 默认不处理以下的配置
-		// cell.setBackground(getBackground(element));
-		// cell.setForeground(getForeground(element));
-		// cell.setFont(getFont(element));
-		// int colSpan = getColumnSpan(element);
-		// GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
-		// gridItem.setColumnSpan(cell.getColumnIndex(), colSpan);
+
+		if (callback != null) {
+			callback.accept(text, image);
+		}
 	}
 
 	public void renderColumnHeader(GridColumn col, Column column) {
@@ -99,7 +112,7 @@ public class GridPartDefaultRender {
 	}
 
 	public void handleColumn(GridViewerColumn vcol) {
-		
+
 	}
 
 }

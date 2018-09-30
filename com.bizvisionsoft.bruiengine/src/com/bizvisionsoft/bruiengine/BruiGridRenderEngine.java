@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine;
 
+import java.util.function.BiConsumer;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -71,17 +73,19 @@ public class BruiGridRenderEngine extends BruiEngine {
 		return this;
 	}
 
-	public void renderCell(ViewerCell cell, Column column) {
-		Object element = cell.getElement();
+	public void renderCell(ViewerCell cell, Column column, Object inputElement, BiConsumer<String, Object> callBack) {
+		Object element = cell == null ? inputElement : cell.getElement();
 		Object value = getColumnValue(element, column);
 		Object image = getColumnImageUrl(element, column);
 
 		if (defaultRender != null) {
-			defaultRender.renderCell(cell, column, value, image);
+			defaultRender.renderCell(cell, column, value, image, callBack);
 		} else {
-			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value, image },
+			invokeMethodInjectParams(GridRenderUpdateCell.class,
+					new Object[] { cell, column, value, image, inputElement, callBack },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
-							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE },
+							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE,
+							GridRenderUpdateCell.PARAM_CALLBACK },
 					element.toString());
 		}
 	}

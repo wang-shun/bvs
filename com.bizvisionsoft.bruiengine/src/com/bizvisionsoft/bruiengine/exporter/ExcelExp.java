@@ -234,22 +234,30 @@ public class ExcelExp {
 	}
 
 	private int[] createData(HSSFWorkbook wb, HSSFSheet sheet, GridColumn[] columns, ITreeContentProvider cp,
-			Object[] elements, int[] wordCount, int[] warpCount) throws IOException {
+			Object[] elements, int[] wordCount, int[] warpCount)  {
 		for (Object element : elements) {
 			HSSFRow row;
-			HSSFCell cell;
 			row = sheet.createRow(warpCount.length);
 			warpCount = Arrays.copyOf(warpCount, warpCount.length + 1);
 			for (int i = 0; i < columns.length; i++) {
 				// 判断是否为操作列，不是操作列时才进行创建。
 				if (!Boolean.TRUE.equals(columns[i].getData("fixedRight"))) {
-					cell = row.createCell(i);
+					final HSSFCell cell = row.createCell(i);
+					final int[] wrc = warpCount;
+					final int columnIdx = i;
 					// CellLabelProvider获取值
 					GridPartColumnLabelProvider labelProvider = (GridPartColumnLabelProvider) viewer
 							.getLabelProvider(i);
-					String text = labelProvider.getColumnValue(element);
-					String parseHtml = parseHtml(wb, cell, text, isMarkupValue);
-					countWordAndWarp(warpCount.length - 1, parseHtml, wordCount, warpCount, i);
+					labelProvider.update(element, (txt,img)->{
+						try {
+							String parseHtml;
+							parseHtml = parseHtml(wb, cell, txt, isMarkupValue);
+							countWordAndWarp(wrc.length - 1, parseHtml, wordCount, wrc, columnIdx);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					});
 				}
 			}
 			if (cp.hasChildren(element)) {

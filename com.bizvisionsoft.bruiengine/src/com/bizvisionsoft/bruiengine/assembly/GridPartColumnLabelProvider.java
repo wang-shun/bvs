@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.util.function.BiConsumer;
+
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 
@@ -21,9 +23,12 @@ public class GridPartColumnLabelProvider extends CellLabelProvider {
 	 */
 	@Override
 	public void update(ViewerCell cell) {
-		renderEngine.renderCell(cell, column);
+		renderEngine.renderCell(cell, column,null,null);
 	}
 	
+	public void update(Object element,BiConsumer<String,Object> callback) {
+		renderEngine.renderCell(null, column,element,callback);
+	}
 	
 
 }

@@ -26,4 +26,8 @@ public @interface GridRenderUpdateCell {
 
 	String PARAM_IMAGE = "已取图片";
 
+	String PARAM_INPUT_ELEMENT = "元素";
+
+	String PARAM_CALLBACK = "回调";
+
 }
