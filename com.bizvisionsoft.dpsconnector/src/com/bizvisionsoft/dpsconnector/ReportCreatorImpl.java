@@ -1,9 +1,8 @@
 package com.bizvisionsoft.dpsconnector;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.Map;
 
 import com.bizvisionsoft.service.dps.ReportCreator;
 import com.bizvpm.dps.client.IProcessorManager;
@@ -14,7 +13,8 @@ public class ReportCreatorImpl implements ReportCreator {
 
 	public static final String REPORT = "com.bizvpm.dps.processor.report:birtreport";
 
-	public void createReport(HashMap<String, String> parameter, String outputType ,File templateFile, OutputStream os) throws Exception {
+	public void createReport(Map<String, String> parameter, String outputType, Object templateFile, OutputStream os)
+			throws Exception {
 		IProcessorManager manager = DPSConnector.getProcessManager();
 		Task task = new Task();
 		task.setName("Create report");
