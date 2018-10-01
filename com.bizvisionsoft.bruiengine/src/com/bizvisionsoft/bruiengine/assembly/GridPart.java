@@ -925,11 +925,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 
 		new ActionMenu(bruiService).setActions(Arrays.asList(current, all)).handleActionExecute("current", a -> {
 			// 导出所有时，传入viewer和dataSetEngine获取的值
-			exportExcel(fileName, dataSetEngine.query(filter, context, DataSet.LIST));
+			exportExcel(fileName, viewer.getInput());
 			return false;
 		}).handleActionExecute("all", a -> {
 			// 导出当前结果时，只用传入viewer的input
-			exportExcel(fileName, viewer.getInput());
+			exportExcel(fileName, dataSetEngine.query(null, null, filter, context));
 			return false;
 		}).open();
 

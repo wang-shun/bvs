@@ -90,6 +90,12 @@ public class GridPartDefaultRender {
 		}
 
 		if (callback != null) {
+			// HashMap<String, Object> map = new HashMap<String, Object>();
+			// map.put("image", image);
+			// 得到当前行和cell所在列
+			// GridItem gridItem = (GridItem) cell.getViewerRow().getItem();
+			// int index = cell.getColumnIndex();
+			// gridItem.getColumnSpan(index);
 			callback.accept(text, image);
 		}
 	}
