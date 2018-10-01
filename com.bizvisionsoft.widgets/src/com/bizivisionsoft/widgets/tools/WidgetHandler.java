@@ -1,7 +1,6 @@
 package com.bizivisionsoft.widgets.tools;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
@@ -32,7 +31,7 @@ public class WidgetHandler {
 
 	private static final String REMOTE_TYPE = "bizvision.widgethandler";
 
-	private static final String EVENT_AJAX = "ajax";
+	private static final String EVENT_AJAX = "download";
 
 	private final RemoteObject remoteObject;
 
@@ -222,32 +221,13 @@ public class WidgetHandler {
 		remoteObject.call(EVENT_SLIDING, new JsonObject().set("previous", previous).set("width", width));
 	}
 
-	public void ajax(String url, String type, Map<String, Object> param) {
+	public void download(String url, JsonObject param) {
 		Assert.isNotNull(url);
-		Assert.isNotNull(type);
-		JsonObject jsonParam = new JsonObject().set("type", type).set("url", url);
+		JsonObject jsonParam = new JsonObject().set("type", "POST").set("url", url);
 		if (param != null && !param.isEmpty()) {
-			JsonObject data = new JsonObject();
-			Iterator<String> iter = param.keySet().iterator();
-			while (iter.hasNext()) {
-				String key = iter.next();
-				Object value = param.get(key);
-				try {
-					WidgetToolkit.putJsonValue(data, key, value, true, null);
-				} catch (Exception e) {
-				}
-			}
-			jsonParam.set("data", data);
+			jsonParam.set("data", param);
 		}
 		remoteObject.call(EVENT_AJAX, jsonParam);
-	}
-
-	public void ajaxGet(String url, Map<String, Object> param) {
-		ajax(url, "GET", param);
-	}
-
-	public void ajaxPost(String url, Map<String, Object> param) {
-		ajax(url, "POST", param);
 	}
 
 }

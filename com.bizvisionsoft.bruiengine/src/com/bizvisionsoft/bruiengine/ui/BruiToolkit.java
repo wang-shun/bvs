@@ -5,9 +5,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
@@ -28,6 +28,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiToolkit {
@@ -338,7 +339,7 @@ public class BruiToolkit {
 		return true;
 	}
 
-	public void checkLocalFileDownloadSession(String path) {
+	private void checkLocalFileDownloadSession(String path) {
 		// 判断path的session是否与当前一致
 		File file = new File(path);
 		String sessionId = file.getParentFile().getName().split("_")[2].toUpperCase();
@@ -352,13 +353,16 @@ public class BruiToolkit {
 			throw new RuntimeException("当前用户进程不允许创建要求资源的下载链接");
 		}
 	}
-	
+
 	public void downloadLocalFile(String filePath) {
-//		RWT.getClient().getService(UrlLauncher.class).openURL(url);
+		// RWT.getClient().getService(UrlLauncher.class).openURL(url);
 		checkLocalFileDownloadSession(filePath);
-		HashMap<String, Object> param = new HashMap<String,Object>();
-		param.put("id", filePath);
-		WidgetHandler.getHandler().ajaxGet("/bvs/fs", param);
+		WidgetHandler.getHandler().download("/bvs/fs", new JsonObject().set("id", filePath));
+	}
+
+	public void downloadServerFile(String path, JsonObject param) {
+		String url = ServicesLoader.url+"/"+path+"/";
+		WidgetHandler.getHandler().download(url,  param);
 	}
 
 }

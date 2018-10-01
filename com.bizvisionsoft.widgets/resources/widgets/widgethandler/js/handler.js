@@ -14,7 +14,7 @@
 
 		methods : [ "addEventListener", "removeEventListener",
 				"addGestureAction", "removeGestureAction", "setTargetState",
-				"animate", "sliding", "ajax" ]
+				"animate", "sliding", "download" ]
 
 	});
 
@@ -219,20 +219,19 @@
 			delete this.slidingSetting;
 		},
 
-		ajax : function(param) {
-			param.success = function(response, status, request) {
-				var disp = request.getResponseHeader('Content-Disposition');
-				if (disp && disp.search('attachment') != -1) { // 判断是否为文件
-					var form = $('<form method="POST" action="' + param.url + '">');
-					$.each(param.data, function(k, v) {
-						form.append($('<input type="hidden" name="' + k
-								+ '" value="' + v + '">'));
-					});
-					$('body').append(form);
-					form.submit(); // 自动提交
-				}
-			}
-			$.ajax(param);
+		download: function (parameter) {
+		    var config = $.extend(true, { method: 'post' }, parameter);
+		    var $iframe = $('<iframe id="down-file-iframe" />');
+		    var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+		    $form.attr('action', config.url);
+		    for (var key in config.data) {
+		    	var $input = $('<input>',{type:'hidden',name:key,val:config.data[key] });
+		    	$form.append($input);
+		    }
+		    $iframe.append($form);
+		    $(document.body).append($iframe);
+		    $form[0].submit();
+		    $iframe.remove();
 		}
 
 	};

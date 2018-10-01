@@ -22,7 +22,9 @@ public class ReportCreatorImpl implements ReportCreator {
 		task.setValue("design", templateFile);
 		task.setValue("output", outputType);
 
-		task.setValue("datasource_parameter", parameter);
+//		task.setValue("datasource_parameter", parameter);
+		task.setValue("task_parameter", parameter);
+
 		Result result = manager.runTask(task, REPORT);
 		InputStream is = result.getInputStream("result");
 		byte[] data = new byte[1024];
