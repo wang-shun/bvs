@@ -90,7 +90,8 @@ public class BruiToolkit {
 				control.setData(RWT.CUSTOM_VARIANT, id);
 			}
 			return control;
-		} catch (NoSuchMethodException|SecurityException|InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 		}
 		return null;
 	}
@@ -200,9 +201,11 @@ public class BruiToolkit {
 			try {
 				return "/bvs/fs?id=" + URLEncoder.encode(path, "utf-8");
 			} catch (Exception e) {
+				throw new RuntimeException("资源路径解码错误：" + e.getMessage());
 			}
+		} else {
+			throw new RuntimeException("当前用户进程不允许创建要求资源的下载链接");
 		}
-		return null;
 	}
 
 	public Button createButton(Composite parent, Action a, String layoutStyle) {
@@ -332,7 +335,7 @@ public class BruiToolkit {
 
 	public void downloadLocalFile(String filePath) {
 		String url = createLocalFileDownloadURL(filePath);
-		RWT.getClient().getService(UrlLauncher.class).openURL(url);		
+		RWT.getClient().getService(UrlLauncher.class).openURL(url);
 	}
 
 }
