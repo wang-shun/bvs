@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.exporter;
+package com.bizvisionsoft.bruiengine.assembly.exporter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,7 +18,6 @@ import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.client.service.UrlLauncher;
 import org.htmlparser.Parser;
 import org.htmlparser.visitors.TextExtractingVisitor;
 import org.slf4j.Logger;
@@ -28,26 +27,26 @@ import com.bizvisionsoft.bruiengine.assembly.GridPartColumnLabelProvider;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.EngUtil;
 
-public class ExcelExp {
+public class GridPartExcelExporter {
 
 	private GridTreeViewer viewer;
 	private Object input;
 	private boolean isMarkupValue;
 
-	public Logger logger = LoggerFactory.getLogger(ExcelExp.class);
+	public Logger logger = LoggerFactory.getLogger(GridPartExcelExporter.class);
 	private String fileName;
 
-	public ExcelExp setViewer(GridTreeViewer viewer) {
+	public GridPartExcelExporter setViewer(GridTreeViewer viewer) {
 		this.viewer = viewer;
 		return this;
 	}
 
-	public ExcelExp setInput(Object input) {
+	public GridPartExcelExporter setInput(Object input) {
 		this.input = input;
 		return this;
 	}
 
-	public ExcelExp setFileName(String fileName) {
+	public GridPartExcelExporter setFileName(String fileName) {
 		this.fileName = fileName;
 		return this;
 	}
@@ -95,8 +94,7 @@ public class ExcelExp {
 		wb.close();
 
 		// 构建下载地址并打开
-		String url = UserSession.bruiToolkit().createLocalFileDownloadURL(filePath);
-		RWT.getClient().getService(UrlLauncher.class).openURL(url);
+		UserSession.bruiToolkit().downloadLocalFile(filePath);
 	}
 
 	/**

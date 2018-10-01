@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.UrlLauncher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.widgets.Button;
@@ -327,6 +328,11 @@ public class BruiToolkit {
 			}
 		}
 		return true;
+	}
+
+	public void downloadLocalFile(String filePath) {
+		String url = createLocalFileDownloadURL(filePath);
+		RWT.getClient().getService(UrlLauncher.class).openURL(url);		
 	}
 
 }

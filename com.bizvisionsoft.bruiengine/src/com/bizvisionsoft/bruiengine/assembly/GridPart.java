@@ -49,7 +49,7 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
-import com.bizvisionsoft.bruiengine.exporter.ExcelExp;
+import com.bizvisionsoft.bruiengine.assembly.exporter.GridPartExcelExporter;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -936,7 +936,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 
 	private void exportExcel(String fileName, Object input) {
 		try {
-			new ExcelExp().setViewer(viewer).setInput(input).setFileName(fileName).export();
+			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
