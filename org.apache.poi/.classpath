@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/htmllexer-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/htmlparser-2.1.jar" sourcepath="d:/Desktop/htmlparser-2.1-sources.jar.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/curvesapi-1.05.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlbeans-3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/poi-4.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/poi-excelant-4.0.0.jar"/>
