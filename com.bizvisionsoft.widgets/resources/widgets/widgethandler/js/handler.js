@@ -14,7 +14,7 @@
 
 		methods : [ "addEventListener", "removeEventListener",
 				"addGestureAction", "removeGestureAction", "setTargetState",
-				"animate", "sliding" ]
+				"animate", "sliding", "ajax" ]
 
 	});
 
@@ -67,8 +67,8 @@
 				this._className = className;
 			}
 		},
-		
-		setDisabledClassName :function(disabledClassName) {
+
+		setDisabledClassName : function(disabledClassName) {
 			$("[name='" + this.name + "']").removeClass(disabledClassName);
 		},
 
@@ -122,8 +122,16 @@
 			}
 			if (this.htmlContent) {
 				el.html(this.htmlContent);
-				el.css({"overflow-x":"visible","overflow-y":"visible","height":"auto"});
-				el.css({"overflow-x":"hidden","overflow-y":"hidden","height":el.height()+"px"});
+				el.css({
+					"overflow-x" : "visible",
+					"overflow-y" : "visible",
+					"height" : "auto"
+				});
+				el.css({
+					"overflow-x" : "hidden",
+					"overflow-y" : "hidden",
+					"height" : el.height() + "px"
+				});
 				rap.getRemoteObject(this).call("renderHtml", {
 					"height" : el.height()
 				});
@@ -209,6 +217,22 @@
 				});
 			});
 			delete this.slidingSetting;
+		},
+
+		ajax : function(param) {
+			param.success = function(response, status, request) {
+				var disp = request.getResponseHeader('Content-Disposition');
+				if (disp && disp.search('attachment') != -1) { // 判断是否为文件
+					var form = $('<form method="POST" action="' + param.url + '">');
+					$.each(param.data, function(k, v) {
+						form.append($('<input type="hidden" name="' + k
+								+ '" value="' + v + '">'));
+					});
+					$('body').append(form);
+					form.submit(); // 自动提交
+				}
+			}
+			$.ajax(param);
 		}
 
 	};

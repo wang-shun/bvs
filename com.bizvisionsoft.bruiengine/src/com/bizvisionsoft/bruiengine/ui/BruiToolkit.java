@@ -5,10 +5,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.client.service.UrlLauncher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.widgets.Button;
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
+import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -337,9 +338,27 @@ public class BruiToolkit {
 		return true;
 	}
 
+	public void checkLocalFileDownloadSession(String path) {
+		// 判断path的session是否与当前一致
+		File file = new File(path);
+		String sessionId = file.getParentFile().getName().split("_")[2].toUpperCase();
+		if (RWT.getRequest().getSession().getId().toUpperCase().equals(sessionId)) {
+			try {
+				return;
+			} catch (Exception e) {
+				throw new RuntimeException("资源路径解码错误：" + e.getMessage());
+			}
+		} else {
+			throw new RuntimeException("当前用户进程不允许创建要求资源的下载链接");
+		}
+	}
+	
 	public void downloadLocalFile(String filePath) {
-		String url = createLocalFileDownloadURL(filePath);
-		RWT.getClient().getService(UrlLauncher.class).openURL(url);
+//		RWT.getClient().getService(UrlLauncher.class).openURL(url);
+		checkLocalFileDownloadSession(filePath);
+		HashMap<String, Object> param = new HashMap<String,Object>();
+		param.put("id", filePath);
+		WidgetHandler.getHandler().ajaxGet("/bvs/fs", param);
 	}
 
 }

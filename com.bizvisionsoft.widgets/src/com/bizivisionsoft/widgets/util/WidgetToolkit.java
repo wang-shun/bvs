@@ -215,7 +215,7 @@ public class WidgetToolkit {
 			if (!isEmptyOrNull(targetField))
 				try {
 					e.setAccessible(true);
-					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.get(element));
+					putJsonValue(result, targetField, e.get(element), ignoreNull, valueConvertor);
 				} catch (IllegalArgumentException | IllegalAccessException e1) {
 				}
 		});
@@ -228,7 +228,7 @@ public class WidgetToolkit {
 			if (!isEmptyOrNull(targetField))
 				try {
 					e.setAccessible(true);
-					putJsonValue(element, ignoreNull, valueConvertor, result, targetField, e.invoke(element));
+					putJsonValue(result, targetField, e.invoke(element), ignoreNull, valueConvertor);
 				} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
 				}
 		});
@@ -284,8 +284,8 @@ public class WidgetToolkit {
 		return null;
 	}
 
-	private static void putJsonValue(Object element, boolean ignoreNull,
-			BiFunction<String, Object, Object> valueConvertor, JsonObject result, String targetField, Object value) {
+	public static void putJsonValue(JsonObject result, String targetField, Object value, boolean ignoreNull,
+			BiFunction<String, Object, Object> valueConvertor) {
 		if (valueConvertor != null)
 			value = valueConvertor.apply(targetField, value);
 		if (value == null && !ignoreNull) {
@@ -343,7 +343,7 @@ public class WidgetToolkit {
 	public static boolean isEmptyOrNull(List<?> s) {
 		return s == null || s.isEmpty();
 	}
-	
+
 	public static String escapeHtml(String text) {
 		return StringEscapeUtils.escapeHtml4(text);
 	}
