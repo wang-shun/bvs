@@ -216,13 +216,14 @@ public class BruiToolkit {
 		String text = "";
 		if (imageUrl != null && !imageUrl.isEmpty()) {
 			String resourceURL = getResourceURL(imageUrl);
+			int size;
 			if ("block".equals(layoutStyle)) {// 块状布局
-				text += "<img alter='" + a.getName() + "' src='" + resourceURL
-						+ "' style='cursor:pointer;' width='32px' height='32px'></img>";
+				size = 32;
 			} else {// 行状布局
-				text += "<img alter='" + a.getName() + "' src='" + resourceURL
-						+ "' style='cursor:pointer;' width='20px' height='20px'></img>";
+				size = 20;
 			}
+			text += "<img src='" + resourceURL + "' style='cursor:pointer;' width='" + size + "px' height='" + size
+					+ "px'/>";
 		}
 
 		String buttonText = EngUtil.isEmptyOrNull(a.getText()) ? "" : a.getText();
@@ -248,7 +249,7 @@ public class BruiToolkit {
 
 		btn.setText(text);
 		btn.setToolTipText(a.getTooltips());
-		
+
 		String style = a.getStyle();
 		if (style != null && !style.isEmpty()) {
 			btn.setData(RWT.CUSTOM_VARIANT, style);
