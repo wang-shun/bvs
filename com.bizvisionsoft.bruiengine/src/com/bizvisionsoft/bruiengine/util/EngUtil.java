@@ -244,6 +244,7 @@ public class EngUtil {
 				}
 			}
 		}
+		//TODO 根据文件后缀得到content-type
 		return contentType == null ? (defaultType == null ? "application/octet-stream" : defaultType) : contentType;
 	}
 
