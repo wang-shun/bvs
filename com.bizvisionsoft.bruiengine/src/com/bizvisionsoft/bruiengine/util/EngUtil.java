@@ -30,6 +30,8 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
 import org.eclipse.rap.rwt.RWT;
+import org.htmlparser.Parser;
+import org.htmlparser.visitors.TextExtractingVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,7 @@ public class EngUtil {
 	public static Logger logger = LoggerFactory.getLogger(EngUtil.class);
 
 	private static final String MONEY_NUMBER_FORMAT = "#,##0.0";
-	
+
 	private static final String TEMP_DIRECTORY_PREFIX = "BVS_";
 
 	private static char[] array = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
@@ -508,7 +510,8 @@ public class EngUtil {
 	}
 
 	public static File createTempDirectory() throws IOException {
-		File result = File.createTempFile(TEMP_DIRECTORY_PREFIX, "_" + RWT.getRequest().getSession().getId().toUpperCase());
+		File result = File.createTempFile(TEMP_DIRECTORY_PREFIX,
+				"_" + RWT.getRequest().getSession().getId().toUpperCase());
 		result.delete();
 		if (result.mkdir()) {
 			result.deleteOnExit();
@@ -516,5 +519,22 @@ public class EngUtil {
 			throw new IOException("无法创建临时文件夹 " + result.getAbsolutePath());
 		}
 		return result;
+	}
+
+	/**
+	 * HTML解析,使用HtmlParser解析HTML
+	 * 
+	 * @param html
+	 *            需解析的文本
+	 * @return
+	 * @throws IOException
+	 */
+	public static String parserHtml2Text(String html) throws Exception {
+		// 构建HtmlParser解析器，传入的String不是以HTML标记开头时，Parser认为是从文件夹中的文件中获取。
+		Parser parser = new Parser("<div>" + html + "</div>");
+		// 构建Text遍历器,TextExtractingVisitor将遍历html中所有的标记，并获取html标记中
+		TextExtractingVisitor textVisitor = new TextExtractingVisitor();
+		parser.visitAllNodesWith(textVisitor);
+		return textVisitor.getExtractedText();
 	}
 }

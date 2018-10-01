@@ -910,7 +910,16 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 	@Override
 	public void export() {
 		// 获取导出文件名。使用StickerTitle作为文件名。
-		String fileName = config.getStickerTitle();
+		String fileName = (config.getStickerTitle() == null || config.getStickerTitle().trim().isEmpty())
+				? config.getStickerTitle()
+				: config.getName();
+
+		// 不分页时，直接导出表格数据
+		if (!config.isGridPageControl()) {
+			exportExcel(fileName, viewer.getInput());
+			return;
+		}
+
 		// 构建弹出menu，选择是全部导出还是导出当前结果
 		Action current = new Action();
 		current.setName("current");
@@ -938,6 +947,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 		try {
 			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
+			logger.error("导出Grid： " + fileName + " 的Excel数据时出错。" + e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
