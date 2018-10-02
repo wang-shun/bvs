@@ -218,20 +218,17 @@
 			});
 			delete this.slidingSetting;
 		},
-
+		
 		download: function (parameter) {
 		    var config = $.extend(true, { method: 'post' }, parameter);
-		    var $iframe = $('<iframe id="down-file-iframe" />');
-		    var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+		    var $form = $('<form target="_blank" style="display:none;" method="' + config.method + '" />');
 		    $form.attr('action', config.url);
 		    for (var key in config.data) {
-		    	var $input = $('<input>',{type:'hidden',name:key,val:config.data[key] });
-		    	$form.append($input);
+		    	$form.append($('<input>',{type:'hidden',name:key,val:config.data[key] }));
 		    }
-		    $iframe.append($form);
-		    $(document.body).append($iframe);
+		    $(document.body).append($form);
 		    $form[0].submit();
-		    $iframe.remove();
+		    $form.remove();
 		}
 
 	};
