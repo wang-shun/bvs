@@ -23,11 +23,7 @@ public class BannerField extends EditorField {
 		control = new Composite(parent, SWT.NONE);
 		handler = WidgetHandler.getHandler(control);
 
-		String sh = fieldConfig.getText();
-		if (!Checker.isNotAssigned(sh)) {
-			setText(sh);
-		}
-
+		Checker.isAssigned(fieldConfig.getText(),s->setText(s));
 		return control;
 	}
 

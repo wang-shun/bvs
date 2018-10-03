@@ -50,11 +50,11 @@ public class BruiDataSetEngine extends BruiEngine {
 	}
 
 	private static BruiDataSetEngine load(Assembly grid) {
-		
+
 		String bundleId = grid.getGridDataSetBundleId();
 		String className = grid.getGridDataSetClassName();
 
-		if (bundleId != null && !bundleId.isEmpty() && className != null && !className.isEmpty()) {
+		if (Checker.isAllAssigned(bundleId, className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiDataSetEngine(bundle.loadClass(className)).setAssembly(grid);
@@ -64,12 +64,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 
 		String serivceName;
-		if(!Checker.isNotAssigned(grid.getModelClassName())){
-			serivceName ="com.bizvisionsoft.service.UniversalDataService";
-		}else {
+		if (Checker.isAssigned(grid.getModelClassName())) {
+			serivceName = "com.bizvisionsoft.service.UniversalDataService";
+		} else {
 			serivceName = grid.getGridDataSetService();
 		}
-		if (!Checker.isNotAssigned(serivceName)) {
+		if (Checker.isAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
@@ -189,7 +189,7 @@ public class BruiDataSetEngine extends BruiEngine {
 				names.add(MethodParam.FILTER);
 				values.add(filter);
 			}
-			
+
 			injectCommonParameters(context, names, values, modelClassName);
 
 			return invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
@@ -294,7 +294,8 @@ public class BruiDataSetEngine extends BruiEngine {
 			injectCommonParameters(context, names, values, element.getClass().getName());
 
 			return invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
-					MethodParam.class, t -> t.value());		}
+					MethodParam.class, t -> t.value());
+		}
 		return null;
 	}
 
@@ -329,14 +330,14 @@ public class BruiDataSetEngine extends BruiEngine {
 		if (method != null) {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
-			
+
 			injectCommonParameters(context, names, values, modelClassName);
 
 			invokeMethodInjectParams(method, values.toArray(), names.toArray(new String[0]), MethodParam.class,
 					t -> t.value());
 
-		}else {
-			throw new RuntimeException(cName + " 数据源没有注解Export值为 " + fName + "的方法。");		
+		} else {
+			throw new RuntimeException(cName + " 数据源没有注解Export值为 " + fName + "的方法。");
 		}
 	}
 

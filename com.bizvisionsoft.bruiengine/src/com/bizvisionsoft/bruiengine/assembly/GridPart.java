@@ -378,7 +378,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (!Checker.isNotAssigned(bundleId) && !Checker.isNotAssigned(classId)) {
+		if (Checker.isAllAssigned(bundleId,classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();

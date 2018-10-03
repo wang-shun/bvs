@@ -29,7 +29,7 @@ public class DeleteSelected {
 		String label = AUtil.readTypeAndLabel(elem);
 		String message = Optional.ofNullable(label).map(m -> "请确认将要删除 " + m).orElse("请确认将要删除选择的记录。");
 		if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
-			Checker.ifInstance(context.getContent(), IStructuredDataPart.class, c->c.doDelete(elem));
+			Checker.instanceThen(context.getContent(), IStructuredDataPart.class, c->c.doDelete(elem));
 		}
 	}
 

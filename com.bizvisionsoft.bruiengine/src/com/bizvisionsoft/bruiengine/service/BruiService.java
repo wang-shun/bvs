@@ -221,7 +221,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void updateSidebarActionBudget(String actionName) {
-		Checker.ifInstance(part, View.class, p -> p.updateSidebarActionBudget(actionName));
+		Checker.instanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
 	
 }

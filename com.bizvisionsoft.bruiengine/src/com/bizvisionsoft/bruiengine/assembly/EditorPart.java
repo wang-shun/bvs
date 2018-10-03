@@ -250,7 +250,7 @@ public class EditorPart {
 		}
 		String _s = config.getNullValueAllowedFields();
 		String[] containFields = null;
-		if (!Checker.isNotAssigned(_s)) {
+		if (Checker.isAssigned(_s)) {
 			containFields = _s.split("#");
 		}
 		result = BsonTools.getBson(input, true, containFields, null);

@@ -137,7 +137,7 @@ public class ActionPanelPart {
 		text += "<div style='width:" + size.x + "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
 				+ "</div>";
 
-		if (!Checker.isNotAssigned(desc)) {
+		if (Checker.isAssigned(desc)) {
 			text += "<div style='width:" + size.x + "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc
 					+ "</div>";
 		}

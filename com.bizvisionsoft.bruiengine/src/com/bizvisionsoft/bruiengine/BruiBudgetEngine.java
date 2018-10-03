@@ -54,13 +54,13 @@ public class BruiBudgetEngine extends BruiEngine {
 			}
 		}
 
-		if (!Checker.isNotAssigned(serivceName)) {
+		if (Checker.isAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiBudgetEngine((Class<?>) service[0], service[1]).setContainerName(cName);
 			}
 		}
-
+		
 		return null;
 	}
 
@@ -165,9 +165,9 @@ public class BruiBudgetEngine extends BruiEngine {
 		if (engine != null) {
 			engine.newInstance().init(new IServiceWithId[] { context, service });
 			Object value = engine.query(context);
-			if(value instanceof Number) {
+			if (value instanceof Number) {
 				return ((Number) value).intValue();
-			}else if(value instanceof Boolean) {
+			} else if (value instanceof Boolean) {
 				return Boolean.TRUE.equals(value);
 			}
 		}

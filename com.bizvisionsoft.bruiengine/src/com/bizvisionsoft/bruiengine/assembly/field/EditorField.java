@@ -24,7 +24,7 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.service.tools.Checker;
 
 public abstract class EditorField {
-	
+
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	protected FormField fieldConfig;
@@ -123,7 +123,7 @@ public abstract class EditorField {
 			fieldText = fieldText + "*";
 		}
 		String text;
-		if (!Checker.isNotAssigned(tooltips)) {
+		if (Checker.isAssigned(tooltips)) {
 			text = Layer.onClick(fieldText, tooltips);
 			titleLabel.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		} else {
@@ -181,7 +181,7 @@ public abstract class EditorField {
 		Object value = getValue();
 		if (value != null) {
 			String vf = fieldConfig.getValueFieldName();
-			if (!Checker.isNotAssigned(vf)) {
+			if (Checker.isAssigned(vf)) {
 				Field field = value.getClass().getDeclaredField(vf);
 				field.setAccessible(true);
 				value = field.get(value);
