@@ -7,13 +7,11 @@ import java.util.Date;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.nebula.widgets.grid.GridItem;
-import org.eclipse.rap.rwt.RWT;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.Formatter;
 
 public class MessageLabelProvider extends ColumnLabelProvider {
 
@@ -61,18 +59,18 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 					+ " style='float:left;margin-top:4px;margin-left:4px;border-radius:28px;width:48px;height:48px;'/>");
 		} else {
 			try {
-				String alpha = Util.getAlphaString(senderName);
+				String alpha = Formatter.getAlphaString(senderName);
 				headPicURL = "/bvs/svg?text=" + URLEncoder.encode(alpha, "utf-8") + "&color=ffffff";
 				sb.append(
 						"<img src=" + headPicURL + " style='float:left;margin-top:4px;margin-left:4px;background-color:"
-								+ EngUtil.getHTMLDarkColor(alpha) + ";border-radius:28px;width:48px;height:48px;'/>");
+								+ BruiColors.getHTMLDarkColor(alpha) + ";border-radius:28px;width:48px;height:48px;'/>");
 			} catch (UnsupportedEncodingException e) {
 			}
 		}
 
 		sb.append("<div style='float:right;'><span>" + senderName + "</span>&nbsp;&nbsp;&nbsp;");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("<span>" + Util.getFormatText(sendDate, EngUtil.DATE_FORMAT_DATE, RWT.getLocale()) + "</span></div>");
+		sb.append("<span>" + Formatter.getString(sendDate) + "</span></div>");
 
 		// 内容区
 		sb.append("<div style='margin-left:64px'>");

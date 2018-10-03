@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Formatter;
 
 public class BannerField extends EditorField {
 
@@ -24,7 +24,7 @@ public class BannerField extends EditorField {
 		handler = WidgetHandler.getHandler(control);
 
 		String sh = fieldConfig.getText();
-		if (!EngUtil.isEmptyOrNull(sh)) {
+		if (!Checker.isNotAssigned(sh)) {
 			setText(sh);
 		}
 
@@ -62,7 +62,7 @@ public class BannerField extends EditorField {
 		if (value != null) {
 			String format = fieldConfig.getFormat();
 			if (format != null && !format.isEmpty()) {
-				text = Util.getFormatText(value, format, locale);
+				text = Formatter.getString(value, format, locale);
 			} else {
 				text = value.toString();
 			}

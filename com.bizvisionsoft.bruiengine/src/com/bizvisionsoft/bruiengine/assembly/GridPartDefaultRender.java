@@ -12,8 +12,8 @@ import org.eclipse.swt.graphics.Image;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
-import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.service.tools.Formatter;
 
 public class GridPartDefaultRender {
 
@@ -46,7 +46,7 @@ public class GridPartDefaultRender {
 			text = "";
 		} else {
 			String format = column.getFormat();
-			text = Util.getFormatText(value, format, locale);
+			text = Formatter.getString(value, format, locale);
 			if ((value instanceof Number)) {
 				double num = ((Number) value).doubleValue();
 				String style = "";

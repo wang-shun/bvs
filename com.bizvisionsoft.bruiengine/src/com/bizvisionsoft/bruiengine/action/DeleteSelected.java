@@ -11,7 +11,7 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.assembly.IStructuredDataPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Checker;
 
 public class DeleteSelected {
 
@@ -29,7 +29,7 @@ public class DeleteSelected {
 		String label = AUtil.readTypeAndLabel(elem);
 		String message = Optional.ofNullable(label).map(m -> "请确认将要删除 " + m).orElse("请确认将要删除选择的记录。");
 		if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", message)) {
-			EngUtil.ifInstanceThen(context.getContent(), IStructuredDataPart.class, c->c.doDelete(elem));
+			Checker.ifInstance(context.getContent(), IStructuredDataPart.class, c->c.doDelete(elem));
 		}
 	}
 

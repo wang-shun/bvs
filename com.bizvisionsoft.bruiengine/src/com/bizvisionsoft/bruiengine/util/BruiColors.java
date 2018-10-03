@@ -131,6 +131,11 @@ public class BruiColors {
 	public static String getHtmlColor(RGB rgb) {
 		return "#" + hex(rgb.red) + hex(rgb.green) + hex(rgb.blue);
 	}
+	
+
+	public static String getHTMLDarkColor(Object seed) {
+		return getHtmlColor(BruiColors.deepColor[seed.hashCode() % BruiColors.deepColor.length].getRgb());
+	}
 
 	private static String hex(int color) {
 		String i = Integer.toHexString(color);

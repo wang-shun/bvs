@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.ui;
+package com.bizvisionsoft.bruiengine.util;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -27,9 +27,10 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Checker;
 
 public class BruiToolkit {
 
@@ -228,7 +229,7 @@ public class BruiToolkit {
 					+ "px'/>";
 		}
 
-		String buttonText = EngUtil.isEmptyOrNull(a.getText()) ? "" : a.getText();
+		String buttonText = Checker.isNotAssigned(a.getText()) ? "" : a.getText();
 		if (a.isForceText()) {
 			if (imageUrl != null) {
 				if ("block".equals(layoutStyle)) {// 块状布局
@@ -262,7 +263,7 @@ public class BruiToolkit {
 	public void runAction(Action action, Event event, IBruiService service, IBruiContext context) {
 		Assembly assembly = context.getAssembly();
 		List<Action> ca = action.getChildren();
-		if (EngUtil.isEmptyOrNull(ca)) {
+		if (Checker.isNotAssigned(ca)) {
 			BruiActionEngine.execute(action, event, context, service);
 		} else {
 			// 显示菜单

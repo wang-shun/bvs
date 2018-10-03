@@ -16,7 +16,7 @@ import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
-import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.service.model.User;
 
 public class UserSession {

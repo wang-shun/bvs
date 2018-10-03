@@ -10,8 +10,9 @@ import java.util.List;
 
 import org.eclipse.rap.fileupload.FileDetails;
 import org.eclipse.rap.fileupload.FileUploadReceiver;
+import org.eclipse.rap.rwt.RWT;
 
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.FileTools;
 
 public class SessionDiskUploadReceiver extends FileUploadReceiver {
 
@@ -29,7 +30,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 	public void receive(InputStream dataStream, FileDetails details) throws IOException {
 		File targetFile = createTargetFile(details);
 		FileOutputStream outputStream = new FileOutputStream(targetFile);
-		Util.copyStream(dataStream, outputStream, true);
+		FileTools.copyStream(dataStream, outputStream, true);
 		targetFiles.add(targetFile);
 		targetFileDetails.add(details);
 		File contentTypeFile = createContentTypeFile(targetFile, details);
@@ -49,13 +50,13 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 		if (details != null && details.getFileName() != null) {
 			fileName = details.getFileName();
 		}
-		File result = new File(EngUtil.createTempDirectory(), fileName);
+		File result = new File(FileTools.createTempDirectory(RWT.getRequest().getSession().getId().toUpperCase()), fileName);
 		result.createNewFile();
 		return result;
 	}
 
 	protected File createContentTypeFile(File uploadedFile, FileDetails details) throws IOException {
-		String fileName = EngUtil.DEFAULT_CONTENT_TYPE_FILE_NAME;
+		String fileName = FileTools.DEFAULT_CONTENT_TYPE_FILE_NAME;
 		File result = null;
 		if (details != null && details.getContentType() != null) {
 			result = new File(uploadedFile.getParentFile(), fileName);

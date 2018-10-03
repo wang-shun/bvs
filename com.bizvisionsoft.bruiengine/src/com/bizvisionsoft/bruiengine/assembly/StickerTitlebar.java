@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
 public class StickerTitlebar extends Composite {
 

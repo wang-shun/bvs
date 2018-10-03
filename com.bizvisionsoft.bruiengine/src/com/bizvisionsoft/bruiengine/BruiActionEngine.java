@@ -23,7 +23,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.TraceUserUtil;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Checker;
 
 public class BruiActionEngine extends BruiEngine {
 
@@ -84,7 +84,7 @@ public class BruiActionEngine extends BruiEngine {
 	}
 
 	private static BruiEngine load(String bundleId, String className) {
-		if (EngUtil.isEmptyOrNull(bundleId) || EngUtil.isEmptyOrNull(className))
+		if (Checker.isNotAssigned(bundleId) || Checker.isNotAssigned(className))
 			throw new RuntimeException("²å¼þId»òClassNameÎª¿Õ");
 
 		Bundle bundle = Platform.getBundle(bundleId);

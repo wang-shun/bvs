@@ -19,8 +19,9 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
+import com.bizvisionsoft.service.tools.Checker;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -63,12 +64,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 
 		String serivceName;
-		if(!EngUtil.isEmptyOrNull(grid.getModelClassName())){
+		if(!Checker.isNotAssigned(grid.getModelClassName())){
 			serivceName ="com.bizvisionsoft.service.UniversalDataService";
 		}else {
 			serivceName = grid.getGridDataSetService();
 		}
-		if (!EngUtil.isEmptyOrNull(serivceName)) {
+		if (!Checker.isNotAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);
@@ -221,7 +222,7 @@ public class BruiDataSetEngine extends BruiEngine {
 					names.addAll(Arrays
 							.asList(new String[] { MethodParam._ID, MethodParam.OBJECT, MethodParam.FILTER_N_UPDATE }));
 					values.addAll(Arrays
-							.asList(new Object[] { EngUtil.getBson(element).get("_id"), element, filterAndUpdate }));
+							.asList(new Object[] { BsonTools.getBson(element).get("_id"), element, filterAndUpdate }));
 					injectCommonParameters(context, names, values, modelClassName);
 					invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),
 							MethodParam.class, t -> t.value());
@@ -243,12 +244,12 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			if (parent == null) {
 				names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
-				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
+				values.addAll(Arrays.asList(new Object[] { BsonTools.getBson(element).get("_id"), element }));
 			} else {
 				names.addAll(Arrays.asList(new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT,
 						MethodParam._ID, MethodParam.OBJECT }));
-				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(parent).get("_id"), parent,
-						EngUtil.getBson(element).get("_id"), element }));
+				values.addAll(Arrays.asList(new Object[] { BsonTools.getBson(parent).get("_id"), parent,
+						BsonTools.getBson(element).get("_id"), element }));
 			}
 
 			injectCommonParameters(context, names, values, modelClassName);
@@ -268,12 +269,12 @@ public class BruiDataSetEngine extends BruiEngine {
 
 			if (parent == null) {
 				names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
-				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
+				values.addAll(Arrays.asList(new Object[] { BsonTools.getBson(element).get("_id"), element }));
 			} else {
 				names.addAll(Arrays.asList(new String[] { MethodParam.PARENT_ID, MethodParam.PARENT_OBJECT,
 						MethodParam._ID, MethodParam.OBJECT }));
-				values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(parent).get("_id"), parent,
-						EngUtil.getBson(element).get("_id"), element }));
+				values.addAll(Arrays.asList(new Object[] { BsonTools.getBson(parent).get("_id"), parent,
+						BsonTools.getBson(element).get("_id"), element }));
 			}
 
 			injectCommonParameters(context, names, values, modelClassName);
@@ -289,7 +290,7 @@ public class BruiDataSetEngine extends BruiEngine {
 			List<String> names = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
 			names.addAll(Arrays.asList(new String[] { MethodParam._ID, MethodParam.OBJECT }));
-			values.addAll(Arrays.asList(new Object[] { EngUtil.getBson(element).get("_id"), element }));
+			values.addAll(Arrays.asList(new Object[] { BsonTools.getBson(element).get("_id"), element }));
 			injectCommonParameters(context, names, values, element.getClass().getName());
 
 			return invokeMethodInjectParams(method, values.toArray(new Object[0]), names.toArray(new String[0]),

@@ -15,7 +15,7 @@ import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ListMenu;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Checker;
 
 public class ExpandNCollapseGridTree {
 
@@ -25,7 +25,7 @@ public class ExpandNCollapseGridTree {
 	@Execute
 	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
 			@MethodParam(Execute.PARAM_EVENT) Event event) {
-		EngUtil.ifInstanceThen(context.getContent(), GridPart.class, p -> showMenu(p, event));
+		Checker.ifInstance(context.getContent(), GridPart.class, p -> showMenu(p, event));
 	}
 
 	private void showMenu(GridPart part, Event event) {

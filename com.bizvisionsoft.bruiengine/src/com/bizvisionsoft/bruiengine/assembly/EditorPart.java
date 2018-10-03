@@ -69,9 +69,10 @@ import com.bizvisionsoft.bruiengine.service.IBruiEditorContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.ui.BruiToolkit;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Checker;
 import com.mongodb.BasicDBObject;
 
 public class EditorPart {
@@ -249,10 +250,10 @@ public class EditorPart {
 		}
 		String _s = config.getNullValueAllowedFields();
 		String[] containFields = null;
-		if (!EngUtil.isEmptyOrNull(_s)) {
+		if (!Checker.isNotAssigned(_s)) {
 			containFields = _s.split("#");
 		}
-		result = EngUtil.getBson(input, true, containFields, null);
+		result = BsonTools.getBson(input, true, containFields, null);
 		return result;
 	}
 
@@ -424,9 +425,9 @@ public class EditorPart {
 						Object contextInput = context.getInput();
 						Object rootInput = context.getRootInput();
 						User user = Brui.sessionManager.getUser();
-						Object inputid = Optional.ofNullable(contextInput).map(m -> EngUtil.getBson(m).get("_id"))
+						Object inputid = Optional.ofNullable(contextInput).map(m -> BsonTools.getBson(m).get("_id"))
 								.orElse(null);
-						Object rootInputId = Optional.ofNullable(rootInput).map(m -> EngUtil.getBson(m).get("_id"))
+						Object rootInputId = Optional.ofNullable(rootInput).map(m -> BsonTools.getBson(m).get("_id"))
 								.orElse(null);
 						Object[] parameterValues = { o, contextInput, inputid, rootInput, rootInputId, user,
 								user.getUserId() };

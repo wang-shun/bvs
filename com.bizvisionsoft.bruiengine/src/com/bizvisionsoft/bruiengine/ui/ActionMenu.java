@@ -25,7 +25,8 @@ import com.bizvisionsoft.bruiengine.BruiActionEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.service.tools.Formatter;
 
 public class ActionMenu extends Part {
 
@@ -129,7 +130,7 @@ public class ActionMenu extends Part {
 			}
 		}
 
-		pagedAction = EngUtil.splitArray(_actions, units);
+		pagedAction = Formatter.getSplitedList(_actions, units);
 	}
 
 	@Override

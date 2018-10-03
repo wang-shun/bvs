@@ -32,8 +32,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.Formatter;
 import com.mongodb.BasicDBObject;
 
 public class MessengerInboxPart implements IQueryEnable {
@@ -205,7 +204,7 @@ public class MessengerInboxPart implements IQueryEnable {
 		String subject = (String) AUtil.readValue(element, cName, "标题", null);
 		sb.append("<div>发送者：" + senderName + "</div>");
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
-		sb.append("<div>日期：" + Util.getFormatText(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
+		sb.append("<div>日期：" + Formatter.getString(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
 		sb.append("</div>");
 		
 		sb.append("<hr>");
@@ -249,7 +248,7 @@ public class MessengerInboxPart implements IQueryEnable {
 		String currentDate = null;
 		for (int i = 0; i < input.size(); i++) {
 			Date date = (Date) AUtil.readValue(input.get(i), cName, fName, defaultDate);
-			String _date = Util.getFormatText(date, EngUtil.DATE_FORMAT_DATE, RWT.getLocale());
+			String _date = Formatter.getString(date, null, RWT.getLocale());
 			if (!_date.equals(currentDate)) {
 				result.add(_date);
 				currentDate = _date;

@@ -18,7 +18,7 @@ import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiEngine {
@@ -200,7 +200,7 @@ public class BruiEngine {
 				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -216,7 +216,7 @@ public class BruiEngine {
 				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -232,7 +232,7 @@ public class BruiEngine {
 				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);

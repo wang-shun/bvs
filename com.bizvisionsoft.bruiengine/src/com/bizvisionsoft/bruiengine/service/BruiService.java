@@ -19,11 +19,11 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Checker;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiService implements IBruiService {
@@ -221,7 +221,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void updateSidebarActionBudget(String actionName) {
-		EngUtil.ifInstanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
+		Checker.ifInstance(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
 	
 }

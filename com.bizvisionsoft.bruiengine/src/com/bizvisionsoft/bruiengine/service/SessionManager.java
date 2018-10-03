@@ -14,8 +14,8 @@ import org.eclipse.rap.rwt.service.SettingStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bizvisionsoft.bruiengine.util.Coder;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Coder;
 
 public class SessionManager {
 

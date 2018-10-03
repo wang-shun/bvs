@@ -50,10 +50,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import com.bizvisionsoft.bruiengine.Brui;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
+import com.bizvisionsoft.service.tools.FileTools;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class MultiFileField extends EditorField {
@@ -312,7 +312,7 @@ public class MultiFileField extends EditorField {
 			if (lfs != null) {
 				for (int i = 0; i < lfs.size(); i++) {
 					File file = lfs.get(i);
-					String contentType = EngUtil.getContentType(file, null);
+					String contentType = FileTools.getContentType(file, null);
 					String uploadBy = Brui.sessionManager.getUser().getUserId();
 					RemoteFile rf = Services.get(FileService.class).upload(new FileInputStream(file), file.getName(),
 							fieldConfig.getFileNamespace(), contentType, uploadBy);

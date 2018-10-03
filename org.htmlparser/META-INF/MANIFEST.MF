@@ -9,15 +9,3 @@ Bundle-ClassPath: libs/htmllexer-2.1.jar,
  .
 Bundle-Activator: org.htmlparser.Htmlparser
 Import-Package: org.osgi.framework;version="1.8.0"
-Export-Package: org.htmlparser,
- org.htmlparser.beans,
- org.htmlparser.filters,
- org.htmlparser.http,
- org.htmlparser.lexer,
- org.htmlparser.nodes,
- org.htmlparser.sax,
- org.htmlparser.scanners,
- org.htmlparser.tags,
- org.htmlparser.util,
- org.htmlparser.util.sort,
- org.htmlparser.visitors

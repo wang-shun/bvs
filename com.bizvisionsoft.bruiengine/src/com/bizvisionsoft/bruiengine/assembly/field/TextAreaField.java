@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.Formatter;
 
 public class TextAreaField extends EditorField {
 
@@ -73,7 +73,7 @@ public class TextAreaField extends EditorField {
 		if (value != null) {
 			String format = fieldConfig.getFormat();
 			if (format != null && !format.isEmpty()) {
-				text = Util.getFormatText(value, format, locale);
+				text = Formatter.getString(value, format, locale);
 			} else {
 				text = value.toString();
 			}

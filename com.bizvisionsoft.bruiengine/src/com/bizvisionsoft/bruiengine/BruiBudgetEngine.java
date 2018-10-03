@@ -15,8 +15,9 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Checker;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiBudgetEngine extends BruiEngine {
@@ -53,7 +54,7 @@ public class BruiBudgetEngine extends BruiEngine {
 			}
 		}
 
-		if (!EngUtil.isEmptyOrNull(serivceName)) {
+		if (!Checker.isNotAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiBudgetEngine((Class<?>) service[0], service[1]).setContainerName(cName);
@@ -75,7 +76,7 @@ public class BruiBudgetEngine extends BruiEngine {
 				names.add(MethodParam.CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -91,7 +92,7 @@ public class BruiBudgetEngine extends BruiEngine {
 				names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);
@@ -107,7 +108,7 @@ public class BruiBudgetEngine extends BruiEngine {
 				names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT);
 				values.add(input);
 
-				Object _id = EngUtil.getBson(input).get("_id");
+				Object _id = BsonTools.getBson(input).get("_id");
 				if (_id != null) {
 					names.add(MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID);
 					values.add(_id);

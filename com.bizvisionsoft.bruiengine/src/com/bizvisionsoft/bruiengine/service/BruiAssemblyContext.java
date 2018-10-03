@@ -14,7 +14,7 @@ import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
 
 public class BruiAssemblyContext implements IBruiContext {
@@ -238,11 +238,11 @@ public class BruiAssemblyContext implements IBruiContext {
 			if (MethodParam.CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
 				result[i] = contextInput;
 			} else if (MethodParam.CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
-				result[i] = Optional.ofNullable(contextInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+				result[i] = Optional.ofNullable(contextInput).map(m -> BsonTools.getBson(m).get("_id")).orElse(null);
 			} else if (MethodParam.ROOT_CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
 				result[i] = rootInput;
 			} else if (MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
-				result[i] = Optional.ofNullable(rootInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+				result[i] = Optional.ofNullable(rootInput).map(m -> BsonTools.getBson(m).get("_id")).orElse(null);
 			} else if (MethodParam.CURRENT_USER.equals(paramemterNames[i])) {
 				result[i] = user;
 			} else if (MethodParam.CURRENT_USER_ID.equals(paramemterNames[i])) {
@@ -252,7 +252,7 @@ public class BruiAssemblyContext implements IBruiContext {
 			} else if (Execute.PAGE_CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
 				result[i] = pageInput;
 			} else if (MethodParam.PAGE_CONTEXT_INPUT_OBJECT_ID.equals(paramemterNames[i])) {
-				result[i] = Optional.ofNullable(pageInput).map(m -> EngUtil.getBson(m).get("_id")).orElse(null);
+				result[i] = Optional.ofNullable(pageInput).map(m -> BsonTools.getBson(m).get("_id")).orElse(null);
 			}
 
 		}

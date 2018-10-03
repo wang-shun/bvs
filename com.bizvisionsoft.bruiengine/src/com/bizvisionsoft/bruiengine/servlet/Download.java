@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bizvisionsoft.bruiengine.util.EngUtil;
-import com.bizvisionsoft.service.tools.Util;
+import com.bizvisionsoft.service.tools.FileTools;
 
 public class Download extends HttpServlet {
 
@@ -25,7 +24,7 @@ public class Download extends HttpServlet {
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String path = URLDecoder.decode(id, "utf-8");
-//		path = EngUtil.decompress(id);
+//		path = BsonTools.decompress(id);
 		String sid = request.getSession().getId();
 
 		File file = new File(path);
@@ -41,8 +40,8 @@ public class Download extends HttpServlet {
 
 		response.setHeader("Content-Disposition",
 				"attachment; filename=\"" + new String(file.getName().getBytes(), "ISO8859-1") + "\"");
-		response.setContentType(EngUtil.getContentType(file, null));
-		Util.copyStream(new FileInputStream(file), response.getOutputStream(), true);
+		response.setContentType(FileTools.getContentType(file, null));
+		FileTools.copyStream(new FileInputStream(file), response.getOutputStream(), true);
 	}
 
 }

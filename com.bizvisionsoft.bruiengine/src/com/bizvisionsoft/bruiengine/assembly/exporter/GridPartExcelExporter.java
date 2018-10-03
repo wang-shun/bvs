@@ -16,12 +16,13 @@ import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
 import org.eclipse.rap.rwt.RWT;
+import org.htmlparser.Htmlparser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.bruiengine.assembly.GridPartColumnLabelProvider;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.FileTools;
 
 public class GridPartExcelExporter {
 
@@ -57,7 +58,7 @@ public class GridPartExcelExporter {
 		fileName = matcher.replaceAll("");
 
 		// 创建导出文件
-		File folder = EngUtil.createTempDirectory();
+		File folder = FileTools.createTempDirectory(RWT.getRequest().getSession().getId().toUpperCase());
 		String filePath = folder.getPath() + "/" + fileName + ".xlsx";
 
 		// 创建Excel工作薄
@@ -264,7 +265,7 @@ public class GridPartExcelExporter {
 		if (isColumnMarkupValue) {
 			// 获取文本，对HTML格式的内容进行解析，只保留HTML内容。
 			try {
-				text = EngUtil.parserHtml2Text(text);
+				text = Htmlparser.parser(text);
 			} catch (Exception e) {
 				// TODO 提示信息
 				text = "";
