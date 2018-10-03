@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class ActionPanelPart {
 
@@ -137,7 +137,7 @@ public class ActionPanelPart {
 		text += "<div style='width:" + size.x + "px;text-align:center;font-size:16px;margin-top:8px;'>" + buttonText
 				+ "</div>";
 
-		if (Checker.isAssigned(desc)) {
+		if (Check.isAssigned(desc)) {
 			text += "<div style='width:" + size.x + "px;text-align:center;font-size:14px;margin-top:8px;'>" + desc
 					+ "</div>";
 		}

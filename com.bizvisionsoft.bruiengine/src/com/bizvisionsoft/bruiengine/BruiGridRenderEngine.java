@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.assembly.GridPartDefaultRender;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class BruiGridRenderEngine extends BruiEngine {
 
@@ -34,7 +34,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private static BruiGridRenderEngine load(String bundleId, String className) {
-		if (Checker.isAssigned(bundleId, className)) {
+		if (Check.isAssigned(bundleId, className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiGridRenderEngine(bundle.loadClass(className));

@@ -9,7 +9,7 @@ import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.Editor;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
 public interface IQueryEnable extends IDataSetEngineProvider{
@@ -41,7 +41,7 @@ public interface IQueryEnable extends IDataSetEngineProvider{
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (Checker.isAssigned(bundleId,classId)) {
+		if (Check.isAssigned(bundleId,classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();

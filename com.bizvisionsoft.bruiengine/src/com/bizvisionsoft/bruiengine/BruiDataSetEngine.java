@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.datatools.FilterAndUpdate;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -54,7 +54,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		String bundleId = grid.getGridDataSetBundleId();
 		String className = grid.getGridDataSetClassName();
 
-		if (Checker.isAssigned(bundleId, className)) {
+		if (Check.isAssigned(bundleId, className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiDataSetEngine(bundle.loadClass(className)).setAssembly(grid);
@@ -64,12 +64,12 @@ public class BruiDataSetEngine extends BruiEngine {
 		}
 
 		String serivceName;
-		if (Checker.isAssigned(grid.getModelClassName())) {
+		if (Check.isAssigned(grid.getModelClassName())) {
 			serivceName = "com.bizvisionsoft.service.UniversalDataService";
 		} else {
 			serivceName = grid.getGridDataSetService();
 		}
-		if (Checker.isAssigned(serivceName)) {
+		if (Check.isAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiDataSetEngine((Class<?>) service[0], service[1]).setAssembly(grid);

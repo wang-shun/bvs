@@ -248,7 +248,7 @@ public class SidebarWidget {
 		final Composite btn = new Composite(bar, SWT.NONE);
 		btn.setLayoutData(new RowData(24, 24));
 		WidgetHandler.getHandler(btn).setHtmlContent(
-				"<i class='layui-icon layui-icon-app' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
+				"<i class='layui-icon layui-icon-home' style='cursor:pointer;font-size:20px;color:#ffffff;'></i>");
 
 		btn.addListener(SWT.MouseDown, e -> {
 			if (pageContents.size() == 1) {

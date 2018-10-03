@@ -30,7 +30,7 @@ import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class BruiToolkit {
 
@@ -229,7 +229,7 @@ public class BruiToolkit {
 					+ "px'/>";
 		}
 
-		String buttonText = Checker.isNotAssigned(a.getText()) ? "" : a.getText();
+		String buttonText = Check.isNotAssigned(a.getText()) ? "" : a.getText();
 		if (a.isForceText()) {
 			if (imageUrl != null) {
 				if ("block".equals(layoutStyle)) {// 块状布局
@@ -263,7 +263,7 @@ public class BruiToolkit {
 	public void runAction(Action action, Event event, IBruiService service, IBruiContext context) {
 		Assembly assembly = context.getAssembly();
 		List<Action> ca = action.getChildren();
-		if (Checker.isNotAssigned(ca)) {
+		if (Check.isNotAssigned(ca)) {
 			BruiActionEngine.execute(action, event, context, service);
 		} else {
 			// 显示菜单

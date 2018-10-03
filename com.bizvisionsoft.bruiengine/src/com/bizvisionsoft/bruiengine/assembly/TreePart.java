@@ -25,7 +25,7 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
 public class TreePart implements IStructuredDataPart, IPostSelectionProvider, IDataSetEngineProvider {
@@ -101,7 +101,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider, ID
 		context.setSelectionProvider(this);
 
 		List<Action> rowActions = config.getRowActions();
-		if (!Checker.isNotAssigned(rowActions)) {
+		if (!Check.isNotAssigned(rowActions)) {
 			tree.addListener(SWT.Selection, e -> selected(e));
 		}
 	}

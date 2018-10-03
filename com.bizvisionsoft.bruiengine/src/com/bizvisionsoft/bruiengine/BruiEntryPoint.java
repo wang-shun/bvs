@@ -32,7 +32,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
@@ -146,7 +146,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		bgimg.setStyleAttribute("background-size", "cover");
 		bgimg.setStyleAttribute("background-repeat", "no-repeat");
 		bgimg.setStyleAttribute("background-position", "center");
-		Checker.isAssigned(ModelLoader.site.getPageBackgroundImageCSS(),css->bgimg.setHtmlAttribute("class", css)); 
+		Check.isAssigned(ModelLoader.site.getPageBackgroundImageCSS(),css->bgimg.setHtmlAttribute("class", css)); 
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		RWT.getClient().getService(BrowserNavigation.class).addBrowserNavigationListener(event -> {
 			String state = event.getState();
 			if (state.isEmpty()) {
-				switchPage(ModelLoader.site.getHomePage(), null, false);
+				switchPage(getHomePage(), null, false);
 			} else {
 				int idx = state.indexOf("/");
 				String pageId, inputUid = null;
@@ -189,11 +189,11 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 				switchPage(toPage, inputUid, true);
 			}
 		});
-		switchPage(ModelLoader.site.getHomePage(), null, true);
+		switchPage(getHomePage(), null, true);
 	}
 	
 	public void home() {
-		switchPage(ModelLoader.site.getHomePage(), null, true);
+		switchPage(getHomePage(), null, true);
 	}
 
 	public void switchPage(Page page, String inputUid, boolean addHistory) {
@@ -202,7 +202,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		}
 
 		String name = page.getTitle();
-		if (Checker.isNotAssigned(name)) {
+		if (Check.isNotAssigned(name)) {
 			name = page.getName();
 		}
 		View view;
@@ -224,7 +224,9 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 			service.pushState(page.getId() + uid, name);
 		}
 	}
-
-
+	
+	private Page getHomePage() {
+		return ModelLoader.site.getHomePage();
+	}
 
 }

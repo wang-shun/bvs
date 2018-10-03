@@ -72,7 +72,7 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
 public class EditorPart {
@@ -250,7 +250,7 @@ public class EditorPart {
 		}
 		String _s = config.getNullValueAllowedFields();
 		String[] containFields = null;
-		if (Checker.isAssigned(_s)) {
+		if (Check.isAssigned(_s)) {
 			containFields = _s.split("#");
 		}
 		result = BsonTools.getBson(input, true, containFields, null);

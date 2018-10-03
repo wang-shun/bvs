@@ -57,10 +57,10 @@ import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable {
+public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,IClientSettable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -378,7 +378,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (Checker.isAssigned(bundleId,classId)) {
+		if (Check.isAssigned(bundleId,classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();
@@ -951,5 +951,12 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable 
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override
+	public boolean clientSetting() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

@@ -23,7 +23,7 @@ import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiService implements IBruiService {
@@ -221,7 +221,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void updateSidebarActionBudget(String actionName) {
-		Checker.instanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
+		Check.instanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
 	
 }

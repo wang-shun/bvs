@@ -29,7 +29,7 @@ import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class ListMenu extends Part {
 
@@ -139,11 +139,11 @@ public class ListMenu extends Part {
 	}
 
 	private String getButtonText(Action a) {
-		String buttonText = Checker.isNotAssigned(a.getText()) ? "" : a.getText();
+		String buttonText = Check.isNotAssigned(a.getText()) ? "" : a.getText();
 		String text = "<div style='display:block;width:300px'>";
 		String margin;
 		String image = a.getImage();
-		if (!Checker.isNotAssigned(image)) {
+		if (!Check.isNotAssigned(image)) {
 			String url = BruiToolkit.getResourceURL(image);
 			text += "<img src='" + url
 					+ "' style='float:left; cursor:pointer;margin:4px;' width='24px' height='24px'></img>";

@@ -17,7 +17,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiBudgetEngine extends BruiEngine {
@@ -54,7 +54,7 @@ public class BruiBudgetEngine extends BruiEngine {
 			}
 		}
 
-		if (Checker.isAssigned(serivceName)) {
+		if (Check.isAssigned(serivceName)) {
 			Object[] service = Services.getService(serivceName);
 			if (service != null) {
 				return new BruiBudgetEngine((Class<?>) service[0], service[1]).setContainerName(cName);

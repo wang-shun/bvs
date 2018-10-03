@@ -24,7 +24,7 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public class SchedulerPart implements IPostSelectionProvider {
 
@@ -99,7 +99,7 @@ public class SchedulerPart implements IPostSelectionProvider {
 		this.selectedItem = e.data;
 		fireSelectionChanged(e);
 		List<Action> rowActions = config.getRowActions();
-		if (!Checker.isNotAssigned(rowActions)) {
+		if (!Check.isNotAssigned(rowActions)) {
 			new ActionMenu(bruiService).setAssembly(config).setContext(context).setInput(e.data).setActions(rowActions)
 					.setEvent(e).open();
 		}

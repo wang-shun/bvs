@@ -21,7 +21,7 @@ import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.UserSession;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 
 public abstract class EditorField {
 
@@ -123,7 +123,7 @@ public abstract class EditorField {
 			fieldText = fieldText + "*";
 		}
 		String text;
-		if (Checker.isAssigned(tooltips)) {
+		if (Check.isAssigned(tooltips)) {
 			text = Layer.onClick(fieldText, tooltips);
 			titleLabel.setCursor(parent.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		} else {
@@ -181,7 +181,7 @@ public abstract class EditorField {
 		Object value = getValue();
 		if (value != null) {
 			String vf = fieldConfig.getValueFieldName();
-			if (Checker.isAssigned(vf)) {
+			if (Check.isAssigned(vf)) {
 				Field field = value.getClass().getDeclaredField(vf);
 				field.setAccessible(true);
 				value = field.get(value);

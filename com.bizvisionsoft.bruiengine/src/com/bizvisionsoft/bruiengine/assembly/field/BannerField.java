@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
-import com.bizvisionsoft.service.tools.Checker;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.service.tools.Formatter;
 
 public class BannerField extends EditorField {
@@ -23,7 +23,7 @@ public class BannerField extends EditorField {
 		control = new Composite(parent, SWT.NONE);
 		handler = WidgetHandler.getHandler(control);
 
-		Checker.isAssigned(fieldConfig.getText(),s->setText(s));
+		Check.isAssigned(fieldConfig.getText(),s->setText(s));
 		return control;
 	}
 
