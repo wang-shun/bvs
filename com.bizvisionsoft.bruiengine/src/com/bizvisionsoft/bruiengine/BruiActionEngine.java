@@ -84,7 +84,7 @@ public class BruiActionEngine extends BruiEngine {
 	}
 
 	private static BruiEngine load(String bundleId, String className) {
-		if (!Checker.isAllAssigned(bundleId, className))
+		if (!Checker.isAssigned(bundleId, className))
 			throw new RuntimeException("²å¼þId»òClassNameÎª¿Õ");
 
 		Bundle bundle = Platform.getBundle(bundleId);

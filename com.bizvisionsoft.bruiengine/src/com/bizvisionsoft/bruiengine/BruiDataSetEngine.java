@@ -54,7 +54,7 @@ public class BruiDataSetEngine extends BruiEngine {
 		String bundleId = grid.getGridDataSetBundleId();
 		String className = grid.getGridDataSetClassName();
 
-		if (Checker.isAllAssigned(bundleId, className)) {
+		if (Checker.isAssigned(bundleId, className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiDataSetEngine(bundle.loadClass(className)).setAssembly(grid);

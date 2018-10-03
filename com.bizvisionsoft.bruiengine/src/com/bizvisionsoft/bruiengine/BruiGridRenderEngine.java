@@ -34,7 +34,7 @@ public class BruiGridRenderEngine extends BruiEngine {
 	}
 
 	private static BruiGridRenderEngine load(String bundleId, String className) {
-		if (Checker.isAllAssigned(bundleId, className)) {
+		if (Checker.isAssigned(bundleId, className)) {
 			Bundle bundle = Platform.getBundle(bundleId);
 			try {
 				return new BruiGridRenderEngine(bundle.loadClass(className));
