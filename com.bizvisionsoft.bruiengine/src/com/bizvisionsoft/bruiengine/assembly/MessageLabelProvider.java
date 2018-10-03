@@ -61,7 +61,7 @@ public class MessageLabelProvider extends ColumnLabelProvider {
 					+ " style='float:left;margin-top:4px;margin-left:4px;border-radius:28px;width:48px;height:48px;'/>");
 		} else {
 			try {
-				String alpha = EngUtil.getAlphaString(senderName);
+				String alpha = Util.getAlphaString(senderName);
 				headPicURL = "/bvs/svg?text=" + URLEncoder.encode(alpha, "utf-8") + "&color=ffffff";
 				sb.append(
 						"<img src=" + headPicURL + " style='float:left;margin-top:4px;margin-left:4px;background-color:"

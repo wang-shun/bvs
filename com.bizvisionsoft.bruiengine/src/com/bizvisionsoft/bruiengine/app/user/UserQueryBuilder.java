@@ -7,10 +7,10 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
-import com.bizvisionsoft.bruiengine.util.EngUtil;
 import com.bizvisionsoft.service.OrganizationService;
 import com.bizvisionsoft.service.datatools.Query;
 import com.bizvisionsoft.service.model.Organization;
+import com.bizvisionsoft.service.tools.Util;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
@@ -40,7 +40,7 @@ public class UserQueryBuilder {
 		if (orgs == null || orgs.isEmpty()) {
 			org_id = null;
 		} else {
-			org_id = new BasicDBObject("$in", EngUtil.getList(orgs, Organization::get_id));
+			org_id = new BasicDBObject("$in", Util.getList(orgs, Organization::get_id));
 		}
 	}
 
@@ -51,7 +51,7 @@ public class UserQueryBuilder {
 		} else {
 			BasicDBObject condition = new Query().filter(new BasicDBObject("fullName",orgText)).bson();
 			List<Organization> orgs = Services.get(OrganizationService.class).createDataSet(condition);
-			org_id = new BasicDBObject("$in", EngUtil.getList(orgs, Organization::get_id));
+			org_id = new BasicDBObject("$in", Util.getList(orgs, Organization::get_id));
 		}
 	}
 

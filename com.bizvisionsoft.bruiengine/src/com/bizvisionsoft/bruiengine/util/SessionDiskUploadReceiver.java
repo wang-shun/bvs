@@ -11,6 +11,8 @@ import java.util.List;
 import org.eclipse.rap.fileupload.FileDetails;
 import org.eclipse.rap.fileupload.FileUploadReceiver;
 
+import com.bizvisionsoft.service.tools.Util;
+
 public class SessionDiskUploadReceiver extends FileUploadReceiver {
 
 	private static final String DEFAULT_TARGET_FILE_NAME = "upload.tmp";
@@ -27,7 +29,7 @@ public class SessionDiskUploadReceiver extends FileUploadReceiver {
 	public void receive(InputStream dataStream, FileDetails details) throws IOException {
 		File targetFile = createTargetFile(details);
 		FileOutputStream outputStream = new FileOutputStream(targetFile);
-		EngUtil.copyStream(dataStream, outputStream, true);
+		Util.copyStream(dataStream, outputStream, true);
 		targetFiles.add(targetFile);
 		targetFileDetails.add(details);
 		File contentTypeFile = createContentTypeFile(targetFile, details);

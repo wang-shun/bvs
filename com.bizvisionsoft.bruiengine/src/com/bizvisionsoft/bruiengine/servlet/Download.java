@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bizvisionsoft.bruiengine.util.EngUtil;
+import com.bizvisionsoft.service.tools.Util;
 
 public class Download extends HttpServlet {
 
@@ -41,7 +42,7 @@ public class Download extends HttpServlet {
 		response.setHeader("Content-Disposition",
 				"attachment; filename=\"" + new String(file.getName().getBytes(), "ISO8859-1") + "\"");
 		response.setContentType(EngUtil.getContentType(file, null));
-		EngUtil.copyStream(new FileInputStream(file), response.getOutputStream(), true);
+		Util.copyStream(new FileInputStream(file), response.getOutputStream(), true);
 	}
 
 }
