@@ -271,11 +271,18 @@ public class ActionsEditPane extends SashForm {
 			actions.add(ModelToolkit.createAction(Action.TYPE_QUERY));
 			viewer.refresh();
 		});
-		
+
 		item = new MenuItem(menu, SWT.PUSH);
 		item.setText("导出");
 		item.addListener(SWT.Selection, e -> {
 			actions.add(ModelToolkit.createAction(Action.TYPE_EXPORT));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("设置");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_SETTING));
 			viewer.refresh();
 		});
 
@@ -314,11 +321,11 @@ public class ActionsEditPane extends SashForm {
 		if (action != null) {
 
 			editor.createComboField(parent,
-					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询","导出",
-							"自定义操作" },
+					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "导出",
+							"设置", "自定义操作" },
 					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT,
 							Action.TYPE_INSERT_SUBITEM, Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY,
-							Action.TYPE_EXPORT,Action.TYPE_CUSTOMIZED },
+							Action.TYPE_EXPORT, Action.TYPE_SETTING, Action.TYPE_CUSTOMIZED },
 					"操作类型：", action, "type", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "唯一标识符:", action, "id", SWT.READ_ONLY);
@@ -340,7 +347,7 @@ public class ActionsEditPane extends SashForm {
 					SWT.READ_ONLY);
 
 			editor.createCheckboxField(parent, "由对象行为控制有效性:", action, "objectBehavier", SWT.CHECK);
-			
+
 			editor.createCheckboxField(parent, "由操作行为控制有效性:", action, "actionBehavier", SWT.CHECK);
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,7 +370,7 @@ public class ActionsEditPane extends SashForm {
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if (Action.TYPE_INSERT.equals(action.getType())||Action.TYPE_INSERT_SUBITEM.equals(action.getType())) {
+			if (Action.TYPE_INSERT.equals(action.getType()) || Action.TYPE_INSERT_SUBITEM.equals(action.getType())) {
 				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
 				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId",
 						SWT.BORDER);

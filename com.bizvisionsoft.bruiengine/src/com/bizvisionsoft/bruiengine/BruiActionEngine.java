@@ -11,6 +11,7 @@ import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Tooltips;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
+import com.bizvisionsoft.bruiengine.action.ClientSetting;
 import com.bizvisionsoft.bruiengine.action.CreateItem;
 import com.bizvisionsoft.bruiengine.action.CreateSelectedSubItem;
 import com.bizvisionsoft.bruiengine.action.DeleteSelected;
@@ -62,6 +63,8 @@ public class BruiActionEngine extends BruiEngine {
 			brui = new BruiActionEngine(new QueryInGrid());
 		} else if (Action.TYPE_EXPORT.equals(type)) {
 			brui = new BruiActionEngine(new Export());
+		} else if (Action.TYPE_SETTING.equals(type)) {
+			brui = new BruiActionEngine(new ClientSetting());
 
 		} else if (Action.TYPE_CUSTOMIZED.equals(type)) {
 			brui = (BruiActionEngine) load(action.getBundleId(), action.getClassName())// load

@@ -22,6 +22,9 @@ public class Action extends ModelObject {
 
 	public static final String TYPE_EXPORT = "export";
 	
+	public static final String TYPE_SETTING = "setting";
+
+	
 	private String id;
 
 	private String name;

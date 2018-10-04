@@ -60,7 +60,7 @@ import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,IClientSettable {
+public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,IClientCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -953,9 +953,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	}
 
 	@Override
-	public boolean clientSetting() {
+	public boolean customized(List<Column> result) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 

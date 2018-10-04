@@ -12,14 +12,8 @@ import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public interface IQueryEnable extends IDataSetEngineProvider{
+public interface IQueryEnable extends IDataSetEngineProvider, IAssembly{
 
-	IBruiContext getContext();
-
-	Assembly getConfig();
-
-	IBruiService getBruiService();
-	
 	public default void doQuery(BasicDBObject result) {
 		setFilter(result);
 		setCurrentPage(0);
