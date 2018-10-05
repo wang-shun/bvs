@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jface.viewers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,4 +56,10 @@ public interface IStructuredSelection extends ISelection {
      * @return the selected elements as a list
      */
     public List toList();
+    
+    public default <T> List<T> toList(List<T> list){
+    	List<T> result = new ArrayList<>();
+    	result.addAll(toList());
+    	return result;
+    }
 }

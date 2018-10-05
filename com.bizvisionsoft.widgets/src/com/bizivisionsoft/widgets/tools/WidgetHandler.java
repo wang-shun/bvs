@@ -229,5 +229,5 @@ public class WidgetHandler {
 		}
 		remoteObject.call(EVENT_AJAX, jsonParam);
 	}
-
+	
 }

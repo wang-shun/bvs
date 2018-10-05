@@ -14,7 +14,7 @@
 
 		methods : [ "addEventListener", "removeEventListener",
 				"addGestureAction", "removeGestureAction", "setTargetState",
-				"animate", "sliding", "download" ]
+				"animate", "sliding", "download"]
 
 	});
 

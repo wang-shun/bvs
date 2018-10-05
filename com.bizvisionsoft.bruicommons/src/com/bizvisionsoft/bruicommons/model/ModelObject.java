@@ -14,7 +14,9 @@ package com.bizvisionsoft.bruicommons.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class ModelObject {
+import com.bizvisionsoft.annotations.AUtil;
+
+public class ModelObject implements Cloneable {
 
 	private final transient PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -54,6 +56,11 @@ public class ModelObject {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public ModelObject clone()  {
+		return AUtil.deepCopy(this);
 	}
 
 }
