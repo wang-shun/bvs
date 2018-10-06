@@ -17,7 +17,10 @@ import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Formatter;
+import com.bizvisionsoft.serviceconsumer.Services;
 
 public class UserSession {
 
@@ -128,7 +131,7 @@ public class UserSession {
 				RWT.getUISession().getHttpSession().setMaxInactiveInterval(1);
 			} else {
 				MessageDialog.openWarning(display.getActiveShell(), "通知",
-						"系统将于" + getFriendlyTimeDuration(interval) + "后停止对您的服务。<br/>如有任何疑问请咨询系统管理人员。");
+						"系统将于" + Formatter.getFriendlyTimeDuration(interval) + "后停止对您的服务。<br/>如有任何疑问请咨询系统管理人员。");
 				RWT.getUISession().getHttpSession().setMaxInactiveInterval(interval / 1000);
 			}
 		});
@@ -155,7 +158,7 @@ public class UserSession {
 	void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
-	
+
 	void setConsignUser(User consignUser) {
 		this.consignUser = consignUser;
 	}
@@ -201,33 +204,19 @@ public class UserSession {
 			diff = time1 - time2;
 		}
 
-		return getFriendlyTimeDuration(diff);
-	}
-
-	private String getFriendlyTimeDuration(long diff) {
-		long day = diff / (24 * 60 * 60 * 1000);
-		long hour = (diff / (60 * 60 * 1000) - day * 24);
-		long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
-		long sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-
-		String result = "";
-		if (day != 0)
-			result += day + "天 ";
-		if (hour != 0)
-			result += hour + "小时 ";
-		if (min != 0)
-			result += min + "分钟 ";
-		if (sec != 0)
-			result += sec + "秒";
-		return result;
+		return Formatter.getFriendlyTimeDuration(diff);
 	}
 
 	public User getUser() {
 		return loginUser;
 	}
-	
+
 	public User getConsigner() {
 		return consignUser;
+	}
+
+	public String getClientSetting(String name) {
+		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), "", name);
 	}
 
 }
