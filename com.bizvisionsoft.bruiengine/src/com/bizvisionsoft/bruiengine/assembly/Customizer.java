@@ -51,13 +51,17 @@ public class Customizer extends Dialog {
 		cust.configColumns = cust.config.getColumns();
 		cust.storedColumns = stored == null ? ((Assembly) config.clone()).getColumns() : stored;
 
-		cust.open();
-		Layer.message("添加显示列：从可用列中拖拽到显示列<br>移除显示列：从显示列中拖拽到可用列<br>改变列顺序：在显示列中上下拖拽条目<br>新建列分组：在显示列中选择后点击{ }");
-		return null;
+		switch (cust.open()) {
+		case OK:
+			return cust.storedColumns;
+		default:
+			return null;
+		}
+//		Layer.message("添加显示列：从可用列中拖拽到显示列<br>移除显示列：从显示列中拖拽到可用列<br>改变列顺序：在显示列中上下拖拽条目<br>新建列分组：在显示列中选择后点击{ }");
 	}
 
-	private static final int HEIGHT = 640;
-	private static final int WIDTH = 480;
+	private static final int GRID_HEIGHT = 640;
+	private static final int GRID_WIDTH = 480;
 	private Assembly config;
 	private List<Column> storedColumns;
 	private List<Column> configColumns;
@@ -66,7 +70,6 @@ public class Customizer extends Dialog {
 
 	protected Customizer(Shell parentShell) {
 		super(parentShell);
-		setBlockOnOpen(false);
 	}
 
 	@Override
@@ -80,10 +83,10 @@ public class Customizer extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		if ("su".equals(UserSession.current().getUser().getUserId())) {
-			createButton(parent, IDialogConstants.CLIENT_ID, "保存到站点", false).setData(RWT.CUSTOM_VARIANT,
-					BruiToolkit.CSS_SERIOUS);
-		}
+//		if ("su".equals(UserSession.current().getUser().getUserId())) {
+//			createButton(parent, IDialogConstants.CLIENT_ID, "保存到站点", false).setData(RWT.CUSTOM_VARIANT,
+//					BruiToolkit.CSS_SERIOUS);
+//		}
 
 		createButton(parent, IDialogConstants.DETAILS_ID, "恢复默认", false).setData(RWT.CUSTOM_VARIANT,
 				BruiToolkit.CSS_INFO);
@@ -103,12 +106,11 @@ public class Customizer extends Dialog {
 
 		createLeftPanel(panel);
 		createRigthPanel(panel);
-
 		return panel;
 	}
 
 	private void createRigthPanel(Composite parent) {
-		right = createViewer(parent, "显示列", WIDTH + 38);
+		right = createViewer(parent, "显示列", GRID_WIDTH + 38);
 		GridViewerColumn
 
 		col = new GridViewerColumn(right, SWT.LEFT);
@@ -118,7 +120,8 @@ public class Customizer extends Dialog {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
+				return "";
+//				return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
 			}
 		});
 		col.getColumn().setWidth(38);
@@ -143,10 +146,43 @@ public class Customizer extends Dialog {
 		dropTarget.addDropListener(new DropRightListener());
 
 		right.refresh();
+
+		right.getGrid().addListener(SWT.Selection, e -> {
+			if ("edit".equals(e.text)) {
+				edit((Column) e.item.getData());
+			}
+		});
+	}
+
+	private void edit(Column col) {
+		//TODO
+	}
+	
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if(buttonId == IDialogConstants.DETAILS_ID) {
+			resetToDefault();
+		}else if(buttonId == IDialogConstants.CLIENT_ID) {
+			saveToSite();
+		}
+		super.buttonPressed(buttonId);
+	}
+
+	private void saveToSite() {
+	}
+
+	private void resetToDefault() {
+		storedColumns = ((Assembly) config.clone()).getColumns() ;
+		right.setInput(storedColumns);
+	}
+	
+	@Override
+	protected void okPressed() {
+		super.okPressed();
 	}
 
 	private void createLeftPanel(Composite parent) {
-		left = createViewer(parent, "可用列", WIDTH);
+		left = createViewer(parent, "可用列", GRID_WIDTH);
 		left.setInput(getColumnNodes(configColumns));
 		Grid control = left.getGrid();
 
@@ -177,7 +213,7 @@ public class Customizer extends Dialog {
 		// viewer.getTree().setLinesVisible(true);
 		viewer.setAutoExpandLevel(GridTreeViewer.ALL_LEVELS);
 		viewer.getGrid().setHeaderVisible(true);
-		viewer.getGrid().setLayoutData(new GridData(width, HEIGHT));
+		viewer.getGrid().setLayoutData(new GridData(width, GRID_HEIGHT));
 		UserSession.bruiToolkit().enableMarkup(viewer.getGrid());
 
 		GridViewerColumn col = new GridViewerColumn(viewer, SWT.LEFT);
@@ -198,7 +234,7 @@ public class Customizer extends Dialog {
 				}
 			}
 		});
-		col.getColumn().setWidth(WIDTH / 2);
+		col.getColumn().setWidth(GRID_WIDTH / 2);
 		col.getColumn().setResizeable(true);
 
 		col = new GridViewerColumn(viewer, SWT.LEFT);
@@ -212,7 +248,7 @@ public class Customizer extends Dialog {
 				return Formatter.getString(((Column) element).getName());
 			}
 		});
-		col.getColumn().setWidth(WIDTH / 2);
+		col.getColumn().setWidth(GRID_WIDTH / 2);
 		col.getColumn().setResizeable(true);
 
 		viewer.setContentProvider(new ColumnsContentProvider());

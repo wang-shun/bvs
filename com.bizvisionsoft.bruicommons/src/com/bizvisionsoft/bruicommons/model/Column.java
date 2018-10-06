@@ -2,48 +2,92 @@ package com.bizvisionsoft.bruicommons.model;
 
 import java.util.List;
 
+import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.annotations.md.service.WriteValue;
+
 public class Column extends ModelObject {
 
+	@ReadValue
 	private String id;
 
+	@ReadValue
+	@WriteValue
 	private String name;
 
+	@ReadValue
+	@WriteValue
 	private String description;
 
+	@ReadValue
+	@WriteValue
 	private String text;
 
+	@ReadValue
+	@WriteValue
 	private int alignment;
 
+	@ReadValue
+	@WriteValue
 	private int width;
 
+	@ReadValue
+	@WriteValue
 	private int minimumWidth;
 
+	@ReadValue
+	@WriteValue
 	private boolean moveable;
 
+	@ReadValue
+	@WriteValue
 	private boolean resizeable;
 
+	@ReadValue
+	@WriteValue
 	private boolean detail;
 
+	@ReadValue
+	@WriteValue
 	private boolean summary;
 
+	@ReadValue
+	@WriteValue
 	private boolean expanded;
 
+	@ReadValue
+	@WriteValue
 	private List<Column> columns;
 
+	@ReadValue
+	@WriteValue
 	private boolean markupEnabled;
 
+	@ReadValue
+	@WriteValue
 	private String format;
 
+	@ReadValue
+	@WriteValue
 	private int sort;
 	
+	@ReadValue
+	@WriteValue
 	private boolean forceDisplayZero;
 	
+	@ReadValue
+	@WriteValue
 	private String negativeStyle;
 	
+	@ReadValue
+	@WriteValue
 	private String postiveStyle;
 	
+	@ReadValue
+	@WriteValue
 	private String gt1Style;
 	
+	@ReadValue
+	@WriteValue
 	private String lt1Style;
 
 	public List<Column> getColumns() {

@@ -12,16 +12,23 @@ import com.google.gson.reflect.TypeToken;
 public interface IClientCustomizable extends IAssembly {
 
 	public default boolean customize() {
-		return Check.isAssignedThen(Customizer.open(getConfig(), getStore()), this::customized).orElse(false);
+		return Check.isAssignedThen(Customizer.open(getConfig(), getStore()), ret -> {
+			UserSession.current().saveClientSetting("assembly@" + getConfig().getName(),
+					new GsonBuilder().create().toJson(ret));
+			customized(ret);
+			return true;
+		}).orElse(false);
 	}
 
-	public boolean customized(List<Column> result);
+	public void customized(List<Column> result);
 
 	@SuppressWarnings("unchecked")
 	public default List<Column> getStore() {
-		return (List<Column>) Check.isAssignedThen(UserSession.current().getClientSetting("assembly@" + getConfig().getName()),
-				s -> new GsonBuilder().create().fromJson(s, new TypeToken<ArrayList<Column>>() {
-				}.getType())).orElse(null);
+		return (List<Column>) Check
+				.isAssignedThen(UserSession.current().getClientSetting("assembly@" + getConfig().getName()),
+						s -> new GsonBuilder().create().fromJson(s, new TypeToken<ArrayList<Column>>() {
+						}.getType()))
+				.orElse(null);
 	}
 
 }

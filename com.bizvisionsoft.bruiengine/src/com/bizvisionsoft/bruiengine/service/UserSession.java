@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bson.Document;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.SingletonUtil;
@@ -216,7 +217,12 @@ public class UserSession {
 	}
 
 	public String getClientSetting(String name) {
-		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), "", name);
+		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), "pms", name);
+	}
+
+	public void saveClientSetting(String name, String setting) {
+		Document doc = new Document("userId",loginUser.getUserId()).append("clientId", "pms").append("name", name).append("value", setting);
+		Services.get(SystemService.class).updateClientSetting(doc);
 	}
 
 }

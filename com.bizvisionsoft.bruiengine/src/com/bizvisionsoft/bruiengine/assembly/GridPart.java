@@ -60,7 +60,7 @@ import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,IClientCustomizable {
+public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable, IClientCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -117,6 +117,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	protected boolean asEditorField;
 
 	private BruiEventEngine eventEngine;
+
+	private Composite parent;
 
 	public GridPart() {
 	}
@@ -215,6 +217,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	@CreateUI
 	public void createUI(Composite parent) {
+		this.parent = parent;
+		
 		// 如果初始化时不加载数据，queryOn必须打开
 		if (config.isDisableInitLoadData()) {
 			queryOn = true;
@@ -378,7 +382,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		String bundleId = config.getQueryBuilderBundle();
 		String classId = config.getQueryBuilderClass();
 		Object input;
-		if (Check.isAssigned(bundleId,classId)) {
+		if (Check.isAssigned(bundleId, classId)) {
 			input = BruiQueryEngine.create(bundleId, classId, bruiService, context).getTarget();
 		} else {
 			input = new Document();
@@ -614,11 +618,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	}
 
 	protected void createColumns(Grid grid) {
-		config.getColumns().forEach(c -> {
-			if (c.getColumns() == null || c.getColumns().isEmpty()) {
-				createColumn(grid, c);
-			} else {
+		Optional.ofNullable(getStore()).orElse(config.getColumns()).forEach(c -> {
+			if (Check.isAssigned(c.getColumns())) {
 				createGroup(grid, c);
+			} else {
+				createColumn(grid, c);
 			}
 		});
 	}
@@ -953,10 +957,10 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	}
 
 	@Override
-	public boolean customized(List<Column> result) {
-		// TODO Auto-generated method stub
-		return true;
+	public void customized(List<Column> result) {
+		Arrays.asList(parent.getChildren()).forEach(c->c.dispose());
+		createUI(parent);
+		parent.layout();
 	}
-
 
 }
