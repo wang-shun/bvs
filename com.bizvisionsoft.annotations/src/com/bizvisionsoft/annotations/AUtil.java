@@ -120,8 +120,7 @@ public class AUtil {
 		if (f != null)
 			try {
 				f.setAccessible(true);
-				Class<?> type = f.getType();
-				value = getTypedValue(value, type);
+				value = getTypedValue(value, f.getType());
 				f.set(element, value);
 				return;
 			} catch (IllegalAccessException e) {
@@ -553,37 +552,48 @@ public class AUtil {
 				return value;
 			}
 		}
-
 		try {
-			if ("String".equals(tName)) {
-				value = value == null ? null : value.toString();
-			} else if ("int".equals(tName)) {
-				value = value == null ? 0 : Integer.parseInt(value.toString());
+			if ("int".equals(tName)) {
+				value = convertValue(value, 0, Integer::parseInt);
 			} else if ("Integer".equals(tName)) {
-				value = value == null ? null : Integer.parseInt(value.toString());
+				value = convertValue(value, null, Integer::parseInt);
 			} else if ("double".equals(tName)) {
-				value = value == null ? 0 : Double.parseDouble(value.toString());
+				value = convertValue(value, 0d, Double::parseDouble);
 			} else if ("Double".equals(tName)) {
-				value = value == null ? null : Double.parseDouble(value.toString());
+				value = convertValue(value, null, Double::parseDouble);
 			} else if ("float".equals(tName)) {
-				value = value == null ? 0 : Float.parseFloat(value.toString());
+				value = convertValue(value, 0f, Float::parseFloat);
 			} else if ("Float".equals(tName)) {
-				value = value == null ? null : Float.parseFloat(value.toString());
+				value = convertValue(value, null, Float::parseFloat);
 			} else if ("long".equals(tName)) {
-				value = value == null ? 0 : Long.parseLong(value.toString());
+				value = convertValue(value, 0l, Long::parseLong);
 			} else if ("Long".equals(tName)) {
-				value = value == null ? null : Long.parseLong(value.toString());
+				value = convertValue(value, null, Long::parseLong);
 			} else if ("short".equals(tName)) {
-				value = value == null ? 0 : Short.parseShort(value.toString());
+				value = convertValue(value, 0, Short::parseShort);
 			} else if ("Short".equals(tName)) {
-				value = value == null ? null : Short.parseShort(value.toString());
+				value = convertValue(value, null, Short::parseShort);
 			} else if ("boolean".equals(tName)) {
-				value = value == null ? false : Boolean.parseBoolean(value.toString());
+				value = convertValue(value, false, Boolean::parseBoolean);
 			} else if ("Boolean".equals(tName)) {
-				value = value == null ? null : Boolean.parseBoolean(value.toString());
+				value = convertValue(value, null, Boolean::parseBoolean);
 			}
 		} catch (Exception e) {
 		}
 		return value;
 	}
+
+	private static Object convertValue(Object value, Object nullValue, Function<String, Object> converter) {
+		if (value == null) {
+			return nullValue;
+		} else {
+			String str = value.toString();
+			if (str.isEmpty()) {
+				return nullValue;
+			} else {
+				return converter.apply(str);
+			}
+		}
+	}
+
 }
