@@ -34,10 +34,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.htmlparser.Htmlparser;
 
+import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizivisionsoft.widgets.util.Layer;
+import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.service.tools.Formatter;
@@ -50,14 +54,13 @@ public class Customizer extends Dialog {
 		cust.config = (Assembly) config.clone();
 		cust.configColumns = cust.config.getColumns();
 		cust.storedColumns = stored == null ? ((Assembly) config.clone()).getColumns() : stored;
-
+		cust.context = UserSession.newAssemblyContext();
 		switch (cust.open()) {
 		case OK:
 			return cust.storedColumns;
 		default:
 			return null;
 		}
-//		Layer.message("添加显示列：从可用列中拖拽到显示列<br>移除显示列：从显示列中拖拽到可用列<br>改变列顺序：在显示列中上下拖拽条目<br>新建列分组：在显示列中选择后点击{ }");
 	}
 
 	private static final int GRID_HEIGHT = 640;
@@ -67,6 +70,7 @@ public class Customizer extends Dialog {
 	private List<Column> configColumns;
 	private GridTreeViewer left;
 	private GridTreeViewer right;
+	private IBruiContext context;
 
 	protected Customizer(Shell parentShell) {
 		super(parentShell);
@@ -83,10 +87,10 @@ public class Customizer extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-//		if ("su".equals(UserSession.current().getUser().getUserId())) {
-//			createButton(parent, IDialogConstants.CLIENT_ID, "保存到站点", false).setData(RWT.CUSTOM_VARIANT,
-//					BruiToolkit.CSS_SERIOUS);
-//		}
+		if ("su".equals(UserSession.current().getUser().getUserId())) {
+			createButton(parent, IDialogConstants.CLIENT_ID, "保存到站点", false).setData(RWT.CUSTOM_VARIANT,
+					BruiToolkit.CSS_SERIOUS);
+		}
 
 		createButton(parent, IDialogConstants.DETAILS_ID, "恢复默认", false).setData(RWT.CUSTOM_VARIANT,
 				BruiToolkit.CSS_INFO);
@@ -102,11 +106,23 @@ public class Customizer extends Dialog {
 		layout.marginWidth = 24;
 		layout.marginHeight = 24;
 		layout.horizontalSpacing = 24;
+		layout.verticalSpacing = 12;
 		panel.setLayout(layout);
 
+		createTipsPanel(panel);
 		createLeftPanel(panel);
 		createRigthPanel(panel);
 		return panel;
+	}
+
+	private void createTipsPanel(Composite parent) {
+		String info = "提示：从左侧列表中拖拽选中项放置到右侧列表可添加显示列。从右侧列表示中拖拽选中列放置到左侧可移除显示列。<br>在右侧显示列中上下拖拽条目可改变显示顺序。在显示列中选择多项后点击{ }可新建列组。";
+		Composite label = new Composite(parent, SWT.NONE);
+		WidgetHandler handler = WidgetHandler.getHandler(label);
+		handler.setHtmlContent("<blockquote class='layui-elem-quote'>" + info + "</blockquote>");
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		data.heightHint = 72;
+		label.setLayoutData(data);
 	}
 
 	private void createRigthPanel(Composite parent) {
@@ -120,8 +136,11 @@ public class Customizer extends Dialog {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return "";
-//				return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
+				if ("su".equals(UserSession.current().getUser().getUserId())) {
+					return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
+				} else {
+					return "";
+				}
 			}
 		});
 		col.getColumn().setWidth(38);
@@ -149,20 +168,32 @@ public class Customizer extends Dialog {
 
 		right.getGrid().addListener(SWT.Selection, e -> {
 			if ("edit".equals(e.text)) {
-				edit((Column) e.item.getData());
+				edit((GridItem) e.item);
 			}
 		});
 	}
 
-	private void edit(Column col) {
-		//TODO
+	private void edit(GridItem item) {
+		Column col = (Column) item.getData();
+		String editor;
+		if(item.getItemCount()>0) {
+			editor = "列组编辑器";
+		}else if(item.getParentItem()==null) {
+			editor = "列编辑器(非列组子列)";
+		}else {
+			editor = "列编辑器";
+		}
+		Editor.open(editor, context, col.clone(), (r,t)->{
+			AUtil.simpleCopy(t, col);
+			right.refresh(col, true);
+		});
 	}
-	
+
 	@Override
 	protected void buttonPressed(int buttonId) {
-		if(buttonId == IDialogConstants.DETAILS_ID) {
+		if (buttonId == IDialogConstants.DETAILS_ID) {
 			resetToDefault();
-		}else if(buttonId == IDialogConstants.CLIENT_ID) {
+		} else if (buttonId == IDialogConstants.CLIENT_ID) {
 			saveToSite();
 		}
 		super.buttonPressed(buttonId);
@@ -172,10 +203,10 @@ public class Customizer extends Dialog {
 	}
 
 	private void resetToDefault() {
-		storedColumns = ((Assembly) config.clone()).getColumns() ;
+		storedColumns = ((Assembly) config.clone()).getColumns();
 		right.setInput(storedColumns);
 	}
-	
+
 	@Override
 	protected void okPressed() {
 		super.okPressed();

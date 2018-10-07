@@ -120,6 +120,8 @@ public class AUtil {
 		if (f != null)
 			try {
 				f.setAccessible(true);
+				Class<?> type = f.getType();
+				value = getTypedValue(value, type);
 				f.set(element, value);
 				return;
 			} catch (IllegalAccessException e) {
@@ -134,6 +136,7 @@ public class AUtil {
 		if (m != null)
 			try {
 				m.setAccessible(true);
+
 				m.invoke(element, value);
 				return;
 			} catch (IllegalAccessException e) {
@@ -467,9 +470,9 @@ public class AUtil {
 			String[] paramemterNames) {
 		UniversalCommand command = new UniversalCommand();
 		for (int i = 0; i < paramemterNames.length; i++) {
-			if(UniversalCommand.PARAM_TARGET_CLASS.equals(paramemterNames[i])) {
+			if (UniversalCommand.PARAM_TARGET_CLASS.equals(paramemterNames[i])) {
 				command.setTargetClassName((String) parameterValues[i]);
-			}else {
+			} else {
 				command.addParameter(paramemterNames[i], parameterValues[i]);
 			}
 		}
@@ -539,5 +542,48 @@ public class AUtil {
 			}
 		}
 		return null;
+	}
+
+	private static Object getTypedValue(Object value, Class<?> type) {
+		String tName = type.getName();
+		if (value != null) {
+			if (type.isAssignableFrom(value.getClass())) {
+				return value;
+			} else if (value.getClass().getSimpleName().equals(tName)) {
+				return value;
+			}
+		}
+
+		try {
+			if ("String".equals(tName)) {
+				value = value == null ? null : value.toString();
+			} else if ("int".equals(tName)) {
+				value = value == null ? 0 : Integer.parseInt(value.toString());
+			} else if ("Integer".equals(tName)) {
+				value = value == null ? null : Integer.parseInt(value.toString());
+			} else if ("double".equals(tName)) {
+				value = value == null ? 0 : Double.parseDouble(value.toString());
+			} else if ("Double".equals(tName)) {
+				value = value == null ? null : Double.parseDouble(value.toString());
+			} else if ("float".equals(tName)) {
+				value = value == null ? 0 : Float.parseFloat(value.toString());
+			} else if ("Float".equals(tName)) {
+				value = value == null ? null : Float.parseFloat(value.toString());
+			} else if ("long".equals(tName)) {
+				value = value == null ? 0 : Long.parseLong(value.toString());
+			} else if ("Long".equals(tName)) {
+				value = value == null ? null : Long.parseLong(value.toString());
+			} else if ("short".equals(tName)) {
+				value = value == null ? 0 : Short.parseShort(value.toString());
+			} else if ("Short".equals(tName)) {
+				value = value == null ? null : Short.parseShort(value.toString());
+			} else if ("boolean".equals(tName)) {
+				value = value == null ? false : Boolean.parseBoolean(value.toString());
+			} else if ("Boolean".equals(tName)) {
+				value = value == null ? null : Boolean.parseBoolean(value.toString());
+			}
+		} catch (Exception e) {
+		}
+		return value;
 	}
 }
