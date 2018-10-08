@@ -157,11 +157,7 @@ public class Customizer extends Dialog {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if ("su".equals(UserSession.current().getUser().getUserId())) {
-					return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
-				} else {
-					return "";
-				}
+				return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
 			}
 		});
 		col.getColumn().setWidth(38);
