@@ -13,8 +13,6 @@ public interface IClientCustomizable extends IAssembly {
 
 	public default boolean customize() {
 		return Check.isAssignedThen(Customizer.open(getConfig(), getStore()), ret -> {
-			UserSession.current().saveClientSetting("assembly@" + getConfig().getName(),
-					new GsonBuilder().create().toJson(ret));
 			customized(ret);
 			return true;
 		}).orElse(false);

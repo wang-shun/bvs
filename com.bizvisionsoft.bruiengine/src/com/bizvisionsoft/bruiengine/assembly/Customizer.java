@@ -1,10 +1,12 @@
 package com.bizvisionsoft.bruiengine.assembly;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -33,39 +35,44 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.htmlparser.Htmlparser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.Editor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.service.tools.Formatter;
 import com.bizvisionsoft.service.tools.Generator;
+import com.bizvisionsoft.serviceconsumer.Services;
+import com.google.gson.GsonBuilder;
 
 public class Customizer extends Dialog {
 
+	public Logger logger = LoggerFactory.getLogger(getClass());
+
 	public static List<Column> open(Assembly config, List<Column> stored) {
 		Customizer cust = new Customizer(Display.getCurrent().getActiveShell());
+		cust.siteConfig = config;
 		cust.config = (Assembly) config.clone();
 		cust.configColumns = cust.config.getColumns();
 		cust.storedColumns = stored == null ? ((Assembly) config.clone()).getColumns() : stored;
 		cust.context = UserSession.newAssemblyContext();
-		switch (cust.open()) {
-		case OK:
-			return cust.storedColumns;
-		default:
-			return null;
-		}
+		return cust.open() == OK ? cust.storedColumns : null;
 	}
 
 	private static final int GRID_HEIGHT = 640;
 	private static final int GRID_WIDTH = 480;
 	private Assembly config;
+	private Assembly siteConfig;
 	private List<Column> storedColumns;
 	private List<Column> configColumns;
 	private GridTreeViewer left;
@@ -87,16 +94,16 @@ public class Customizer extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
+		createButton(parent, IDialogConstants.DETAILS_ID, "恢复默认", false).setData(RWT.CUSTOM_VARIANT,
+				BruiToolkit.CSS_INFO);
+		createButton(parent, IDialogConstants.CANCEL_ID, "关闭", false).setData(RWT.CUSTOM_VARIANT,
+				BruiToolkit.CSS_WARNING);
+		createButton(parent, IDialogConstants.OK_ID, "保存", true).setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_NORMAL);
+
 		if ("su".equals(UserSession.current().getUser().getUserId())) {
 			createButton(parent, IDialogConstants.CLIENT_ID, "保存到站点", false).setData(RWT.CUSTOM_VARIANT,
 					BruiToolkit.CSS_SERIOUS);
 		}
-
-		createButton(parent, IDialogConstants.DETAILS_ID, "恢复默认", false).setData(RWT.CUSTOM_VARIANT,
-				BruiToolkit.CSS_INFO);
-		createButton(parent, IDialogConstants.CANCEL_ID, "取消", false).setData(RWT.CUSTOM_VARIANT,
-				BruiToolkit.CSS_WARNING);
-		createButton(parent, IDialogConstants.OK_ID, "确定", true).setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_NORMAL);
 	}
 
 	@Override
@@ -176,14 +183,14 @@ public class Customizer extends Dialog {
 	private void edit(GridItem item) {
 		Column col = (Column) item.getData();
 		String editor;
-		if(item.getItemCount()>0) {
+		if (item.getItemCount() > 0) {
 			editor = "列组编辑器";
-		}else if(item.getParentItem()==null) {
+		} else if (item.getParentItem() == null) {
 			editor = "列编辑器(非列组子列)";
-		}else {
+		} else {
 			editor = "列编辑器";
 		}
-		Editor.open(editor, context, col.clone(), (r,t)->{
+		Editor.open(editor, context, col.clone(), (r, t) -> {
 			AUtil.simpleCopy(t, col);
 			right.refresh(col, true);
 		});
@@ -195,11 +202,24 @@ public class Customizer extends Dialog {
 			resetToDefault();
 		} else if (buttonId == IDialogConstants.CLIENT_ID) {
 			saveToSite();
+			setReturnCode(OK);
+			close();
 		}
 		super.buttonPressed(buttonId);
 	}
 
 	private void saveToSite() {
+		boolean ok = MessageDialog.openQuestion(getShell(), "保存到站点", "保存到站点将影响所有用户，请确认将当前的修改保存到站点。");
+		if (ok) {
+			siteConfig.setColumns(storedColumns);
+			Services.get(SystemService.class).deleteClientSetting("pms", "assembly@" + siteConfig.getName());
+			try {
+				ModelLoader.saveSite();
+			} catch (IOException e) {
+				logger.error("保存站点配置出错", e);
+				Layer.message(e.getMessage(), Layer.ICON_CANCEL);
+			}
+		}
 	}
 
 	private void resetToDefault() {
@@ -209,6 +229,8 @@ public class Customizer extends Dialog {
 
 	@Override
 	protected void okPressed() {
+		UserSession.current().saveClientSetting("assembly@" + config.getName(),
+				new GsonBuilder().create().toJson(storedColumns));
 		super.okPressed();
 	}
 
