@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
@@ -217,11 +218,13 @@ public class UserSession {
 	}
 
 	public String getClientSetting(String name) {
-		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), "pms", name);
+		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), ModelLoader.site.getName(),
+				name);
 	}
 
 	public void saveClientSetting(String name, String setting) {
-		Document doc = new Document("userId",loginUser.getUserId()).append("clientId", "pms").append("name", name).append("value", setting);
+		Document doc = new Document("userId", loginUser.getUserId()).append("clientId", ModelLoader.site.getName())
+				.append("name", name).append("value", setting);
 		Services.get(SystemService.class).updateClientSetting(doc);
 	}
 

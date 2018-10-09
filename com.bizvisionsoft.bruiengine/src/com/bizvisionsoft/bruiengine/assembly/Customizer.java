@@ -216,7 +216,7 @@ public class Customizer extends Dialog {
 		boolean ok = MessageDialog.openQuestion(getShell(), "保存到站点", "保存到站点将影响所有用户，请确认将当前的修改保存到站点。");
 		if (ok) {
 			siteConfig.setColumns(storedColumns);
-			Services.get(SystemService.class).deleteClientSetting("pms", "assembly@" + siteConfig.getName());
+			Services.get(SystemService.class).deleteClientSetting(ModelLoader.site.getName(), "assembly@" + siteConfig.getName());
 			try {
 				ModelLoader.saveSite();
 			} catch (IOException e) {
