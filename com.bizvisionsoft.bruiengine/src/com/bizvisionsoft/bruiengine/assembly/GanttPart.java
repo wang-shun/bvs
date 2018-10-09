@@ -377,4 +377,12 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 		}).orElse(false);
 	}
 
+	public void redo() {
+		gantt.redo();
+	}
+
+	public void undo() {
+		gantt.undo();
+	}
+
 }

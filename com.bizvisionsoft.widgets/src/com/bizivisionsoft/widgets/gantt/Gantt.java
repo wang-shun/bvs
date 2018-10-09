@@ -115,6 +115,8 @@ public class Gantt extends Composite {
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_marker.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_multiselect.js");
 		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_smart_rendering.js");
+		WidgetToolkit.requireWidgetJs(widgetName, "codebase/ext/dhtmlxgantt_undo.js");
+
 		// WidgetToolkit.requireWidgetJs(widgetName,
 		// "codebase/ext/dhtmlxgantt_tooltip.js");
 
@@ -541,6 +543,14 @@ public class Gantt extends Composite {
 		remoteObject.call("setScaleType", new JsonObject().add("type", type));
 	}
 
+	public void redo() {
+		remoteObject.call("redo", new JsonObject());
+	}
+
+	public void undo() {
+		remoteObject.call("undo", new JsonObject());
+	}
+
 	public void setDirty(boolean dirty) {
 		remoteObject.call("setDirty", new JsonObject().add("dirty", dirty));
 		this.dirty = dirty;
@@ -549,5 +559,5 @@ public class Gantt extends Composite {
 	public boolean isDirty() {
 		return dirty;
 	}
-	
+
 }

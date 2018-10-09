@@ -17,6 +17,8 @@ bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_critical_path.js
 bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_grouping.js
 bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_marker.js
 bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_multiselect.js
+bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_smart_rendering.js
+bvs/widgets/dhtmlxgantt/codebase/ext/dhtmlxgantt_undo.js
 bvs/widgets/dhtmlxgantt/codebase/locale/locale_cn.js
 bvs/widgets/dhtmlxgantt/codebase/dhtmlx.js
 bvs/widgets/dhtmlxgantt/codebase/dhtmlxgantt.js
