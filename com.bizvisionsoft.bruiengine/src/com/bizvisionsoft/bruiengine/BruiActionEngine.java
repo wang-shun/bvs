@@ -31,12 +31,21 @@ public class BruiActionEngine extends BruiEngine {
 
 	public class ActionCommand {
 
-		String[] params;
-		Object[] values;
+		private IBruiContext context;
+		private Event event;
 
 		public ActionCommand(IBruiContext context, Event event) {
+			this.context = context;
+			this.event = event;
+		}
+
+		public ActionCommand(IBruiContext context) {
+			this(context, null);
+		}
+
+		public Object run(Class<?> clazz) {
 			User user = Brui.sessionManager.getUser();
-			params = new String[] { //
+			String[] params = new String[] { //
 					Execute.PARAM_ACTION, //
 					Execute.PARAM_EVENT, //
 					Execute.PARAM_CONTEXT, //
@@ -47,23 +56,16 @@ public class BruiActionEngine extends BruiEngine {
 					Execute.CURRENT_USER_ID, //
 					Execute.PARAM_CONTEXT_CONTENT };//
 
-			values = new Object[] { //
+			Object[] values = new Object[] { //
 					action, //
 					event, //
 					context, //
-					context.getInput(), //
-					context.getContentPageInput(), //
-					context.getRootInput(), //
+					context == null ? null : context.getInput(), //
+					context == null ? null : context.getContentPageInput(), //
+					context == null ? null : context.getRootInput(), //
 					user, //
-					user.getUserId(), //
-					context.getContent() };//
-		}
-
-		public ActionCommand(IBruiContext context) {
-			this(context, null);
-		}
-
-		public Object run(Class<?> clazz) {
+					user == null ? null : user.getUserId(), //
+					context == null ? null : context.getContent() };//
 			return invokeMethodInjectParams(Execute.class, values, params, null);
 		}
 
