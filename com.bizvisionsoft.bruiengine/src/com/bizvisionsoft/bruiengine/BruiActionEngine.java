@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine;
 
+import java.lang.annotation.Annotation;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
@@ -43,7 +45,7 @@ public class BruiActionEngine extends BruiEngine {
 			this(context, null);
 		}
 
-		public Object run(Class<?> clazz) {
+		public <T extends Annotation> Object run(Class<T> clazz) {
 			User user = Brui.sessionManager.getUser();
 			String[] params = new String[] { //
 					Execute.PARAM_ACTION, //
@@ -66,7 +68,7 @@ public class BruiActionEngine extends BruiEngine {
 					user, //
 					user == null ? null : user.getUserId(), //
 					context == null ? null : context.getContent() };//
-			return invokeMethodInjectParams(Execute.class, values, params, null);
+			return invokeMethodInjectParams(clazz, values, params, null);
 		}
 
 	}
