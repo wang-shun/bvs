@@ -79,12 +79,13 @@ public class BruiGridRenderEngine extends BruiEngine {
 		Object image = getColumnImageUrl(element, column);
 
 		if (defaultRender != null) {
-			defaultRender.renderCell(cell, column, value, image, callBack);
+			defaultRender.renderCell(cell, column, element, value, image, callBack);
 		} else {
-			invokeMethodInjectParams(GridRenderUpdateCell.class, new Object[] { cell, column, value, image, callBack },
+			invokeMethodInjectParams(GridRenderUpdateCell.class,
+					new Object[] { cell, column, element, value, image, callBack },
 					new String[] { GridRenderUpdateCell.PARAM_CELL, GridRenderUpdateCell.PARAM_COLUMN,
-							GridRenderUpdateCell.PARAM_VALUE, GridRenderUpdateCell.PARAM_IMAGE,
-							GridRenderUpdateCell.PARAM_CALLBACK },
+							GridRenderUpdateCell.PARAM_INPUT_ELEMENT, GridRenderUpdateCell.PARAM_VALUE,
+							GridRenderUpdateCell.PARAM_IMAGE, GridRenderUpdateCell.PARAM_CALLBACK },
 					element.toString());
 		}
 	}

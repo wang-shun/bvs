@@ -34,6 +34,7 @@ public class GridPartExcelExporter {
 	private String fileName;
 	private int currentRow = 0;
 	private XSSFSheet sheet;
+	private XSSFWorkbook wb;
 
 	public GridPartExcelExporter setViewer(GridTreeViewer viewer) {
 		this.viewer = viewer;
@@ -62,7 +63,7 @@ public class GridPartExcelExporter {
 		String filePath = folder.getPath() + "/" + fileName + ".xlsx";
 
 		// 创建Excel工作薄
-		XSSFWorkbook wb = new XSSFWorkbook();
+		wb = new XSSFWorkbook();
 		// 在工作薄下创建工作表
 		sheet = wb.createSheet(fileName);
 
@@ -84,6 +85,9 @@ public class GridPartExcelExporter {
 			createFooter(columns, grid);
 		}
 
+		// 设置表格列宽
+		setColumnWidth(columns);
+
 		// 将创建的Excel写入到文件中
 		FileOutputStream fos = new FileOutputStream(filePath);
 		wb.write(fos); // 写文件
@@ -92,6 +96,29 @@ public class GridPartExcelExporter {
 
 		// 构建下载地址并打开
 		UserSession.bruiToolkit().downloadLocalFile(filePath);
+	}
+
+	/**
+	 * 设置Excel表格列宽
+	 * 
+	 * @param columns
+	 *            需要设置列宽的列
+	 */
+	private void setColumnWidth(GridColumn[] columns) {
+		// 循环设置表格列宽。因只能设置excel表格列的字符宽度，所以需要根据获取excel的单元格字符宽度和像素宽度计算出当前列的字符宽度进行设置
+		for (int i = 0; i < columns.length; i++) {
+			// 获取单元格的字符宽度
+			int columnWidth = sheet.getColumnWidth(i);
+			// 当字符列宽为0时，表示该列隐藏，所以不需要设置列宽.只有字符宽度为0时，像素宽度才为0，因此只需判断当前单元格字符宽度不为0
+			if (columnWidth == 0)
+				continue;
+			// 获取单元格的像素宽度
+			Float columnWidthInPixels = sheet.getColumnWidthInPixels(i);
+			// 获取表格列宽度
+			int width = columns[i].getWidth();
+			// 设置excel表格列宽度，
+			sheet.setColumnWidth(i, columnWidth / columnWidthInPixels.intValue() * width);
+		}
 	}
 
 	/**
@@ -176,6 +203,19 @@ public class GridPartExcelExporter {
 	 * @return 当前行数
 	 */
 	private void createTitle(GridColumn[] columns, Grid grid) {
+		int regionFirstRow = 0;
+		// 创建表格title行和列
+		XSSFRow titleRow = createRow();
+		XSSFCell titleCell = titleRow.createCell(0);
+		// 使用表格名称作为title
+		titleCell.setCellValue(fileName);
+		// TODO 设置title的样式
+
+		// 合并title单元格
+		CellRangeAddress region = new CellRangeAddress(regionFirstRow, regionFirstRow, 0, columns.length - 1);
+		sheet.addMergedRegion(region);
+		regionFirstRow++;
+
 		// 如果存在Group则创建Group表头
 		XSSFRow groupRow = null;
 		if (grid.getColumnGroupCount() > 0) {
@@ -206,7 +246,8 @@ public class GridPartExcelExporter {
 					// 将列头文本放到cell
 					setCellValue(cell, text, null, isColumnMarkupValue);
 					// 合并单元格
-					CellRangeAddress region = new CellRangeAddress(0, 0, i, i + columnGroup.getColumns().length - 1);
+					region = new CellRangeAddress(regionFirstRow, regionFirstRow, i,
+							i + columnGroup.getColumns().length - 1);
 					sheet.addMergedRegion(region);
 
 					previousGroup = columnGroup;
@@ -224,7 +265,7 @@ public class GridPartExcelExporter {
 
 			// 判斷是否存在分組，如果存在分組，并且该列不在分组中，则合并上下两行。
 			if (groupRow != null && columns[i].getColumnGroup() == null) {
-				CellRangeAddress region = new CellRangeAddress(0, 1, i, i);
+				region = new CellRangeAddress(regionFirstRow, regionFirstRow + 1, i, i);
 				sheet.addMergedRegion(region);
 				cell = groupRow.getCell(i);
 			}
