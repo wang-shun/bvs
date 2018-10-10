@@ -65,7 +65,7 @@ public class PagedExcelExporter {
 		doExport(templatePath, headData, bodyData, sheetName, fos);
 	}
 
-	private void doExport(String templatePath, Map<String, String> headData, Map<String, String[][]> bodyData,
+	public void doExport(String templatePath, Map<String, String> headData, Map<String, String[][]> bodyData,
 			String sheetName, FileOutputStream fos) throws Exception {
 		wb = null;
 		sheet = null;

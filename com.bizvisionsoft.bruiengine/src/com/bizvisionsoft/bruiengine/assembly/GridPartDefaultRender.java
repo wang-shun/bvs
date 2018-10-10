@@ -36,10 +36,10 @@ public class GridPartDefaultRender {
 	}
 
 	public void renderCell(ViewerCell cell, Column column, Object value, Object image) {
-		renderCell(cell, column, value, image, null);
+		renderCell(cell, column, cell.getElement(), value, image, null);
 	}
 
-	public void renderCell(ViewerCell cell, Column column, Object value, Object image,
+	public void renderCell(ViewerCell cell, Column column, Object element, Object value, Object image,
 			BiConsumer<String, Object> callback) {
 		String text;
 		if ((value instanceof Number) && ((Number) value).doubleValue() == 0 && !column.isForceDisplayZero()) {
