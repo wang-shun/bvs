@@ -22,7 +22,7 @@ public class SendMessageToUserACT {
 			InputDialog id = new InputDialog(br.getCurrentShell(), "消息", user + ":", "",
 					i -> i.trim().isEmpty() ? "消息不可为空" : null).setTextMultiline(true);
 			if (id.open() == InputDialog.OK)
-				((UserSession) t).sendMessage("系统管理员发来消息：<br/>"+id.getValue());
+				((UserSession) t).sendMessage("系统管理员","通知", id.getValue());
 		});
 	}
 

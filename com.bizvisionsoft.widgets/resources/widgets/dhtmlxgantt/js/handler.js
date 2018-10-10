@@ -14,7 +14,7 @@
 		methods : [ "addListener", "removeListener", "addTask", "addLink",
 				"updateTask", "updateLink", "deleteTask", "deleteLink",
 				"autoSchedule", "highlightCriticalPath", "setScaleType",
-				"save", "setDirty" ]
+				"save", "setDirty", "redo", "undo" ]
 
 	});
 
@@ -62,6 +62,10 @@
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 表格菜单配置
 				this.configGridMenu(this.config);
+
+				// ////////////////////////////////////////////////////////////////////////////////
+				// 表格行拖拽配置
+				this.configGridRowDrag(this.config);
 
 				// ////////////////////////////////////////////////////////////////////////////////
 				// 配置刻度
@@ -134,8 +138,6 @@
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
 
-			this.gantt.config.order_branch = true;
-			this.gantt.config.order_branch_free = false;// 禁止在整个项目中拖拽任务
 			this.gantt.config.sort = true;
 
 			this.gantt.config.touch = "force";
@@ -150,12 +152,16 @@
 			this.gantt.config.links.finish_to_finish = "FF";
 
 			if (config.readonly) {
+				this.gantt.config.order_branch = false;
+				this.gantt.config.order_branch_free = false;// 禁止在整个项目中拖拽任务
 				this.gantt.config.drag_project = false;
 				this.gantt.config.drag_links = false;
 				this.gantt.config.drag_move = false;
 				this.gantt.config.drag_progress = false;
 				this.gantt.config.drag_resize = false;
 			} else {
+				this.gantt.config.order_branch = true;
+				this.gantt.config.order_branch_free = false;// 禁止在整个项目中拖拽任务
 				this.gantt.config.drag_project = true;
 				this.gantt.config.drag_links = true;
 				this.gantt.config.drag_move = true;
@@ -188,6 +194,21 @@
 					}
 				}
 			};
+		},
+
+		configGridRowDrag : function(config) {
+			if (config.readonly) {
+				return;
+			}
+
+			// ////////////////////////////////////////////////////////////////
+			// 禁止放入到不同的parent下
+			gantt.attachEvent("onBeforeTaskMove", function(id, parent, tindex) {
+				var task = gantt.getTask(id);
+				if (task.parent != parent)
+					return false;
+				return true;
+			});
 		},
 
 		configGridMenu : function(config) {
@@ -225,9 +246,9 @@
 
 			}
 
-			//处理标准模板
-			config.columns.forEach(function(col){  
-				if(col.name=="wbs"){
+			// 处理标准模板
+			config.columns.forEach(function(col) {
+				if (col.name == "wbs") {
 					col.template = gantt.getWBSCode;
 				}
 			});
@@ -320,20 +341,34 @@
 			if (config.readonly && !config.grid_width) {
 				var gantt = this.gantt;
 				var fFunc = gantt.date.date_to_str("%Y-%m-%d %H:%i");
-				gantt.attachEvent("onTaskClick",function(id, e) {//
-					var task = gantt.getTask(id);//
-					layer.tips("开始："+ fFunc(task.start_date)//
-							+ "<br>完成："+ fFunc(task.end_date)//
-							+ "<br>工期："+ task.duration+ "天"//
-							+ (task.chargerInfo ? ("<br>负责：" + task.chargerInfo): "")//
-							+ (task.actualFinish ? " 已完成": (task.actualStart?"已开始":""))//
-							,$("div[task_id$='"+ task.id + "'")[0],//
-							{
-								tips : [ 1, '#3595CC' ],
-								time : 4000
-							});
-					return true;
-				});
+				gantt
+						.attachEvent(
+								"onTaskClick",
+								function(id, e) {//
+									var task = gantt.getTask(id);//
+									layer
+											.tips(
+													"开始："
+															+ fFunc(task.start_date)//
+															+ "<br>完成："
+															+ fFunc(task.end_date)//
+															+ "<br>工期："
+															+ task.duration
+															+ "天"//
+															+ (task.chargerInfo ? ("<br>负责：" + task.chargerInfo)
+																	: "")//
+															+ (task.actualFinish ? " 已完成"
+																	: (task.actualStart ? "已开始"
+																			: ""))//
+													,
+													$("div[task_id$='"
+															+ task.id + "'")[0],//
+													{
+														tips : [ 1, '#3595CC' ],
+														time : 4000
+													});
+									return true;
+								});
 			}
 		},
 
@@ -439,8 +474,8 @@
 									+ overdue + "d</span>";
 						}
 					}
-					if(task.chargerInfo){
-						text += "&nbsp;"+ task.chargerInfo;
+					if (task.chargerInfo) {
+						text += "&nbsp;" + task.chargerInfo;
 					}
 					return text;
 				};
@@ -453,7 +488,7 @@
 					if (task.type == gantt.config.types.milestone) {
 						return task.text + "&nbsp;" + formatFunc(start);
 					}
-					return task.chargerInfo?task.chargerInfo:"";
+					return task.chargerInfo ? task.chargerInfo : "";
 				};
 			}
 		},
@@ -750,6 +785,14 @@
 		highlightCriticalPath : function(param) {
 			this.gantt.config.highlight_critical_path = param.display;
 			this.gantt.render();
+		},
+
+		undo : function() {
+			this.gantt.undo();
+		},
+
+		redo : function() {
+			this.gantt.redo();
 		},
 
 		setScaleType : function(param) {

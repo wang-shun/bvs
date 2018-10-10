@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +32,11 @@ public class SessionManager {
 
 	public List<UserSession> getUserSessions() {
 		return userSessions;
+	}
+
+	public Stream<UserSession> getUserSessions(User receiver) {
+		return userSessions.stream()
+				.filter(us -> us.getUser() != null && us.getUser().getUserId().equals(receiver.getUserId()));
 	}
 
 	/**

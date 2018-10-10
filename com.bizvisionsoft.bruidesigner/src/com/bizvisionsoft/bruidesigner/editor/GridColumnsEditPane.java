@@ -309,5 +309,5 @@ public class GridColumnsEditPane extends Composite {
 		parent.layout();
 
 	}
-
+	
 }

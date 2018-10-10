@@ -13,8 +13,10 @@ import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
+import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
@@ -139,8 +141,13 @@ public class UserSession {
 		return true;
 	}
 
-	public void sendMessage(final String message) {
-		display.asyncExec(() -> MessageDialog.openWarning(display.getActiveShell(), "通知", message));
+	public void sendMessage(String senderName, String subject, String content) {
+		display.asyncExec(() -> {
+			WidgetHandler.getHandler().notice(senderName+" "+subject, content);
+			// 取消本方式
+			// MessageDialog.openWarning(display.getActiveShell(), subject, senderName + ":
+			// <br>" + content);
+		});
 	}
 
 	@ReadValue("loginTime")
@@ -217,11 +224,13 @@ public class UserSession {
 	}
 
 	public String getClientSetting(String name) {
-		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), "pms", name);
+		return Services.get(SystemService.class).getClientSetting(loginUser.getUserId(), ModelLoader.site.getName(),
+				name);
 	}
 
 	public void saveClientSetting(String name, String setting) {
-		Document doc = new Document("userId",loginUser.getUserId()).append("clientId", "pms").append("name", name).append("value", setting);
+		Document doc = new Document("userId", loginUser.getUserId()).append("clientId", ModelLoader.site.getName())
+				.append("name", name).append("value", setting);
 		Services.get(SystemService.class).updateClientSetting(doc);
 	}
 

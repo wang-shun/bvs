@@ -1,5 +1,7 @@
 package com.bizvisionsoft.bruiengine;
 
+import java.lang.annotation.Annotation;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Event;
 import org.osgi.framework.Bundle;
@@ -24,9 +26,52 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.TraceUserUtil;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.tools.Check;
 
 public class BruiActionEngine extends BruiEngine {
+
+	public class ActionCommand {
+
+		private IBruiContext context;
+		private Event event;
+
+		public ActionCommand(IBruiContext context, Event event) {
+			this.context = context;
+			this.event = event;
+		}
+
+		public ActionCommand(IBruiContext context) {
+			this(context, null);
+		}
+
+		public <T extends Annotation> Object run(Class<T> clazz) {
+			User user = Brui.sessionManager.getUser();
+			String[] params = new String[] { //
+					Execute.PARAM_ACTION, //
+					Execute.PARAM_EVENT, //
+					Execute.PARAM_CONTEXT, //
+					Execute.CONTEXT_INPUT_OBJECT, //
+					Execute.PAGE_CONTEXT_INPUT_OBJECT, //
+					Execute.ROOT_CONTEXT_INPUT_OBJECT, //
+					Execute.CURRENT_USER, //
+					Execute.CURRENT_USER_ID, //
+					Execute.PARAM_CONTEXT_CONTENT };//
+
+			Object[] values = new Object[] { //
+					action, //
+					event, //
+					context, //
+					context == null ? null : context.getInput(), //
+					context == null ? null : context.getContentPageInput(), //
+					context == null ? null : context.getRootInput(), //
+					user, //
+					user == null ? null : user.getUserId(), //
+					context == null ? null : context.getContent() };//
+			return invokeMethodInjectParams(clazz, values, params, null);
+		}
+
+	}
 
 	private Action action;
 
@@ -125,35 +170,19 @@ public class BruiActionEngine extends BruiEngine {
 			return;
 		}
 		TraceUserUtil.traceAction(action, context);
-		Object[] parameters = new Object[] { action, event, context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getUser() };
-		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
-				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
-		invokeMethodInjectParams(Execute.class, parameters, paramAnnotations, null);
+		new ActionCommand(context, event).run(Execute.class);
 	}
 
 	public String getImageURL(IBruiContext context) {
-		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getUser() };
-		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
-				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
-		return (String) invokeMethodInjectParams(ImageURL.class, parameters, paramAnnotations, null);
+		return (String) new ActionCommand(context).run(ImageURL.class);
 	}
 
 	public String getText(IBruiContext context) {
-		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getUser() };
-		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
-				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
-		return (String) invokeMethodInjectParams(Label.class, parameters, paramAnnotations, null);
+		return (String) new ActionCommand(context).run(Label.class);
 	}
 
 	public String getTooltips(IBruiContext context) {
-		Object[] parameters = new Object[] { action, context, context.getInput(), context.getContentPageInput(),
-				context.getRootInput(), Brui.sessionManager.getUser() };
-		String[] paramAnnotations = new String[] { Execute.PARAM_ACTION, Execute.PARAM_EVENT, Execute.PARAM_CONTEXT,
-				Execute.CONTEXT_INPUT_OBJECT, Execute.PAGE_CONTEXT_INPUT_OBJECT, Execute.ROOT_CONTEXT_INPUT_OBJECT };
-		return (String) invokeMethodInjectParams(Tooltips.class, parameters, paramAnnotations, null);
+		return (String) new ActionCommand(context).run(Tooltips.class);
 	}
 
 }

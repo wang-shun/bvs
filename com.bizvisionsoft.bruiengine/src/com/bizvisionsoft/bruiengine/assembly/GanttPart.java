@@ -2,7 +2,9 @@ package com.bizvisionsoft.bruiengine.assembly;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
@@ -35,13 +37,14 @@ import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
+import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider{
-	
+public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IClientCustomizable {
+
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
@@ -71,6 +74,8 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 
 	private ISelection selection;
 
+	private Composite parent;
+
 	@Init
 	private void init() {
 		this.config = context.getAssembly();
@@ -79,59 +84,6 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 
 		eventEngine = BruiEventEngine.create(config, bruiService, context);
-
-		ganttConfig = Config.defaultConfig(config.isReadonly());
-
-		// 配置操作列
-		ganttConfig.brui_RowMenuEnable = !Check.isNotAssigned(config.getRowActions());
-		ganttConfig.brui_HeadMenuEnable = !Check.isNotAssigned(config.getHeadActions());
-
-		ganttConfig.columns = new ArrayList<>();
-		// 配置列和表格宽度
-		int gridWidth = 8;
-		for (int i = 0; i < config.getColumns().size(); i++) {
-			Column c = config.getColumns().get(i);
-
-			ColumnConfig colConf = new ColumnConfig();
-			ganttConfig.columns.add(colConf);
-
-			colConf.label = c.getText();
-			colConf.name = c.getName();
-			colConf.resize = c.isResizeable();
-			colConf.width = c.getWidth();
-			colConf.tree = i == 0;
-			switch (c.getAlignment()) {
-			case SWT.CENTER:
-				colConf.align = "center";
-				break;
-			case SWT.RIGHT:
-				colConf.align = "right";
-				break;
-			default:
-				colConf.align = "left";
-				break;
-			}
-			if (c.isHide()) {
-				colConf.hide = c.isHide();
-			} else {
-				gridWidth += c.getWidth();
-			}
-		}
-
-		if (config.isGanttGridWidthCalculate()) {
-			ganttConfig.grid_width = gridWidth - 8;//
-			if (ganttConfig.brui_RowMenuEnable || ganttConfig.brui_HeadMenuEnable) {
-				ganttConfig.grid_width += 34;
-			}
-		} else {
-			ganttConfig.grid_width = config.getGanttGridWidth();
-		}
-
-		// 设置默认的时间刻度
-		ganttConfig.brui_initScaletype = config.getGanttTimeScaleType();
-
-		// 设置是否为对比甘特图
-		ganttConfig.brui_enableGanttCompare = config.isEnableGanttCompare();
 
 	}
 
@@ -145,6 +97,8 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 
 	@CreateUI
 	public void createUI(Composite parent) {
+		this.parent = parent;
+
 		Composite panel;
 		if (config.isHasTitlebar()) {
 			panel = createSticker(parent);
@@ -153,22 +107,23 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 		}
 
 		panel.setLayout(new FillLayout());
+		ganttConfig = configGantt();
 		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
 
-//		Date[] dateRange = dataSetEngine.getGanttInitDateRange();
-//		if (dateRange != null && dateRange.length == 2) {
-//			gantt.setInitDateRange(dateRange[0], dateRange[1]);
-//		}
-//		Calendar cal = Calendar.getInstance();
-//		Date from = cal.getTime();
-//		cal.add(Calendar.MONTH, 6);
-//		Date to = cal.getTime();
-//		gantt.setInitDateRange(from, to);
+		// Date[] dateRange = dataSetEngine.getGanttInitDateRange();
+		// if (dateRange != null && dateRange.length == 2) {
+		// gantt.setInitDateRange(dateRange[0], dateRange[1]);
+		// }
+		// Calendar cal = Calendar.getInstance();
+		// Date from = cal.getTime();
+		// cal.add(Calendar.MONTH, 6);
+		// Date to = cal.getTime();
+		// gantt.setInitDateRange(from, to);
 
 		// 查询数据
 		try {
-			tasks = (List<?>)dataSetEngine.getGanntInputData(new BasicDBObject(), context);
-			links = (List<?>)dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
+			tasks = (List<?>) dataSetEngine.getGanntInputData(new BasicDBObject(), context);
+			links = (List<?>) dataSetEngine.getGanntInputLink(new BasicDBObject(), context);
 			// 设置为gantt输入
 			gantt.setInputData(tasks, links);
 		} catch (Exception e) {
@@ -215,6 +170,65 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 		// addGanttEventListener(GanttEventCode.onError.name(), e1 -> testEvent(e1));
 		context.setSelectionProvider(this);
 
+	}
+
+	private Config configGantt() {
+		Config ganttConfig = Config.defaultConfig(config.isReadonly());
+
+		// 配置操作列
+		ganttConfig.brui_RowMenuEnable = !Check.isNotAssigned(config.getRowActions());
+		ganttConfig.brui_HeadMenuEnable = !Check.isNotAssigned(config.getHeadActions());
+
+		ganttConfig.columns = new ArrayList<>();
+		// 配置列和表格宽度
+		int gridWidth = 8;
+		List<Column> columns = Optional.ofNullable(getStore()).orElse(config.getColumns());
+
+		for (int i = 0; i < columns.size(); i++) {
+			Column c = columns.get(i);
+
+			ColumnConfig colConf = new ColumnConfig();
+			ganttConfig.columns.add(colConf);
+
+			colConf.label = c.getText();
+			colConf.name = c.getName();
+			colConf.resize = c.isResizeable();
+			colConf.width = c.getWidth();
+			colConf.tree = i == 0;
+			switch (c.getAlignment()) {
+			case SWT.CENTER:
+				colConf.align = "center";
+				break;
+			case SWT.RIGHT:
+				colConf.align = "right";
+				break;
+			default:
+				colConf.align = "left";
+				break;
+			}
+			if (c.isHide()) {
+				colConf.hide = c.isHide();
+			} else {
+				gridWidth += c.getWidth();
+			}
+		}
+
+		if (config.isGanttGridWidthCalculate()) {
+			ganttConfig.grid_width = gridWidth - 8;//
+			if (ganttConfig.brui_RowMenuEnable || ganttConfig.brui_HeadMenuEnable) {
+				ganttConfig.grid_width += 34;
+			}
+		} else {
+			ganttConfig.grid_width = config.getGanttGridWidth();
+		}
+
+		// 设置默认的时间刻度
+		ganttConfig.brui_initScaletype = config.getGanttTimeScaleType();
+
+		// 设置是否为对比甘特图
+		ganttConfig.brui_enableGanttCompare = config.isEnableGanttCompare();
+
+		return ganttConfig;
 	}
 
 	// private void testEvent(Event e1) {
@@ -266,7 +280,7 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 	public void reschedule() {
 		gantt.autoSchedule();
 	}
-	
+
 	public void callSave() {
 		gantt.save();
 	}
@@ -324,7 +338,7 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 			});
 		}
 	}
-	
+
 	public boolean isDirty() {
 		return gantt.isDirty();
 	}
@@ -332,6 +346,43 @@ public class GanttPart implements IPostSelectionProvider ,IDataSetEngineProvider
 	@Override
 	public BruiDataSetEngine getDataSetEngine() {
 		return dataSetEngine;
+	}
+
+	@Override
+	public IBruiContext getContext() {
+		return context;
+	}
+
+	@Override
+	public IBruiService getBruiService() {
+		return bruiService;
+	}
+
+	@Override
+	public Assembly getConfig() {
+		return config;
+	}
+
+	@Override
+	public void customized(List<Column> result) {
+		Arrays.asList(parent.getChildren()).forEach(c -> c.dispose());
+		createUI(parent);
+		parent.layout();
+	}
+
+	public boolean customize() {
+		return Check.isAssignedThen(Customizer.open(getConfig(), getStore(), false), ret -> {
+			customized(ret);
+			return true;
+		}).orElse(false);
+	}
+
+	public void redo() {
+		gantt.redo();
+	}
+
+	public void undo() {
+		gantt.undo();
 	}
 
 }

@@ -229,5 +229,9 @@ public class WidgetHandler {
 		}
 		remoteObject.call(EVENT_AJAX, jsonParam);
 	}
-	
+
+	public void notice(String title, String body) {
+		remoteObject.call("notice", new JsonObject().set("title", title).set("body", body));
+	}
+
 }

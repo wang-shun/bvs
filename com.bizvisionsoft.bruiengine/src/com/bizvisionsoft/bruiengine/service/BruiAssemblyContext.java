@@ -80,7 +80,7 @@ public class BruiAssemblyContext implements IBruiContext {
 	}
 
 	public Object getContent(String name) {
-		return engine.getContent(name);
+		return engine == null ? null : engine.getContent(name);
 	}
 
 	public IBruiContext getChildContextByAssemblyName(String assemblyName) {

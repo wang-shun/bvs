@@ -60,12 +60,17 @@ public class Customizer extends Dialog {
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static List<Column> open(Assembly config, List<Column> stored) {
+		return open(config, stored, true);
+	}
+
+	public static List<Column> open(Assembly config, List<Column> stored, boolean enableColumnGroup) {
 		Customizer cust = new Customizer(Display.getCurrent().getActiveShell());
 		cust.siteConfig = config;
 		cust.config = (Assembly) config.clone();
 		cust.configColumns = cust.config.getColumns();
 		cust.storedColumns = stored == null ? ((Assembly) config.clone()).getColumns() : stored;
 		cust.context = UserSession.newAssemblyContext();
+		cust.enableColumnGroup = enableColumnGroup;
 		return cust.open() == OK ? cust.storedColumns : null;
 	}
 
@@ -78,6 +83,7 @@ public class Customizer extends Dialog {
 	private GridTreeViewer left;
 	private GridTreeViewer right;
 	private IBruiContext context;
+	private boolean enableColumnGroup;
 
 	protected Customizer(Shell parentShell) {
 		super(parentShell);
@@ -138,26 +144,24 @@ public class Customizer extends Dialog {
 
 		col = new GridViewerColumn(right, SWT.LEFT);
 		UserSession.bruiToolkit().enableMarkup(col.getColumn());
-		col.getColumn()
-				.setText("<div style='color:#808080;cursor:pointer;font-size:14px;font-weight:bolder;'>{  }</div>");
+		if (enableColumnGroup) {
+			col.getColumn()
+					.setText("<div style='color:#808080;cursor:pointer;font-size:14px;font-weight:bolder;'>{  }</div>");
+			col.getColumn().addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					doAddGroup();
+				}
+			});
+		}
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if ("su".equals(UserSession.current().getUser().getUserId())) {
-					return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
-				} else {
-					return "";
-				}
+				return "<a class='layui-icon layui-icon-edit' style='color:#808080;font-size:20px;' href='edit' target='_rwt'></a>";
 			}
 		});
 		col.getColumn().setWidth(38);
 		col.getColumn().setResizeable(false);
-		col.getColumn().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				doAddGroup();
-			}
-		});
 
 		right.setInput(storedColumns);
 
@@ -212,7 +216,7 @@ public class Customizer extends Dialog {
 		boolean ok = MessageDialog.openQuestion(getShell(), "保存到站点", "保存到站点将影响所有用户，请确认将当前的修改保存到站点。");
 		if (ok) {
 			siteConfig.setColumns(storedColumns);
-			Services.get(SystemService.class).deleteClientSetting("pms", "assembly@" + siteConfig.getName());
+			Services.get(SystemService.class).deleteClientSetting(ModelLoader.site.getName(), "assembly@" + siteConfig.getName());
 			try {
 				ModelLoader.saveSite();
 			} catch (IOException e) {

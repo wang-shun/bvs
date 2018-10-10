@@ -223,5 +223,10 @@ public class BruiService implements IBruiService {
 	public void updateSidebarActionBudget(String actionName) {
 		Check.instanceThen(part, View.class, p -> p.updateSidebarActionBudget(actionName));
 	}
-	
+
+	@Override
+	public void sendMessage(User sender, User receiver, String subject, String content) {
+		Brui.sessionManager.getUserSessions(receiver).forEach(us -> us.sendMessage(sender.getName(), subject, content));
+	}
+
 }

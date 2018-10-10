@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
 public @interface Execute {
 
 	String PARAM_CONTEXT = "context";
+	
+	String PARAM_CONTEXT_CONTENT = "content";
 
 	String PARAM_EVENT = "event";
 
