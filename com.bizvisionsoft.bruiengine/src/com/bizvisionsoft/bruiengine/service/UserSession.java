@@ -143,8 +143,10 @@ public class UserSession {
 
 	public void sendMessage(String senderName, String subject, String content) {
 		display.asyncExec(() -> {
-			WidgetHandler.getHandler().notice(subject,content);
-//			MessageDialog.openWarning(display.getActiveShell(), subject, senderName + ": <br>" + content);
+			WidgetHandler.getHandler().notice(senderName+" "+subject, content);
+			// 取消本方式
+			// MessageDialog.openWarning(display.getActiveShell(), subject, senderName + ":
+			// <br>" + content);
 		});
 	}
 
