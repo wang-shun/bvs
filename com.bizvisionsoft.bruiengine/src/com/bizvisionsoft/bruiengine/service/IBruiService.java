@@ -62,4 +62,8 @@ public interface IBruiService extends IServiceWithId {
 	public void backup();
 
 	public void updateSidebarActionBudget(String actionName);
+
+	public void sendMessage(User sender, User receiver, String subject, String content);
+
+	public User getCurrentConsignerInfo();
 }

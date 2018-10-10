@@ -13,6 +13,7 @@ import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.widgets.Display;
 
+import com.bizivisionsoft.widgets.tools.WidgetHandler;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.md.service.ReadValue;
 import com.bizvisionsoft.bruicommons.ModelLoader;
@@ -140,8 +141,11 @@ public class UserSession {
 		return true;
 	}
 
-	public void sendMessage(final String message) {
-		display.asyncExec(() -> MessageDialog.openWarning(display.getActiveShell(), "֪ͨ", message));
+	public void sendMessage(String senderName, String subject, String content) {
+		display.asyncExec(() -> {
+			WidgetHandler.getHandler().notice(subject,content);
+//			MessageDialog.openWarning(display.getActiveShell(), subject, senderName + ": <br>" + content);
+		});
 	}
 
 	@ReadValue("loginTime")

@@ -14,7 +14,7 @@
 
 		methods : [ "addEventListener", "removeEventListener",
 				"addGestureAction", "removeGestureAction", "setTargetState",
-				"animate", "sliding", "download"]
+				"animate", "sliding", "download","notice" ]
 
 	});
 
@@ -218,17 +218,36 @@
 			});
 			delete this.slidingSetting;
 		},
-		
-		download: function (parameter) {
-		    var config = $.extend(true, { method: 'post' }, parameter);
-		    var $form = $('<form target="_blank" style="display:none;" method="' + config.method + '" />');
-		    $form.attr('action', config.url);
-		    for (var key in config.data) {
-		    	$form.append($('<input>',{type:'hidden',name:key,val:config.data[key] }));
-		    }
-		    $(document.body).append($form);
-		    $form[0].submit();
-		    $form.remove();
+
+		download : function(parameter) {
+			var config = $.extend(true, {
+				method : 'post'
+			}, parameter);
+			var $form = $('<form target="_blank" style="display:none;" method="'
+					+ config.method + '" />');
+			$form.attr('action', config.url);
+			for ( var key in config.data) {
+				$form.append($('<input>', {
+					type : 'hidden',
+					name : key,
+					val : config.data[key]
+				}));
+			}
+			$(document.body).append($form);
+			$form[0].submit();
+			$form.remove();
+		},
+
+		notice : function(parameter) {
+			var Notification = window.Notification || window.mozNotification
+					|| window.webkitNotification;
+			if (Notification) {
+				Notification.requestPermission(function(result) {
+					if ("granted" == result) {
+						new Notification(parameter.title, parameter);
+					}
+				});
+			}
 		}
 
 	};
