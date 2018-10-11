@@ -771,5 +771,17 @@ public class Assembly extends ModelObject {
 	public boolean isTinyEditor() {
 		return tinyEditor;
 	}
+	
+	//禁用标准导出功能
+	
+	private boolean disableStandardExport;
+	
+	public boolean isDisableStandardExport() {
+		return disableStandardExport;
+	}
+	
+	public void setDisableStandardExport(boolean disableStandardExport) {
+		this.disableStandardExport = disableStandardExport;
+	}
 
 }

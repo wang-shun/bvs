@@ -218,7 +218,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@CreateUI
 	public void createUI(Composite parent) {
 		this.parent = parent;
-		
+
 		// 如果初始化时不加载数据，queryOn必须打开
 		if (config.isDisableInitLoadData()) {
 			queryOn = true;
@@ -365,8 +365,41 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
 		sticker.service = bruiService;
+
+		createDefaultActions(sticker);
+		
 		sticker.createUI(parent);
 		return sticker.content;
+	}
+
+	private void createDefaultActions(StickerPart sticker) {
+		Action action;
+		//////////////////////////////////////////////////////////////////////////////////
+		// 创建默认的action
+		//3. 导出
+		if (!Boolean.TRUE.equals(config.isDisableStandardExport())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/excel_w.svg");
+			action.setStyle("info");
+			sticker.addAction(action, e -> export());
+		}
+
+		// 2. 查询
+		if (Check.isAssigned(config.getFields())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/search_w.svg");
+			action.setStyle("info");
+			sticker.addAction(action, e -> openQueryEditor());
+		}
+
+		// 1. 设置
+		action = new Action();
+		action.setType(Action.TYPE_CUSTOMIZED);
+		action.setImage("/img/setting_w.svg");
+		action.setStyle("info");
+		sticker.addAction(action, e -> customize());
 	}
 
 	protected Control createQueryPanel(Composite parent) {
@@ -958,7 +991,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	@Override
 	public void customized(List<Column> result) {
-		Arrays.asList(parent.getChildren()).forEach(c->c.dispose());
+		Arrays.asList(parent.getChildren()).forEach(c -> c.dispose());
 		createUI(parent);
 		parent.layout();
 	}
