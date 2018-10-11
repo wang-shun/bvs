@@ -218,7 +218,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@CreateUI
 	public void createUI(Composite parent) {
 		this.parent = parent;
-		
+
 		// 如果初始化时不加载数据，queryOn必须打开
 		if (config.isDisableInitLoadData()) {
 			queryOn = true;
@@ -915,8 +915,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	public void export() {
 		// 获取导出文件名。使用StickerTitle作为文件名。
 		String fileName = (config.getStickerTitle() == null || config.getStickerTitle().trim().isEmpty())
-				? config.getStickerTitle()
-				: config.getName();
+				? config.getName()
+				: config.getStickerTitle();
 
 		// 不分页时，直接导出表格数据
 		if (!config.isGridPageControl()) {
@@ -952,13 +952,14 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
 			logger.error("导出Grid： " + fileName + " 的Excel数据时出错。" + e.getMessage());
-			throw new RuntimeException(e);
+			MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误",
+					"导出Grid： " + fileName + " 的Excel数据时出错。");
 		}
 	}
 
 	@Override
 	public void customized(List<Column> result) {
-		Arrays.asList(parent.getChildren()).forEach(c->c.dispose());
+		Arrays.asList(parent.getChildren()).forEach(c -> c.dispose());
 		createUI(parent);
 		parent.layout();
 	}
