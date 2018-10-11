@@ -14,9 +14,15 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -74,15 +80,33 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 
 	public static final String ID = "com.bizvisionsoft.bruidesigner.view.FolderView";
 	private TreeViewer viewer;
+	private Text searcher;
+	private FolderContentProvider provider;
 
 	public FolderView() {
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
+		parent.setLayout(new GridLayout());
+
+		searcher = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH|SWT.ICON_CANCEL);
+		searcher.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				if (e.detail == SWT.ICON_SEARCH) {
+					search(searcher.getText());
+				}else if(e.detail == SWT.ICON_CANCEL) {
+					search("");
+				}
+			}
+		});
+		searcher.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
 		viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setAutoExpandLevel(2);
-		viewer.setContentProvider(new FolderContentProvider());
+		provider = new FolderContentProvider();
+		viewer.setContentProvider(provider);
 		viewer.setLabelProvider(ModelToolkit.createLabelProvider());
 		Folder folder = SiteLoader.site.getRootFolder();
 		if (folder == null) {
@@ -106,6 +130,32 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 
 		folder.addPropertyChangeListener("name", FolderView.this);
 		setMenu();
+
+		viewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	}
+
+	private void search(String text) {
+		String searchText = text.trim();
+		if (searchText.isEmpty()) {
+			viewer.resetFilters();
+			viewer.expandAll();
+		} else {
+			ViewerFilter filter = new ViewerFilter() {
+				@Override
+				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					return match(element, searchText);
+				}
+			};
+			viewer.setFilters(new ViewerFilter[] { filter });
+			viewer.expandAll();
+		}
+	}
+
+	private boolean match(Object element, String searchText) {
+		if (element instanceof Assembly) {
+			return ((Assembly) element).getId().equals(searchText) || ((Assembly) element).getName().equals(searchText);
+		}
+		return Arrays.asList(provider.getChildren(element)).stream().anyMatch(o -> match(o, searchText));
 	}
 
 	private void setMenu() {

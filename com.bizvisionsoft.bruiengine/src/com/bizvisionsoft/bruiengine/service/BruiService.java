@@ -9,11 +9,14 @@ import org.bson.types.ObjectId;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizivisionsoft.widgets.datetime.DateTimeSetting;
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
@@ -24,9 +27,13 @@ import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.tools.Check;
+import com.bizvisionsoft.service.tools.Formatter;
 import com.bizvisionsoft.serviceconsumer.Services;
+import com.google.gson.GsonBuilder;
 
 public class BruiService implements IBruiService {
+
+	private static Logger logger = LoggerFactory.getLogger(BruiService.class);
 
 	final private Part part;
 
@@ -227,6 +234,14 @@ public class BruiService implements IBruiService {
 	@Override
 	public void sendMessage(User sender, User receiver, String subject, String content) {
 		Brui.sessionManager.getUserSessions(receiver).forEach(us -> us.sendMessage(sender.getName(), subject, content));
+	}
+
+	@Override
+	public void displaySiteModel(ModelObject config) {
+		String json = new GsonBuilder().setPrettyPrinting().create().toJson(config);
+		logger.debug("显示模型配置:\n" + json);
+		json = Formatter.toHtml(json);
+		Layer.open("Brui 调试状态", json, 800, 600);
 	}
 
 }

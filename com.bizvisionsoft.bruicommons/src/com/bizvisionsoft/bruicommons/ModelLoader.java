@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.WatchService;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -25,6 +26,8 @@ public class ModelLoader implements BundleActivator {
 	public static String sitePath;
 	public static Bundle bundle;
 
+	private WatchService watchService;
+
 	public void start(BundleContext context) throws Exception {
 		bundle = context.getBundle();
 		sitePath = context.getProperty("com.bizvisionsoft.bruiengine.site");
@@ -41,7 +44,7 @@ public class ModelLoader implements BundleActivator {
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
 	public static void saveSite() throws IOException {
 		String json = new GsonBuilder().setPrettyPrinting().create().toJson(site);
 		FileWriter fw = new FileWriter(new File(ModelLoader.sitePath));
@@ -51,8 +54,12 @@ public class ModelLoader implements BundleActivator {
 		fw.close();
 	}
 
-
 	public void stop(BundleContext context) throws Exception {
+		try {
+			watchService.close();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 }

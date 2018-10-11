@@ -27,7 +27,7 @@ public class BruiEngine {
 	protected Class<?> clazz;
 	protected Object target;
 	protected IServiceWithId[] services;
-	public static Logger logger = LoggerFactory.getLogger(BruiEngine.class);
+	protected static Logger logger = LoggerFactory.getLogger(BruiEngine.class);
 
 	protected BruiEngine(Class<?> clazz) {
 		this.clazz = clazz;

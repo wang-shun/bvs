@@ -41,10 +41,14 @@ public class Layer {
 	}
 
 	public static void open(String title, String content, int width, int height) {
+		open(title, 1, content, width, height);
+	}
+	
+	public static void open(String title,int type, String content, int width, int height) {
 		String html = "<div style='margin:16px;'>" + esc(content) + "</div>";
 		WidgetToolkit
-				.execJS("layer.open({\"type\": 1,\"title\": \"" + title + "\",\"skin\": \"layui-layer-lan\", area: [\""
-						+ width + "px\", \"" + height + "px\"], content: \"" + esc(html) + "\"})");
+				.execJS("layer.open({\"type\": "+type+",\"title\": \"" + title + "\",\"skin\": \"layui-layer-lan\", area: [\""
+						+ width + "px\", \"" + height + "px\"], \"maxmin\":true,content: \"" + esc(html) + "\"})");
 	}
 
 	public static void alert(String title, String html, int width, int height) {
