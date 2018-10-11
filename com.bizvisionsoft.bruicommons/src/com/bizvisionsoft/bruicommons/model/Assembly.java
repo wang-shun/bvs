@@ -771,5 +771,39 @@ public class Assembly extends ModelObject {
 	public boolean isTinyEditor() {
 		return tinyEditor;
 	}
+	
+	//禁用标准导出功能
+	
+	private boolean disableStandardExport;
+	
+	public boolean isDisableStandardExport() {
+		return disableStandardExport;
+	}
+	
+	public void setDisableStandardExport(boolean disableStandardExport) {
+		this.disableStandardExport = disableStandardExport;
+	}
+	
+	private boolean disableCustomized;
+	
+	public boolean isDisableCustomized() {
+		return disableCustomized;
+	}
+	
+	public void setDisableCustomized(boolean disableCustomized) {
+		this.disableCustomized = disableCustomized;
+	}
+	
+	private boolean disableStdQuery;
+	
+	public boolean isDisableStdQuery() {
+		return disableStdQuery;
+	}
+	
+	public void setDisableStdQuery(boolean disableStdQuery) {
+		this.disableStdQuery = disableStdQuery;
+	}
+
+
 
 }

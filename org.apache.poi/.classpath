@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jaxb-api-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jaxb-core-2.3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jaxb-impl-2.3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/curvesapi-1.05.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlbeans-3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/poi-4.0.0.jar"/>
