@@ -793,6 +793,17 @@ public class Assembly extends ModelObject {
 	public void setDisableCustomized(boolean disableCustomized) {
 		this.disableCustomized = disableCustomized;
 	}
+	
+	private boolean disableStdQuery;
+	
+	public boolean isDisableStdQuery() {
+		return disableStdQuery;
+	}
+	
+	public void setDisableStdQuery(boolean disableStdQuery) {
+		this.disableStdQuery = disableStdQuery;
+	}
+
 
 
 }

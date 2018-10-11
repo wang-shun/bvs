@@ -376,7 +376,16 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		Action action;
 		//////////////////////////////////////////////////////////////////////////////////
 		// 创建默认的action
-		// 3. 导出
+		// 设置
+		if (!Boolean.TRUE.equals(config.isDisableCustomized())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/setting_w.svg");
+			action.setStyle("info");
+			sticker.addAction(action, e -> customize());
+		}
+
+		// 导出
 		if (!Boolean.TRUE.equals(config.isDisableStandardExport())) {
 			action = new Action();
 			action.setType(Action.TYPE_CUSTOMIZED);
@@ -385,8 +394,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			sticker.addAction(action, e -> export());
 		}
 
-		// 2. 查询
-		if (Check.isAssigned(config.getFields())) {
+		// 查询
+		if (!Boolean.TRUE.equals(config.isDisableStdQuery()) && Check.isAssigned(config.getFields())) {
 			action = new Action();
 			action.setType(Action.TYPE_CUSTOMIZED);
 			action.setImage("/img/search_w.svg");
@@ -394,14 +403,6 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			sticker.addAction(action, e -> openQueryEditor());
 		}
 
-		// 1. 设置
-		if (!Boolean.TRUE.equals(config.isDisableCustomized())) {
-			action = new Action();
-			action.setType(Action.TYPE_CUSTOMIZED);
-			action.setImage("/img/setting_w.svg");
-			action.setStyle("info");
-			sticker.addAction(action, e -> customize());
-		}
 	}
 
 	protected Control createQueryPanel(Composite parent) {

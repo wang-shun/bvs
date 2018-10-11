@@ -63,6 +63,8 @@ public class AssemblyGridEditor extends ModelEditor {
 		createCheckboxField(parent, "禁用标准导出功能：", inputData, "disableStandardExport", SWT.CHECK);
 		
 		createCheckboxField(parent, "禁用客户端设置功能：", inputData, "disableCustomized", SWT.CHECK);
+		
+		createCheckboxField(parent, "禁用标准查询功能：", inputData, "disableStdQuery", SWT.CHECK);
 
 		new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
