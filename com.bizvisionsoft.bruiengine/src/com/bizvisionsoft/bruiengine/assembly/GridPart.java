@@ -367,7 +367,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		sticker.service = bruiService;
 
 		createDefaultActions(sticker);
-		
+
 		sticker.createUI(parent);
 		return sticker.content;
 	}
@@ -376,7 +376,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		Action action;
 		//////////////////////////////////////////////////////////////////////////////////
 		// 创建默认的action
-		//3. 导出
+		// 3. 导出
 		if (!Boolean.TRUE.equals(config.isDisableStandardExport())) {
 			action = new Action();
 			action.setType(Action.TYPE_CUSTOMIZED);
@@ -395,11 +395,13 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		}
 
 		// 1. 设置
-		action = new Action();
-		action.setType(Action.TYPE_CUSTOMIZED);
-		action.setImage("/img/setting_w.svg");
-		action.setStyle("info");
-		sticker.addAction(action, e -> customize());
+		if (!Boolean.TRUE.equals(config.isDisableCustomized())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/setting_w.svg");
+			action.setStyle("info");
+			sticker.addAction(action, e -> customize());
+		}
 	}
 
 	protected Control createQueryPanel(Composite parent) {

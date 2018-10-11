@@ -783,5 +783,16 @@ public class Assembly extends ModelObject {
 	public void setDisableStandardExport(boolean disableStandardExport) {
 		this.disableStandardExport = disableStandardExport;
 	}
+	
+	private boolean disableCustomized;
+	
+	public boolean isDisableCustomized() {
+		return disableCustomized;
+	}
+	
+	public void setDisableCustomized(boolean disableCustomized) {
+		this.disableCustomized = disableCustomized;
+	}
+
 
 }
