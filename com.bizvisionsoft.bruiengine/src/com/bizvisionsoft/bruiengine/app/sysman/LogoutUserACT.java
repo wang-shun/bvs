@@ -13,7 +13,7 @@ public class LogoutUserACT {
 	private IBruiService brui;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			((UserSession)t).logout(null);
 		});

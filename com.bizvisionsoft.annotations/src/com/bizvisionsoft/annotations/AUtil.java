@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.bson.Document;
+
 import com.bizvisionsoft.annotations.md.service.Behavior;
 import com.bizvisionsoft.annotations.md.service.ImageURL;
 import com.bizvisionsoft.annotations.md.service.Label;
@@ -22,6 +24,7 @@ import com.bizvisionsoft.annotations.md.service.Structure;
 import com.bizvisionsoft.annotations.md.service.WriteValue;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.google.gson.GsonBuilder;
+import com.mongodb.DBObject;
 
 public class AUtil {
 
@@ -77,7 +80,11 @@ public class AUtil {
 
 	@SuppressWarnings("unchecked")
 	public static void writeValue(Object element, String cName, String fName, Object value) {
-		if (element instanceof Map<?, ?>) {
+		if(element instanceof Document) {
+			((Document) element).append(fName, value);
+		}else if(element instanceof DBObject) {
+			((DBObject) element).put(fName, value);
+		}else if (element instanceof Map<?, ?>) {
 			((Map<String, Object>) element).put(fName, value);
 		} else {
 			write(element.getClass(), WriteValue.class, element, cName, fName, value, a -> a.value());

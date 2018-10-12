@@ -23,8 +23,8 @@ public class OpenSelected {
 	}
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_ACTION) Action action) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.ACTION) Action action) {
 		Assembly assembly = context.getAssembly();
 		context.selected(em -> {
 			boolean editable = action.isEditorAssemblyEditable();

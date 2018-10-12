@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
 import org.eclipse.rap.fileupload.FileUploadEvent;
 import org.eclipse.rap.fileupload.FileUploadHandler;
 import org.eclipse.rap.fileupload.FileUploadListener;
@@ -30,6 +31,7 @@ import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
 import com.bizvisionsoft.service.tools.FileTools;
 import com.bizvisionsoft.serviceconsumer.Services;
+import com.mongodb.BasicDBList;
 
 public class FileField extends EditorField implements FileUploadListener {
 
@@ -231,6 +233,20 @@ public class FileField extends EditorField implements FileUploadListener {
 			progress.setSelection(0);
 			progress.moveBelow(null);
 		}
+	}
+	
+	@Override
+	protected Object decodeValue_DBObject(Object value) {
+		BasicDBList result = new BasicDBList();
+		this.value.forEach(rf-> result.add(rf.encodeBson()));
+		return result;
+	}
+	
+	@Override
+	protected Object decodeValue_Document(Object value) {
+		ArrayList<Document> result = new ArrayList<>();
+		this.value.forEach(rf-> result.add(rf.encodeDocument()));
+		return result;
 	}
 
 }

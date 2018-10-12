@@ -90,17 +90,18 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout());
 
-		searcher = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH|SWT.ICON_CANCEL);
+		searcher = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 		searcher.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				if (e.detail == SWT.ICON_SEARCH) {
 					search(searcher.getText());
-				}else if(e.detail == SWT.ICON_CANCEL) {
+				} else if (e.detail == SWT.ICON_CANCEL) {
 					search("");
 				}
 			}
 		});
+		searcher.setMessage("组件完整的名称,id或者标题");
 		searcher.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
@@ -153,7 +154,8 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 
 	private boolean match(Object element, String searchText) {
 		if (element instanceof Assembly) {
-			return ((Assembly) element).getId().equals(searchText) || ((Assembly) element).getName().equals(searchText);
+			return searchText.equals(((Assembly) element).getId()) || searchText.equals(((Assembly) element).getName())
+					|| searchText.equals(((Assembly) element).getStickerTitle());
 		}
 		return Arrays.asList(provider.getChildren(element)).stream().anyMatch(o -> match(o, searchText));
 	}

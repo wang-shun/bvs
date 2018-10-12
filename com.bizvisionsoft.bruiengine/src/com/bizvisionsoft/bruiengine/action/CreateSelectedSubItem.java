@@ -36,7 +36,7 @@ public class CreateSelectedSubItem {
 	}
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		Object parent = context.getFirstElement();
 		try {
 			Object input = Platform.getBundle(bundleId).loadClass(className).newInstance();

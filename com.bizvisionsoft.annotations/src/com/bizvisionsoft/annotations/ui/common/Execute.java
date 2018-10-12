@@ -12,20 +12,24 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Execute {
 
-	String PARAM_CONTEXT = "context";
+	String CONTEXT = "context";
 	
-	String PARAM_CONTEXT_CONTENT = "content";
+	String CONTEXT_CONTENT = "content";
 
-	String PARAM_EVENT = "event";
+	String EVENT = "event";
 
-	String PARAM_ACTION = "action";
+	String ACTION = "action";
 	
 	String ROOT_CONTEXT_INPUT_OBJECT = "root_context_input_object";
 
 	String PAGE_CONTEXT_INPUT_OBJECT = "page_context_input_object";
 
 	String CONTEXT_INPUT_OBJECT = "context_input_object";
+	
+	String CONTEXT_SELECTION_1ST = "context_selection_1st";
 
+	String CONTEXT_SELECTION = "context_selection";
+	
 	String CURRENT_USER = "current_user";
 
 	String CURRENT_USER_ID = "current_user_id";

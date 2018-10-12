@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Optional;
 
+import org.bson.Document;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -22,6 +23,7 @@ import com.bizvisionsoft.bruiengine.assembly.EditorPart;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.service.tools.Check;
+import com.mongodb.DBObject;
 
 public abstract class EditorField {
 
@@ -172,7 +174,7 @@ public abstract class EditorField {
 		check(save);
 
 		Object value = convertValueToWrite();
-
+		
 		AUtil.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), value);
 	}
 
@@ -180,15 +182,32 @@ public abstract class EditorField {
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Object value = getValue();
 		if (value != null) {
+			//获得取值的字段名，用于选择器处理返回对象类型时的具体返回值
 			String vf = fieldConfig.getValueFieldName();
 			if (Check.isAssigned(vf)) {
 				Field field = value.getClass().getDeclaredField(vf);
 				field.setAccessible(true);
 				value = field.get(value);
 			}
+			
+			//处理Document input类型
+			if(input instanceof Document) {
+				value = decodeValue_Document(value);
+			}else if(input instanceof DBObject) {
+				value = decodeValue_DBObject(value);
+			}
 		}
 		return value;
 	}
+
+	protected Object decodeValue_Document(Object value) {
+		return value;
+	}
+
+	protected Object decodeValue_DBObject(Object value) {
+		return value;
+	}
+
 
 	protected void saveBefore() throws Exception {
 

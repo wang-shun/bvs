@@ -19,8 +19,8 @@ public class TraceUserACT {
 	private IBruiService br;
 
 	@Execute
-	private void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_EVENT) Event event) {
+	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.EVENT) Event event) {
 		context.selected(em -> {
 			boolean trace = !Boolean.TRUE.equals(((User) em).getTrace());
 			Services.get(UserService.class).trace(((User) em).getUserId(), trace);

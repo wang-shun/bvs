@@ -21,8 +21,8 @@ public class ConsignACT {
 	private IBruiService br;
 
 	@Execute
-	private void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_EVENT) Event event) {
+	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.EVENT) Event event) {
 		context.selected(em -> {
 			User user = (User) em;
 			if (user.getConsigner() != null) {

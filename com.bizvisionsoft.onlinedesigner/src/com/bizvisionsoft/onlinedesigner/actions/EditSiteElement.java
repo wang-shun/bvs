@@ -15,7 +15,7 @@ public class EditSiteElement {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(em -> {
 			if (em instanceof Site) {
 				Editor.open("Õ¾µã±à¼­Æ÷", context, (Site) em, (o, t) -> {

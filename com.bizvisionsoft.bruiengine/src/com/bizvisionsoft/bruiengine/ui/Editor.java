@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.ui;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.eclipse.jface.window.Window;
@@ -7,7 +8,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -20,9 +24,11 @@ public class Editor<T> extends Popup {
 
 	private T input;
 
+	private static Logger logger = LoggerFactory.getLogger(Editor.class);
+
 	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input, boolean modifyInput,
 			BiConsumer<BasicDBObject, M> doit) {
-		return create(name, parentContext, input, modifyInput).ok(doit);
+		return Optional.ofNullable(create(name, parentContext, input, modifyInput)).map(e -> e.ok(doit)).orElse(null);
 	}
 
 	public static <M> Editor<M> open(String name, IBruiContext parentContext, M input,
@@ -33,7 +39,10 @@ public class Editor<T> extends Popup {
 	public static <M> Editor<M> create(String name, IBruiContext parentContext, M input, boolean modifyInput) {
 		Assembly editorConfig = ModelLoader.site.getAssemblyByName(name);
 		if (editorConfig == null) {
-			throw new RuntimeException("Ãû³Æ£º" + name + ",±à¼­Æ÷²»´æÔÚ");
+			String msg = "Ãû³Æ£º" + name + ",±à¼­Æ÷²»´æÔÚ";
+			Layer.message(msg, Layer.ICON_CANCEL);
+			logger.error(msg);
+			return null;
 		}
 		return new Editor<M>(editorConfig, parentContext).setInput(modifyInput, input);
 	}

@@ -13,7 +13,7 @@ public class QueryInGrid {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		// »ñµÃ
 		IQueryEnable content = (IQueryEnable) context.getContent();
 		content.openQueryEditor();

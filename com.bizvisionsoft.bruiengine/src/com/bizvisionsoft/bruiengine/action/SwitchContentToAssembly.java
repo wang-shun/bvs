@@ -22,7 +22,7 @@ public class SwitchContentToAssembly {
 	}
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		if (openContent) {
 			bruiService.openContent(assembly, context.getFirstElement());
 		} else {
