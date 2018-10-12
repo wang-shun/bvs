@@ -963,12 +963,12 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		// 构建弹出menu，选择是全部导出还是导出当前结果
 		Action current = new Action();
 		current.setName("current");
-		current.setText("当前数据");
+		current.setText("导出本页");
 		current.setStyle("normal");
 
 		Action all = new Action();
 		all.setName("all");
-		all.setText("所有数据");
+		all.setText("导出所有页");
 		all.setStyle("normal");
 
 		new ActionMenu(bruiService).setActions(Arrays.asList(current, all)).handleActionExecute("current", a -> {
