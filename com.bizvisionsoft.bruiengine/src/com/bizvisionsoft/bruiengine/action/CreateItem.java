@@ -37,7 +37,7 @@ public class CreateItem {
 	}
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		Object parent = context.getFirstElement();
 		try {
 			//ÏÈ¼ì²é×¢½â

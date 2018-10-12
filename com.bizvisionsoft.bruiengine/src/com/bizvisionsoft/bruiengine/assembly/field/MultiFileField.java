@@ -17,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.bson.Document;
 import org.eclipse.rap.fileupload.DiskFileUploadReceiver;
 import org.eclipse.rap.fileupload.FileUploadHandler;
 import org.eclipse.rap.rwt.RWT;
@@ -53,8 +54,11 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.service.FileService;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.RemoteFile;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.service.tools.FileTools;
 import com.bizvisionsoft.serviceconsumer.Services;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 
 public class MultiFileField extends EditorField {
 
@@ -75,7 +79,7 @@ public class MultiFileField extends EditorField {
 		pushSession = new ServerPushSession();
 		uploadPanels = new ArrayList<UploadPanel>();
 	}
-	
+
 	@Override
 	protected boolean isVertivalLayout() {
 		return true;
@@ -267,10 +271,12 @@ public class MultiFileField extends EditorField {
 		super.dispose();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setValue(Object value) {
-		this.value = (List<RemoteFile>) value;
+		this.value = new ArrayList<RemoteFile>();
+		if(value instanceof List<?>)
+		((List<?>) value).stream().forEach(this::appendToValue);
+
 		// 添加uploadpanel
 		if (this.value != null && this.value.size() > 0) {
 			String[] items = new String[this.value.size()];
@@ -280,6 +286,20 @@ public class MultiFileField extends EditorField {
 				items[i] = "<a style='color:#4a4a4a;' target='_blank' href='" + url + "'>" + remoteFile.name + "</a>";
 			}
 			createUploadPanel(items, this.value);
+		}
+	}
+
+	private void appendToValue(Object e) {
+		if (e instanceof RemoteFile) {
+			this.value.add((RemoteFile) e);
+		} else if (e instanceof Document) {
+			RemoteFile rf = new RemoteFile();
+			rf.decodeDocument((Document) e);
+			this.value.add(rf);
+		} else if (e instanceof BasicDBObject) {
+			RemoteFile rf = new RemoteFile();
+			rf.decodeBson((BasicDBObject) e);
+			this.value.add(rf);
 		}
 	}
 
@@ -314,8 +334,12 @@ public class MultiFileField extends EditorField {
 					File file = lfs.get(i);
 					String contentType = FileTools.getContentType(file, null);
 					String uploadBy = Brui.sessionManager.getUser().getUserId();
+					String fileNamespace = fieldConfig.getFileNamespace();
+					if (Check.isNotAssigned(fileNamespace)) {
+						throw new RuntimeException("未设置文件保存的名称空间，字段：" + fieldConfig.getName());
+					}
 					RemoteFile rf = Services.get(FileService.class).upload(new FileInputStream(file), file.getName(),
-							fieldConfig.getFileNamespace(), contentType, uploadBy);
+							fileNamespace, contentType, uploadBy);
 					newValue.add(rf);
 				}
 			}
@@ -388,6 +412,20 @@ public class MultiFileField extends EditorField {
 				setButtonEnabled(true);
 		}
 
+	}
+
+	@Override
+	protected Object decodeValue_DBObject(Object value) {
+		BasicDBList result = new BasicDBList();
+		this.value.forEach(rf -> result.add(rf.encodeBson()));
+		return result;
+	}
+
+	@Override
+	protected Object decodeValue_Document(Object value) {
+		ArrayList<Document> result = new ArrayList<>();
+		this.value.forEach(rf -> result.add(rf.encodeDocument()));
+		return result;
 	}
 
 }

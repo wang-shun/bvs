@@ -23,8 +23,8 @@ public class ExpandNCollapseGridTree {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_EVENT) Event event) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.EVENT) Event event) {
 		Check.instanceThen(context.getContent(), GridPart.class, p -> showMenu(p, event));
 	}
 

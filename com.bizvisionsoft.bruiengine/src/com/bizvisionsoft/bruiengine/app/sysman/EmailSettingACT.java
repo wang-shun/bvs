@@ -17,7 +17,7 @@ public class EmailSettingACT {
 	private IBruiService brui;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		Document setting = Services.get(CommonService.class).getSetting("邮件设置");
 		if (setting == null) {
 			setting = new Document("name", "邮件设置");

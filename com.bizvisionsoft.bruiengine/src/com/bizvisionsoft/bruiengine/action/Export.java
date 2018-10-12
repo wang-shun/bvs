@@ -11,8 +11,8 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 public class Export {
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_ACTION) Action action) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.ACTION) Action action) {
 		Object content = context.getContent();
 		// ÅÐ¶ÏcontentÊÇ·ñ¼Ì³ÐÓÚIExportable
 		if (content instanceof IExportable) {

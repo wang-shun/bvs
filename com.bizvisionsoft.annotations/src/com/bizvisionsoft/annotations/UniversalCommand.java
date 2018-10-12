@@ -18,10 +18,31 @@ public class UniversalCommand {
 
 	private String targetClassName;
 
+	private String targetCollection;
+
+	/**
+	 * 设置了目标集合后，将按照目标集合插入 document对象，设置该参数后，插入数据前将不按照targetClass进行编码。
+	 * 返回插入结果取决于是否设置了targetClassName,如果没有设置，返回的是Document,否则将按照targetClass进行编码后返回
+	 * 
+	 * @param targetCollection
+	 * @return
+	 */
+	public UniversalCommand setTargetCollection(String targetCollection) {
+		this.targetCollection = targetCollection;
+		return this;
+	}
+
+	public String getTargetCollection() {
+		return targetCollection;
+	}
+
 	private HashMap<String, Object> parameters = new HashMap<>();
 
-	public void addParameter(String name, Object value) {
+	private boolean ignoreNull;
+
+	public UniversalCommand addParameter(String name, Object value) {
 		parameters.put(name, value);
+		return this;
 	}
 
 	public <T> T getParameter(String name, Class<T> typeOfValue) {
@@ -79,7 +100,8 @@ public class UniversalCommand {
 			} else if (val instanceof List) {
 				val = getListValue((List<?>) val, e -> getDocumentValue(e));
 			}
-			result.append(key, val);
+			if (!ignoreNull || val != null)
+				result.append(key, val);
 		});
 		return result;
 	}
@@ -98,7 +120,8 @@ public class UniversalCommand {
 			} else if (val instanceof List) {
 				val = getListValue((List<?>) val, e -> getBasicDBObjectValue(e));
 			}
-			result.append((String) et.getKey(), val);
+			if (!ignoreNull || val != null)
+				result.append((String) et.getKey(), val);
 		});
 		return result;
 	}
@@ -111,12 +134,13 @@ public class UniversalCommand {
 			} else if (val instanceof List<?>) {
 				result.add(getListValue((List<?>) val, fun));
 			} else {
-				result.add(val);
+				if (!ignoreNull || val != null)
+					result.add(val);
 			}
 		});
 		return result;
 	}
-	
+
 	private Object handleSpecialKey(Map<?, ?> value) {
 		String stid = (String) value.get("$oid");
 		if (stid != null) {
@@ -145,12 +169,18 @@ public class UniversalCommand {
 		}
 	}
 
-	public void setTargetClassName(String targetClassName) {
+	public UniversalCommand setTargetClassName(String targetClassName) {
 		this.targetClassName = targetClassName;
+		return this;
 	}
 
 	public String getTargetClassName() {
 		return targetClassName;
+	}
+
+	public UniversalCommand ignoreNull(boolean ignoreNull) {
+		this.ignoreNull = ignoreNull;
+		return this;
 	}
 
 }

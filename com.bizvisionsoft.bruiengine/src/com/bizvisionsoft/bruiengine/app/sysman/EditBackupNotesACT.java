@@ -20,7 +20,7 @@ public class EditBackupNotesACT {
 	private IBruiService brui;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			String notes = Optional.ofNullable(((Backup) t).getNotes()).orElse("");
 			InputDialog id = new InputDialog(brui.getCurrentShell(), "备份说明", "编辑备份说明", notes, null)

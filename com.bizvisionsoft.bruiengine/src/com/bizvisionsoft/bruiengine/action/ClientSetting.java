@@ -9,7 +9,7 @@ import com.bizvisionsoft.service.tools.Check;
 public class ClientSetting {
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		if (!Check.instanceThen(context.getContent(), IClientCustomizable.class, IClientCustomizable::customize)) {
 			throw new RuntimeException("组件：" + context.getAssembly() + ", 不支持客户端设置功能，必须使用实现IClientCustomizable的组件。");
 		}

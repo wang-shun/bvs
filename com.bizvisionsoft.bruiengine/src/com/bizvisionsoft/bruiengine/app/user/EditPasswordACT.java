@@ -21,8 +21,8 @@ public class EditPasswordACT {
 	private IBruiService bruiService;
 
 	@Execute
-	private void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context,
-			@MethodParam(Execute.PARAM_EVENT) Event event) {
+	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
+			@MethodParam(Execute.EVENT) Event event) {
 		open(bruiService, context, "–ﬁ∏ƒ’Àªß√‹¬Î");
 	}
 

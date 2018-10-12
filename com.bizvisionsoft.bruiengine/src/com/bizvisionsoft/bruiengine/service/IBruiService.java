@@ -8,19 +8,20 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public interface IBruiService extends IServiceWithId {
-
+	
 	public static String Id = "com.bizvisionsoft.service.bruiService";
 
 	public boolean closeCurrentPart();
 
 	public User getCurrentUserInfo();
-	
+
 	public String getCurrentUserId();
 
 	public void loginUser(User user);
@@ -38,8 +39,8 @@ public interface IBruiService extends IServiceWithId {
 	public void switchContent(String assemblyName, Object input);
 
 	public void openContent(Assembly assembly, Object input);
-	
-	public void openContent(Assembly assembly, Object input,Consumer<BruiAssemblyContext> callback);
+
+	public void openContent(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback);
 
 	public void switchPage(String pageName, String inputUid);
 
@@ -52,10 +53,10 @@ public interface IBruiService extends IServiceWithId {
 	public void closeCurrentContent();
 
 	OperationInfo operationInfo();
-	
+
 	public boolean confirm(String title, String message);
 
-	Command command(ObjectId target_id,Date date,String name);
+	Command command(ObjectId target_id, Date date, String name);
 
 	public boolean switchMnt(boolean selection);
 
@@ -66,4 +67,6 @@ public interface IBruiService extends IServiceWithId {
 	public void sendMessage(User sender, User receiver, String subject, String content);
 
 	public User getCurrentConsignerInfo();
+
+	public void displaySiteModel(ModelObject config); 
 }

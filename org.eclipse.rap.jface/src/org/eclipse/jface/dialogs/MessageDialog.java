@@ -134,7 +134,7 @@ public class MessageDialog extends IconAndMessageDialog {
 	 */
 	private Control customArea;
 
-	protected String[] buttonStyle;
+	public String[] buttonStyle;
 
 	/**
 	 * Create a message dialog. Note that the dialog will have no visual
@@ -420,7 +420,7 @@ public class MessageDialog extends IconAndMessageDialog {
 	 * @param kind
 	 * @return
 	 */
-	static String[] getButtonStyle(int kind) {
+	public static String[] getButtonStyle(int kind) {
 		String[] dialogButtonLabels;
 		switch (kind) {
 		case ERROR:

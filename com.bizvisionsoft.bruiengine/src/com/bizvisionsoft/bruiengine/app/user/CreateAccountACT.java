@@ -17,7 +17,7 @@ public class CreateAccountACT {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		Editor.open("´´½¨ÕË»§±à¼­Æ÷", context, new User(), (r, i) -> {
 			User item = Services.get(UserService.class).insert(i);
 			GridPart grid = (GridPart) context.getContent();

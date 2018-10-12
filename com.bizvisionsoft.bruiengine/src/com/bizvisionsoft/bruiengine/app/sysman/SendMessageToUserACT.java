@@ -16,7 +16,7 @@ public class SendMessageToUserACT {
 	private IBruiService br;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			User user = ((UserSession) t).getUser();
 			InputDialog id = new InputDialog(br.getCurrentShell(), "ÏûÏ¢", user + ":", "",

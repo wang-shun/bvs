@@ -16,7 +16,7 @@ public class RestoreFromBackupACT {
 	private IBruiService brui;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			if (brui.confirm("警告", "<span class='layui-badge'>危险操作</span>，请确认您将要使用备份恢复系统！<br>本操作将删除当前系统所有的数据。")) {
 				boolean ok = Services.get(SystemService.class).restoreFromBackup(((Backup) t).getId());

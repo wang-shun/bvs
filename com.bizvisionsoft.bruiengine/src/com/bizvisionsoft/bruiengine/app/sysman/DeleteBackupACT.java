@@ -17,7 +17,7 @@ public class DeleteBackupACT {
 	private IBruiService brui;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(t -> {
 			if (brui.confirm("删除备份", "请确定要删除本备份。")) {
 				boolean ok = Services.get(SystemService.class).deleteBackup(((Backup) t).getId());

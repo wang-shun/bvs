@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine;
 
 import java.lang.annotation.Annotation;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Event;
@@ -48,21 +49,25 @@ public class BruiActionEngine extends BruiEngine {
 		public <T extends Annotation> Object run(Class<T> clazz) {
 			User user = Brui.sessionManager.getUser();
 			String[] params = new String[] { //
-					Execute.PARAM_ACTION, //
-					Execute.PARAM_EVENT, //
-					Execute.PARAM_CONTEXT, //
+					Execute.ACTION, //
+					Execute.EVENT, //
+					Execute.CONTEXT, //
 					Execute.CONTEXT_INPUT_OBJECT, //
+					Execute.CONTEXT_SELECTION, //
+					Execute.CONTEXT_SELECTION_1ST, //
 					Execute.PAGE_CONTEXT_INPUT_OBJECT, //
 					Execute.ROOT_CONTEXT_INPUT_OBJECT, //
 					Execute.CURRENT_USER, //
 					Execute.CURRENT_USER_ID, //
-					Execute.PARAM_CONTEXT_CONTENT };//
+					Execute.CONTEXT_CONTENT };//
 
 			Object[] values = new Object[] { //
 					action, //
 					event, //
 					context, //
 					context == null ? null : context.getInput(), //
+					context == null ? null : context.getSelection(), //
+					Optional.ofNullable(context).map(c -> c.getSelection()).map(s -> s.getFirstElement()).orElse(null), //
 					context == null ? null : context.getContentPageInput(), //
 					context == null ? null : context.getRootInput(), //
 					user, //

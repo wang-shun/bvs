@@ -247,7 +247,7 @@ public class BruiAssemblyContext implements IBruiContext {
 				result[i] = user;
 			} else if (MethodParam.CURRENT_USER_ID.equals(paramemterNames[i])) {
 				result[i] = user.getUserId();
-			} else if (Execute.PARAM_CONTEXT.equals(paramemterNames[i])) {
+			} else if (Execute.CONTEXT.equals(paramemterNames[i])) {
 				result[i] = this;
 			} else if (Execute.PAGE_CONTEXT_INPUT_OBJECT.equals(paramemterNames[i])) {
 				result[i] = pageInput;

@@ -17,7 +17,7 @@ public class RemoveSiteElement {
 	private IBruiService bruiService;
 
 	@Execute
-	public void execute(@MethodParam(Execute.PARAM_CONTEXT) IBruiContext context) {
+	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(em -> {
 			if (em instanceof Page) {
 				if (MessageDialog.openConfirm(bruiService.getCurrentShell(), "删除", "请确认将要选中的页面。")) {

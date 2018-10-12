@@ -376,6 +376,14 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		Action action;
 		//////////////////////////////////////////////////////////////////////////////////
 		// 创建默认的action
+		if (logger.isDebugEnabled()) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/info_w.svg");
+			action.setStyle("serious");
+			sticker.addAction(action, e -> bruiService.displaySiteModel(config));
+		}
+
 		// 设置
 		if (!Boolean.TRUE.equals(config.isDisableCustomized())) {
 			action = new Action();
