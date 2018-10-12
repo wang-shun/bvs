@@ -80,11 +80,11 @@ public class AUtil {
 
 	@SuppressWarnings("unchecked")
 	public static void writeValue(Object element, String cName, String fName, Object value) {
-		if(element instanceof Document) {
+		if (element instanceof Document) {
 			((Document) element).append(fName, value);
-		}else if(element instanceof DBObject) {
+		} else if (element instanceof DBObject) {
 			((DBObject) element).put(fName, value);
-		}else if (element instanceof Map<?, ?>) {
+		} else if (element instanceof Map<?, ?>) {
 			((Map<String, Object>) element).put(fName, value);
 		} else {
 			write(element.getClass(), WriteValue.class, element, cName, fName, value, a -> a.value());
@@ -351,6 +351,7 @@ public class AUtil {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T deepCopy(T source) {
+		// TODO deep拷贝解决 document时类型有些问题，例如ObjectId字段被转换为Map,可以考虑使用BsonProvider的方式处理
 		String json = new GsonBuilder().create().toJson(source);
 		return (T) new GsonBuilder().create().fromJson(json, source.getClass());
 	}
