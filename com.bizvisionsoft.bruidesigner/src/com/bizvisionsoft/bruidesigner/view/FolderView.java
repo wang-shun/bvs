@@ -31,10 +31,11 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Folder;
+import com.bizvisionsoft.bruidesigner.command.ITreePart;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 import com.bizvisionsoft.bruidesigner.model.SiteLoader;
 
-public class FolderView extends ViewPart implements PropertyChangeListener {
+public class FolderView extends ViewPart implements PropertyChangeListener ,ITreePart{
 
 	public class FolderContentProvider implements ITreeContentProvider {
 
@@ -241,6 +242,11 @@ public class FolderView extends ViewPart implements PropertyChangeListener {
 		Assembly newAssy = ModelToolkit.duplicateAssembly(assy);
 		newAssy.addPropertyChangeListener("name", this);
 		viewer.refresh(folder);
+	}
+
+	@Override
+	public TreeViewer getTree() {
+		return viewer;
 	}
 
 }
