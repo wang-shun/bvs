@@ -1,4 +1,4 @@
-package com.bizvisionsoft.onlinedesigner.actions;
+package com.bizvisionsoft.onlinedesigner.systemupdate;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
@@ -9,7 +9,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.SystemService;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class UpdatePMOACT {
+public class SystemUpdateV0501_pmo {
 
 	@Inject
 	private IBruiService brui;
@@ -38,7 +38,7 @@ public class UpdatePMOACT {
 			sb.append("<br/>");
 			sb.append("请确认进行本次更新。");
 			if (brui.confirm("更新项目管理组", sb.toString())) {
-				Services.get(SystemService.class).updatePMO();
+				Services.get(SystemService.class).updateSystem("5.1M1", "PMO");
 				Layer.message("完成项目管理组更新");
 			}
 		} catch (Exception e) {
