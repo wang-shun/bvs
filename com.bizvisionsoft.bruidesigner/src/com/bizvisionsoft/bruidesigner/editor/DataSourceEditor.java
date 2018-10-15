@@ -32,5 +32,10 @@ public class DataSourceEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return DataSource.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 }

@@ -41,5 +41,10 @@ public class PageEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Page.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 }

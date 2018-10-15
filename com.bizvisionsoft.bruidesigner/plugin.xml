@@ -573,6 +573,25 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="bruidesigner.addJsonAssembly"
+               id="bruidesigner.addJsonAssembly"
+               label="使用JSON创建组件"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.bizvisionsoft.bruicommons.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -665,6 +684,15 @@
             id="bruidesigner.collapseTree"
             name="收起">
       </command>
+      <command
+            id="bruidesigner.addJsonAssembly"
+            name="复制组件">
+      </command>
+      <command
+            defaultHandler="com.bizvisionsoft.bruidesigner.command.DuplicateAssembly"
+            id="bruidesigner.duplicateAssembly"
+            name="复制组件">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -703,6 +731,10 @@
       <handler
             class="com.bizvisionsoft.bruidesigner.command.ExpandTree"
             commandId="bruidesigner.expandTree">
+      </handler>
+      <handler
+            class="com.bizvisionsoft.bruidesigner.command.AddJsonAssembly"
+            commandId="bruidesigner.addJsonAssembly">
       </handler>
    </extension>
    <extension

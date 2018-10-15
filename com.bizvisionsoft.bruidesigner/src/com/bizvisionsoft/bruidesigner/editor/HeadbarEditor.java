@@ -25,7 +25,11 @@ public class HeadbarEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Headbar.class;
 	}
-
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 	
 

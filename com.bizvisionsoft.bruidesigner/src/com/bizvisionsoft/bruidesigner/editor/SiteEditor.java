@@ -68,5 +68,10 @@ public class SiteEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Site.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 }

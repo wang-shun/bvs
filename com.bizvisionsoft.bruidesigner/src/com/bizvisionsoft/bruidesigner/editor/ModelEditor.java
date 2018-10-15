@@ -22,6 +22,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,6 +44,7 @@ import com.bizvisionsoft.bruidesigner.Activator;
 import com.bizvisionsoft.bruidesigner.dialog.AssemblySelectionDialog;
 import com.bizvisionsoft.bruidesigner.dialog.ResourceSelectionDialog;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
+import com.google.gson.GsonBuilder;
 
 public abstract class ModelEditor extends EditorPart {
 
@@ -87,7 +89,21 @@ public abstract class ModelEditor extends EditorPart {
 
 		createContent();
 
+		if(enableJsonViewer()) {
+			createJsonViewer();
+		}
+		
 		folder.setSelection(0);
+	}
+
+	protected boolean enableJsonViewer() {
+		return true;
+	}
+
+	protected void createJsonViewer() {
+		Composite parent = createTabItemContent("JSON");
+		parent.setLayout(new FillLayout());
+		new Text(parent, SWT.MULTI|SWT.WRAP|SWT.READ_ONLY).setText(new GsonBuilder().setPrettyPrinting().create().toJson(inputData));
 	}
 
 	protected Composite createTabItemContent(String itemTitle) {

@@ -45,5 +45,10 @@ public class SidebarEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Sidebar.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 }

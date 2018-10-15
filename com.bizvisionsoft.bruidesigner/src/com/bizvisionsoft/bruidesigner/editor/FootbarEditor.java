@@ -23,5 +23,10 @@ public class FootbarEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Footbar.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
 
 }

@@ -280,6 +280,13 @@ public class ModelToolkit {
 		SiteLoader.site.getAssyLib().getAssys().add(assy);
 		return assy;
 	}
+	
+	public static Assembly createJsonAssembly(String json, String folderId) {
+		Assembly assy = new GsonBuilder().create().fromJson(json, Assembly.class);
+		assy.setFolderId(folderId);
+		SiteLoader.site.getAssyLib().getAssys().add(assy);
+		return assy;
+	}
 
 	public static Assembly duplicateAssembly(Assembly assy) {
 		String json = new GsonBuilder().create().toJson(assy);

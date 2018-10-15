@@ -217,6 +217,13 @@ public class FolderView extends ViewPart implements PropertyChangeListener ,ITre
 		viewer.refresh(folder);
 		viewer.expandToLevel(folder, 1);
 	}
+	
+	public void createJsonAssembly(String json, Folder folder) {
+		Assembly assy = ModelToolkit.createJsonAssembly(json, folder.getId());
+		assy.addPropertyChangeListener("name", this);
+		viewer.refresh(folder);
+		viewer.expandToLevel(folder, 1);
+	}
 
 	public void removeAssembly(Assembly assy) {
 		assy.removePropertyChangeListener("name", this);
