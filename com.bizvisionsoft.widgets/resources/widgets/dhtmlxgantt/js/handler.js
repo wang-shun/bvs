@@ -731,6 +731,10 @@
 		},
 
 		save : function() {
+			this.updateClient("save");
+		},
+		
+		updateClient: function(eventCode){
 			var tasks = [];
 			var gantt = this.gantt;
 			this.gantt.eachTask(function(task) {
@@ -738,7 +742,7 @@
 				tasks.push(task);
 			})
 			var links = this.gantt.getLinks();
-			rap.getRemoteObject(this).call("save", {
+			rap.getRemoteObject(this).call(eventCode, {
 				"tasks" : tasks,
 				"links" : links
 			});
@@ -789,10 +793,12 @@
 
 		undo : function() {
 			this.gantt.undo();
+			this.updateClient("update");
 		},
 
 		redo : function() {
 			this.gantt.redo();
+			this.updateClient("update");
 		},
 
 		setScaleType : function(param) {

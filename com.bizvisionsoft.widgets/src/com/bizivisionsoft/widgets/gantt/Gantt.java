@@ -282,6 +282,29 @@ public class Gantt extends Composite {
 			if (jv.isBoolean()) {
 				this.dirty = jv.asBoolean();
 			}
+		} else if ("update".equals(eventCode)) {
+			event.tasks = new ArrayList<Object>();
+			event.links = new ArrayList<Object>();
+			jo.get("tasks").asArray().forEach(jv -> {
+				JsonObject _jo = jv.asObject();
+				String _id = _jo.get("id").asString();
+				Object obj = findTask(_id);
+				WidgetToolkit.write(obj, _jo, containerName, "id");
+				event.tasks.add(obj);
+			});
+
+			jo.get("links").asArray().forEach(jv -> {
+				JsonObject _jo = jv.asObject();
+				String _id = _jo.get("id").asString();
+				Object obj = findLink(_id);
+				WidgetToolkit.write(obj, _jo, containerName, "id");
+				event.links.add(obj);
+			});
+			tasks.clear();
+			tasks.addAll(event.tasks);
+			links.clear();
+			links.addAll(event.links);
+			//TODO 考虑新任务，删除任务的情况，这些操作有BUG
 		} else if ("save".equals(eventCode)) {
 			event.tasks = new ArrayList<Object>();
 			event.links = new ArrayList<Object>();
