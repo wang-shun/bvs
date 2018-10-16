@@ -281,8 +281,12 @@ public class ModelToolkit {
 		return assy;
 	}
 	
-	public static Assembly createJsonAssembly(String json, String folderId) {
+	public static Assembly createJsonAssembly(String json, String folderId) throws Exception {
 		Assembly assy = new GsonBuilder().create().fromJson(json, Assembly.class);
+		String id = assy.getId();
+		if(getAssembly(id)!=null) {
+			throw new Exception("×é¼þidÖØ¸´");
+		}
 		assy.setFolderId(folderId);
 		SiteLoader.site.getAssyLib().getAssys().add(assy);
 		return assy;

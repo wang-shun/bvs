@@ -35,7 +35,7 @@ import com.bizvisionsoft.bruidesigner.command.ITreePart;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 import com.bizvisionsoft.bruidesigner.model.SiteLoader;
 
-public class FolderView extends ViewPart implements PropertyChangeListener ,ITreePart{
+public class FolderView extends ViewPart implements PropertyChangeListener, ITreePart {
 
 	public class FolderContentProvider implements ITreeContentProvider {
 
@@ -217,12 +217,17 @@ public class FolderView extends ViewPart implements PropertyChangeListener ,ITre
 		viewer.refresh(folder);
 		viewer.expandToLevel(folder, 1);
 	}
-	
+
 	public void createJsonAssembly(String json, Folder folder) {
-		Assembly assy = ModelToolkit.createJsonAssembly(json, folder.getId());
-		assy.addPropertyChangeListener("name", this);
-		viewer.refresh(folder);
-		viewer.expandToLevel(folder, 1);
+		try {
+			Assembly assy;
+			assy = ModelToolkit.createJsonAssembly(json, folder.getId());
+			assy.addPropertyChangeListener("name", this);
+			viewer.refresh(folder);
+			viewer.expandToLevel(folder, 1);
+		} catch (Exception e) {
+			MessageDialog.openError(getViewSite().getShell(), "Ìí¼Ó×é¼þ", e.getMessage());
+		}
 	}
 
 	public void removeAssembly(Assembly assy) {
