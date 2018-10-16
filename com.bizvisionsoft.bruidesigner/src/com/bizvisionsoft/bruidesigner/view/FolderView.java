@@ -226,7 +226,7 @@ public class FolderView extends ViewPart implements PropertyChangeListener, ITre
 			viewer.refresh(folder);
 			viewer.expandToLevel(folder, 1);
 		} catch (Exception e) {
-			MessageDialog.openError(getViewSite().getShell(), "添加组件", e.getMessage());
+			MessageDialog.openError(getViewSite().getShell(), "添加组件失败", e.getMessage());
 		}
 	}
 
