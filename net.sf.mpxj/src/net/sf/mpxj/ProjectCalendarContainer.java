@@ -88,6 +88,26 @@ public class ProjectCalendarContainer extends ProjectEntityContainer<ProjectCale
 
       return (calendar);
    }
+   
+   public ProjectCalendar add7x24Calendar()
+   {
+      ProjectCalendar calendar = add();
+
+      calendar.setName(ProjectCalendar.DEFAULT_BASE_CALENDAR_NAME);
+
+      calendar.setWorkingDay(Day.SUNDAY, true);
+      calendar.setWorkingDay(Day.MONDAY, true);
+      calendar.setWorkingDay(Day.TUESDAY, true);
+      calendar.setWorkingDay(Day.WEDNESDAY, true);
+      calendar.setWorkingDay(Day.THURSDAY, true);
+      calendar.setWorkingDay(Day.FRIDAY, true);
+      calendar.setWorkingDay(Day.SATURDAY, true);
+
+      calendar.add7x24CalendarHours();
+
+      return (calendar);
+   }
+   
 
    /**
     * This is a convenience method to add a default derived

@@ -182,6 +182,11 @@ public final class ProjectFile implements ChildTaskContainer
    {
       return m_calendars.addDefaultBaseCalendar();
    }
+   
+   public ProjectCalendar add7x24Calendar()
+   {
+      return m_calendars.add7x24Calendar();
+   }
 
    /**
     * This is a convenience method to add a default derived
