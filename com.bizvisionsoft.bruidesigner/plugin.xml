@@ -686,12 +686,7 @@
       </command>
       <command
             id="bruidesigner.addJsonAssembly"
-            name="复制组件">
-      </command>
-      <command
-            defaultHandler="com.bizvisionsoft.bruidesigner.command.DuplicateAssembly"
-            id="bruidesigner.duplicateAssembly"
-            name="复制组件">
+            name="Json组件">
       </command>
    </extension>
    <extension
