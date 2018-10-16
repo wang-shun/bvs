@@ -66,7 +66,11 @@ public class Gantt extends Composite {
 
 	List<Object> tasks;
 
+	List<Object> cacheTasks;
+
 	List<Object> links;
+	
+	List<Object> cacheLinks;
 
 	private boolean dirty;
 
@@ -179,12 +183,18 @@ public class Gantt extends Composite {
 
 	public void setInputData(List<?> tasks, List<?> links) {
 		this.tasks = new ArrayList<Object>();
-		if (tasks != null)
+		this.cacheTasks = new ArrayList<Object>();
+		if (tasks != null) {
 			this.tasks.addAll(tasks);
+			this.cacheTasks.addAll(tasks);
+		}
 
 		this.links = new ArrayList<Object>();
-		if (links != null)
+		this.cacheLinks = new ArrayList<Object>();
+		if (links != null) {
 			this.links.addAll(links);
+			this.cacheLinks.addAll(tasks);
+		}
 
 		JsonObject inputDataObject = transformToJsonInput(containerName, tasks, links, convertor);
 
@@ -203,16 +213,25 @@ public class Gantt extends Composite {
 	}
 
 	Object findTask(String id) {
-		return this.tasks.stream().filter(o -> {
-			return id.equals(AUtil.readValue(o, containerName, "id", null));
-		}).findFirst().orElse(null);
+		return find(tasks, id);
 	}
 
+	Object findInCacheTasks(String id) {
+		return find(cacheTasks, id);
+	}
+	
 	Object findLink(String id) {
-		return this.links.stream().filter(o -> {
+		return find(links, id);
+	}
+	
+	Object findInCacheLinks(String id) {
+		return find(cacheLinks, id);
+	}
+	
+	private Object find(List<Object> arr, String id) {
+		return arr.stream().filter(o -> {
 			return id.equals(AUtil.readValue(o, containerName, "id", null));
 		}).findFirst().orElse(null);
-
 	}
 
 	public Gantt setContainer(String containerName) {
@@ -289,6 +308,8 @@ public class Gantt extends Composite {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findTask(_id);
+				if (obj == null) 
+					obj = findInCacheTasks(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
 				event.tasks.add(obj);
 			});
@@ -297,6 +318,8 @@ public class Gantt extends Composite {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findLink(_id);
+				if(obj ==null)
+					obj = findInCacheLinks(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
 				event.links.add(obj);
 			});
@@ -304,7 +327,7 @@ public class Gantt extends Composite {
 			tasks.addAll(event.tasks);
 			links.clear();
 			links.addAll(event.links);
-			//TODO 考虑新任务，删除任务的情况，这些操作有BUG
+			// TODO 考虑新任务，删除任务的情况，这些操作有BUG
 		} else if ("save".equals(eventCode)) {
 			event.tasks = new ArrayList<Object>();
 			event.links = new ArrayList<Object>();
@@ -488,6 +511,7 @@ public class Gantt extends Composite {
 	 */
 	public void addTask(Object item) {
 		tasks.add(item);
+		cacheTasks.add(item);
 		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
 
 		JsonArray inputArray = (JsonArray) this.inputData.get("data");
@@ -507,6 +531,7 @@ public class Gantt extends Composite {
 
 	public void addLink(Object item) {
 		links.add(item);
+		cacheLinks.add(item);
 		JsonObject link = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true, convertor);
 		remoteObject.call("addLink", link);
 	}
