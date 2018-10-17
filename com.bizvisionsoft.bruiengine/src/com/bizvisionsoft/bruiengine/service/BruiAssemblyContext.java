@@ -271,28 +271,26 @@ public class BruiAssemblyContext implements IBruiContext {
 			return Optional.ofNullable(getContent());
 		}
 
-		Object result = null;
+		Optional<Object> result = null;
 		switch (dir) {
 		case SEARCH_UP:
 			IBruiContext parent = getParentContext();
 			while (parent != null) {
 				result = parent.searchContent(predicate, SEARCH_UP);
-				if (result != null) {
-					return Optional.of(result);
-				}
+				if (result.isPresent())
+					return result;
 				parent = getParentContext();
 			}
 			break;
 		case SEARCH_DOWN:
 			for (int i = 0; i < children.size(); i++) {
-				result = children.get(i).searchContent(predicate, SEARCH_UP);
-				if (result != null) {
-					return Optional.of(result);
-				}
+				result = children.get(i).searchContent(predicate, SEARCH_DOWN);
+				if (result.isPresent())
+					return result;
 			}
 			break;
 		}
-		return Optional.ofNullable(result);
+		return result;
 	}
 
 	@Override
@@ -334,7 +332,7 @@ public class BruiAssemblyContext implements IBruiContext {
 			break;
 		case SEARCH_DOWN:
 			for (int i = 0; i < children.size(); i++) {
-				result = children.get(i).search(clas, SEARCH_UP, strategy);
+				result = children.get(i).search(clas, SEARCH_DOWN, strategy);
 				if (result != null) {
 					return result;
 				}

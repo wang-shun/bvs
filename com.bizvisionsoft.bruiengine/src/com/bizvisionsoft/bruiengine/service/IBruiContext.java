@@ -1,5 +1,6 @@
 package com.bizvisionsoft.bruiengine.service;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -91,6 +92,7 @@ public interface IBruiContext extends IServiceWithId {
 
 	<T> T search_sele_root(Class<T> clas);
 
-	Object searchContent(Predicate<IBruiContext> predicate, int dir);
+	Optional<Object> searchContent(Predicate<IBruiContext> predicate, int dir);
+
 
 }
