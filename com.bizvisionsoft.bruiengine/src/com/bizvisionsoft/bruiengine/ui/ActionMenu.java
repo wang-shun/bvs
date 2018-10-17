@@ -144,8 +144,8 @@ public class ActionMenu extends Part {
 	private void createPage() {
 		page = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(colCount, true);
-		layout.horizontalSpacing = 1;
-		layout.verticalSpacing = 1;
+		layout.horizontalSpacing = 0;
+		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		page.setLayout(layout);
