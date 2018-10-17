@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.service;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -89,5 +90,7 @@ public interface IBruiContext extends IServiceWithId {
 	<T> T search(Class<T> clas, int dir, int... strategy);
 
 	<T> T search_sele_root(Class<T> clas);
+
+	Object searchContent(Predicate<IBruiContext> predicate, int dir);
 
 }

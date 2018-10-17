@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -263,6 +264,35 @@ public class BruiAssemblyContext implements IBruiContext {
 	@Override
 	public <T> T search_sele_root(Class<T> clas) {
 		return search(clas, SEARCH_NO_HIERARCHY, SEARCH_STRATEGY_SELECTED, SEARCH_STRATEGY_ROOT_INPUT);
+	}
+
+	public Object searchContent(Predicate<IBruiContext> predicate, int dir) {
+		if (predicate.test(this)) {
+			return getContent();
+		}
+
+		Object result = null;
+		switch (dir) {
+		case SEARCH_UP:
+			IBruiContext parent = getParentContext();
+			while (parent != null) {
+				result = parent.searchContent(predicate, SEARCH_UP);
+				if (result != null) {
+					return result;
+				}
+				parent = getParentContext();
+			}
+			break;
+		case SEARCH_DOWN:
+			for (int i = 0; i < children.size(); i++) {
+				result = children.get(i).searchContent(predicate, SEARCH_UP);
+				if (result != null) {
+					return result;
+				}
+			}
+			break;
+		}
+		return result;
 	}
 
 	@Override
