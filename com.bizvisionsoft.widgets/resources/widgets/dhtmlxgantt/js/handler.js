@@ -751,7 +751,7 @@
 		updateTask : function(task) {
 			var clientTask = this.gantt.getTask(task.id);
 			for ( var attr in task) {
-				if (task[attr].type == "Date") {
+				if (task[attr] && task[attr].type == "Date") {
 					var formatFunc = this.gantt.date
 							.str_to_date(task[attr].format);
 					clientTask[attr] = formatFunc(task[attr].value);

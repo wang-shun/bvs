@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.widgets.grid.Grid;
@@ -175,15 +176,18 @@ public class GridPartExcelExporter {
 				// 创建列
 				final XSSFCell cell = row.createCell(i);
 				// 根据LabelProvider获取填充到单元格中的内容
-				GridPartColumnLabelProvider labelProvider = (GridPartColumnLabelProvider) viewer.getLabelProvider(i);
-				// TODO
-				// 需检查所有继承与GridPartDefaultRender的Class，其中的GridRenderUpdateCell注解是否使用了ViewerCell,如使用了ViewerCell则需要单独进行处理。
-				labelProvider.update(element, (txt, img) -> {
-					// TODO 合并单元格
+				CellLabelProvider lp = viewer.getLabelProvider(i);
+				if (lp instanceof GridPartColumnLabelProvider) {
+					GridPartColumnLabelProvider labelProvider = (GridPartColumnLabelProvider) lp;
+					// TODO
+					// 需检查所有继承与GridPartDefaultRender的Class，其中的GridRenderUpdateCell注解是否使用了ViewerCell,如使用了ViewerCell则需要单独进行处理。
+					labelProvider.update(element, (txt, img) -> {
+						// TODO 合并单元格
 
-					// 给单元格设置值
-					setCellValue(cell, txt, img, isMarkupValue);
-				});
+						// 给单元格设置值
+						setCellValue(cell, txt, img, isMarkupValue);
+					});
+				}
 
 			}
 			// 判断是否存在下级数据，存在时，通过cp获取到下级数据并创建到工作薄中。并创建分组
