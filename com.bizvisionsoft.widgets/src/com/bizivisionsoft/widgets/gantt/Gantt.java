@@ -69,7 +69,7 @@ public class Gantt extends Composite {
 	List<Object> cacheTasks;
 
 	List<Object> links;
-	
+
 	List<Object> cacheLinks;
 
 	private boolean dirty;
@@ -219,15 +219,15 @@ public class Gantt extends Composite {
 	Object findInCacheTasks(String id) {
 		return find(cacheTasks, id);
 	}
-	
+
 	Object findLink(String id) {
 		return find(links, id);
 	}
-	
+
 	Object findInCacheLinks(String id) {
 		return find(cacheLinks, id);
 	}
-	
+
 	private Object find(List<Object> arr, String id) {
 		return arr.stream().filter(o -> {
 			return id.equals(AUtil.readValue(o, containerName, "id", null));
@@ -308,7 +308,7 @@ public class Gantt extends Composite {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findTask(_id);
-				if (obj == null) 
+				if (obj == null)
 					obj = findInCacheTasks(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
 				event.tasks.add(obj);
@@ -318,7 +318,7 @@ public class Gantt extends Composite {
 				JsonObject _jo = jv.asObject();
 				String _id = _jo.get("id").asString();
 				Object obj = findLink(_id);
-				if(obj ==null)
+				if (obj == null)
 					obj = findInCacheLinks(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
 				event.links.add(obj);
@@ -560,7 +560,8 @@ public class Gantt extends Composite {
 				AUtil.simpleCopy(item, task);
 			}
 		});
-		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, true,
+
+		JsonObject task = WidgetToolkit.read(item.getClass(), item, containerName, true, true, false,
 				convertor4UpdateGantt);
 
 		JsonArray inputArray = (JsonArray) this.inputData.get("data");

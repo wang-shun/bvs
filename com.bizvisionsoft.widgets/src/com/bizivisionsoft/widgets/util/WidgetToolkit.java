@@ -131,14 +131,13 @@ public class WidgetToolkit {
 			if (!isEmptyOrNull(targetField) && !inArray(targetField, ignoreFields)) {
 				try {
 					JsonValue jv = jo.get(targetField);
-					if (jv != null) {
-						Object value = getValueFromJson(element, jv, targetField, e.getType());
-						e.setAccessible(true);
-						Object oldValue = e.get(element);
-						if (!equals(value, oldValue)) {
-							e.set(element, value);
-							result.put(targetField, value);
-						}
+					// TODO work的chargerId和assignerId，退回后是null，因此取消了原有的jv!=null的判断
+					Object value = getValueFromJson(element, jv, targetField, e.getType());
+					e.setAccessible(true);
+					Object oldValue = e.get(element);
+					if (!equals(value, oldValue)) {
+						e.set(element, value);
+						result.put(targetField, value);
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e1) {
 				}
@@ -310,7 +309,8 @@ public class WidgetToolkit {
 	}
 
 	private static Object getValueFromJson(Object element, JsonValue jv, String targetField, Class<?> type) {
-		if (jv.isNull()) {
+		// 因取消了调用方法前取消的jv!=null的判断，因此在此处判断jv==null时，返回null
+		if (jv == null || jv.isNull()) {
 			return null;
 		}
 

@@ -991,7 +991,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	}
 
-	private void exportExcel(String fileName, Object input) {
+	protected void exportExcel(String fileName, Object input) {
 		try {
 			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
