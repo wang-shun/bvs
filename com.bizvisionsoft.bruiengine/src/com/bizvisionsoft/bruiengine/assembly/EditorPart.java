@@ -76,7 +76,7 @@ import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
 public class EditorPart {
-	
+
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	private Assembly config;
@@ -271,6 +271,13 @@ public class EditorPart {
 			} else {
 				createField(parent, f);
 			}
+		});
+	}
+
+	public void reloadFieldValue(String[] f) {
+		Arrays.asList(f).forEach(m -> {
+			fields.entrySet().stream().filter(e -> e.getKey().getName().equals(m)).findFirst()
+					.ifPresent(e -> e.getValue().update());
 		});
 	}
 

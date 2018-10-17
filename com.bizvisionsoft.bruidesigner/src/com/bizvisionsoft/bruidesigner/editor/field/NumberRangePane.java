@@ -37,6 +37,8 @@ public class NumberRangePane extends TypeSelectionPane {
 
 		editor.createTextField(parent, "最大值文本框内显示的信息：", element, "textMessage2", SWT.BORDER);
 
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 	}
 
 }

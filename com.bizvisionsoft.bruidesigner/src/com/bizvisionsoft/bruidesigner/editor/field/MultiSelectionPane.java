@@ -24,6 +24,9 @@ public class MultiSelectionPane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "只读：", element, "readOnly", SWT.CHECK);
 		
 		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
+		
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 	}
 
 }

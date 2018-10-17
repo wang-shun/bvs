@@ -66,6 +66,9 @@ public class RadioPane extends TypeSelectionPane {
 			editor.createTextField(parent, "选项文本（#分割）：", element, "optionText", SWT.BORDER);
 
 			editor.createTextField(parent, "选项值（#分割，默认与文本一致）：", element, "optionValue", SWT.BORDER);
+			
+			editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 		}
 
 	}

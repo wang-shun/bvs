@@ -40,6 +40,8 @@ public class TextPane extends TypeSelectionPane {
 		
 		editor.createTextField(parent, "数据显示格式：", element, "format", SWT.BORDER);
 
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 	}
 
 }

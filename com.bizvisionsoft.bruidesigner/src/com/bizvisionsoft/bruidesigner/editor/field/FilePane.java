@@ -31,6 +31,8 @@ public class FilePane extends TypeSelectionPane {
 		
 		editor.createTextField(parent, "文件扩展名（不填代表不限制。逗号分隔多个.jpg,.png）：", element, "fileFilerExts", SWT.BORDER);
 
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 	}
 
 }

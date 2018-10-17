@@ -26,6 +26,9 @@ public class SelectionPane extends TypeSelectionPane {
 		editor.createAssemblyField(parent, "选择器组件:", element, "selectorAssemblyId",true);
 		
 		editor.createTextField(parent, "选择器返回字段名：", element, "valueFieldName", SWT.BORDER);
+		
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 
 	}
 

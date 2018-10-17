@@ -142,7 +142,7 @@ public class AUtil {
 		if (m != null)
 			try {
 				m.setAccessible(true);
-
+				value = getTypedValue(value, m.getParameterTypes()[0]);
 				m.invoke(element, value);
 				return;
 			} catch (IllegalAccessException e) {
@@ -552,7 +552,7 @@ public class AUtil {
 	}
 
 	private static Object getTypedValue(Object value, Class<?> type) {
-		String tName = type.getName();
+		String tName = type.getSimpleName();
 		if (value != null) {
 			if (type.isAssignableFrom(value.getClass())) {
 				return value;

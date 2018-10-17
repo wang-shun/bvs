@@ -501,5 +501,15 @@ public class FormField extends ModelObject {
 	public String getValueFieldName() {
 		return valueFieldName;
 	}
+
+	private String reloadFields;
+	
+	public String getReloadFields() {
+		return reloadFields;
+	}
+	
+	public void setReloadFields(String reloadFields) {
+		this.reloadFields = reloadFields;
+	}
 	
 }

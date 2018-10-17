@@ -39,6 +39,9 @@ public class CheckPane extends TypeSelectionPane {
 					new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC },
 					new String[] { FormField.CHECK_STYLE_SWITCH, FormField.CHECK_STYLE_CLASSIC }, "样式", element,
 					"checkStyle", SWT.READ_ONLY | SWT.BORDER);
+			
+			editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 		}
 
 	}

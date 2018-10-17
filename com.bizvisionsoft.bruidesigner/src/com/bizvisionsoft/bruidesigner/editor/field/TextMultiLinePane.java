@@ -28,6 +28,8 @@ public class TextMultiLinePane extends TypeSelectionPane {
 		editor.createCheckboxField(parent, "纵向填充剩余空间：", element, "grabVertical", SWT.CHECK);
 		
 		editor.createIntegerField(parent, "内容区高度（0代表默认）：", element, "height", SWT.BORDER, 0, 600);
+		
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
 
 	}
 

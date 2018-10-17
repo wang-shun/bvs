@@ -174,26 +174,31 @@ public abstract class EditorField {
 		check(save);
 
 		Object value = convertValueToWrite();
-		
+
 		AUtil.writeValue(input, assemblyConfig.getName(), fieldConfig.getName(), value);
+
+		String[] fieldsTobeReload = Check.isAssignedThen(fieldConfig.getReloadFields(), f -> f.split("#")).orElse(null);
+
+		if (fieldsTobeReload != null) 
+			editor.reloadFieldValue(fieldsTobeReload);
 	}
 
 	private Object convertValueToWrite()
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Object value = getValue();
 		if (value != null) {
-			//获得取值的字段名，用于选择器处理返回对象类型时的具体返回值
+			// 获得取值的字段名，用于选择器处理返回对象类型时的具体返回值
 			String vf = fieldConfig.getValueFieldName();
 			if (Check.isAssigned(vf)) {
 				Field field = value.getClass().getDeclaredField(vf);
 				field.setAccessible(true);
 				value = field.get(value);
 			}
-			
-			//处理Document input类型
-			if(input instanceof Document) {
+
+			// 处理Document input类型
+			if (input instanceof Document) {
 				value = decodeValue_Document(value);
-			}else if(input instanceof DBObject) {
+			} else if (input instanceof DBObject) {
 				value = decodeValue_DBObject(value);
 			}
 		}
@@ -207,7 +212,6 @@ public abstract class EditorField {
 	protected Object decodeValue_DBObject(Object value) {
 		return value;
 	}
-
 
 	protected void saveBefore() throws Exception {
 

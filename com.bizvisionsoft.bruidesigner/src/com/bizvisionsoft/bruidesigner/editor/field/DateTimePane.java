@@ -27,6 +27,9 @@ public class DateTimePane extends TypeSelectionPane {
 				new String[] { FormField.DATE_TYPE_DATE, FormField.DATE_TYPE_DATETIME, FormField.DATE_TYPE_TIME,
 						FormField.DATE_TYPE_YEAR, FormField.DATE_TYPE_MONTH,FormField.DATE_TYPE_YEAR_MONTH },
 				"日期类型", element, "dateType", SWT.READ_ONLY | SWT.BORDER);
+		
+		editor.createTextField(parent, "写入后更新其他字段（#分割）：", element, "reloadFields", SWT.BORDER);
+
 
 	}
 
