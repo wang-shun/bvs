@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -56,8 +57,10 @@ public class Gantt extends Composite {
 			Display.getCurrent().asyncExec(() -> {
 				Event event = createEvent(eventCode, jo);
 				if (event.doit)
-					Optional.ofNullable(listenerMap.get(eventCode))
-							.ifPresent(l -> l.forEach(a -> a.handleEvent(event)));
+					Optional.ofNullable(listenerMap.get(eventCode)).ifPresent(l -> l.forEach(a -> {
+						a.handleEvent(event);
+						handleCallBack();
+					}));
 
 			});
 		}
@@ -91,6 +94,8 @@ public class Gantt extends Composite {
 		return v;
 	};
 
+	private BiConsumer<List<Object>, List<Object>> callBack;
+
 	public Gantt(Composite parent, Config config) {
 		super(parent, SWT.NONE);
 
@@ -104,6 +109,13 @@ public class Gantt extends Composite {
 		remoteObject.set("parent", getId(this));
 		String json = new GsonBuilder().create().toJson(config);
 		remoteObject.set("config", JsonValue.readFrom(json));
+	}
+
+	protected void handleCallBack() {
+		if (callBack != null) {
+			callBack.accept(tasks, links);
+			callBack = null;
+		}
 	}
 
 	private void loadJsLibAndCSS() {
@@ -290,7 +302,7 @@ public class Gantt extends Composite {
 		}
 	}
 
-	private Event createEvent(String eventCode, JsonObject jo) {
+	private GanttEvent createEvent(String eventCode, JsonObject jo) {
 		GanttEvent event = new GanttEvent();
 		event.gantt = this;
 		event.text = eventCode;
@@ -582,6 +594,11 @@ public class Gantt extends Composite {
 
 	public void save() {
 		remoteObject.call("save", new JsonObject());
+	}
+
+	public void save(BiConsumer<List<Object>, List<Object>> callback) {
+		remoteObject.call("save", new JsonObject());
+		this.callBack = callback;
 	}
 
 	public void highlightCriticalPath(boolean display) {

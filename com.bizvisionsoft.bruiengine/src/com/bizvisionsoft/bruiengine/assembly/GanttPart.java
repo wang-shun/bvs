@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
@@ -283,6 +284,10 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 
 	public void callSave() {
 		gantt.save();
+	}
+	
+	public void save(BiConsumer<List<Object>, List<Object>> callback) {
+		gantt.save(callback);
 	}
 
 	public void highlightCriticalPath(boolean highlightCriticalPath) {
