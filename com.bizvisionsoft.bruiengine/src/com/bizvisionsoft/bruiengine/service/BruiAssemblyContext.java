@@ -266,9 +266,9 @@ public class BruiAssemblyContext implements IBruiContext {
 		return search(clas, SEARCH_NO_HIERARCHY, SEARCH_STRATEGY_SELECTED, SEARCH_STRATEGY_ROOT_INPUT);
 	}
 
-	public Object searchContent(Predicate<IBruiContext> predicate, int dir) {
+	public Optional<Object> searchContent(Predicate<IBruiContext> predicate, int dir) {
 		if (predicate.test(this)) {
-			return getContent();
+			return Optional.ofNullable(getContent());
 		}
 
 		Object result = null;
@@ -278,7 +278,7 @@ public class BruiAssemblyContext implements IBruiContext {
 			while (parent != null) {
 				result = parent.searchContent(predicate, SEARCH_UP);
 				if (result != null) {
-					return result;
+					return Optional.of(result);
 				}
 				parent = getParentContext();
 			}
@@ -287,12 +287,12 @@ public class BruiAssemblyContext implements IBruiContext {
 			for (int i = 0; i < children.size(); i++) {
 				result = children.get(i).searchContent(predicate, SEARCH_UP);
 				if (result != null) {
-					return result;
+					return Optional.of(result);
 				}
 			}
 			break;
 		}
-		return result;
+		return Optional.ofNullable(result);
 	}
 
 	@Override
