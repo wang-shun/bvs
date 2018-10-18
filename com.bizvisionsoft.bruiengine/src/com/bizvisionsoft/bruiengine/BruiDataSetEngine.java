@@ -325,6 +325,10 @@ public class BruiDataSetEngine extends BruiEngine {
 		return (BruiDataSetEngine) super.newInstance();
 	}
 
+	public boolean exportable(String fName, IBruiContext context) {
+		return AUtil.getContainerMethod(clazz, Export.class, cName, fName, a -> a.value()).isPresent();
+	}
+
 	public void export(String fName, IBruiContext context) {
 		Method method = AUtil.getContainerMethod(clazz, Export.class, cName, fName, a -> a.value()).orElse(null);
 		if (method != null) {

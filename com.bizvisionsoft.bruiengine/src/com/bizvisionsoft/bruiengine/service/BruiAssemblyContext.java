@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -289,6 +290,56 @@ public class BruiAssemblyContext implements IBruiContext {
 					return result;
 			}
 			break;
+		}
+		return result;
+	}
+
+	@Override
+	public void traversalContext(int dir, Consumer<IBruiContext> consumer) {
+		consumer.accept(this);
+		switch (dir) {
+		case SEARCH_UP:
+			IBruiContext parent = getParentContext();
+			while (parent != null) {
+				parent.traversalContext(dir, consumer);
+				parent = getParentContext();
+			}
+			break;
+		case SEARCH_DOWN:
+			for (int i = 0; i < children.size(); i++) {
+				children.get(i).traversalContext(dir, consumer);
+			}
+		}
+	}
+	
+	public Stream<IBruiContext> stream(int dir) {
+		return toList(dir).stream();
+	}
+	
+	public Stream<IBruiContext> parallelStream(int dir){
+		return toList(dir).parallelStream();
+	}
+	
+	private List<IBruiContext> toList(int dir){
+		ArrayList<IBruiContext> result = new ArrayList<>();
+		result.add(this);
+		switch (dir) {
+		case SEARCH_UP:
+			IBruiContext parent = getParentContext();
+			while (parent != null) {
+				result.add(parent);
+				parent = getParentContext();
+			}
+			break;
+		case SEARCH_DOWN:
+			for (int i = 0; i < children.size(); i++) {
+				IBruiContext child = children.get(i);
+				if(child instanceof BruiAssemblyContext) {
+					result.addAll(((BruiAssemblyContext) child).toList(SEARCH_DOWN));
+				}else {
+					result.add(child);
+				}
+			}
 		}
 		return result;
 	}

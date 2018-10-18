@@ -3,6 +3,7 @@ package com.bizvisionsoft.bruiengine.service;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -94,5 +95,9 @@ public interface IBruiContext extends IServiceWithId {
 
 	Optional<Object> searchContent(Predicate<IBruiContext> predicate, int dir);
 
+	void traversalContext(int dir,Consumer<IBruiContext> consumer);
 
+	Stream<IBruiContext> stream(int dir);
+
+	Stream<IBruiContext> parallelStream(int dir);
 }
