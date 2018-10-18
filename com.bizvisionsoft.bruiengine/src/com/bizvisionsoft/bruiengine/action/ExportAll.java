@@ -30,10 +30,10 @@ public class ExportAll {
 			@MethodParam(Execute.ACTION) Action action) {
 		String fName = action.getName();
 
-		Map<Action, IBruiContext> actions = context.stream(IBruiContext.SEARCH_DOWN)//
-				.filter(c -> isExportable(c.getContent(), c, fName))//
-				.map(this::createExportAction)//
-				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		Map<Action, IBruiContext> actions = context.stream(IBruiContext.SEARCH_DOWN)// 向下遍历获得上下文的流
+				.filter(c -> isExportable(c, fName))// 过滤不能导出数据的上下文
+				.map(this::createExportAction)// 映射为Entry
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));// 收集到Map中
 		int count = actions.size();
 		if (count == 1) {
 			doExport(actions.values().iterator().next(), fName);
@@ -45,16 +45,18 @@ public class ExportAll {
 
 	}
 
-	private boolean isExportable(Object content, final IBruiContext context, final String fName) {
-		return content instanceof IExportable || //
-				Check.instanceOf(content, IDataSetEngineProvider.class)//
-						.map(d -> d.getDataSetEngine())//
-						.map(d -> d.exportable(fName, context))//
+	private boolean isExportable(final IBruiContext context, final String fName) {
+		Object content = context.getContent();
+		return content instanceof IExportable || // 如果内容部件可以导出
+				Check.instanceOf(content, IDataSetEngineProvider.class)// 如果content是IDataSetEngineProvider
+						.map(d -> d.getDataSetEngine())// 获得数据集引擎
+						.map(d -> d.exportable(fName, context))// 获得数据集引擎是否支持导出
 						.orElse(false);//
 	}
 
 	private Entry<Action, IBruiContext> createExportAction(IBruiContext context) {
 		Assembly assembly = context.getAssembly();
+		// 通过流的方式获取第一个非空字符串
 		String title = Stream.of(assembly.getStickerTitle(), assembly.getTitle(), assembly.getName())
 				.filter(Check::isAssigned).findFirst().orElse("");
 
@@ -62,9 +64,16 @@ public class ExportAll {
 		action.setName(assembly.getName());
 		action.setText("导出" + title);
 		action.setStyle("normal");
+		//创建一个键值对
 		return new AbstractMap.SimpleEntry<Action, IBruiContext>(action, context);
 	}
 
+	/**
+	 * 导出
+	 * @param context
+	 * @param fName
+	 * @return
+	 */
 	private boolean doExport(IBruiContext context, String fName) {
 		Object content = context.getContent();
 		// 判断content是否继承于IExportable
