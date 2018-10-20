@@ -62,7 +62,7 @@ public class ExportAll {
 
 		Action action = new Action();
 		action.setName(assembly.getName());
-		action.setText("导出" + title);
+		action.setText("导出<br>" + title);
 		action.setStyle("normal");
 		//创建一个键值对
 		return new AbstractMap.SimpleEntry<Action, IBruiContext>(action, context);
