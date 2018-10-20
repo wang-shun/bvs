@@ -34,8 +34,11 @@
             filter: brightness(0.8) blur(14px);    
 }
 
-.brui_translucent{
-	background:#f0f0f080;
+.brui_translucent_blue{
+	background: -webkit-linear-gradient(135deg, #03b0ff, #00000000) !important;
+	background: -o-linear-gradient(135deg, #03b0ff, #00000000) !important;
+	background: -moz-linear-gradient(135deg, #03b0ff, #00000000) !important;
+	background: linear-gradient(135deg, #03b0ff, #00000000) !important;
 }
 
 .brui_segmentLeft{
