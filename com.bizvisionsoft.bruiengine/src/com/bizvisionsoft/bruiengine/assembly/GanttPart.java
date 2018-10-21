@@ -29,6 +29,7 @@ import com.bizivisionsoft.widgets.gantt.Gantt;
 import com.bizivisionsoft.widgets.gantt.GanttEvent;
 import com.bizivisionsoft.widgets.gantt.GanttEventCode;
 import com.bizivisionsoft.widgets.util.Layer;
+import com.bizvisionsoft.annotations.md.service.Export;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
 import com.bizvisionsoft.annotations.ui.common.GetContent;
 import com.bizvisionsoft.annotations.ui.common.Init;
@@ -44,7 +45,7 @@ import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IClientCustomizable {
+public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IExportable,IClientCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -92,6 +93,9 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
 		sticker.service = bruiService;
+		
+		sticker.createDefaultActions(this);
+
 		sticker.createUI(parent);
 		return sticker.content;
 	}
@@ -388,6 +392,13 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 
 	public void undo() {
 		gantt.undo();
+	}
+
+	@Override
+	public void export() {
+		if(dataSetEngine!=null) {
+			dataSetEngine.export(Export.DEFAULT, context);
+		}
 	}
 
 }

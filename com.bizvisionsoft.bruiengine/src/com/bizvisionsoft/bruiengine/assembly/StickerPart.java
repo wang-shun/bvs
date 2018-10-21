@@ -10,6 +10,8 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.ui.common.CreateUI;
@@ -20,8 +22,11 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.service.tools.Check;
 
 public class StickerPart {
+
+	public Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	IBruiService service;
@@ -123,6 +128,48 @@ public class StickerPart {
 		List<Action> actions = UserSession.bruiToolkit().getAcceptedActions(assembly, service.getCurrentUserInfo(),
 				context);
 		bar.setActions(actions);
+	}
+
+	public void createDefaultActions(Object part) {
+		Action action;
+		//////////////////////////////////////////////////////////////////////////////////
+		// 创建默认的action
+		if (logger.isDebugEnabled()) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/info_w.svg");
+			action.setStyle("serious");
+			addAction(action, e -> service.displaySiteModel(assembly));
+		}
+
+		// 设置
+		if (part instanceof IClientCustomizable && !Boolean.TRUE.equals(assembly.isDisableCustomized())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/setting_w.svg");
+			action.setStyle("info");
+			addAction(action, e -> ((IClientCustomizable) part).customize());
+		}
+
+		// 导出
+		if (part instanceof IExportable && !Boolean.TRUE.equals(assembly.isDisableStandardExport())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/excel_w.svg");
+			action.setStyle("info");
+			addAction(action, e -> ((IExportable) part).export());
+		}
+
+		// 查询
+		if (part instanceof IQueryEnable && !Boolean.TRUE.equals(assembly.isDisableStdQuery())
+				&& Check.isAssigned(assembly.getFields())) {
+			action = new Action();
+			action.setType(Action.TYPE_CUSTOMIZED);
+			action.setImage("/img/search_w.svg");
+			action.setStyle("info");
+			addAction(action, e -> ((IQueryEnable) part).openQueryEditor());
+		}
+
 	}
 
 }
