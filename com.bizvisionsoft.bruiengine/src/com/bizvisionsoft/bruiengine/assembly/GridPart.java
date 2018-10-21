@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.bson.Document;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -958,9 +959,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@Override
 	public void export() {
 		// 获取导出文件名。使用StickerTitle作为文件名。
-		String fileName = (config.getStickerTitle() == null || config.getStickerTitle().trim().isEmpty())
-				? config.getName()
-				: config.getStickerTitle();
+		String fileName = Stream.of(config.getStickerTitle(), config.getTitle(), config.getName())
+				.filter(Check::isAssigned).findFirst().orElse("");
 
 		// 不分页时，直接导出表格数据
 		if (!config.isGridPageControl()) {
@@ -1010,6 +1010,19 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		Arrays.asList(parent.getChildren()).forEach(c -> c.dispose());
 		createUI(parent);
 		parent.layout();
+	}
+
+	private String exportActionText;
+
+	@Override
+	public void setExportActionText(String exportActionText) {
+		this.exportActionText = exportActionText;
+	}
+
+	@Override
+	public String getExportActionText() {
+		return Stream.of(exportActionText, config.getStickerTitle(), config.getTitle(), config.getName())
+				.filter(Check::isAssigned).findFirst().orElse("");
 	}
 
 }

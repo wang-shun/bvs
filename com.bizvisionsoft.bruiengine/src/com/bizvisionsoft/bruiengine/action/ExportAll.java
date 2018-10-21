@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Action;
-import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.assembly.IDataSetEngineProvider;
 import com.bizvisionsoft.bruiengine.assembly.IExportable;
@@ -32,7 +30,7 @@ public class ExportAll {
 
 		Map<Action, IBruiContext> actions = context.stream(IBruiContext.SEARCH_DOWN)// 向下遍历获得上下文的流
 				.filter(c -> isExportable(c, fName))// 过滤不能导出数据的上下文
-				.map(this::createExportAction)// 映射为Entry
+				.map(c -> createExportAction(c, fName))// 映射为Entry
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));// 收集到Map中
 		int count = actions.size();
 		if (count == 1) {
@@ -54,22 +52,42 @@ public class ExportAll {
 						.orElse(false);//
 	}
 
-	private Entry<Action, IBruiContext> createExportAction(IBruiContext context) {
-		Assembly assembly = context.getAssembly();
-		// 通过流的方式获取第一个非空字符串
-		String title = Stream.of(assembly.getStickerTitle(), assembly.getTitle(), assembly.getName())
-				.filter(Check::isAssigned).findFirst().orElse("");
+	private Entry<Action, IBruiContext> createExportAction(IBruiContext context, String fName) {
+		// Assembly assembly = context.getAssembly();
+		// 通过context获取导出按钮名称
+		String title = getExportActionText(context, fName);
+		// Stream.of(assembly.getStickerTitle(), assembly.getTitle(),
+		// assembly.getName()).filter(Check::isAssigned)
+		// .findFirst().orElse("");
 
 		Action action = new Action();
-		action.setName(assembly.getName());
+		action.setName(title);
 		action.setText("导出<br>" + title);
 		action.setStyle("normal");
-		//创建一个键值对
+		// 创建一个键值对
 		return new AbstractMap.SimpleEntry<Action, IBruiContext>(action, context);
+	}
+
+	private String getExportActionText(IBruiContext context, String fName) {
+		Object content = context.getContent();
+		// 判断content是否继承于IExportable
+		if (content instanceof IExportable) {
+			return ((IExportable) content).getExportActionText();
+		} else if (content instanceof IDataSetEngineProvider) {
+			BruiDataSetEngine de = ((IDataSetEngineProvider) content).getDataSetEngine();
+			if (de != null) {
+				de.getExportActionText(fName, context);
+			} else {
+				String msg = "组件：" + context.getAssembly() + ", DataSet为 null。";
+				throw new RuntimeException(msg);
+			}
+		}
+		return "";
 	}
 
 	/**
 	 * 导出
+	 * 
 	 * @param context
 	 * @param fName
 	 * @return

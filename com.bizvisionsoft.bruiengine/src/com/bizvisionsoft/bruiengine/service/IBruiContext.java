@@ -95,7 +95,7 @@ public interface IBruiContext extends IServiceWithId {
 
 	Optional<Object> searchContent(Predicate<IBruiContext> predicate, int dir);
 
-	void traversalContext(int dir,Consumer<IBruiContext> consumer);
+	void traversalContext(int dir, Consumer<IBruiContext> consumer);
 
 	Stream<IBruiContext> stream(int dir);
 

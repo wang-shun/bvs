@@ -5,5 +5,5 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 public interface IDataSetEngineProvider {
 
 	BruiDataSetEngine getDataSetEngine();
-
+	
 }

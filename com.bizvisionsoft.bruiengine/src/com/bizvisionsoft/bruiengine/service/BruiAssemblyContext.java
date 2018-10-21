@@ -311,16 +311,16 @@ public class BruiAssemblyContext implements IBruiContext {
 			}
 		}
 	}
-	
+
 	public Stream<IBruiContext> stream(int dir) {
 		return toList(dir).stream();
 	}
-	
-	public Stream<IBruiContext> parallelStream(int dir){
+
+	public Stream<IBruiContext> parallelStream(int dir) {
 		return toList(dir).parallelStream();
 	}
-	
-	private List<IBruiContext> toList(int dir){
+
+	private List<IBruiContext> toList(int dir) {
 		ArrayList<IBruiContext> result = new ArrayList<>();
 		result.add(this);
 		switch (dir) {
@@ -334,9 +334,9 @@ public class BruiAssemblyContext implements IBruiContext {
 		case SEARCH_DOWN:
 			for (int i = 0; i < children.size(); i++) {
 				IBruiContext child = children.get(i);
-				if(child instanceof BruiAssemblyContext) {
+				if (child instanceof BruiAssemblyContext) {
 					result.addAll(((BruiAssemblyContext) child).toList(SEARCH_DOWN));
-				}else {
+				} else {
 					result.add(child);
 				}
 			}
@@ -399,5 +399,4 @@ public class BruiAssemblyContext implements IBruiContext {
 			return (T) data;
 		return null;
 	}
-
 }
