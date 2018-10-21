@@ -19,6 +19,11 @@ import java.lang.annotation.Target;
 public @interface Export {
 	
 	/**
+	 * 默认的导出方法
+	 */
+	String DEFAULT = "default";
+
+	/**
 	 * @author hua
 	 *
 	 */

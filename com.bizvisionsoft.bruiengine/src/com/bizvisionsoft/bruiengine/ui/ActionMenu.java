@@ -136,7 +136,7 @@ public class ActionMenu extends Part {
 	@Override
 	protected void createContents(Composite parent) {
 		this.parent = parent;
-		parent.setHtmlAttribute("class", "brui_translucent");
+		parent.setHtmlAttribute("class", "brui_translucent_blue");
 		parent.setLayout(new FillLayout());
 		createPage();
 	}
@@ -156,7 +156,12 @@ public class ActionMenu extends Part {
 		}
 		pagedAction.get(currentPage).forEach(a -> {
 			Button button = UserSession.bruiToolkit().createButton(page, a, "block");
-			button.setLayoutData(new GridData(unitSize, unitSize));
+			GridData gd = new GridData();
+			gd.horizontalSpan = a.getHorizontalSpan()==0?1:a.getHorizontalSpan();
+			gd.verticalSpan = a.getVerticalSpan()==0?1:a.getVerticalSpan();
+			gd.widthHint = unitSize*gd.horizontalSpan;
+			gd.heightHint = unitSize*gd.verticalSpan;
+			button.setLayoutData(gd);
 			if (a instanceof NextPageAction) {
 				button.addListener(SWT.Selection, e -> nextPage());
 			} else if (a instanceof PreviousPageAction) {

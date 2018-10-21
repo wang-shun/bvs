@@ -323,6 +323,10 @@ public class Action extends ModelObject {
 	private String budgetClassName;
 	
 	private String budgetServiceName;
+
+	private int horizontalSpan;
+
+	private int verticalSpan;
 	
 	public String getBudgetBundleId() {
 		return budgetBundleId;
@@ -347,5 +351,24 @@ public class Action extends ModelObject {
 	public void setBudgetServiceName(String budgetServiceName) {
 		this.budgetServiceName = budgetServiceName;
 	}
+	
+	public void setHorizontalSpan(int horizontalSpan) {
+		this.horizontalSpan = horizontalSpan;
+	}
+	
+	public void setVerticalSpan(int verticalSpan) {
+		this.verticalSpan = verticalSpan;
+	}
+	
+	public int getHorizontalSpan() {
+		return horizontalSpan;
+	}
+	
+	public int getVerticalSpan() {
+		return verticalSpan;
+	}
+	
+	
 
+	
 }
