@@ -177,6 +177,10 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider, ID
 		tree.addItem(child);
 	}
 
+	public void addAll(Object parent, List<?> childs) {
+		tree.addItems(childs);
+	}
+
 	@Override
 	public void refresh(Object parent) {
 		// TODO Ë¢ÐÂÊ÷

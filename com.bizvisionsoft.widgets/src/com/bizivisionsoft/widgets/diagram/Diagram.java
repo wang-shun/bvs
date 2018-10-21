@@ -136,6 +136,14 @@ public class Diagram extends Composite {
 		remoteObject.call("addItem", jo);
 	}
 
+	public void addItems(List<?> childs) {
+		this.data.addAll(childs);
+		// 将childs转换为Json
+		JsonArray ja = transformToJsonInput(containerName, childs);
+		// remoteObject.call只允许传入JsonObject，因此将childs放入一个JsonObject中传入给前台js
+		remoteObject.call("addItems", new JsonObject().add("childs", ja));
+	}
+
 	public void updateItem(Object oldItem, Object item) {
 		int idx = this.data.indexOf(oldItem);
 		if (idx != -1) {

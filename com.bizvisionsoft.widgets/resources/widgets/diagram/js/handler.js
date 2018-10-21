@@ -11,7 +11,7 @@
 
 		properties : [ "inputData", "scale" ],
 
-		methods : [ "addItem", "updateItem","removeItem" ]
+		methods : [ "addItem", "addItems", "updateItem", "removeItem" ]
 
 	});
 
@@ -79,6 +79,13 @@
 
 		addItem : function(item) {
 			this.diagram.data.add(item);
+		},
+
+		addItems : function(items) {
+			var childs = items["childs"];
+			for (var i = 0; i < childs.length; i++) {
+				this.diagram.data.add(childs[i]);
+			}
 		},
 
 		updateItem : function(item) {
