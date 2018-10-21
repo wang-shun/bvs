@@ -373,7 +373,6 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		return sticker.content;
 	}
 
-
 	protected Control createQueryPanel(Composite parent) {
 		if (!queryOn) {
 			return null;
@@ -919,11 +918,11 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@Override
 	public void export() {
 		// 获取导出文件名。使用StickerTitle作为文件名。
-		String fileName = Stream.of(config.getStickerTitle(), config.getTitle(), config.getName())
-				.filter(Check::isAssigned).findFirst().orElse("");
+		String fileName = Optional.ofNullable(config).map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName())
+				.filter(Check::isAssigned).findFirst().orElse("")).orElse("");
 
 		// 不分页时，直接导出表格数据
-		if (!config.isGridPageControl()) {
+		if (config == null || !config.isGridPageControl()) {
 			exportExcel(fileName, viewer.getInput());
 			return;
 		}
@@ -981,8 +980,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	@Override
 	public String getExportActionText() {
-		return Stream.of(exportActionText, config.getStickerTitle(), config.getTitle(), config.getName())
-				.filter(Check::isAssigned).findFirst().orElse("");
+		return Optional.ofNullable(exportActionText)
+				.orElse(Optional.ofNullable(config).map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName())
+						.filter(Check::isAssigned).findFirst().orElse("")).orElse(""));
 	}
 
 }

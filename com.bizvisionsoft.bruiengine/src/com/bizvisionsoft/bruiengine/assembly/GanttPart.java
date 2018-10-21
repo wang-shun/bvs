@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
@@ -45,7 +46,7 @@ import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IExportable,IClientCustomizable {
+public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IExportable, IClientCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -93,7 +94,7 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 		StickerPart sticker = new StickerPart(config);
 		sticker.context = context;
 		sticker.service = bruiService;
-		
+
 		sticker.createDefaultActions(this);
 
 		sticker.createUI(parent);
@@ -289,7 +290,7 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 	public void callSave() {
 		gantt.save();
 	}
-	
+
 	public void save(BiConsumer<List<Object>, List<Object>> callback) {
 		gantt.save(callback);
 	}
@@ -396,9 +397,23 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 
 	@Override
 	public void export() {
-		if(dataSetEngine!=null) {
+		if (dataSetEngine != null) {
 			dataSetEngine.export(Export.DEFAULT, context);
 		}
+	}
+
+	private String exportActionText;
+
+	@Override
+	public void setExportActionText(String exportActionText) {
+		this.exportActionText = exportActionText;
+	}
+
+	@Override
+	public String getExportActionText() {
+		return Optional.ofNullable(exportActionText)
+				.orElse(Optional.ofNullable(config).map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName())
+						.filter(Check::isAssigned).findFirst().orElse("")).orElse(""));
 	}
 
 }

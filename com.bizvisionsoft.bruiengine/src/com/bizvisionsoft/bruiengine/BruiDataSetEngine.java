@@ -14,7 +14,6 @@ import org.osgi.framework.Bundle;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.annotations.md.service.DataSet;
 import com.bizvisionsoft.annotations.md.service.Export;
-import com.bizvisionsoft.annotations.md.service.ExportActionName;
 import com.bizvisionsoft.annotations.md.service.Listener;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -343,28 +342,6 @@ public class BruiDataSetEngine extends BruiEngine {
 
 		} else {
 			throw new RuntimeException(cName + " 数据源没有注解Export值为 " + fName + "的方法。");
-		}
-	}
-
-	/**
-	 * 获得导出按钮名称
-	 * 
-	 * @param fName
-	 * @param context
-	 * @return
-	 */
-	public String getExportActionText(String fName, IBruiContext context) {
-		try {
-			Method method = AUtil.getContainerMethod(clazz, ExportActionName.class, cName, fName, a -> a.value())
-					.orElse(null);
-			if (method != null) {
-				method.setAccessible(true);
-				return (String) method.invoke(target);
-			} else {
-				throw new RuntimeException(cName + " 数据源没有注解ExportActionName值为 " + fName + "的方法。");
-			}
-		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(cName + " 数据源注解ExportActionName值为 " + fName + "的方法有误。");
 		}
 	}
 
