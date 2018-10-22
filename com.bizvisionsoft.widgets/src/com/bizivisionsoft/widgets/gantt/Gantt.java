@@ -348,7 +348,6 @@ public class Gantt extends Composite {
 				String _id = _jo.get("id").asString();
 				Object obj = findTask(_id);
 				WidgetToolkit.write(obj, _jo, containerName, "id");
-				System.out.println();
 				event.tasks.add(obj);
 			});
 
