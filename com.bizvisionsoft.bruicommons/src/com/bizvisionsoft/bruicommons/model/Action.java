@@ -24,6 +24,8 @@ public class Action extends ModelObject {
 	
 	public static final String TYPE_SETTING = "setting";
 
+	public static final String TYPE_REPORT = "report";
+
 	
 	private String id;
 
@@ -369,6 +371,36 @@ public class Action extends ModelObject {
 	}
 	
 	
+	private String reportJQ;
 
+	private String reportOutputType;
+
+	private String reportTemplate;
+
+	private String reportFileName;
+	
+	public String getReportJQ() {
+		return reportJQ;
+	}
+	
+	public void setReportJQ(String reportJQ) {
+		this.reportJQ = reportJQ;
+	}
+
+	public String getReportOutputType() {
+		return reportOutputType;
+	}
+	
+	public void setReportOutputType(String reportOutputType) {
+		this.reportOutputType = reportOutputType;
+	}
+	
+	public String getReportTemplate() {
+		return reportTemplate;
+	}
+
+	public String getReportFileName() {
+		return reportFileName;
+	}
 	
 }
