@@ -200,7 +200,7 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 			colConf.name = c.getName();
 			colConf.resize = c.isResizeable();
 			colConf.width = c.getWidth();
-			colConf.tree = i == 0;
+			colConf.tree = "text".equals(c.getName());
 			switch (c.getAlignment()) {
 			case SWT.CENTER:
 				colConf.align = "center";

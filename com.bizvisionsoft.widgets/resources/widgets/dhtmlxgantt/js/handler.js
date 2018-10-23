@@ -138,7 +138,7 @@
 			this.gantt.config.autoscroll = true;
 			this.gantt.config.autoscroll_speed = 50;
 
-			this.gantt.config.sort = true;
+			this.gantt.config.sort = false;
 
 			this.gantt.config.touch = "force";
 			this.gantt.config.open_tree_initially = true;
