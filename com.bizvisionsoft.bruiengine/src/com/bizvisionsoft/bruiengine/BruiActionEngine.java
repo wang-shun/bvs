@@ -22,6 +22,7 @@ import com.bizvisionsoft.bruiengine.action.Export;
 import com.bizvisionsoft.bruiengine.action.OpenPage;
 import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.action.QueryInGrid;
+import com.bizvisionsoft.bruiengine.action.Report;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
@@ -66,7 +67,7 @@ public class BruiActionEngine extends BruiEngine {
 					event, //
 					context, //
 					context == null ? null : context.getInput(), //
-					context == null ? null : context.getSelection(), //
+					context == null ? null : context.getSelection().toList(), //
 					Optional.ofNullable(context).map(c -> c.getSelection()).map(s -> s.getFirstElement()).orElse(null), //
 					context == null ? null : context.getContentPageInput(), //
 					context == null ? null : context.getRootInput(), //
@@ -113,6 +114,8 @@ public class BruiActionEngine extends BruiEngine {
 			brui = new BruiActionEngine(new QueryInGrid());
 		} else if (Action.TYPE_EXPORT.equals(type)) {
 			brui = new BruiActionEngine(new Export());
+		} else if (Action.TYPE_REPORT.equals(type)) {
+			brui = new BruiActionEngine(new Report());
 		} else if (Action.TYPE_SETTING.equals(type)) {
 			brui = new BruiActionEngine(new ClientSetting());
 

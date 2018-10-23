@@ -280,6 +280,13 @@ public class ActionsEditPane extends SashForm {
 		});
 
 		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("报表");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_REPORT));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
 		item.setText("设置");
 		item.addListener(SWT.Selection, e -> {
 			actions.add(ModelToolkit.createAction(Action.TYPE_SETTING));
@@ -322,10 +329,10 @@ public class ActionsEditPane extends SashForm {
 
 			editor.createComboField(parent,
 					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "导出",
-							"设置", "自定义操作" },
+							"报表", "设置", "自定义操作" },
 					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT,
 							Action.TYPE_INSERT_SUBITEM, Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY,
-							Action.TYPE_EXPORT, Action.TYPE_SETTING, Action.TYPE_CUSTOMIZED },
+							Action.TYPE_EXPORT, Action.TYPE_REPORT, Action.TYPE_SETTING, Action.TYPE_CUSTOMIZED },
 					"操作类型：", action, "type", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "唯一标识符:", action, "id", SWT.READ_ONLY);
@@ -392,6 +399,16 @@ public class ActionsEditPane extends SashForm {
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_QUERY.equals(action.getType())) {
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (Action.TYPE_REPORT.equals(action.getType())) {
+				editor.createTextField(parent, "报表查询JQ", action, "reportJQ", SWT.BORDER);
+				editor.createComboField(parent, new String[] { "pdf", "html", "docx", "excel", "pptx" },
+						new String[] { "pdf", "html", "docx", "excel", "pptx" }, "报表输出类型", action, "reportOutputType",
+						SWT.BORDER | SWT.READ_ONLY);
+				editor.createTextField(parent, "报表模板", action, "reportTemplate", SWT.BORDER);
+				editor.createTextField(parent, "报表输出文件", action, "reportFileName", SWT.BORDER);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
