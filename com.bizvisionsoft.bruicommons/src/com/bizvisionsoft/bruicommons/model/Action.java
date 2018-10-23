@@ -3,7 +3,7 @@ package com.bizvisionsoft.bruicommons.model;
 import java.util.List;
 
 public class Action extends ModelObject {
-	
+
 	public final static String TYPE_INSERT = "insert";
 
 	public final static String TYPE_EDIT = "edit";
@@ -21,12 +21,11 @@ public class Action extends ModelObject {
 	public static final String TYPE_INSERT_SUBITEM = "insertsub";
 
 	public static final String TYPE_EXPORT = "export";
-	
+
 	public static final String TYPE_SETTING = "setting";
 
 	public static final String TYPE_REPORT = "report";
 
-	
 	private String id;
 
 	private String name;
@@ -46,7 +45,7 @@ public class Action extends ModelObject {
 	private String className;
 
 	private String switchContentToAssemblyId;
-	
+
 	private boolean openContent;
 
 	private boolean propagate;
@@ -60,7 +59,7 @@ public class Action extends ModelObject {
 	private String editorAssemblyId;
 
 	private boolean editorAssemblyEditable;
-	
+
 	private boolean objectBehavier;
 
 	private boolean actionBehavier;
@@ -81,7 +80,7 @@ public class Action extends ModelObject {
 		Object old = this.name;
 		this.name = name;
 		firePropertyChange("name", old, this.name);
-		
+
 	}
 
 	public String getDescription() {
@@ -90,7 +89,7 @@ public class Action extends ModelObject {
 
 	public void setDescription(String description) {
 		this.description = description;
-		
+
 	}
 
 	public String getImage() {
@@ -107,17 +106,17 @@ public class Action extends ModelObject {
 
 	public void setTooltips(String tooltips) {
 		this.tooltips = tooltips;
-		
+
 	}
 
 	public void setImage(String image) {
 		this.image = image;
-		
+
 	}
 
 	public void setImageDisabled(String imageDisabled) {
 		this.imageDisabled = imageDisabled;
-		
+
 	}
 
 	public List<Action> getChildren() {
@@ -126,7 +125,7 @@ public class Action extends ModelObject {
 
 	public void setChildren(List<Action> children) {
 		this.children = children;
-		
+
 	}
 
 	public String getBundleId() {
@@ -145,7 +144,7 @@ public class Action extends ModelObject {
 		Object old = this.text;
 		this.text = text;
 		firePropertyChange("text", old, this.text);
-		
+
 	}
 
 	public void setBundleId(String bundleId) {
@@ -154,7 +153,7 @@ public class Action extends ModelObject {
 
 	public void setClassName(String className) {
 		this.className = className;
-		
+
 	}
 
 	public String getSwitchContentToAssemblyId() {
@@ -163,7 +162,7 @@ public class Action extends ModelObject {
 
 	public void setSwitchContentToAssemblyId(String switchContentToAssemblyId) {
 		this.switchContentToAssemblyId = switchContentToAssemblyId;
-		
+
 	}
 
 	public boolean isRunnable() {
@@ -171,7 +170,7 @@ public class Action extends ModelObject {
 			return true;
 		if (className != null && !className.isEmpty() && bundleId != null && !bundleId.isEmpty())
 			return true;
-		if(openPageName!=null && !openPageName.isEmpty()) {
+		if (openPageName != null && !openPageName.isEmpty()) {
 			return true;
 		}
 		return false;
@@ -179,7 +178,7 @@ public class Action extends ModelObject {
 
 	public void setPropagate(boolean propagate) {
 		this.propagate = propagate;
-		
+
 	}
 
 	public boolean isPropagate() {
@@ -188,7 +187,7 @@ public class Action extends ModelObject {
 
 	public void setForceText(boolean forceText) {
 		this.forceText = forceText;
-		
+
 	}
 
 	public boolean isForceText() {
@@ -201,7 +200,7 @@ public class Action extends ModelObject {
 
 	public void setStyle(String style) {
 		this.style = style;
-		
+
 	}
 
 	public String getEditorAssemblyId() {
@@ -210,7 +209,7 @@ public class Action extends ModelObject {
 
 	public void setEditorAssemblyId(String editorAssemblyId) {
 		this.editorAssemblyId = editorAssemblyId;
-		
+
 	}
 
 	public boolean isEditorAssemblyEditable() {
@@ -219,158 +218,154 @@ public class Action extends ModelObject {
 
 	public void setEditorAssemblyEditable(boolean editorAssemblyEditable) {
 		this.editorAssemblyEditable = editorAssemblyEditable;
-		
+
 	}
-	
+
 	public boolean isObjectBehavier() {
 		return objectBehavier;
 	}
-	
+
 	public boolean isActionBehavier() {
 		return actionBehavier;
 	}
-	
+
 	public void setActionBehavier(boolean actionBehavier) {
 		this.actionBehavier = actionBehavier;
 	}
-	
+
 	public void setObjectBehavier(boolean objectBehavier) {
 		this.objectBehavier = objectBehavier;
-		
+
 	}
-	
+
 	public boolean isOpenContent() {
 		return openContent;
 	}
-	
+
 	public void setOpenContent(boolean openContent) {
 		this.openContent = openContent;
-		
+
 	}
 
-	
 	@Override
 	public String toString() {
 		return name;
 	}
-	
-	
+
 	private String type;
-	
 
 	public void setType(String type) {
 		this.type = type;
-		
+
 	}
-	
+
 	public String getType() {
 		return type;
 	}
-	
+
 	private String createActionNewInstanceBundleId;
 
 	private String createActionNewInstanceClassName;
-	
+
 	public String getCreateActionNewInstanceBundleId() {
 		return createActionNewInstanceBundleId;
 	}
-	
+
 	public String getCreateActionNewInstanceClassName() {
 		return createActionNewInstanceClassName;
 	}
-	
+
 	public void setCreateActionNewInstanceBundleId(String createActionNewInstanceBundleId) {
 		this.createActionNewInstanceBundleId = createActionNewInstanceBundleId;
-		
+
 	}
-	
+
 	public void setCreateActionNewInstanceClassName(String createActionNewInstanceClassName) {
 		this.createActionNewInstanceClassName = createActionNewInstanceClassName;
-		
+
 	}
-	
+
 	private String openPageName;
-	
+
 	public String getOpenPageName() {
 		return openPageName;
 	}
-	
+
 	public void setOpenPageName(String openPageName) {
 		this.openPageName = openPageName;
-		
+
 	}
-	
+
 	private String role;
-	
+
 	public String getRole() {
 		return role;
 	}
-	
+
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	private String excludeRole;
-	
+
 	public void setExcludeRole(String excludeRole) {
 		this.excludeRole = excludeRole;
 	}
-	
+
 	public String getExcludeRole() {
 		return excludeRole;
 	}
-	
+
 	private String budgetBundleId;
 
 	private String budgetClassName;
-	
+
 	private String budgetServiceName;
 
 	private int horizontalSpan;
 
 	private int verticalSpan;
-	
+
 	public String getBudgetBundleId() {
 		return budgetBundleId;
 	}
-	
+
 	public void setBudgetBundleId(String budgetBundleId) {
 		this.budgetBundleId = budgetBundleId;
 	}
-	
+
 	public String getBudgetClassName() {
 		return budgetClassName;
 	}
-	
+
 	public void setBudgetClassName(String budgetClassName) {
 		this.budgetClassName = budgetClassName;
 	}
-	
+
 	public String getBudgetServiceName() {
 		return budgetServiceName;
 	}
-	
+
 	public void setBudgetServiceName(String budgetServiceName) {
 		this.budgetServiceName = budgetServiceName;
 	}
-	
+
 	public void setHorizontalSpan(int horizontalSpan) {
 		this.horizontalSpan = horizontalSpan;
 	}
-	
+
 	public void setVerticalSpan(int verticalSpan) {
 		this.verticalSpan = verticalSpan;
 	}
-	
+
 	public int getHorizontalSpan() {
 		return horizontalSpan;
 	}
-	
+
 	public int getVerticalSpan() {
 		return verticalSpan;
 	}
-	
-	
+
 	private String reportJQ;
 
 	private String reportOutputType;
@@ -378,11 +373,11 @@ public class Action extends ModelObject {
 	private String reportTemplate;
 
 	private String reportFileName;
-	
+
 	public String getReportJQ() {
 		return reportJQ;
 	}
-	
+
 	public void setReportJQ(String reportJQ) {
 		this.reportJQ = reportJQ;
 	}
@@ -390,17 +385,25 @@ public class Action extends ModelObject {
 	public String getReportOutputType() {
 		return reportOutputType;
 	}
-	
+
 	public void setReportOutputType(String reportOutputType) {
 		this.reportOutputType = reportOutputType;
 	}
-	
+
 	public String getReportTemplate() {
 		return reportTemplate;
+	}
+
+	public void setReportTemplate(String reportTemplate) {
+		this.reportTemplate = reportTemplate;
 	}
 
 	public String getReportFileName() {
 		return reportFileName;
 	}
-	
+
+	public void setReportFileName(String reportFileName) {
+		this.reportFileName = reportFileName;
+	}
+
 }
