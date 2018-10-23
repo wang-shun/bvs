@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.action;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.eclipse.rap.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.tools.Check;
-import com.sun.corba.se.spi.ior.ObjectId;
 
 public class Report {
 
@@ -40,20 +40,22 @@ public class Report {
 				.set("selected_id", getParam(selected))//
 				.set("page_input_id", getParam(page_input))//
 				.set("root_input_id", getParam(root_input))//
-//				.append("selection_id_list", getListParam(selection))//
-				;
-		UserSession.bruiToolkit().downloadServerFile("report/command", command);//обть
+		// .append("selection_id_list", getListParam(selection))//
+		;
+		UserSession.bruiToolkit().downloadServerFile("report/command", new JsonObject().set("command", command.toString()));// обть
 
 	}
 
-//	private ArrayList<String> getListParam(List<?> selection) {
-//		return Optional.ofNullable(selection).orElse(new ArrayList<>()).stream()
-//				.map(this::getParam).collect(Collectors.toCollection(ArrayList::new));
-//	}
+	// private ArrayList<String> getListParam(List<?> selection) {
+	// return Optional.ofNullable(selection).orElse(new ArrayList<>()).stream()
+	// .map(this::getParam).collect(Collectors.toCollection(ArrayList::new));
+	// }
 
 	private String getParam(Object obj) {
-		return Check.instanceOf(BsonTools.getBson(obj).get("_id"), ObjectId.class).map(_id -> _id.toString())
-				.orElse("");
+		if (obj != null)
+			return Check.instanceOf(BsonTools.getBson(obj).get("_id"), ObjectId.class).map(_id -> _id.toString())
+					.orElse("");
+		return "";
 	}
 
 }
