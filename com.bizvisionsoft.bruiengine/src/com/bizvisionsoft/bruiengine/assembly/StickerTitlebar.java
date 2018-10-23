@@ -15,7 +15,9 @@ import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 
 public class StickerTitlebar extends Composite {
 
@@ -26,7 +28,7 @@ public class StickerTitlebar extends Composite {
 	public StickerTitlebar(Composite parent, Action leftAction, List<Action> rightActions) {
 		super(parent, SWT.NONE);
 		toolkit = UserSession.bruiToolkit();
-		setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		setBackground(BruiColors.getColor(BruiColor.Grey_50));
 		setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_BAR_TITLE);
 		GridLayout layout = new GridLayout(leftAction == null ? 2 : 3, false);
 		setLayout(layout);
