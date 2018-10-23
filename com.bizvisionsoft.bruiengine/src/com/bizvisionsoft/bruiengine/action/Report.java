@@ -2,6 +2,7 @@ package com.bizvisionsoft.bruiengine.action;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.eclipse.rap.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,6 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.tools.Check;
-import com.sun.corba.se.spi.ior.ObjectId;
-
 public class Report {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
