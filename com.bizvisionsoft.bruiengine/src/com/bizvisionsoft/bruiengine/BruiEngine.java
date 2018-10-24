@@ -129,10 +129,10 @@ public class BruiEngine {
 	 * @return
 	 */
 	private BruiEngine injectService(IServiceWithId service) {
-		return injectField(service.getServiceId(), service);
+		return injectField(service.getServiceId(), service, false);
 	}
 
-	private BruiEngine injectField(String serviceName, Object srcValue) {
+	private BruiEngine injectField(String serviceName, Object srcValue, boolean byFieldName) {
 		final Class<? extends Object> clas = srcValue.getClass();
 		Arrays.asList(clazz.getDeclaredFields()).forEach(f -> {
 			Inject anno = f.getAnnotation(Inject.class);
@@ -140,9 +140,15 @@ public class BruiEngine {
 				Object value = null;
 				String name = anno.name();
 				if (name.isEmpty()) {
-					Class<?> type = f.getType();
-					if (type.isAssignableFrom(clas) || type.equals(clas)) {
-						value = srcValue;
+					if (byFieldName) {
+						if (f.getName().equalsIgnoreCase(serviceName)) {
+							value = srcValue;
+						}
+					} else {
+						Class<?> type = f.getType();
+						if (type.isAssignableFrom(clas) || type.equals(clas)) {
+							value = srcValue;
+						}
 					}
 				} else if (serviceName.equals(name)) {
 					value = srcValue;
@@ -256,7 +262,7 @@ public class BruiEngine {
 	protected void injectModelParameters(String jsonString) {
 		try {
 			Document document = Document.parse(jsonString);
-			document.entrySet().forEach(e -> injectField(e.getKey(), e.getValue()));
+			document.entrySet().forEach(e -> injectField(e.getKey(), e.getValue(), true));
 		} catch (Exception e) {
 			logger.warn("获取模型参数错误", e);
 		}
