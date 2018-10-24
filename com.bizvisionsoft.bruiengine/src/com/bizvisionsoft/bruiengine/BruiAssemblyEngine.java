@@ -27,7 +27,6 @@ import com.bizvisionsoft.bruiengine.assembly.SelectorPart;
 import com.bizvisionsoft.bruiengine.assembly.StickerPart;
 import com.bizvisionsoft.bruiengine.assembly.TreePart;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
-import com.bizvisionsoft.service.tools.Check;
 
 public class BruiAssemblyEngine extends BruiEngine {
 
@@ -79,7 +78,7 @@ public class BruiAssemblyEngine extends BruiEngine {
 					.newInstance();
 		}
 		
-		Check.isAssigned(assembly.getParameters(),brui::injectModelParameters);
+		brui.injectModelParameters(assembly.getParameters());
 		return (BruiAssemblyEngine) brui;
 	}
 
@@ -155,6 +154,10 @@ public class BruiAssemblyEngine extends BruiEngine {
 	@Override
 	public BruiAssemblyEngine init(IServiceWithId[] services) {
 		return (BruiAssemblyEngine) super.init(services);
+	}
+	
+	public BruiAssemblyEngine injectModelParameters(String jsonString) {
+		return (BruiAssemblyEngine) super.injectModelParameters(jsonString);
 	}
 
 }

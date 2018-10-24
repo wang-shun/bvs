@@ -21,6 +21,7 @@ import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Check;
 
 public class BruiEngine {
 
@@ -259,14 +260,16 @@ public class BruiEngine {
 		}
 	}
 
-	protected void injectModelParameters(String jsonString) {
-		try {
-			Document document = Document.parse(jsonString);
-			document.entrySet().forEach(e -> injectField(e.getKey(), e.getValue(), true));
-		} catch (Exception e) {
-			logger.warn("获取模型参数错误", e);
+	public BruiEngine injectModelParameters(String jsonString) {
+		if (Check.isAssigned(jsonString)) {
+			try {
+				Document document = Document.parse(jsonString);
+				document.entrySet().forEach(e -> injectField(e.getKey(), e.getValue(), true));
+			} catch (Exception e) {
+				logger.warn("获取模型参数错误", e);
+			}
 		}
-
+		return this;
 	}
 
 }

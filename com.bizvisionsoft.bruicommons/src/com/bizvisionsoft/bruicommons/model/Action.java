@@ -415,5 +415,15 @@ public class Action extends ModelObject {
 	public String getParameters() {
 		return parameters;
 	}
+	
+	private String passParametersToAssembly;
+	
+	public String getPassParametersToAssembly() {
+		return passParametersToAssembly;
+	}
+	
+	public void setPassParametersToAssembly(String passParametersToAssembly) {
+		this.passParametersToAssembly = passParametersToAssembly;
+	}
 
 }

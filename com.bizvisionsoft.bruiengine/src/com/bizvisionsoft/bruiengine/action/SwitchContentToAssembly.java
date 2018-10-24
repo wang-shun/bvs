@@ -16,6 +16,8 @@ public class SwitchContentToAssembly {
 
 	private boolean openContent;
 
+	private String passParameters;
+
 	public SwitchContentToAssembly(Assembly assembly, boolean openContent) {
 		this.assembly = assembly;
 		this.openContent = openContent;
@@ -24,10 +26,15 @@ public class SwitchContentToAssembly {
 	@Execute
 	public void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		if (openContent) {
-			bruiService.openContent(assembly, context.getFirstElement());
+			bruiService.openContent(assembly, context.getFirstElement(),passParameters);
 		} else {
-			bruiService.switchContent(assembly, context.getFirstElement());
+			bruiService.switchContent(assembly, context.getFirstElement(),passParameters);
 		}
+	}
+
+	public SwitchContentToAssembly passParameters(String passParametersToAssembly) {
+		this.passParameters = passParametersToAssembly;
+		return this;
 	}
 
 }

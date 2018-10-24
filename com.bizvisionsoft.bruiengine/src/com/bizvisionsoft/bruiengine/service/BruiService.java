@@ -107,21 +107,16 @@ public class BruiService implements IBruiService {
 	}
 
 	@Override
-	public void switchContent(Assembly assembly, Object input) {
+	public void switchContent(Assembly assembly, Object input, String parameter) {
 		if (part instanceof View) {
-			((View) part).switchAssemblyInContentArea(assembly, input);
+			((View) part).switchAssemblyInContentArea(assembly, input,parameter);
 		}
 	}
-
+	
 	@Override
-	public void openContent(Assembly assembly, Object input) {
-		openContent(assembly, input, null);
-	}
-
-	@Override
-	public void openContent(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback) {
+	public void openContent(Assembly assembly, Object input, String parameter,Consumer<BruiAssemblyContext> callback) {
 		if (part instanceof View) {
-			((View) part).openAssemblyInContentArea(assembly, input, callback);
+			((View) part).openAssemblyInContentArea(assembly, input, parameter,callback);
 		}
 	}
 
@@ -130,11 +125,6 @@ public class BruiService implements IBruiService {
 		if (part instanceof View) {
 			((View) part).closeCurrentContent();
 		}
-	}
-
-	@Override
-	public void switchContent(String assemblyName, Object input) {
-		switchContent(getAssembly(assemblyName), input);
 	}
 
 	@Override

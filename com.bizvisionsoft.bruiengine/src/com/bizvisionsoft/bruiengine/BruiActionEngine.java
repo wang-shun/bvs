@@ -126,7 +126,7 @@ public class BruiActionEngine extends BruiEngine {
 		} else if (Action.TYPE_SWITCHCONTENT.equals(type)) {
 			String staId = action.getSwitchContentToAssemblyId();
 			brui = new BruiActionEngine(
-					new SwitchContentToAssembly(ModelLoader.site.getAssembly(staId), action.isOpenContent()));
+					new SwitchContentToAssembly(ModelLoader.site.getAssembly(staId), action.isOpenContent()).passParameters(action.getPassParametersToAssembly()));
 		} else if (Action.TYPE_OPENPAGE.equals(type)) {
 			String pageName = action.getOpenPageName();
 			brui = new BruiActionEngine(new OpenPage(pageName));

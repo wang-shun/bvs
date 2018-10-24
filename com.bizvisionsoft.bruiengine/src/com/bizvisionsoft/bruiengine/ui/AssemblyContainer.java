@@ -29,6 +29,7 @@ public class AssemblyContainer {
 	private Composite parent;
 	private BruiAssemblyContext context;
 	private Object input;
+	private String parameter;
 
 	public AssemblyContainer(Composite parent, BruiAssemblyContext parentContext) {
 		this.parent = parent;
@@ -71,7 +72,8 @@ public class AssemblyContainer {
 
 			BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(assembly);
 			context.setEngine(brui);
-			content = brui.init(newServices).createUI(container = new Composite(parent, SWT.NONE)).getContainer();
+			content = brui.injectModelParameters(parameter).init(newServices)
+					.createUI(container = new Composite(parent, SWT.NONE)).getContainer();
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +191,11 @@ public class AssemblyContainer {
 
 	public Composite getContainer() {
 		return container;
+	}
+
+	public AssemblyContainer setParameter(String parameter) {
+		this.parameter = parameter;
+		return this;
 	}
 
 }

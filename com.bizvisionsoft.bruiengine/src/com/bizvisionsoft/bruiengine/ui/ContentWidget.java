@@ -36,15 +36,15 @@ public class ContentWidget {
 		parentContext.add(context = UserSession.newAssemblyContext().setParent(parentContext));
 	}
 
-	public ContentWidget createUI(Composite parent, Object input, boolean closeable) {
+	public ContentWidget createUI(Composite parent, Object input, String parameter, boolean closeable) {
 		contentContainer = new Composite(parent, SWT.NONE);
 		contentContainer.setLayout(new FillLayout());
-		switchAssembly(assembly, input, closeable);
+		switchAssembly(assembly, input, parameter, closeable);
 		contentContainer.setBackground(BruiColors.getColor(BruiColor.white));
 		return this;
 	}
 
-	final public void switchAssembly(Assembly assembly, Object input, boolean closeable) {
+	final public void switchAssembly(Assembly assembly, Object input, String parameter, boolean closeable) {
 		if (contentContainer == null || contentContainer.isDisposed())
 			return;
 		Arrays.asList(contentContainer.getChildren()).stream().filter(c -> !c.isDisposed())
@@ -53,11 +53,12 @@ public class ContentWidget {
 		assemblyContainer = new AssemblyContainer(contentContainer, context);
 		assemblyContainer.setCloseable(closeable);
 		assemblyContainer.setInput(input);
+		assemblyContainer.setParameter(parameter);
 		assemblyContainer.setAssembly(assembly).setServices(service).create();
 		contentContainer.layout(true, true);
-		
-		if(callback!=null) {
-			contentContainer.addListener(SWT.Dispose, e->callback.accept(assemblyContainer.getContext()));
+
+		if (callback != null) {
+			contentContainer.addListener(SWT.Dispose, e -> callback.accept(assemblyContainer.getContext()));
 		}
 	}
 
@@ -68,6 +69,5 @@ public class ContentWidget {
 	public void setCloseCallback(Consumer<BruiAssemblyContext> callback) {
 		this.callback = callback;
 	}
-
 
 }

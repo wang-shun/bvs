@@ -112,11 +112,11 @@ public class View extends Part {
 		List<String> assembiesId = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page,
 				context.getRootInput());
 		String id = Brui.sessionManager.getDefaultPageAssembly(page.getId());
-		if(id==null||!assembiesId.contains(id)) {
+		if (id == null || !assembiesId.contains(id)) {
 			id = assembiesId.get(0);
 		}
-		
-		createContentArea(ModelLoader.site.getAssembly(id), null, false,null);
+
+		createContentArea(ModelLoader.site.getAssembly(id), null,null, false, null);
 
 		FormData fd;
 		if (headbar != null) {
@@ -148,10 +148,11 @@ public class View extends Part {
 
 	}
 
-	private Composite createContentArea(Assembly assembly, Object input, boolean closeable, Consumer<BruiAssemblyContext> callback) {
+	private Composite createContentArea(Assembly assembly, Object input, String parameter, boolean closeable,
+			Consumer<BruiAssemblyContext> callback) {
 		contentWidget = new ContentWidget(assembly, service, context);
 		contentWidget.setCloseCallback(callback);
-		Composite contentArea = contentWidget.createUI(parent, input, closeable).getControl();
+		Composite contentArea = contentWidget.createUI(parent, input, parameter, closeable).getControl();
 		FormData fd = new FormData();
 		contentArea.setLayoutData(fd);
 		fd.top = headbar != null ? new FormAttachment(headbar) : new FormAttachment();
@@ -173,9 +174,10 @@ public class View extends Part {
 		return sidebarWidget.createUI(parent).getControl();
 	}
 
-	public void openAssemblyInContentArea(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback) {
+	public void openAssemblyInContentArea(Assembly assembly, Object input, String parameter,
+			Consumer<BruiAssemblyContext> callback) {
 		previous.add(contentWidget);
-		Composite contentArea = createContentArea(assembly, input, true,callback);
+		Composite contentArea = createContentArea(assembly, input, parameter,true, callback);
 		contentArea.moveAbove(null);
 		parent.layout();
 	}
@@ -188,8 +190,8 @@ public class View extends Part {
 		parent.layout();
 	}
 
-	public void switchAssemblyInContentArea(Assembly assembly, Object input) {
-		contentWidget.switchAssembly(assembly, input, false);
+	public void switchAssemblyInContentArea(Assembly assembly, Object input, String parameter) {
+		contentWidget.switchAssembly(assembly, input,parameter, false);
 	}
 
 	public Page getPage() {
@@ -216,13 +218,13 @@ public class View extends Part {
 	}
 
 	public void updateSidebarActionBudget(String actionName) {
-		if(sidebarWidget!=null) {
+		if (sidebarWidget != null) {
 			sidebarWidget.updateSidebarActionBudget(actionName);
 		}
 	}
 
 	public void saveDefaultHomePageAssm(Assembly assm) {
-		Brui.sessionManager.saveDefaultPageAssembly(page.getId(),assm.getId());
+		Brui.sessionManager.saveDefaultPageAssembly(page.getId(), assm.getId());
 	}
 
 }

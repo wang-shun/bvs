@@ -369,11 +369,13 @@ public class ActionsEditPane extends SashForm {
 			if (Action.TYPE_SWITCHCONTENT.equals(action.getType())) {
 				editor.createAssemblyField(parent, "内容区组件:", action, "switchContentToAssemblyId", true);
 				editor.createCheckboxField(parent, "打开新内容（原有的内容区不关闭）:", action, "openContent", SWT.CHECK);
+				editor.createTextField(parent, "传递参数到组件:", action, "passParametersToAssembly", SWT.BORDER | SWT.MULTI);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_OPENPAGE.equals(action.getType())) {
 				editor.createTextField(parent, "页面名称:", action, "openPageName", SWT.BORDER);
+//				editor.createTextField(parent, "传递参数到页面:", action, "passParametersToAssembly", SWT.BORDER | SWT.MULTI);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -423,8 +425,8 @@ public class ActionsEditPane extends SashForm {
 			editor.createTextField(parent, "Budget取数插件唯一标识符（Bundle Id）:", action, "budgetBundleId", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数完整的类名:", action, "budgetClassName", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数服务:", action, "budgetServiceName", SWT.BORDER);
-			
-			editor.createTextField(parent, "参数:", action, "parameters", SWT.BORDER|SWT.MULTI);
+
+			editor.createTextField(parent, "参数:", action, "parameters", SWT.BORDER | SWT.MULTI);
 
 			action.addPropertyChangeListener("name", listener);
 		}

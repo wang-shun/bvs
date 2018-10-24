@@ -15,7 +15,7 @@ import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
 
 public interface IBruiService extends IServiceWithId {
-	
+
 	public static String Id = "com.bizvisionsoft.service.bruiService";
 
 	public boolean closeCurrentPart();
@@ -34,13 +34,33 @@ public interface IBruiService extends IServiceWithId {
 		return Id;
 	}
 
-	public void switchContent(Assembly assembly, Object input);
+	public void switchContent(Assembly assembly, Object input, String parameters);
 
-	public void switchContent(String assemblyName, Object input);
+	public default void switchContent(Assembly assembly, Object input) {
+		switchContent(assembly, input, null);
+	}
 
-	public void openContent(Assembly assembly, Object input);
+	public default void switchContent(String assemblyName, Object input) {
+		switchContent(assemblyName, input, null);
+	}
 
-	public void openContent(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback);
+	public default void switchContent(String assemblyName, Object input, String parameters) {
+		switchContent(getAssembly(assemblyName), input,null);
+	}
+
+	public default void openContent(Assembly assembly, Object input) {
+		openContent(assembly, input, null, null);
+	}
+
+	public default void openContent(Assembly assembly, Object input, String parameters) {
+		openContent(assembly, input, parameters, null);
+	}
+
+	public default void openContent(Assembly assembly, Object input, Consumer<BruiAssemblyContext> callback) {
+		openContent(assembly, input, null, callback);
+	}
+
+	public void openContent(Assembly assembly, Object input, String parameters, Consumer<BruiAssemblyContext> callback);
 
 	public void switchPage(String pageName, String inputUid);
 
@@ -68,5 +88,5 @@ public interface IBruiService extends IServiceWithId {
 
 	public User getCurrentConsignerInfo();
 
-	public void displaySiteModel(ModelObject config); 
+	public void displaySiteModel(ModelObject config);
 }
