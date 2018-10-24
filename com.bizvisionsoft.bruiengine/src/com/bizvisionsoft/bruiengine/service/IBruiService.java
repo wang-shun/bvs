@@ -47,6 +47,10 @@ public interface IBruiService extends IServiceWithId {
 	public default void switchContent(String assemblyName, Object input, String parameters) {
 		switchContent(getAssembly(assemblyName), input,null);
 	}
+	
+	public default void openContent(String assemblyName, Object input) {
+		openContent(getAssembly(assemblyName), input, null, null);
+	}
 
 	public default void openContent(Assembly assembly, Object input) {
 		openContent(assembly, input, null, null);
