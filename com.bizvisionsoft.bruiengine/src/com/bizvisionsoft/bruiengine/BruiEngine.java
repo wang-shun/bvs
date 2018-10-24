@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,6 +129,11 @@ public class BruiEngine {
 	 * @return
 	 */
 	private BruiEngine injectService(IServiceWithId service) {
+		return injectField(service.getServiceId(), service);
+	}
+
+	private BruiEngine injectField(String serviceName, Object srcValue) {
+		final Class<? extends Object> clas = srcValue.getClass();
 		Arrays.asList(clazz.getDeclaredFields()).forEach(f -> {
 			Inject anno = f.getAnnotation(Inject.class);
 			if (anno != null) {
@@ -135,12 +141,11 @@ public class BruiEngine {
 				String name = anno.name();
 				if (name.isEmpty()) {
 					Class<?> type = f.getType();
-					Class<? extends Object> clas = service.getClass();
 					if (type.isAssignableFrom(clas) || type.equals(clas)) {
-						value = service;
+						value = srcValue;
 					}
-				} else if (service.getServiceId().equals(name)) {
-					value = service;
+				} else if (serviceName.equals(name)) {
+					value = srcValue;
 				}
 
 				if (value != null) {
@@ -246,6 +251,16 @@ public class BruiEngine {
 			names.add(UniversalCommand.PARAM_TARGET_CLASS);
 			values.add(modelClassName);
 		}
+	}
+
+	protected void injectModelParameters(String jsonString) {
+		try {
+			Document document = Document.parse(jsonString);
+			document.entrySet().forEach(e -> injectField(e.getKey(), e.getValue()));
+		} catch (Exception e) {
+			logger.warn("获取模型参数错误", e);
+		}
+
 	}
 
 }
