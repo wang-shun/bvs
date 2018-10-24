@@ -46,5 +46,10 @@ public class PageEditor extends ModelEditor {
 	protected boolean enableJsonViewer() {
 		return false;
 	}
+	
+	@Override
+	protected boolean enableParameter() {
+		return false;
+	}
 
 }

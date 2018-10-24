@@ -28,5 +28,9 @@ public class FootbarEditor extends ModelEditor {
 	protected boolean enableJsonViewer() {
 		return false;
 	}
-
+	
+	@Override
+	protected boolean enableParameter() {
+		return false;
+	}
 }

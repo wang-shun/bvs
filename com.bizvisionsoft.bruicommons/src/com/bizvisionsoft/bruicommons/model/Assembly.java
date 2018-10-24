@@ -804,6 +804,15 @@ public class Assembly extends ModelObject {
 		this.disableStdQuery = disableStdQuery;
 	}
 
+	private String parameters;
+	
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
+	
+	public String getParameters() {
+		return parameters;
+	}
 
 
 }

@@ -89,11 +89,31 @@ public abstract class ModelEditor extends EditorPart {
 
 		createContent();
 
-		if(enableJsonViewer()) {
+		if (enableParameter()) {
+			createJsonParameter();
+		}
+
+		if (enableJsonViewer()) {
 			createJsonViewer();
 		}
-		
+
 		folder.setSelection(0);
+	}
+
+	private void createJsonParameter() {
+		if (inputData instanceof Assembly) {
+			Composite parent = createTabItemContent("²ÎÊý");
+			parent.setLayout(new FillLayout());
+			Text text = new Text(parent, SWT.BORDER | SWT.MULTI);
+			@SuppressWarnings("unchecked")
+			IObservableValue<String> observe = BeanProperties.value(inputData.getClass(), "parameters").observe(realm,
+					inputData);
+			bindingContext.bindValue(SWTObservables.observeText(text, SWT.FocusOut), observe, null, null);
+		}
+	}
+
+	protected boolean enableParameter() {
+		return true;
 	}
 
 	protected boolean enableJsonViewer() {
@@ -103,7 +123,8 @@ public abstract class ModelEditor extends EditorPart {
 	protected void createJsonViewer() {
 		Composite parent = createTabItemContent("JSON");
 		parent.setLayout(new FillLayout());
-		new Text(parent, SWT.MULTI|SWT.WRAP|SWT.READ_ONLY).setText(new GsonBuilder().setPrettyPrinting().create().toJson(inputData));
+		new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY)
+				.setText(new GsonBuilder().setPrettyPrinting().create().toJson(inputData));
 	}
 
 	protected Composite createTabItemContent(String itemTitle) {
@@ -186,7 +207,7 @@ public abstract class ModelEditor extends EditorPart {
 			boolean editable) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
-		GridData layoutData = new GridData(SWT.RIGHT, SWT.TOP, false, false,1,2);
+		GridData layoutData = new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 2);
 		layoutData.verticalIndent = 6;
 		label.setLayoutData(layoutData);
 
@@ -239,8 +260,7 @@ public abstract class ModelEditor extends EditorPart {
 			}
 		});
 		button.setEnabled(editable);
-		
-		
+
 		button = new Button(parent, SWT.PUSH);
 		button.setText("Çå³ý");
 		button.addListener(SWT.Selection, event -> {

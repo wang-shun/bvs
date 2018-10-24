@@ -30,5 +30,15 @@ public class TemplateEditor extends ModelEditor {
 	protected Class<? extends ModelObject> getDataType() {
 		return Template.class;
 	}
+	
+	@Override
+	protected boolean enableJsonViewer() {
+		return false;
+	}
+	
+	@Override
+	protected boolean enableParameter() {
+		return false;
+	}
 
 }

@@ -63,7 +63,7 @@ public class AssemblyEditor extends ModelEditor {
 		if (toolbarActions == null)
 			((Assembly) inputData).setActions(toolbarActions = new ArrayList<Action>());
 		new ActionsEditPane(parent, toolbarActions, true, this);
-
+		
 		addPartNamePropertyChangeListener("name");
 	}
 
