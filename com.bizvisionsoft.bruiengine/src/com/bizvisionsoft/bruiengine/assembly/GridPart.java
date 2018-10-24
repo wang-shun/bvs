@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.bson.Document;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -27,7 +26,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -403,7 +401,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			try {
 				doQuery((BasicDBObject) editor.save());
 			} catch (Exception e1) {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误", e1.getMessage());
+				bruiService.error("错误", e1.getMessage());
 			}
 
 		}));
@@ -808,7 +806,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 				dataSetEngine.replace(element, newData, context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
-				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
+				bruiService.error("更新", e.getMessage());
 			}
 		}
 	}
@@ -825,7 +823,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 					refresh(parentElement);
 				}
 			} catch (Exception e) {
-				MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
+				bruiService.error("删除", e.getMessage());
 			}
 		}
 	}
@@ -959,8 +957,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
 			logger.error("导出Grid： " + fileName + " 的Excel数据时出错。" + e.getMessage());
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "错误",
-					"导出Grid： " + fileName + " 的Excel数据时出错。");
+			bruiService.error("错误", "导出Grid： " + fileName + " 的Excel数据时出错。");
 		}
 	}
 

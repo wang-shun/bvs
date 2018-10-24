@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -150,7 +149,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider, ID
 				dataSetEngine.replace(element, newData, context);
 				replaceItem(element, newElement);
 			} catch (Exception e) {
-				MessageDialog.openError(bruiService.getCurrentShell(), "更新", e.getMessage());
+				bruiService.error( "更新", e.getMessage());
 			}
 		}
 	}
@@ -162,7 +161,7 @@ public class TreePart implements IStructuredDataPart, IPostSelectionProvider, ID
 				dataSetEngine.delete(element, null, context);
 				tree.deleteItem(element);
 			} catch (Exception e) {
-				MessageDialog.openError(bruiService.getCurrentShell(), "删除", e.getMessage());
+				bruiService.error( "删除", e.getMessage());
 			}
 		}
 	}

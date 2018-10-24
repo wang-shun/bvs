@@ -93,4 +93,6 @@ public interface IBruiService extends IServiceWithId {
 	public User getCurrentConsignerInfo();
 
 	public void displaySiteModel(ModelObject config);
+
+	public void error(String title, String message);
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -196,7 +195,7 @@ public class EditorPart {
 					bruiService.closeCurrentPart();
 				} catch (Exception e1) {
 					logger.error(e1.getMessage(), e1);
-					MessageDialog.openError(bruiService.getCurrentShell(), "´íÎó", e1.getMessage());
+					bruiService.error("´íÎó", e1.getMessage());
 				}
 			});
 

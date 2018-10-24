@@ -154,6 +154,11 @@ public class BruiService implements IBruiService {
 	public boolean confirm(String title, String message) {
 		return MessageDialog.openConfirm(getCurrentShell(), title, message);
 	}
+	
+	@Override
+	public void error(String title, String message) {
+		MessageDialog.openError(getCurrentShell(), title, message);
+	}
 
 	@Override
 	public Command command(ObjectId target_id, Date date, String name) {
