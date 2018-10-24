@@ -406,4 +406,14 @@ public class Action extends ModelObject {
 		this.reportFileName = reportFileName;
 	}
 
+	private String parameters;
+	
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
+	
+	public String getParameters() {
+		return parameters;
+	}
+
 }

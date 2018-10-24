@@ -423,6 +423,8 @@ public class ActionsEditPane extends SashForm {
 			editor.createTextField(parent, "Budget取数插件唯一标识符（Bundle Id）:", action, "budgetBundleId", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数完整的类名:", action, "budgetClassName", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数服务:", action, "budgetServiceName", SWT.BORDER);
+			
+			editor.createTextField(parent, "参数:", action, "parameters", SWT.BORDER|SWT.MULTI);
 
 			action.addPropertyChangeListener("name", listener);
 		}

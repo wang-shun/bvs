@@ -136,6 +136,9 @@ public class BruiActionEngine extends BruiEngine {
 
 		}
 		brui.action = action;
+		
+		Check.isAssigned(action.getParameters(),brui::injectModelParameters);
+
 		return (BruiActionEngine) brui.init(services);
 	}
 
