@@ -75,6 +75,8 @@ public class BruiToolkit {
 
 	public static final String CSS_PANEL_CONTENT = "content";
 
+	public static final int MARGIN = 12;
+
 	public Widget enableMarkup(Widget control) {
 
 		control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
@@ -99,6 +101,25 @@ public class BruiToolkit {
 		return null;
 	}
 
+	/**
+	 * 使用Controls替代<br>
+	 * 
+	 * 	Composite content = Controls.contentPanel(parent).mLoc().mTop(bar).get();<br>
+		替代以下的语句：<br>
+		Composite content = UserSession.bruiToolkit().newContentPanel(parent);<br>
+		fd = new FormData();<br>
+		content.setLayoutData(fd);<br>
+		fd.left = new FormAttachment(0, 8);<br>
+		fd.top = new FormAttachment(bar, 8);<br>
+		fd.right = new FormAttachment(100, -8);<br>
+		fd.bottom = new FormAttachment(100, -8);<br>
+		content.setLayout(new FormLayout());<br>
+	 * 
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	@Deprecated
 	public Composite newContentPanel(Composite parent) {
 		Composite composite = newStyledControl(Composite.class, parent, SWT.BORDER, null);
 		composite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
@@ -362,8 +383,8 @@ public class BruiToolkit {
 	}
 
 	public void downloadServerFile(String path, JsonObject param) {
-		String url = ServicesLoader.url+"/"+path+"/";
-		WidgetHandler.getHandler().download(url,  param);
+		String url = ServicesLoader.url + "/" + path + "/";
+		WidgetHandler.getHandler().download(url, param);
 	}
 
 }

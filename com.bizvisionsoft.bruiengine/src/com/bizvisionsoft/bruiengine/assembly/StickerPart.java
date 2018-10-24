@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
@@ -22,6 +20,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.util.Controls;
 import com.bizvisionsoft.service.tools.Check;
 
 public class StickerPart {
@@ -94,22 +93,13 @@ public class StickerPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
 		}
-		bar = new StickerTitlebar(parent, closeAction, rightActions).setText(text);
-		setToolbarActions();
-		FormData fd = new FormData();
-		bar.setLayoutData(fd);
-		fd.left = new FormAttachment(0);
-		fd.top = new FormAttachment(0);
-		fd.right = new FormAttachment(100);
-		fd.height = 48;
+		
+		bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions)).height(48).left().top().right()
+				.get().setText(text);
 
-		content = UserSession.bruiToolkit().newContentPanel(parent);
-		fd = new FormData();
-		content.setLayoutData(fd);
-		fd.left = new FormAttachment(0, 8);
-		fd.top = new FormAttachment(bar, 8);
-		fd.right = new FormAttachment(100, -8);
-		fd.bottom = new FormAttachment(100, -8);
+		setToolbarActions();
+
+		content = Controls.contentPanel(parent).mLoc().mTop(bar).get();
 
 		bar.addListener(SWT.Selection, e -> {
 			Action action = ((Action) e.data);
