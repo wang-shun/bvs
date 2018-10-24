@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.bson.Document;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.bizvisionsoft.bruicommons.model.Assembly;
@@ -100,4 +101,8 @@ public interface IBruiContext extends IServiceWithId {
 	Stream<IBruiContext> stream(int dir);
 
 	Stream<IBruiContext> parallelStream(int dir);
+
+	Object getParameter(String key);
+
+	Document getParameters();
 }

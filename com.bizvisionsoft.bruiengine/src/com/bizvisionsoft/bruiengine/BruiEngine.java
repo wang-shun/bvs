@@ -179,6 +179,8 @@ public class BruiEngine {
 	protected void injectCommonParameters(IBruiContext context, List<String> names, List<Object> values,
 			String modelClassName) {
 		if (context != null) {
+			injectContextPassedParameters(context, names, values);
+
 			injectContextInputParameters(context, names, values);
 
 			injectPageContextInputParameters(context, names, values);
@@ -189,6 +191,18 @@ public class BruiEngine {
 		injectUniversalCommandParameters(names, values, modelClassName);
 
 		injectUserParameters(names, values);
+	}
+
+	private void injectContextPassedParameters(IBruiContext context, List<String> names, List<Object> values) {
+		if (context != null) {
+			Document params = context.getParameters();
+			if (params != null) {
+				params.entrySet().forEach(e -> {
+					names.add(e.getKey());
+					values.add(e.getValue());
+				});
+			}
+		}
 	}
 
 	private void injectUserParameters(List<String> names, List<Object> values) {

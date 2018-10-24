@@ -72,6 +72,7 @@ public class AssemblyContainer {
 
 			BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(assembly);
 			context.setEngine(brui);
+			context.passParamters(parameter);
 			content = brui.injectModelParameters(parameter).init(newServices)
 					.createUI(container = new Composite(parent, SWT.NONE)).getContainer();
 		}

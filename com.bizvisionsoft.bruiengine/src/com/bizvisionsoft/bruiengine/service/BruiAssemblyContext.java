@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.bson.Document;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -18,6 +19,7 @@ import com.bizvisionsoft.bruiengine.Brui;
 import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.mongocodex.tools.BsonTools;
 import com.bizvisionsoft.service.model.User;
+import com.bizvisionsoft.service.tools.Check;
 
 public class BruiAssemblyContext implements IBruiContext {
 
@@ -40,6 +42,8 @@ public class BruiAssemblyContext implements IBruiContext {
 	private boolean contentPage;
 
 	private boolean disposed;
+
+	private Document parameters;
 
 	BruiAssemblyContext() {
 		children = new ArrayList<IBruiContext>();
@@ -399,4 +403,22 @@ public class BruiAssemblyContext implements IBruiContext {
 			return (T) data;
 		return null;
 	}
+
+	public void passParamters(String jsonString) {
+		if (Check.isAssigned(jsonString)) {
+			try {
+				parameters = Document.parse(jsonString);
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	public Object getParameter(String key) {
+		return Optional.ofNullable(parameters).map(p -> p.get(key)).orElse(null);
+	}
+	
+	public Document getParameters() {
+		return parameters;
+	}
+
 }
