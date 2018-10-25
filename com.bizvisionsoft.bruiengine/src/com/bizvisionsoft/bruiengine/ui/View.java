@@ -72,9 +72,9 @@ public class View extends Part {
 		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
 			String welcome = Optional.ofNullable(ModelLoader.site.getWelcome()).map(t -> t.trim().isEmpty() ? null : t)
 					.orElse("登录PMS");
-			new Popup(la, UserSession.newAssemblyContext()).setTitle(welcome).open();
+			new Popup(la, UserSession.newAssemblyContext()).setFullscreen(true).setTitle(welcome).open();
 		} else if (page.isForceCheckLogin()) {
-			new Popup(la, UserSession.newAssemblyContext()).setTitle("您的操作需再次验证身份").open();
+			new Popup(la, UserSession.newAssemblyContext()).setFullscreen(true).setTitle("您的操作需再次验证身份").open();
 		} else {
 			try {
 				service.loginUser();

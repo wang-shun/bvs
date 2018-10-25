@@ -34,6 +34,24 @@
             filter: brightness(0.8) blur(14px);    
 }
 
+.brui_login_bg{
+	background-image: linear-gradient(180deg,hsla(0,0%,100%,0) 60%,#fff),linear-gradient(70deg,#dbedff 32%,#ebfff0) !important;
+}
+
+.brui_card{
+	background: #fff !important;
+    -webkit-box-shadow: 0 0 20px rgba(0,0,0,.08),inset 0 0 3px #fff !important;
+    box-shadow: 0 0 20px rgba(0,0,0,.08),inset 0 0 3px #fff !important;
+    border-radius: 4px !important;
+}
+
+.brui_icon{
+	background: #fff !important;
+    -webkit-box-shadow: 0 0 20px rgba(0,0,0,.08),inset 0 0 3px #fff !important;
+    box-shadow: 0 0 20px rgba(0,0,0,.08),inset 0 0 3px #fff !important;
+    border-radius: 24px !important;
+}
+
 .brui_translucent_blue{
 	background: -webkit-linear-gradient(135deg, #03b0ff, #00000000) !important;
 	background: -o-linear-gradient(135deg, #03b0ff, #00000000) !important;

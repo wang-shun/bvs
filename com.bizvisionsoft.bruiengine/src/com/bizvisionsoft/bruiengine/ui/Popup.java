@@ -29,6 +29,8 @@ public class Popup extends Part {
 
 	protected boolean addToParentContext;
 
+	private boolean fullscreen;
+
 	public Popup(Assembly assembly, IBruiContext parentContext) {
 		this(assembly, parentContext, true);
 	}
@@ -101,11 +103,25 @@ public class Popup extends Part {
 	@Override
 	protected void configureShell(Shell newShell) {
 		newShell.setText(title);
+		if(fullscreen) {
+			newShell.setFullScreen(true);
+		}
 		super.configureShell(newShell);
 	}
 
 	public BruiAssemblyContext getContext() {
 		return context;
 	}
+	
+	public Popup setStyle(int newShellStyle) {
+		super.setShellStyle(newShellStyle);
+		return this;
+	}
+	
+	public Popup setFullscreen(boolean fullscreen) {
+		this.fullscreen = fullscreen;
+		return this;
+	}
+	
 
 }

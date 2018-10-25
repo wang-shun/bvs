@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.EntryPoint;
@@ -16,13 +14,7 @@ import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.StartupParameters;
 import org.eclipse.rap.rwt.internal.lifecycle.RWTLifeCycle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +45,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 		display = new Display();
 		shell = new Shell(display, SWT.NO_TRIM);
-		setBackground();
+//		setBackground();
 		UserSession.current().setEntryPoint(this);
 
 		shell.setMaximized(true);
@@ -83,71 +75,71 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		return "rwt-resources/" + aliasOfResFolder + resPath;
 	}
 
-	private void setBackground() {
-		shell.setLayout(new FormLayout());
-		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		Label title = new Label(shell, SWT.NONE);
-		title.setData(RWT.MARKUP_ENABLED, true);
-		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
-		String logo = Optional.ofNullable(ModelLoader.site.getHeadLogo()).map(t -> getResourceURL(t))
-				.orElse("resource/image/logo_w.svg");
-		title.setStyleAttribute("backgroundImage", logo);
-		title.setStyleAttribute("background-repeat", "no-repeat");
-		title.setStyleAttribute("background-size", "cover");
-
-		Integer h = ModelLoader.site.getHeadLogoHeight();
-		Integer w = ModelLoader.site.getHeadLogoWidth();
-		FormData fd;
-		if (w != null && h != null) {
-			fd = new FormData(w, h);
-		} else {
-			fd = new FormData(150, 60);
-		}
-		fd.left = new FormAttachment(0, 16);
-		fd.top = new FormAttachment(0, 16);
-		title.setLayoutData(fd);
-
-		Label footRight = new Label(shell, SWT.NONE);
-		footRight.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
-		footRight.setText("系统状态  |  使用条款  |  许可协议  |  关于我们");
-		// TODO 链接和文本显示
-		fd = new FormData();
-		fd.right = new FormAttachment(100, -16);
-		fd.bottom = new FormAttachment(100, -16);
-		// fd.left = new FormAttachment(0,16);
-		fd.height = 24;
-		footRight.setLayoutData(fd);
-
-		Label footLeft = new Label(shell, SWT.NONE);
-		footLeft.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
-		String text = Optional.ofNullable(ModelLoader.site.getFootLeftText()).orElse("武汉曜正科技有限公司 版权所有");
-		footLeft.setText(text);
-		fd = new FormData();
-		fd.left = new FormAttachment(0, 16);
-		fd.bottom = new FormAttachment(100, -16);
-		// fd.left = new FormAttachment(0,16);
-		fd.height = 24;
-		footLeft.setLayoutData(fd);
-
-		Composite bgimg = new Composite(shell, SWT.NONE);
-		fd = new FormData();
-		fd.right = new FormAttachment(100, 20);
-		fd.bottom = new FormAttachment(100, 20);
-		fd.left = new FormAttachment(0, -20);
-		fd.top = new FormAttachment(0, -20);
-		bgimg.setLayoutData(fd);
-
-		bgimg.moveBelow(null);
-		bgimg.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
-		String img = Optional.ofNullable(ModelLoader.site.getPageBackgroundImage()).map(t -> getResourceURL(t))
-				.orElse("resource/image/bg/bg0" + (new Random().nextInt(3) + 1) + ".jpg");
-
-		bgimg.setStyleAttribute("backgroundImage", img);
-		bgimg.setStyleAttribute("background-size", "cover");
-		bgimg.setStyleAttribute("background-repeat", "no-repeat");
-		bgimg.setStyleAttribute("background-position", "center");
-		Check.isAssigned(ModelLoader.site.getPageBackgroundImageCSS(),css->bgimg.setHtmlAttribute("class", css)); 
-	}
+//	private void setBackground() {
+//		shell.setLayout(new FormLayout());
+//		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+//		Label title = new Label(shell, SWT.NONE);
+//		title.setData(RWT.MARKUP_ENABLED, true);
+//		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+//		String logo = Optional.ofNullable(ModelLoader.site.getHeadLogo()).map(t -> getResourceURL(t))
+//				.orElse("resource/image/logo_w.svg");
+//		title.setStyleAttribute("backgroundImage", logo);
+//		title.setStyleAttribute("background-repeat", "no-repeat");
+//		title.setStyleAttribute("background-size", "cover");
+//
+//		Integer h = ModelLoader.site.getHeadLogoHeight();
+//		Integer w = ModelLoader.site.getHeadLogoWidth();
+//		FormData fd;
+//		if (w != null && h != null) {
+//			fd = new FormData(w, h);
+//		} else {
+//			fd = new FormData(150, 60);
+//		}
+//		fd.left = new FormAttachment(0, 16);
+//		fd.top = new FormAttachment(0, 16);
+//		title.setLayoutData(fd);
+//
+//		Label footRight = new Label(shell, SWT.NONE);
+//		footRight.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+//		footRight.setText("系统状态  |  使用条款  |  许可协议  |  关于我们");
+//		// TODO 链接和文本显示
+//		fd = new FormData();
+//		fd.right = new FormAttachment(100, -16);
+//		fd.bottom = new FormAttachment(100, -16);
+//		// fd.left = new FormAttachment(0,16);
+//		fd.height = 24;
+//		footRight.setLayoutData(fd);
+//
+//		Label footLeft = new Label(shell, SWT.NONE);
+//		footLeft.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+//		String text = Optional.ofNullable(ModelLoader.site.getFootLeftText()).orElse("武汉曜正科技有限公司 版权所有");
+//		footLeft.setText(text);
+//		fd = new FormData();
+//		fd.left = new FormAttachment(0, 16);
+//		fd.bottom = new FormAttachment(100, -16);
+//		// fd.left = new FormAttachment(0,16);
+//		fd.height = 24;
+//		footLeft.setLayoutData(fd);
+//
+//		Composite bgimg = new Composite(shell, SWT.NONE);
+//		fd = new FormData();
+//		fd.right = new FormAttachment(100, 20);
+//		fd.bottom = new FormAttachment(100, 20);
+//		fd.left = new FormAttachment(0, -20);
+//		fd.top = new FormAttachment(0, -20);
+//		bgimg.setLayoutData(fd);
+//
+//		bgimg.moveBelow(null);
+//		bgimg.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+//		String img = Optional.ofNullable(ModelLoader.site.getPageBackgroundImage()).map(t -> getResourceURL(t))
+//				.orElse("resource/image/bg/bg0" + (new Random().nextInt(3) + 1) + ".jpg");
+//
+//		bgimg.setStyleAttribute("backgroundImage", img);
+//		bgimg.setStyleAttribute("background-size", "cover");
+//		bgimg.setStyleAttribute("background-repeat", "no-repeat");
+//		bgimg.setStyleAttribute("background-position", "center");
+//		Check.isAssigned(ModelLoader.site.getPageBackgroundImageCSS(),css->bgimg.setHtmlAttribute("class", css)); 
+//	}
 
 	@Override
 	public Collection<String> getParameterNames() {
