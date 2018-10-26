@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
@@ -22,6 +21,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.service.tools.Check;
 
 public class View extends Part {
 
@@ -69,23 +69,53 @@ public class View extends Part {
 
 	public int open() {
 		Assembly la = ModelLoader.site.getLoginAssembly();
-		if (page.isCheckLogin() && service.getCurrentUserInfo() == null) {
-			String welcome = Optional.ofNullable(ModelLoader.site.getWelcome()).map(t -> t.trim().isEmpty() ? null : t)
-					.orElse("登录PMS");
-			new Popup(la, UserSession.newAssemblyContext()).setFullscreen(true).setTitle(welcome).open();
-		} else if (page.isForceCheckLogin()) {
-			new Popup(la, UserSession.newAssemblyContext()).setFullscreen(true).setTitle("您的操作需再次验证身份").open();
-		} else {
-			try {
-				service.loginUser();
-			} catch (Exception e) {
-				Layer.message(e.getMessage(), Layer.ICON_LOCK);
-			}
+		BruiAssemblyContext c = UserSession.newAssemblyContext();
+
+		/*
+		 * 需要再次验证的，提示不同
+		 */
+		if (page.isForceCheckLogin()) {
+			new Popup(la, c).setFullscreen(true).setTitle("请再次验证身份").open();
+			return super.open();
 		}
 
-		int result = super.open();
+		/*
+		 * 不需要验证的，直接跳过
+		 */
+		if (!page.isCheckLogin()) {
+			service.loginUser();
+			return super.open();
+		}
 
-		return result;
+		/*
+		 * 当前进程保存了用户信息
+		 */
+		if (service.getCurrentUserInfo() != null) {
+			service.loginUser();
+			return super.open();
+		}
+
+		/*
+		 * 浏览器Cookie保存了用户登录信息的，验证通过后打开页面
+		 */
+		String[] lc = service.loadClientLogin();
+		try {
+			service.checkLogin(lc[0], lc[1]);
+			return super.open();
+		} catch (Exception e) {
+		}
+
+		try {
+			String welcome = Check.isAssignedThen(ModelLoader.site.getWelcome(), s -> s).orElse("登录WisPlanner 5");
+			new Popup(la, c).setFullscreen(true).setTitle(welcome).open();
+			return super.open();
+		} catch (Exception e) {
+			/*
+			 * 出错不允许进入
+			 */
+			Layer.error(e);
+			return 0;
+		}
 	}
 
 	@Override
@@ -109,14 +139,13 @@ public class View extends Part {
 			footbar = createFootbar(parent);
 		}
 
-		List<String> assembiesId = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page,
-				context.getRootInput());
+		List<String> assembiesId = PermissionUtil.getRolebasedPageContent(service.getCurrentUserInfo(), page, context.getRootInput());
 		String id = Brui.sessionManager.getDefaultPageAssembly(page.getId());
 		if (id == null || !assembiesId.contains(id)) {
 			id = assembiesId.get(0);
 		}
 
-		createContentArea(ModelLoader.site.getAssembly(id), null,null, false, null);
+		createContentArea(ModelLoader.site.getAssembly(id), null, null, false, null);
 
 		FormData fd;
 		if (headbar != null) {
@@ -148,8 +177,7 @@ public class View extends Part {
 
 	}
 
-	private Composite createContentArea(Assembly assembly, Object input, String parameter, boolean closeable,
-			Consumer<BruiAssemblyContext> callback) {
+	private Composite createContentArea(Assembly assembly, Object input, String parameter, boolean closeable, Consumer<BruiAssemblyContext> callback) {
 		contentWidget = new ContentWidget(assembly, service, context);
 		contentWidget.setCloseCallback(callback);
 		Composite contentArea = contentWidget.createUI(parent, input, parameter, closeable).getControl();
@@ -174,10 +202,9 @@ public class View extends Part {
 		return sidebarWidget.createUI(parent).getControl();
 	}
 
-	public void openAssemblyInContentArea(Assembly assembly, Object input, String parameter,
-			Consumer<BruiAssemblyContext> callback) {
+	public void openAssemblyInContentArea(Assembly assembly, Object input, String parameter, Consumer<BruiAssemblyContext> callback) {
 		previous.add(contentWidget);
-		Composite contentArea = createContentArea(assembly, input, parameter,true, callback);
+		Composite contentArea = createContentArea(assembly, input, parameter, true, callback);
 		contentArea.moveAbove(null);
 		parent.layout();
 	}
@@ -191,7 +218,7 @@ public class View extends Part {
 	}
 
 	public void switchAssemblyInContentArea(Assembly assembly, Object input, String parameter) {
-		contentWidget.switchAssembly(assembly, input,parameter, false);
+		contentWidget.switchAssembly(assembly, input, parameter, false);
 	}
 
 	public Page getPage() {

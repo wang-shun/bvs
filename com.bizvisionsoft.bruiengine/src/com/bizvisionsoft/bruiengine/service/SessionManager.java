@@ -35,8 +35,7 @@ public class SessionManager {
 	}
 
 	public Stream<UserSession> getUserSessions(User receiver) {
-		return userSessions.stream()
-				.filter(us -> us.getUser() != null && us.getUser().getUserId().equals(receiver.getUserId()));
+		return userSessions.stream().filter(us -> us.getUser() != null && us.getUser().getUserId().equals(receiver.getUserId()));
 	}
 
 	/**
@@ -54,6 +53,8 @@ public class SessionManager {
 
 	/**
 	 * 保存当前http进程中用户信息
+	 * 
+	 * @param saveCookie
 	 * 
 	 * @throws Exception
 	 */
@@ -84,6 +85,7 @@ public class SessionManager {
 
 	public void logout() {
 		clearSessionUserInfo();
+		cleanClientLogin();
 		UserSession.current().getEntryPoint().home();
 		TraceUserUtil.trace("登出系统");
 	}

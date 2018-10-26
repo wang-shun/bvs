@@ -337,4 +337,74 @@ public class Site extends ModelObject {
 
 	private Date ShutDown;
 	
+	private boolean disableNotice;
+	
+	private String noticeImg1;
+	
+	private String noticeContent1;
+	
+	private String noticeImg2;
+	
+	private String noticeContent2;
+
+	private String noticeImg3;
+	
+	private String noticeContent3;
+
+	public String getNoticeImg1() {
+		return noticeImg1;
+	}
+
+	public void setNoticeImg1(String noticeImg1) {
+		this.noticeImg1 = noticeImg1;
+	}
+
+	public String getNoticeContent1() {
+		return noticeContent1;
+	}
+
+	public void setNoticeContent1(String noticeContent1) {
+		this.noticeContent1 = noticeContent1;
+	}
+
+	public String getNoticeImg2() {
+		return noticeImg2;
+	}
+
+	public void setNoticeImg2(String noticeImg2) {
+		this.noticeImg2 = noticeImg2;
+	}
+
+	public String getNoticeContent2() {
+		return noticeContent2;
+	}
+
+	public void setNoticeContent2(String noticeContent2) {
+		this.noticeContent2 = noticeContent2;
+	}
+
+	public String getNoticeImg3() {
+		return noticeImg3;
+	}
+
+	public void setNoticeImg3(String noticeImg3) {
+		this.noticeImg3 = noticeImg3;
+	}
+
+	public String getNoticeContent3() {
+		return noticeContent3;
+	}
+
+	public void setNoticeContent3(String noticeContent3) {
+		this.noticeContent3 = noticeContent3;
+	}
+	
+	public boolean isDisableNotice() {
+		return disableNotice;
+	}
+	
+	public void setDisableNotice(boolean disableNotice) {
+		this.disableNotice = disableNotice;
+	}
+	
 }

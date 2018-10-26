@@ -24,6 +24,14 @@ public class Layer {
 		WidgetToolkit.execJS(
 				"layer.msg(\"" + esc(msg) + "\", {shade:0.2,skin: 'layui-layer-lan',icon: " + icon + ",anim: 0})");
 	}
+	
+	public static void error(String msg) {
+		message(msg,ICON_LOCK);
+	}
+	
+	public static void error(Exception e) {
+		message(e.getMessage(),ICON_LOCK);
+	}
 
 	public static void message(String title, String msg) {
 		WidgetToolkit.execJS("layer.msg(\"" + esc(msg) + "\", {title:\"" + esc(title)
@@ -83,4 +91,5 @@ public class Layer {
 		sb.append("</div>");
 		return sb.toString();
 	}
+
 }

@@ -3,10 +3,6 @@ CACHE MANIFEST
 
 rwt-resources/340/rap-client.js
 
-resource/image/bg/bg01.jpg
-resource/image/bg/bg02.jpg
-resource/image/bg/bg03.jpg
-resource/image/bg/bg04.jpg
 resource/js/jgestures.min.js
 resource/js/echarts.min.js
 resource/js/jquery-1.10.2.min.js

@@ -24,8 +24,6 @@ public interface IBruiService extends IServiceWithId {
 
 	public String getCurrentUserId();
 
-	public void loginUser(User user);
-
 	public String getResourceURL(String resPath);
 
 	public Shell getCurrentShell();
@@ -95,4 +93,16 @@ public interface IBruiService extends IServiceWithId {
 	public void displaySiteModel(ModelObject config);
 
 	public void error(String title, String message);
+
+	public void loginUser(User user);
+
+	public void checkLogin(String userName, String password) throws Exception;
+	
+	public void saveClientLogin(String userName, String password) throws Exception;
+	
+	public void cleanClientLogin();
+	
+	public String[] loadClientLogin();
+
+	
 }

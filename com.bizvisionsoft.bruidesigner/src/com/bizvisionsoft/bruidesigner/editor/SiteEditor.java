@@ -60,7 +60,19 @@ public class SiteEditor extends ModelEditor {
 		field = createTextField(parent, "<Body>标签HTML:", inputData, "bodyHtml", SWT.MULTI | SWT.BORDER | SWT.WRAP);
 		field.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+		parent = createTabItemContent("站点公告");
+		createCheckboxField(parent, "禁用公告", inputData, "disableNotice", SWT.CHECK);
+		
 		addPartNamePropertyChangeListener("name");
+		
+		createTextField(parent, "第1页内容:", inputData, "noticeContent1", SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		createPathField(parent, "第1页背景图:", inputData, "noticeImg1", SWT.BORDER);
+		
+		createTextField(parent, "第2页内容:", inputData, "noticeContent2", SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		createPathField(parent, "第2页背景图:", inputData, "noticeImg2", SWT.BORDER);
+		
+		createTextField(parent, "第3页内容:", inputData, "noticeContent3", SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		createPathField(parent, "第3页背景图:", inputData, "noticeImg3", SWT.BORDER);
 
 	}
 

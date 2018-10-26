@@ -3,10 +3,11 @@ package com.bizvisionsoft.bruiengine.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
@@ -16,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
@@ -28,8 +30,7 @@ public class Controls<T extends Control> {
 	private FormData fd;
 	private int margin = BruiToolkit.MARGIN;
 
-	public static <K extends Control> Controls<K> create(Class<K> type, Composite parent, int style, String id,
-			String cssCalss) {
+	public static <K extends Control> Controls<K> create(Class<K> type, Composite parent, int style, String id, String cssCalss) {
 		return new Controls<K>(type, parent, style, id, cssCalss);
 	}
 
@@ -38,8 +39,43 @@ public class Controls<T extends Control> {
 	}
 
 	public static Controls<Composite> contentPanel(Composite parent) {
-		return new Controls<Composite>(Composite.class, parent, SWT.BORDER, null, null)
-				.background(BruiColors.getColor(BruiColor.white));
+		return new Controls<Composite>(Composite.class, parent, SWT.BORDER, null, null).bg(BruiColor.white);
+	}
+
+	public static Controls<Label> label(Composite parent) {
+		return new Controls<Label>(Label.class, parent, SWT.NONE, null, null);
+	}
+
+	public static Controls<Label> label(Composite parent, int style) {
+		return new Controls<Label>(Label.class, parent, style, null, null);
+	}
+	
+	public static Controls<Browser> iframe(Composite parent) {
+		return new Controls<Browser>(Browser.class, parent, SWT.NONE, null, null);
+	}
+
+	public static Controls<Button> button(Composite parent) {
+		return new Controls<Button>(Button.class, parent, SWT.PUSH, null, null);
+	}
+
+	public static Controls<Button> button(Composite parent, int style) {
+		return new Controls<Button>(Button.class, parent, style, null, null);
+	}
+
+	public static Controls<Text> text(Composite parent) {
+		return new Controls<Text>(Text.class, parent, SWT.BORDER, null, null);
+	}
+
+	public static Controls<Text> text(Composite parent, int style) {
+		return new Controls<Text>(Text.class, parent, style, null, null);
+	}
+
+	public static Controls<Composite> comp(Composite parent) {
+		return new Controls<Composite>(Composite.class, parent, SWT.NONE, null, null);
+	}
+
+	public static Controls<Composite> comp(Composite parent, int style) {
+		return new Controls<Composite>(Composite.class, parent, style, null, null);
 	}
 
 	public static <K extends Control> Controls<K> handle(K ctl) {
@@ -50,14 +86,14 @@ public class Controls<T extends Control> {
 		try {
 			Constructor<T> c = type.getConstructor(Composite.class, int.class);
 			control = c.newInstance(parent, style);
-			rwtStyle(id);
-			cssStyle(cssClass);
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+			rwt(id);
+			css(cssClass);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
 		}
 	}
 
-	public Controls<T> cssStyle(String cssClass) {
+	public Controls<T> css(String cssClass) {
 		if (cssClass != null) {
 			WidgetHandler.getHandler(control).setClass(cssClass);
 		}
@@ -69,7 +105,7 @@ public class Controls<T extends Control> {
 		return this;
 	}
 
-	public Controls<T> rwtStyle(String id) {
+	public Controls<T> rwt(String id) {
 		if (id != null) {
 			control.setData(RWT.CUSTOM_VARIANT, id);
 		}
@@ -80,12 +116,7 @@ public class Controls<T extends Control> {
 		this.control = control;
 	}
 
-	public Controls<T> background(Color color) {
-		control.setBackground(color);
-		return this;
-	}
-
-	public Controls<T> background(BruiColor color) {
+	public Controls<T> bg(BruiColor color) {
 		control.setBackground(BruiColors.getColor(color));
 		return this;
 	}
@@ -108,7 +139,7 @@ public class Controls<T extends Control> {
 		fd.height = height;
 		return this;
 	}
-	
+
 	public Controls<T> size(int width, int height) {
 		createLayoutData();
 		fd.width = width;
@@ -301,8 +332,120 @@ public class Controls<T extends Control> {
 		return mLeft().mRight().mBottom().mTop();
 	}
 
+	public Controls<T> mLoc(int loc) {
+		if ((SWT.LEFT & loc) != 0) {
+			mLeft();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			mRight();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			mTop();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			mBottom();
+		}
+		return this;
+	}
+
+	public Controls<T> mLoc(int loc, int size) {
+		if ((SWT.LEFT & loc) != 0) {
+			mLeft();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			mRight();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			mTop();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			mBottom();
+		}
+		if ((SWT.LEFT & loc) != 0 && (SWT.RIGHT & loc) != 0) {
+			height(size);
+		}
+		if ((SWT.BOTTOM & loc) != 0 && (SWT.TOP & loc) != 0) {
+			width(size);
+		}
+		return this;
+	}
+
+	public Controls<T> mLoc(int loc, int width, int height) {
+		if ((SWT.LEFT & loc) != 0) {
+			mLeft();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			mRight();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			mTop();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			mBottom();
+		}
+		height(height);
+		width(width);
+		return this;
+	}
+
 	public Controls<T> loc() {
 		return left().right().bottom().top();
+	}
+
+	public Controls<T> loc(int loc) {
+		if ((SWT.LEFT & loc) != 0) {
+			left();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			right();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			top();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			bottom();
+		}
+		return this;
+	}
+
+	public Controls<T> loc(int loc, int size) {
+		if ((SWT.LEFT & loc) != 0) {
+			left();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			right();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			top();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			bottom();
+		}
+		if ((SWT.LEFT & loc) != 0 && (SWT.RIGHT & loc) != 0) {
+			height(size);
+		}
+		if ((SWT.BOTTOM & loc) != 0 && (SWT.TOP & loc) != 0) {
+			width(size);
+		}
+		return this;
+	}
+
+	public Controls<T> loc(int loc, int width, int height) {
+		if ((SWT.LEFT & loc) != 0) {
+			left();
+		}
+		if ((SWT.RIGHT & loc) != 0) {
+			right();
+		}
+		if ((SWT.TOP & loc) != 0) {
+			top();
+		}
+		if ((SWT.BOTTOM & loc) != 0) {
+			bottom();
+		}
+		height(height);
+		width(width);
+		return this;
 	}
 
 	public Controls<T> centerH() {
@@ -339,15 +482,24 @@ public class Controls<T extends Control> {
 		return this;
 	}
 
-	public Controls<T> setHTML(String text) {
-		control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+	public Controls<T> html(String text) {
+		markup();
 		boolean b = false;
 		if (!b)
 			b = Check.instanceThen(control, Label.class, t -> t.setText(text));
 		if (!b)
 			b = Check.instanceThen(control, Button.class, t -> t.setText(text));
+		if (!b)
+			b = Check.instanceThen(control, Browser.class, t -> t.setText(text));
+		if (!b)
+			b = Check.instanceThen(control, Composite.class, t -> WidgetHandler.getHandler(t).setHtmlContent(text));
+		
 		return this;
+	}
+
+	private void markup() {
+		control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
 	}
 
 	public Controls<T> above(Control ctl) {
@@ -365,23 +517,87 @@ public class Controls<T extends Control> {
 		return this;
 	}
 
-	public Controls<T> setImage(String url) {
+	public Controls<T> img(String url) {
 		if (control instanceof Label) {
-			control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-			control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
-			control.setStyleAttribute("backgroundImage", url);
-			control.setStyleAttribute("background-repeat", "no-repeat");
-			control.setStyleAttribute("background-size", "cover");
-		}else if(control instanceof Composite) {
-			control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-			control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
-			control.setStyleAttribute("backgroundImage", url);
-			control.setStyleAttribute("background-repeat", "no-repeat");
-			control.setStyleAttribute("background-size", "cover");
+			markup();
+			style("backgroundImage", url);
+			style("background-repeat", "no-repeat");
+			style("background-size", "cover");
+		} else if (control instanceof Composite) {
+			markup();
+			style("backgroundImage", url);
+			style("background-repeat", "no-repeat");
+			style("background-size", "cover");
 		}
 		return this;
 	}
 
+	public Controls<T> img(String url, String position, String size) {
+		markup();
+		if (control instanceof Label) {
+			style("backgroundImage", url);
+			style("background-repeat", "no-repeat");
+			style("background-size", size);
+			style("background-position",position);
+		} else if (control instanceof Composite) {
+			style("backgroundImage", url);
+			style("background-repeat", "no-repeat");
+			style("background-size", size);
+			style("background-position",position);
+		}
+		return this;
+	}
 
+	public Controls<T> style(String property, String value) {
+		control.setStyleAttribute(property, value);
+		return this;
+	}
+
+	public <M extends Control> Controls<M> addUpper(int off, Supplier<Controls<M>> ctl) {
+		return ctl.get().bottom(control, -off);
+	}
+
+	public <M extends Control> Controls<M> add(int off, Supplier<Controls<M>> ctl) {
+		return ctl.get().top(control, off);
+	}
+
+	public <M extends Control> Controls<M> addLeft(int off, Supplier<Controls<M>> ctl) {
+		return ctl.get().right(control, off);
+	}
+
+	public <M extends Control> Controls<M> addRight(int off, Supplier<Controls<M>> ctl) {
+		return ctl.get().left(control);
+	}
+
+	public <M extends Control> Controls<M> addUpper(Supplier<Controls<M>> ctl) {
+		return ctl.get().mBottom(control);
+	}
+
+	public <M extends Control> Controls<M> add(Supplier<Controls<M>> ctl) {
+		return ctl.get().mTop(control);
+	}
+
+	public <M extends Control> Controls<M> addLeft(Supplier<Controls<M>> ctl) {
+		return ctl.get().mRight(control);
+	}
+
+	public <M extends Control> Controls<M> addRight(Supplier<Controls<M>> ctl) {
+		return ctl.get().mLeft(control);
+	}
+
+	public Controls<T> listen(int eventType, Listener lis) {
+		control.addListener(eventType, lis);
+		return this;
+	}
+
+	public Controls<T> select(Listener lis) {
+		control.addListener(SWT.Selection, lis);
+		return this;
+	}
+
+	public Controls<T> set(Consumer<T> cons) {
+		cons.accept(control);
+		return this;
+	}
 
 }

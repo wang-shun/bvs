@@ -1,6 +1,7 @@
 package com.bizvisionsoft.bruiengine.service;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -23,6 +24,7 @@ import com.bizvisionsoft.bruiengine.ui.DateTimeInputDialog;
 import com.bizvisionsoft.bruiengine.ui.Part;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.service.SystemService;
+import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.model.Command;
 import com.bizvisionsoft.service.model.OperationInfo;
 import com.bizvisionsoft.service.model.User;
@@ -50,7 +52,7 @@ public class BruiService implements IBruiService {
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getUser();
 	}
-
+	
 	public User getCurrentConsignerInfo() {
 		return Brui.sessionManager.getConsigner();
 	}
@@ -109,14 +111,14 @@ public class BruiService implements IBruiService {
 	@Override
 	public void switchContent(Assembly assembly, Object input, String parameter) {
 		if (part instanceof View) {
-			((View) part).switchAssemblyInContentArea(assembly, input,parameter);
+			((View) part).switchAssemblyInContentArea(assembly, input, parameter);
 		}
 	}
-	
+
 	@Override
-	public void openContent(Assembly assembly, Object input, String parameter,Consumer<BruiAssemblyContext> callback) {
+	public void openContent(Assembly assembly, Object input, String parameter, Consumer<BruiAssemblyContext> callback) {
 		if (part instanceof View) {
-			((View) part).openAssemblyInContentArea(assembly, input, parameter,callback);
+			((View) part).openAssemblyInContentArea(assembly, input, parameter, callback);
 		}
 	}
 
@@ -154,7 +156,7 @@ public class BruiService implements IBruiService {
 	public boolean confirm(String title, String message) {
 		return MessageDialog.openConfirm(getCurrentShell(), title, message);
 	}
-	
+
 	@Override
 	public void error(String title, String message) {
 		MessageDialog.openError(getCurrentShell(), title, message);
@@ -168,17 +170,14 @@ public class BruiService implements IBruiService {
 	@Override
 	public boolean switchMnt(boolean b) {
 		if (b) {
-			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护",
-					"请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
-					d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null)
-							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
+			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护", "请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
+					d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null).setDateSetting(DateTimeSetting.dateTime().setRange(false));
 			if (dt.open() != DateTimeInputDialog.OK) {
 				return false;
 			}
 
 			Date date = dt.getValue();
-			if (confirm("启动系统维护", "启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于"
-					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
+			if (confirm("启动系统维护", "启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
 				Brui.sessionManager.getUserSessions().forEach(u -> u.logout(date));
 				ModelLoader.site.setShutDown(date);
 				try {
@@ -211,8 +210,7 @@ public class BruiService implements IBruiService {
 			return;
 		}
 
-		InputDialog id = new InputDialog(getCurrentShell(), "系统备份", "请填写备份说明，并确定开始进行系统备份", "", null)
-				.setTextMultiline(true);
+		InputDialog id = new InputDialog(getCurrentShell(), "系统备份", "请填写备份说明，并确定开始进行系统备份", "", null).setTextMultiline(true);
 		if (id.open() != InputDialog.OK) {
 			return;
 		}
@@ -237,6 +235,52 @@ public class BruiService implements IBruiService {
 		logger.debug("显示模型配置:\n" + json);
 		json = Formatter.toHtml(json);
 		Layer.open("Brui 调试状态", json, 800, 600);
+	}
+
+	@Override
+	public void checkLogin(String userName, String password) throws Exception {
+		if (userName.isEmpty()) {
+			throw new Exception("请输入正确的用户名。");
+		}
+
+		User user = null;
+		if ("su".equals(userName) && password.equals(ModelLoader.site.getPassword())) {
+			user = User.SU();
+		} else {
+			try {
+				user = Services.get(UserService.class).check(userName, password);
+			} catch (Exception e) {
+				if(e.getCause() instanceof ConnectException) {
+					throw new Exception("无法连接验证服务器，请稍后再试。");
+				}
+				throw e;
+			}
+		}
+
+		if (user == null) {
+			throw new Exception("无法通过账户验证，请输入正确的用户名和密码。");
+		}
+
+		try {
+			loginUser(user);
+		} catch (Exception e) {
+			throw e;
+		}		
+	}
+
+	@Override
+	public void saveClientLogin(String usr, String psw) throws Exception {
+		Brui.sessionManager.saveClientLogin(usr, psw);
+	}
+
+	@Override
+	public void cleanClientLogin() {
+		Brui.sessionManager.cleanClientLogin();		
+	}
+
+	@Override
+	public String[] loadClientLogin() {
+		return Brui.sessionManager.loadClientLogin();
 	}
 
 }
