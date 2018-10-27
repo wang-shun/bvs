@@ -23,6 +23,8 @@ public class Action extends ModelObject {
 	public static final String TYPE_EXPORT = "export";
 
 	public static final String TYPE_SETTING = "setting";
+	
+	public static final String TYPE_SYSTEM_SETTING = "system_setting";
 
 	public static final String TYPE_REPORT = "report";
 
@@ -425,5 +427,14 @@ public class Action extends ModelObject {
 	public void setPassParametersToAssembly(String passParametersToAssembly) {
 		this.passParametersToAssembly = passParametersToAssembly;
 	}
-
+	
+	private String sysSettingParameter;
+	
+	public String getSysSettingParameter() {
+		return sysSettingParameter;
+	}
+	
+	public void setSysSettingParameter(String sysSettingParameter) {
+		this.sysSettingParameter = sysSettingParameter;
+	}
 }

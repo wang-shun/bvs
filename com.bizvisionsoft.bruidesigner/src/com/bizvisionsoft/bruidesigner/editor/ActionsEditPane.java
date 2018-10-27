@@ -90,8 +90,7 @@ public class ActionsEditPane extends SashForm {
 
 		setWeights(new int[] { 1, 2 });
 
-		addDisposeListener(
-				e -> Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener)));
+		addDisposeListener(e -> Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener)));
 	}
 
 	public List<Action> getChildrenOfParentAction(Action action) {
@@ -99,8 +98,8 @@ public class ActionsEditPane extends SashForm {
 	}
 
 	public Action getParentAction(Action action) {
-		return Optional.ofNullable((TreeItem) viewer.testFindItem(action)).map(itm -> itm.getParentItem())
-				.map(pi -> (Action) pi.getData()).orElse(null);
+		return Optional.ofNullable((TreeItem) viewer.testFindItem(action)).map(itm -> itm.getParentItem()).map(pi -> (Action) pi.getData())
+				.orElse(null);
 	}
 
 	private void createLeftPane() {
@@ -209,8 +208,7 @@ public class ActionsEditPane extends SashForm {
 		viewer.setLabelProvider(ModelToolkit.createLabelProvider());
 		viewer.setInput(actions);
 		viewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
-		viewer.addPostSelectionChangedListener(
-				e -> openAction((Action) e.getStructuredSelection().getFirstElement(), rightPane));
+		viewer.addPostSelectionChangedListener(e -> openAction((Action) e.getStructuredSelection().getFirstElement(), rightPane));
 
 		createRightPane();
 	}
@@ -287,9 +285,16 @@ public class ActionsEditPane extends SashForm {
 		});
 
 		item = new MenuItem(menu, SWT.PUSH);
-		item.setText("设置");
+		item.setText("组件设置");
 		item.addListener(SWT.Selection, e -> {
 			actions.add(ModelToolkit.createAction(Action.TYPE_SETTING));
+			viewer.refresh();
+		});
+
+		item = new MenuItem(menu, SWT.PUSH);
+		item.setText("系统设置");
+		item.addListener(SWT.Selection, e -> {
+			actions.add(ModelToolkit.createAction(Action.TYPE_SYSTEM_SETTING));
 			viewer.refresh();
 		});
 
@@ -328,11 +333,11 @@ public class ActionsEditPane extends SashForm {
 		if (action != null) {
 
 			editor.createComboField(parent,
-					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "导出",
-							"报表", "设置", "自定义操作" },
-					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT,
-							Action.TYPE_INSERT_SUBITEM, Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY,
-							Action.TYPE_EXPORT, Action.TYPE_REPORT, Action.TYPE_SETTING, Action.TYPE_CUSTOMIZED },
+					new String[] { "切换或打开内容区", "打开新页面", "创建新对象", "创建选中对象的子对象", "删除选中对象", "编辑或打开选中对象", "根据查询字段查询", "导出", "报表", "设置", "系统设置",
+							"自定义操作" },
+					new String[] { Action.TYPE_SWITCHCONTENT, Action.TYPE_OPENPAGE, Action.TYPE_INSERT, Action.TYPE_INSERT_SUBITEM,
+							Action.TYPE_DELETE, Action.TYPE_EDIT, Action.TYPE_QUERY, Action.TYPE_EXPORT, Action.TYPE_REPORT,
+							Action.TYPE_SETTING, Action.TYPE_SYSTEM_SETTING, Action.TYPE_CUSTOMIZED },
 					"操作类型：", action, "type", SWT.READ_ONLY);
 
 			editor.createTextField(parent, "唯一标识符:", action, "id", SWT.READ_ONLY);
@@ -350,8 +355,7 @@ public class ActionsEditPane extends SashForm {
 			editor.createPathField(parent, "图标URL:", action, "image", SWT.BORDER);
 
 			editor.createComboField(parent, new String[] { "默认", "一般", "信息", "警告", "严重" },
-					new String[] { "", "normal", "info", "warning", "serious" }, "按钮风格（仅对工具栏按钮有效）：", action, "style",
-					SWT.READ_ONLY);
+					new String[] { "", "normal", "info", "warning", "serious" }, "按钮风格（仅对工具栏按钮有效）：", action, "style", SWT.READ_ONLY);
 
 			editor.createCheckboxField(parent, "由对象行为控制有效性:", action, "objectBehavier", SWT.CHECK);
 
@@ -375,14 +379,14 @@ public class ActionsEditPane extends SashForm {
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_OPENPAGE.equals(action.getType())) {
 				editor.createTextField(parent, "页面名称:", action, "openPageName", SWT.BORDER);
-//				editor.createTextField(parent, "传递参数到页面:", action, "passParametersToAssembly", SWT.BORDER | SWT.MULTI);
+				// editor.createTextField(parent, "传递参数到页面:", action,
+				// "passParametersToAssembly", SWT.BORDER | SWT.MULTI);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (Action.TYPE_INSERT.equals(action.getType()) || Action.TYPE_INSERT_SUBITEM.equals(action.getType())) {
 				editor.createAssemblyField(parent, "编辑器组件:", action, "editorAssemblyId", true);
-				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId",
-						SWT.BORDER);
+				editor.createTextField(parent, "新对象的插件唯一标识符（Bundle Id）:", action, "createActionNewInstanceBundleId", SWT.BORDER);
 				editor.createTextField(parent, "新对象的完整类名:", action, "createActionNewInstanceClassName", SWT.BORDER);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -413,15 +417,19 @@ public class ActionsEditPane extends SashForm {
 				editor.createTextField(parent, "报表输出文件", action, "reportFileName", SWT.BORDER);
 			}
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (Action.TYPE_SYSTEM_SETTING.equals(action.getType())) {
+				editor.createAssemblyField(parent, "编辑器组件（默认为action名称）:", action, "editorAssemblyId", true);
+				editor.createTextField(parent, "系统设置参数（默认为action名称）：", action, "sysSettingParameter", SWT.BORDER);
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 			editor.createTextField(parent, "角色（多个#分割）", action, "role", SWT.BORDER);
 
 			editor.createTextField(parent, "排除角色（多个#分割）", action, "excludeRole", SWT.BORDER);
 
-			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL)
-					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			editor.createTextField(parent, "Budget取数插件唯一标识符（Bundle Id）:", action, "budgetBundleId", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数完整的类名:", action, "budgetClassName", SWT.BORDER);
 			editor.createTextField(parent, "Budget取数服务:", action, "budgetServiceName", SWT.BORDER);

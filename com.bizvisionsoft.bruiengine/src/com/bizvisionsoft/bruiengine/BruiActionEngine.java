@@ -24,6 +24,7 @@ import com.bizvisionsoft.bruiengine.action.OpenSelected;
 import com.bizvisionsoft.bruiengine.action.QueryInGrid;
 import com.bizvisionsoft.bruiengine.action.Report;
 import com.bizvisionsoft.bruiengine.action.SwitchContentToAssembly;
+import com.bizvisionsoft.bruiengine.action.SystemSetting;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
@@ -118,11 +119,11 @@ public class BruiActionEngine extends BruiEngine {
 			brui = new BruiActionEngine(new Report());
 		} else if (Action.TYPE_SETTING.equals(type)) {
 			brui = new BruiActionEngine(new ClientSetting());
-
+		} else if (Action.TYPE_SYSTEM_SETTING.equals(type)) {
+			brui = new BruiActionEngine(new SystemSetting());
 		} else if (Action.TYPE_CUSTOMIZED.equals(type)) {
 			brui = (BruiActionEngine) load(action.getBundleId(), action.getClassName())// load
 					.newInstance();
-
 		} else if (Action.TYPE_SWITCHCONTENT.equals(type)) {
 			String staId = action.getSwitchContentToAssemblyId();
 			brui = new BruiActionEngine(
