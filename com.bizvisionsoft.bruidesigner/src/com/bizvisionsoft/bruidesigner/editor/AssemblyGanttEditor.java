@@ -29,6 +29,8 @@ public class AssemblyGanttEditor extends ModelEditor {
 		createTextField(parent, "描述：", inputData, "description", SWT.BORDER);
 
 		createCheckboxField(parent, "是否只读打开：", inputData, "readonly", SWT.CHECK);
+		
+//		createCheckboxField(parent, "支持行内编辑（测试）：", inputData, "inlineEdit", SWT.CHECK);
 
 		createCheckboxField(parent, "启动对比甘特图（将对比start_date1, end_date1注解的字段）：", inputData, "enableGanttCompare",
 				SWT.CHECK);

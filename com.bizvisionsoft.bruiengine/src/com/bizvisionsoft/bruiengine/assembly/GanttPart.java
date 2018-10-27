@@ -233,6 +233,9 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 
 		// 设置是否为对比甘特图
 		ganttConfig.brui_enableGanttCompare = config.isEnableGanttCompare();
+		
+		//设置是否支持行内编辑
+		ganttConfig.brui_enableInlineEdit = config.isInlineEdit();
 
 		return ganttConfig;
 	}

@@ -252,6 +252,32 @@
 					col.template = gantt.getWBSCode;
 				}
 			});
+			
+			//配置行内编辑
+			if(config.brui_enableInlineEdit){
+				//测试功能：只接受，predecessor，其他未经测试是否可用
+				config.columns.forEach(function(col) {
+					if (col.name == "text") {
+//						col.editor = {type: "text", map_to: "text"};
+					}else if(col.name =="start_date"){
+//						col.editor = {type: "date", map_to: "start_date"};
+					}else if(col.name == "duration"){
+//						col.editor = {type: "number", map_to: "duration"};
+					}else if(col.name == "predecessors"){
+						col.editor = {type: "predecessor", map_to: "auto"};
+						col.template = function(task){
+							var links = task.$target;
+							var labels = [];
+							for(var i = 0; i < links.length; i++){
+								var link = gantt.getLink(links[i]);
+								var pred = gantt.getTask(link.source);
+								labels.push(gantt.getWBSCode(pred));
+							}
+							return labels.join(", ")
+						};
+					}
+				});
+			}
 		},
 
 		// 月周日

@@ -814,5 +814,14 @@ public class Assembly extends ModelObject {
 		return parameters;
 	}
 
+	private boolean inlineEdit;
+	
+	public void setInlineEdit(boolean inlineEdit) {
+		this.inlineEdit = inlineEdit;
+	}
+	
+	public boolean isInlineEdit() {
+		return inlineEdit;
+	}
 
 }

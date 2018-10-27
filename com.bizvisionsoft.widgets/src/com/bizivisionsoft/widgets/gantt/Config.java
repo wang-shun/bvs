@@ -807,5 +807,7 @@ public class Config {
 		readonly = b;
 		return this;
 	}
-
+	
+	public boolean brui_enableInlineEdit;
+	
 }

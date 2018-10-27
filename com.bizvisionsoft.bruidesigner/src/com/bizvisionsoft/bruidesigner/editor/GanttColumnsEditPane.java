@@ -200,7 +200,7 @@ public class GanttColumnsEditPane extends Composite {
 			
 			String[] names = new String[] {
 					//ÏµÍ³×Ö¶Î
-					"text","start_date","end_date","duration","progress","$target","$level",
+					"text","start_date","end_date","duration","predecessors","progress","$target","$level",
 					//À©Õ¹×Ö¶Î
 					"plan_start","plan_finish","charger"
 			};
