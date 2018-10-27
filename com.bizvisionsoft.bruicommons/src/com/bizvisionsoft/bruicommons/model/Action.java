@@ -167,17 +167,6 @@ public class Action extends ModelObject {
 
 	}
 
-	public boolean isRunnable() {
-		if (switchContentToAssemblyId != null && !switchContentToAssemblyId.isEmpty())
-			return true;
-		if (className != null && !className.isEmpty() && bundleId != null && !bundleId.isEmpty())
-			return true;
-		if (openPageName != null && !openPageName.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
-
 	public void setPropagate(boolean propagate) {
 		this.propagate = propagate;
 

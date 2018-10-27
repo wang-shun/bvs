@@ -478,8 +478,6 @@ public class SidebarWidget {
 			Action action = (Action) ((GridItem) e.item).getData();
 			if ((action == null || action.getChildren() != null) && !action.getChildren().isEmpty())
 				viewer.setExpandedElements(action == null ? new Object[0] : new Object[] { action });
-			if (!action.isRunnable())
-				return;
 			run(action, e);
 
 		});
