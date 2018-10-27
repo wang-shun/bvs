@@ -66,12 +66,10 @@ public class LoginPage {
 		// 创建底部右侧说明
 		Controls.label(parent).html("使用条款  |  许可协议  |  关于我们").mBottom().right(50, -24);
 
-		//
-		Controls.label(parent, SWT.CENTER).html("Copyright 2018 BizVision Software Wuhan Ltd.").mBottom().width(panelWidth).left(25,
-				-panelWidth / 2);
 
 		// 创建底部左侧说明
-		Check.isAssigned(ModelLoader.site.getFootLeftText(), s -> Controls.label(parent).html(s).mBottom().left(0, 24));
+		String leftHtml = Check.option(ModelLoader.site.getFootLeftText()).orElse("Copyright 2018 BizVision Software Wuhan Ltd.");
+		Controls.label(parent).html(leftHtml).mBottom().left(0, 24);
 	}
 
 	private void createCarousel(Composite parent) {
