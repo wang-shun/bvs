@@ -476,9 +476,11 @@ public class SidebarWidget {
 
 		viewer.getGrid().addListener(SWT.Selection, e -> {
 			Action action = (Action) ((GridItem) e.item).getData();
-			if ((action == null || action.getChildren() != null) && !action.getChildren().isEmpty())
+			if ((action == null || action.getChildren() != null) && !action.getChildren().isEmpty()) {
 				viewer.setExpandedElements(action == null ? new Object[0] : new Object[] { action });
-			run(action, e);
+			}else {
+				run(action, e);
+			}
 
 		});
 		return viewer.getControl();
