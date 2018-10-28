@@ -11,16 +11,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
-import com.bizvisionsoft.bruiengine.util.BruiToolkit;
-import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
+import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
 public class StickerTitlebar extends Composite {
 
@@ -94,17 +93,9 @@ public class StickerTitlebar extends Composite {
 
 	private void createActionUI(Action a) {
 		Button btn = toolkit.createButton(toolbar, a, "line");
-		Check.isAssigned(a.getShortcutKey(), k->setupShortcutKey(btn,k,a));
-		btn.addListener(SWT.Selection, e -> handleAction(e, a));
-	}
-
-	private void setupShortcutKey(Control btn, String k, Action a) {
-//		String[] akeys = Optional.ofNullable((String[]) getDisplay().getData(RWT.ACTIVE_KEYS)).orElse(new String[0]);
-//		String[] ckeys = Optional.ofNullable((String[]) getDisplay().getData(RWT.CANCEL_KEYS)).orElse(new String[0]);
-//
-//		
-//		getDisplay().setData( RWT.ACTIVE_KEYS, k);
-//        getDisplay().setData( RWT.CANCEL_KEYS, k);
+		Listener listener = e -> handleAction(e, a);
+		toolkit.bindingShortcutKey(btn,  a, listener);
+		btn.addListener(SWT.Selection, listener);
 	}
 
 	private void handleAction(Event e, Action action) {

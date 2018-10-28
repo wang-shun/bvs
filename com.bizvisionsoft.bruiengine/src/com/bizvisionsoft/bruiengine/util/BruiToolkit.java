@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import com.bizivisionsoft.widgets.tools.WidgetHandler;
@@ -24,9 +25,11 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruiengine.BruiActionEngine;
+import com.bizvisionsoft.bruiengine.BruiEntryPoint;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
+import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
 import com.bizvisionsoft.service.ServicesLoader;
 import com.bizvisionsoft.service.model.User;
@@ -95,8 +98,8 @@ public class BruiToolkit {
 				control.setData(RWT.CUSTOM_VARIANT, id);
 			}
 			return control;
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
 		}
 		return null;
 	}
@@ -104,16 +107,16 @@ public class BruiToolkit {
 	/**
 	 * 使用Controls替代<br>
 	 * 
-	 * 	Composite content = Controls.contentPanel(parent).mLoc().mTop(bar).get();<br>
-		替代以下的语句：<br>
-		Composite content = UserSession.bruiToolkit().newContentPanel(parent);<br>
-		fd = new FormData();<br>
-		content.setLayoutData(fd);<br>
-		fd.left = new FormAttachment(0, 8);<br>
-		fd.top = new FormAttachment(bar, 8);<br>
-		fd.right = new FormAttachment(100, -8);<br>
-		fd.bottom = new FormAttachment(100, -8);<br>
-		content.setLayout(new FormLayout());<br>
+	 * Composite content = Controls.contentPanel(parent).mLoc().mTop(bar).get();<br>
+	 * 替代以下的语句：<br>
+	 * Composite content = UserSession.bruiToolkit().newContentPanel(parent);<br>
+	 * fd = new FormData();<br>
+	 * content.setLayoutData(fd);<br>
+	 * fd.left = new FormAttachment(0, 8);<br>
+	 * fd.top = new FormAttachment(bar, 8);<br>
+	 * fd.right = new FormAttachment(100, -8);<br>
+	 * fd.bottom = new FormAttachment(100, -8);<br>
+	 * content.setLayout(new FormLayout());<br>
 	 * 
 	 * 
 	 * @param parent
@@ -166,17 +169,16 @@ public class BruiToolkit {
 		if (placeHolder)
 			return "<div style='margin-right:12px;width:28px;height:28px;'></div>";
 		else
-			return "<" + element + " class='cellbutton " + getStyle(a) + "' href='" + a.getId() + "' target='_rwt'>"
-					+ getImage(a, 16) + "</" + element + ">";
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' href='" + a.getId() + "' target='_rwt'>" + getImage(a, 16)
+					+ "</" + element + ">";
 	}
 
 	public String getActionTextImageButtonHtml(Action a, String element, boolean placeHolder) {
 		if (placeHolder)
 			return "<div style='margin-right:12px;height:28px;width:" + actionForceBtnTextWidth + "px;' ></div>";
 		else
-			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionForceBtnTextWidth
-					+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getImage(a, 16) + getText(a) + "</" + element
-					+ ">";
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionForceBtnTextWidth + "px;' href='"
+					+ a.getId() + "'  target='_rwt'>" + getImage(a, 16) + getText(a) + "</" + element + ">";
 
 	}
 
@@ -184,8 +186,8 @@ public class BruiToolkit {
 		if (placeHolder)
 			return "<div style='margin-right:12px;height:28px;width:" + actionTextBtnWidth + "px;' ></div>";
 		else
-			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionTextBtnWidth
-					+ "px;' href='" + a.getId() + "'  target='_rwt'>" + getText(a) + "</" + element + ">";
+			return "<" + element + " class='cellbutton " + getStyle(a) + "' style='width:" + actionTextBtnWidth + "px;' href='" + a.getId()
+					+ "'  target='_rwt'>" + getText(a) + "</" + element + ">";
 
 	}
 
@@ -203,8 +205,8 @@ public class BruiToolkit {
 	private String getImage(Action a, int size) {
 		String image = a.getImage();
 		if (image != null)
-			return "<img alter='" + a.getName() + "' src='" + BruiToolkit.getResourceURL(image)
-					+ "' style='cursor:pointer;' width='" + size + "px' height='" + size + "px'></img>";
+			return "<img alter='" + a.getName() + "' src='" + BruiToolkit.getResourceURL(image) + "' style='cursor:pointer;' width='" + size
+					+ "px' height='" + size + "px'></img>";
 		return "";
 	}
 
@@ -246,8 +248,7 @@ public class BruiToolkit {
 			} else {// 行状布局
 				size = 20;
 			}
-			text += "<img src='" + resourceURL + "' style='cursor:pointer;' width='" + size + "px' height='" + size
-					+ "px'/>";
+			text += "<img src='" + resourceURL + "' style='cursor:pointer;' width='" + size + "px' height='" + size + "px'/>";
 		}
 
 		String buttonText = Check.isNotAssigned(a.getText()) ? "" : a.getText();
@@ -288,8 +289,8 @@ public class BruiToolkit {
 			BruiActionEngine.execute(action, event, context, service);
 		} else {
 			// 显示菜单
-			new ActionMenu(service).setAssembly(assembly).setInput(context.getInput()).setContext(context)
-					.setActions(ca).setEvent(event).open();
+			new ActionMenu(service).setAssembly(assembly).setInput(context.getInput()).setContext(context).setActions(ca).setEvent(event)
+					.open();
 		}
 	}
 
@@ -300,8 +301,8 @@ public class BruiToolkit {
 
 	public boolean isAcceptAction(Object element, IBruiContext context, Action action, String cName) {
 		String[] paramemterNames = new String[] { MethodParam.CONTEXT_INPUT_OBJECT, MethodParam.CONTEXT_INPUT_OBJECT_ID,
-				MethodParam.ROOT_CONTEXT_INPUT_OBJECT, MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID,
-				MethodParam.CURRENT_USER, MethodParam.CURRENT_USER_ID };
+				MethodParam.ROOT_CONTEXT_INPUT_OBJECT, MethodParam.ROOT_CONTEXT_INPUT_OBJECT_ID, MethodParam.CURRENT_USER,
+				MethodParam.CURRENT_USER_ID };
 		Object[] parameterValues = context.getContextParameters(paramemterNames);
 		return AUtil.readBehavior(element, cName, action.getName(), parameterValues, paramemterNames);
 	}
@@ -385,6 +386,14 @@ public class BruiToolkit {
 	public void downloadServerFile(String path, JsonObject param) {
 		String url = ServicesLoader.url + "/" + path + "/";
 		WidgetHandler.getHandler().download(url, param);
+	}
+
+	public void bindingShortcutKey(Control control, Action a, Listener listener) {
+		Check.isAssigned(a.getShortcutKey(), k -> {
+			BruiEntryPoint p = UserSession.current().getEntryPoint();
+			p.keybinding(k, listener);
+			control.addListener(SWT.Dispose, e -> p.keyunbinding(k, listener));
+		});
 	}
 
 }
