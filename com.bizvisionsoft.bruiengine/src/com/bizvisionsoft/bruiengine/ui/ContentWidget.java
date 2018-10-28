@@ -40,7 +40,7 @@ public class ContentWidget {
 		contentContainer = new Composite(parent, SWT.NONE);
 		contentContainer.setLayout(new FillLayout());
 		switchAssembly(assembly, input, parameter, closeable);
-		contentContainer.setBackground(BruiColors.getColor(BruiColor.white));
+		contentContainer.setBackground(BruiColors.getColor(BruiColor.Grey_200));
 		return this;
 	}
 
