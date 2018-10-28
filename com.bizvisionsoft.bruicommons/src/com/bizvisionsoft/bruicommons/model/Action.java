@@ -426,4 +426,14 @@ public class Action extends ModelObject {
 	public void setSysSettingParameter(String sysSettingParameter) {
 		this.sysSettingParameter = sysSettingParameter;
 	}
+	
+	private String shortcutKey;
+	
+	public void setShortcutKey(String shortcutKey) {
+		this.shortcutKey = shortcutKey;
+	}
+	
+	public String getShortcutKey() {
+		return shortcutKey;
+	}
 }

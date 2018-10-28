@@ -349,6 +349,8 @@ public class ActionsEditPane extends SashForm {
 			editor.createTextField(parent, "描述:", action, "description", SWT.BORDER);
 
 			editor.createTextField(parent, "工具提示:", action, "tooltips", SWT.BORDER);
+			
+			editor.createTextField(parent, "快捷键:", action, "shortcutKey", SWT.BORDER);
 
 			editor.createCheckboxField(parent, "强制使用文本:", action, "forceText", SWT.CHECK);
 

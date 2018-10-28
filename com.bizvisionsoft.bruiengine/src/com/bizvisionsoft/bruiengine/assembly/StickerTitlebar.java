@@ -11,12 +11,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.service.tools.Check;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 
 public class StickerTitlebar extends Composite {
@@ -59,8 +62,8 @@ public class StickerTitlebar extends Composite {
 		rl.marginRight = 0;
 
 		toolbar.setLayout(rl);
-		
-		if(rightActions!=null) {
+
+		if (rightActions != null) {
 			setActions(rightActions);
 		}
 	}
@@ -68,8 +71,7 @@ public class StickerTitlebar extends Composite {
 	private void createLeftButton(Action leftAction) {
 		Label button = new Label(this, SWT.NONE);
 		toolkit.enableMarkup(button);
-		String text = "<img alter='" + leftAction.getName() + "' src='"
-				+ BruiToolkit.getResourceURL(leftAction.getImage())
+		String text = "<img alter='" + leftAction.getName() + "' src='" + BruiToolkit.getResourceURL(leftAction.getImage())
 				+ "' style='cursor:pointer;' width='24px' height='24px'></img>";
 		button.setText(text);
 
@@ -77,10 +79,7 @@ public class StickerTitlebar extends Composite {
 		gd.widthHint = 24;
 		gd.heightHint = 24;
 		button.setLayoutData(gd);
-		button.addListener(SWT.MouseDown, e -> {
-			e.data = leftAction;
-			Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
-		});
+		button.addListener(SWT.MouseDown, e -> handleAction(e, leftAction));
 	}
 
 	public StickerTitlebar setText(String text) {
@@ -89,14 +88,28 @@ public class StickerTitlebar extends Composite {
 	}
 
 	public StickerTitlebar setActions(List<Action> actions) {
-		Optional.ofNullable(actions).ifPresent(as -> as.forEach(a -> {
-			Button btn = toolkit.createButton(toolbar, a, "line");
-			btn.addListener(SWT.Selection, e -> {
-				e.data = a;
-				Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
-			});
-		}));
+		Optional.ofNullable(actions).ifPresent(as -> as.forEach(this::createActionUI));
 		return this;
+	}
+
+	private void createActionUI(Action a) {
+		Button btn = toolkit.createButton(toolbar, a, "line");
+		Check.isAssigned(a.getShortcutKey(), k->setupShortcutKey(btn,k,a));
+		btn.addListener(SWT.Selection, e -> handleAction(e, a));
+	}
+
+	private void setupShortcutKey(Control btn, String k, Action a) {
+//		String[] akeys = Optional.ofNullable((String[]) getDisplay().getData(RWT.ACTIVE_KEYS)).orElse(new String[0]);
+//		String[] ckeys = Optional.ofNullable((String[]) getDisplay().getData(RWT.CANCEL_KEYS)).orElse(new String[0]);
+//
+//		
+//		getDisplay().setData( RWT.ACTIVE_KEYS, k);
+//        getDisplay().setData( RWT.CANCEL_KEYS, k);
+	}
+
+	private void handleAction(Event e, Action action) {
+		e.data = action;
+		Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
 	}
 
 }
