@@ -78,17 +78,25 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 	private Display createDisplay() {
 		Display display = new Display();
-		display.setData(RWT.CANCEL_KEYS, new String[] { "ESC" });
+		display.setData(RWT.CANCEL_KEYS, new String[] { "CTRL+ALT+D", "ESC" });
+		display.setData(RWT.ACTIVE_KEYS, new String[] { "CTRL+ALT+D" });
 		display.addFilter(SWT.KeyDown, this::handleKeyEvent);
 		return display;
 	}
 
 	private void handleKeyEvent(Event e) {
+		if (logger.isDebugEnabled() && e.stateMask == (SWT.CTRL | SWT.ALT) && e.character == 'd') {
+			openOnlineDesigner();
+		}
 		String key = "" + e.stateMask + "+" + e.character;
 		Set<Listener> listeners = keybindingMap.get(key.toUpperCase());
 		if (listeners != null) {
 			listeners.parallelStream().forEach(a -> a.handleEvent(e));
 		}
+	}
+
+	private void openOnlineDesigner() {
+		System.out.println("ONLINE DESGINER");
 	}
 
 	public String getResourceURL(String resPath) {
