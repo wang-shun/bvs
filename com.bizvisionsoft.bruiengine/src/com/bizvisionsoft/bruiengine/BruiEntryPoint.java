@@ -32,6 +32,7 @@ import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
+import com.bizvisionsoft.bruiengine.ui.setting.PageEditor;
 import com.bizvisionsoft.service.tools.Check;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
@@ -86,17 +87,13 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
 	private void handleKeyEvent(Event e) {
 		if (logger.isDebugEnabled() && e.stateMask == (SWT.CTRL | SWT.ALT) && e.character == 'd') {
-			openOnlineDesigner();
+			PageEditor.open();
 		}
 		String key = "" + e.stateMask + "+" + e.character;
 		Set<Listener> listeners = keybindingMap.get(key.toUpperCase());
 		if (listeners != null) {
 			listeners.parallelStream().forEach(a -> a.handleEvent(e));
 		}
-	}
-
-	private void openOnlineDesigner() {
-		System.out.println("ONLINE DESGINER");
 	}
 
 	public String getResourceURL(String resPath) {
