@@ -40,7 +40,7 @@ public class Controls<T extends Control> {
 	}
 
 	public static Controls<Composite> contentPanel(Composite parent) {
-		return new Controls<Composite>(Composite.class, parent, SWT.BORDER, null, null).bg(BruiColor.white);
+		return new Controls<Composite>(Composite.class, parent, SWT.BORDER, null, null).bg(BruiColor.Grey_200);
 	}
 
 	public static Controls<Label> label(Composite parent) {

@@ -78,7 +78,7 @@ public class BruiToolkit {
 
 	public static final String CSS_PANEL_CONTENT = "content";
 
-	public static final int MARGIN = 12;
+	public static final int MARGIN = 8;
 
 	public Widget enableMarkup(Widget control) {
 
@@ -245,6 +245,8 @@ public class BruiToolkit {
 			int size;
 			if ("block".equals(layoutStyle)) {// 块状布局
 				size = 32;
+			} else if ("compact".equals(layoutStyle)) {
+				size = 16;
 			} else {// 行状布局
 				size = 20;
 			}
@@ -256,12 +258,16 @@ public class BruiToolkit {
 			if (imageUrl != null) {
 				if ("block".equals(layoutStyle)) {// 块状布局
 					text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+				} else if ("compact".equals(layoutStyle)) {
+					text += "<div style='font-size:16px;font-weight:lighter;margin-top:2px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='display:inline-block;'>" + buttonText + "</div>";
 				}
 			} else {
 				if ("block".equals(layoutStyle)) {// 块状布局
 					text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+				} else if ("compact".equals(layoutStyle)) {
+					text += "<div style='font-size:16px;font-weight:lighter;margin-top:2px;'>" + buttonText + "</div>";
 				} else {
 					text += "<div style='margin-left:4px;display:inline-block;'>" + buttonText + "</div>";
 				}
@@ -269,6 +275,8 @@ public class BruiToolkit {
 		} else {
 			if ("block".equals(layoutStyle)) {// 块状布局
 				text += "<div style='font-size:16px;font-weight:lighter;margin-top:8px;'>" + buttonText + "</div>";
+			} else if ("compact".equals(layoutStyle)) {
+				text += "<div style='font-size:16px;font-weight:lighter;margin-top:2px;'>" + buttonText + "</div>";
 			}
 		}
 

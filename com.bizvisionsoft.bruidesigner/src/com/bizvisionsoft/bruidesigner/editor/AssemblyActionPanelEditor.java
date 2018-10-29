@@ -25,6 +25,8 @@ public class AssemblyActionPanelEditor extends ModelEditor {
 
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
 		
+		createCheckboxField(parent, "卡片式标题栏：", inputData, "compactTitleBar", SWT.CHECK);
+		
 		createTextField(parent, "标题栏文本:", inputData, "stickerTitle", SWT.BORDER);
 
 		createCheckboxField(parent, "是否在标题栏上显示传入对象名称：", inputData, "displayInputLabelInTitlebar", SWT.CHECK);

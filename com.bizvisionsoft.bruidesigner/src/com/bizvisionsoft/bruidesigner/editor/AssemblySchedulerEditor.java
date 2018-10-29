@@ -46,6 +46,8 @@ public class AssemblySchedulerEditor extends ModelEditor {
 		parent = createTabItemContent("容器设置");
 
 		createCheckboxField(parent, "带有顶部的标题栏和工具栏：", inputData, "hasTitlebar", SWT.CHECK);
+		
+		createCheckboxField(parent, "卡片式标题栏：", inputData, "compactTitleBar", SWT.CHECK);
 
 		createTextField(parent, "组件标题:", inputData, "stickerTitle", SWT.BORDER);
 

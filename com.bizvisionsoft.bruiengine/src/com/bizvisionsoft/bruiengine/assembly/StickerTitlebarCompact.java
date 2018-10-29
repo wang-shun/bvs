@@ -8,7 +8,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -22,54 +21,36 @@ import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
 
-public class StickerTitlebar extends Composite {
+public class StickerTitlebarCompact extends Composite {
 
 	private Label label;
 	private Composite toolbar;
 	private BruiToolkit toolkit;
-	private boolean compact;
 
-	public StickerTitlebar(Composite parent, Action leftAction, List<Action> rightActions) {
-		this(parent, leftAction, rightActions, false);
-	}
-
-	public StickerTitlebar(Composite parent, Action leftAction, List<Action> rightActions, boolean compact) {
-		super(parent, compact?SWT.BORDER:SWT.NONE);
-		this.compact = compact;
+	public StickerTitlebarCompact(Composite parent, Action leftAction, List<Action> rightActions) {
+		super(parent, SWT.NONE);
 		toolkit = UserSession.bruiToolkit();
-		setBackground(BruiColors.getColor(BruiColor.white));
+		setBackground(BruiColors.getColor(BruiColor.Grey_50));
 		setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_BAR_TITLE);
 		GridLayout layout = new GridLayout(leftAction == null ? 2 : 3, false);
 		setLayout(layout);
-		if (compact) {
-			layout.horizontalSpacing = 4;
-			layout.verticalSpacing = 0;
-			layout.marginWidth = 0;
-			layout.marginHeight = 0;
-			layout.marginLeft = 8;
-		} else {
-			layout.horizontalSpacing = 8;
-			layout.verticalSpacing = 16;
-			layout.marginWidth = 8;
-			layout.marginHeight = 4;
-		}
+		layout.horizontalSpacing = 16;
+		layout.verticalSpacing = 16;
+		layout.marginWidth = 16;
+		layout.marginHeight = 4;
 
 		if (leftAction != null) {
 			createLeftButton(leftAction);
 		}
 
 		label = new Label(this, SWT.NONE);
-		if (compact) {
-			label.setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_TEXT_MENU);
-		} else {
-			label.setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_TEXT_HEADLINE);
-		}
+		label.setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_TEXT_HEADLINE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		toolbar = new Composite(this, SWT.NONE);
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 		RowLayout rl = new RowLayout(SWT.HORIZONTAL);
-		rl.marginHeight = compact?0:2;
+		rl.marginHeight = 2;
 		rl.spacing = 8;
 		rl.marginWidth = 0;
 		rl.wrap = false;
@@ -78,6 +59,7 @@ public class StickerTitlebar extends Composite {
 		rl.marginTop = 0;
 		rl.marginLeft = 0;
 		rl.marginRight = 0;
+
 		toolbar.setLayout(rl);
 
 		if (rightActions != null) {
@@ -88,43 +70,29 @@ public class StickerTitlebar extends Composite {
 	private void createLeftButton(Action leftAction) {
 		Label button = new Label(this, SWT.NONE);
 		toolkit.enableMarkup(button);
+		String text = "<img alter='" + leftAction.getName() + "' src='" + BruiToolkit.getResourceURL(leftAction.getImage())
+				+ "' style='cursor:pointer;' width='24px' height='24px'></img>";
+		button.setText(text);
+
 		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, false, false);
-		if (compact) {
-			String text = "<img alter='" + leftAction.getName() + "' src='" + BruiToolkit.getResourceURL(leftAction.getImage())
-					+ "' style='cursor:pointer;' width='16px' height='16px'></img>";
-			button.setText(text);
-			gd.widthHint = 16;
-			gd.heightHint = 16;
-		} else {
-			String text = "<img alter='" + leftAction.getName() + "' src='" + BruiToolkit.getResourceURL(leftAction.getImage())
-					+ "' style='cursor:pointer;' width='24px' height='24px'></img>";
-			button.setText(text);
-			gd.widthHint = 24;
-			gd.heightHint = 24;
-		}
+		gd.widthHint = 24;
+		gd.heightHint = 24;
 		button.setLayoutData(gd);
 		button.addListener(SWT.MouseDown, e -> handleAction(e, leftAction));
-
 	}
 
-	public StickerTitlebar setText(String text) {
+	public StickerTitlebarCompact setText(String text) {
 		label.setText(Optional.ofNullable(text).orElse(""));
 		return this;
 	}
 
-	public StickerTitlebar setActions(List<Action> actions) {
+	public StickerTitlebarCompact setActions(List<Action> actions) {
 		Optional.ofNullable(actions).ifPresent(as -> as.forEach(this::createActionUI));
 		return this;
 	}
 
 	private void createActionUI(Action a) {
-		Button btn;
-		if (compact) {
-			btn = toolkit.createButton(toolbar, a, "compact");
-			btn.setLayoutData(new RowData(32, 32));
-		} else {
-			btn = toolkit.createButton(toolbar, a, "line");
-		}
+		Button btn = toolkit.createButton(toolbar, a, "line");
 		Listener listener = e -> handleAction(e, a);
 		toolkit.bindingShortcutKey(btn, a, listener);
 		btn.addListener(SWT.Selection, listener);
@@ -132,7 +100,7 @@ public class StickerTitlebar extends Composite {
 
 	private void handleAction(Event e, Action action) {
 		e.data = action;
-		Arrays.asList(StickerTitlebar.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
+		Arrays.asList(StickerTitlebarCompact.this.getListeners(SWT.Selection)).forEach(aa -> aa.handleEvent(e));
 	}
 
 }

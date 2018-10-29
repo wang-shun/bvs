@@ -80,11 +80,9 @@ public class StickerPart {
 
 		String text = assembly.getStickerTitle();
 		if (assembly.isDisplayInputLabelInTitlebar()) {
-			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
-					.orElse("");
+			text += Optional.ofNullable(context.getInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l).orElse("");
 		} else if (assembly.isDisplayRootInputLabelInTitlebar()) {
-			text += Optional.ofNullable(context.getRootInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l)
-					.orElse("");
+			text += Optional.ofNullable(context.getRootInput()).map(o -> AUtil.readLabel(o, "")).map(l -> " - " + l).orElse("");
 		}
 
 		Action closeAction = null;
@@ -93,13 +91,18 @@ public class StickerPart {
 			closeAction.setName("close");
 			closeAction.setImage("/img/close.svg");
 		}
-		
-		bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions)).height(48).left().top().right()
-				.get().setText(text);
+
+
+		bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions,assembly.isCompactTitleBar())).height(assembly.isCompactTitleBar()?32:48).left().top().right().get()
+				.setText(text);
 
 		setToolbarActions();
 
-		content = Controls.contentPanel(parent).mLoc().mTop(bar).get();
+		if (assembly.isCompactTitleBar()) {
+			content = Controls.contentPanel(parent).loc().top(bar,-1).get();
+		}else {
+			content = Controls.contentPanel(parent).mLoc().mTop(bar).get();
+		}
 
 		bar.addListener(SWT.Selection, e -> {
 			Action action = ((Action) e.data);
@@ -115,8 +118,7 @@ public class StickerPart {
 	}
 
 	private void setToolbarActions() {
-		List<Action> actions = UserSession.bruiToolkit().getAcceptedActions(assembly, service.getCurrentUserInfo(),
-				context);
+		List<Action> actions = UserSession.bruiToolkit().getAcceptedActions(assembly, service.getCurrentUserInfo(), context);
 		bar.setActions(actions);
 	}
 
@@ -124,13 +126,13 @@ public class StickerPart {
 		Action action;
 		//////////////////////////////////////////////////////////////////////////////////
 		// 创建默认的action
-		if (logger.isDebugEnabled()) {
-			action = new Action();
-			action.setType(Action.TYPE_CUSTOMIZED);
-			action.setImage("/img/info_w.svg");
-			action.setStyle("serious");
-			addAction(action, e -> service.displaySiteModel(assembly));
-		}
+		// if (logger.isDebugEnabled()) {
+		// action = new Action();
+		// action.setType(Action.TYPE_CUSTOMIZED);
+		// action.setImage("/img/info_w.svg");
+		// action.setStyle("serious");
+		// addAction(action, e -> service.displaySiteModel(assembly));
+		// }
 
 		// 设置
 		if (part instanceof IClientCustomizable && !Boolean.TRUE.equals(assembly.isDisableCustomized())) {
@@ -151,8 +153,7 @@ public class StickerPart {
 		}
 
 		// 查询
-		if (part instanceof IQueryEnable && !Boolean.TRUE.equals(assembly.isDisableStdQuery())
-				&& Check.isAssigned(assembly.getFields())) {
+		if (part instanceof IQueryEnable && !Boolean.TRUE.equals(assembly.isDisableStdQuery()) && Check.isAssigned(assembly.getFields())) {
 			action = new Action();
 			action.setType(Action.TYPE_CUSTOMIZED);
 			action.setImage("/img/search_w.svg");

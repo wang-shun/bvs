@@ -834,4 +834,14 @@ public class Assembly extends ModelObject {
 		this.scrollLoadData = scrollLoadData;
 	}
 	
+	private boolean compactTitleBar;
+	
+	public boolean isCompactTitleBar() {
+		return compactTitleBar;
+	}
+	
+	public void setCompactTitleBar(boolean compactTitleBar) {
+		this.compactTitleBar = compactTitleBar;
+	}
+	
 }
