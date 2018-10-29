@@ -815,6 +815,8 @@ public class Assembly extends ModelObject {
 	}
 
 	private boolean inlineEdit;
+
+	private boolean scrollLoadData;
 	
 	public void setInlineEdit(boolean inlineEdit) {
 		this.inlineEdit = inlineEdit;
@@ -824,4 +826,12 @@ public class Assembly extends ModelObject {
 		return inlineEdit;
 	}
 
+	public boolean isScrollLoadData() {
+		return scrollLoadData;
+	}
+	
+	public void setScrollLoadData(boolean scrollLoadData) {
+		this.scrollLoadData = scrollLoadData;
+	}
+	
 }

@@ -50,6 +50,12 @@ public class AssemblyMessengerEditor extends ModelEditor {
 		createTextField(parent, "取数服务名称:", inputData, "gridDataSetService", SWT.BORDER)
 				.setMessage("例如：UserService.list");
 		
+		createCheckboxField(parent, "翻页加载数据：", inputData, "gridPageControl", SWT.CHECK);
+
+		createCheckboxField(parent, "滚动加载数据：", inputData, "scrollLoadData", SWT.CHECK);
+		
+		createIntegerField(parent, "每页加载多少条（0表示默认，30条）：", inputData, "gridPageCount", SWT.BORDER, 0, 500);
+		
 		parent = createTabItemContent("查询字段");
 		List<FormField> fields = ((Assembly) inputData).getFields();
 		if (fields == null)

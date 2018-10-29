@@ -12,12 +12,9 @@ import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ScrollBar;
 
 import com.bizivisionsoft.widgets.pagination.Pagination;
 import com.bizivisionsoft.widgets.util.Layer;
@@ -32,12 +29,13 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.util.Controls;
 import com.bizvisionsoft.service.tools.Formatter;
 import com.mongodb.BasicDBObject;
 
 public class MessengerInboxPart implements IQueryEnable {
 
-	private static final int LIMIT = 20;
+	private int scrollSelection = 0;
 
 	@Inject
 	private IBruiService bruiService;
@@ -51,9 +49,9 @@ public class MessengerInboxPart implements IQueryEnable {
 
 	protected long count;
 
-	protected Integer limit;
+	protected int limit;
 
-	protected Integer skip;
+	protected int skip;
 
 	protected int currentPage;
 
@@ -88,6 +86,13 @@ public class MessengerInboxPart implements IQueryEnable {
 
 	@Init
 	protected void init() {
+		int _limit = config.getGridPageCount();
+		if (_limit == 0) {
+			limit = 30;
+		} else {
+			limit = _limit;
+		}
+
 		dataSetEngine = BruiDataSetEngine.create(config, bruiService, context);
 		Assert.isNotNull(dataSetEngine, config.getName() + "组件缺少数据集定义");
 	}
@@ -98,24 +103,14 @@ public class MessengerInboxPart implements IQueryEnable {
 
 	@CreateUI
 	public void createUI(Composite parent) {
-		Composite panel = createSticker(parent);
-		panel.setLayout(new FormLayout());
-		Control grid = createGridControl(panel);
-		Control pagec = createToolbar(panel);
-
-		FormData fd = new FormData();
-		grid.setLayoutData(fd);
-		fd.top = new FormAttachment();
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(100, -48);
-
-		fd = new FormData();
-		pagec.setLayoutData(fd);
-		fd.height = 48;
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(100);
+		Controls.handle(createSticker(parent)).formLayout().put(panel -> {
+			if(config.isGridPageControl()) {
+				Controls.handle(createGridControl(panel)).loc(SWT.TOP | SWT.LEFT | SWT.RIGHT).bottom(100, -48);
+				Controls.handle(createToolbar(panel)).loc(SWT.BOTTOM | SWT.LEFT | SWT.RIGHT, 48);
+			}else {
+				Controls.handle(createGridControl(panel)).loc(SWT.TOP | SWT.LEFT | SWT.RIGHT|SWT.BOTTOM);
+			}
+		});
 
 		setViewerInput();
 	}
@@ -129,33 +124,18 @@ public class MessengerInboxPart implements IQueryEnable {
 	}
 
 	private Control createToolbar(Composite parent) {
-
-		toolbar = new Composite(parent, SWT.NONE);
-		toolbar.setLayout(new FormLayout());
-		FormData fd = new FormData();
-		new Label(toolbar, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(fd);
-		fd.top = new FormAttachment();
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(100);
-		// 求出有多少记录
-		createPageControl();
-
-		fd = new FormData();
-		page.setLayoutData(fd);
-		fd.top = new FormAttachment(0, 1);
-		fd.bottom = new FormAttachment(100);
-		fd.left = new FormAttachment(0, 8);
-		fd.right = new FormAttachment(100, -8);
+		toolbar = Controls.comp(parent).formLayout().get();
+		Controls.label(toolbar, SWT.HORIZONTAL | SWT.SEPARATOR).loc(SWT.TOP | SWT.LEFT | SWT.RIGHT);
+		Controls.handle(createPageControl()).top(0, 1).bottom().left(0, 8).right(100, -8);
 		return toolbar;
 	}
 
 	private Control createPageControl() {
 		count = dataSetEngine.count(filter, context);
 		// 获得最佳的每页记录数
-		limit = LIMIT;
 		// 起始
 		skip = 0;
-		page = new Pagination(toolbar, SWT.LONG).setCount(count).setLimit(LIMIT);
+		page = new Pagination(toolbar, SWT.LONG).setCount(count).setLimit(limit);
 		page.addListener(SWT.Selection, e -> {
 			currentPage = e.index;
 			skip = (currentPage - 1) * limit;
@@ -183,11 +163,33 @@ public class MessengerInboxPart implements IQueryEnable {
 			open(c.getStructuredSelection().getFirstElement());
 		});
 
+		if (config.isScrollLoadData()) {
+			viewer.getGrid().getVerticalBar().addListener(SWT.Selection, e -> {
+				ScrollBar bar = (ScrollBar) e.widget;
+				int sel = bar.getSelection();
+				if (scrollSelection == sel) {
+					return;
+				} else {
+					scrollSelection = sel;
+				}
+				int max = bar.getMaximum();
+				int thu = bar.getThumb();
+				if (max - sel - thu <= 0) {
+					currentPage++;
+					skip = (currentPage) * limit;
+					appendPageViewerInput();
+				}
+			});
+		}
+
 		return grid;
 	}
 
 	private void open(Object element) {
 		if (element == null) {
+			return;
+		}
+		if(element instanceof String) {
 			return;
 		}
 		String cName = this.config.getName();
@@ -206,17 +208,17 @@ public class MessengerInboxPart implements IQueryEnable {
 		Date sendDate = (Date) AUtil.readValue(element, cName, "发送日期", null);
 		sb.append("<div>日期：" + Formatter.getString(sendDate, "yyyy-MM-dd HH:mm:ss", RWT.getLocale()) + "</div>");
 		sb.append("</div>");
-		
+
 		sb.append("<hr>");
-		
+
 		String content = (String) AUtil.readValue(element, cName, "内容", null);
 		sb.append("<div style='white-space:normal;word-wrap:break-word;overflow:auto;;margin-top:8px'>" + content + "</div>");
 
 		sb.append("</div>");
-		Layer.alert(subject,sb.toString(), 460, 300);
-		
+		Layer.alert(subject, sb.toString(), 460, 300);
+
 		Object _id = AUtil.readValue(element, cName, "_id", null);
-		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id),context);
+		dataSetEngine.replace(element, new BasicDBObject("read", true).append("_id", _id), context);
 		AUtil.writeValue(element, cName, "是否已读", true);
 		viewer.update(element, null);
 	}
@@ -237,6 +239,26 @@ public class MessengerInboxPart implements IQueryEnable {
 
 	public void setViewerInput() {
 		setViewerInput((List<?>) dataSetEngine.query(skip, limit, filter, context));
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void appendPageViewerInput() {
+		List<?> input = (List<?>) dataSetEngine.query(skip, limit, filter, context);
+		String cName = config.getName();
+		String fName = "发送日期";
+		Date defaultDate = new Date();
+
+		String currentDate = null;
+		for (int i = 0; i < input.size(); i++) {
+			Date date = (Date) AUtil.readValue(input.get(i), cName, fName, defaultDate);
+			String _date = Formatter.getString(date, null, RWT.getLocale());
+			if (!_date.equals(currentDate)) {
+				((List) viewer.getInput()).add(_date);
+				currentDate = _date;
+			}
+			((List) viewer.getInput()).add((input.get(i)));
+		}
+		viewer.refresh();
 	}
 
 	public void setViewerInput(List<?> input) {
@@ -275,8 +297,7 @@ public class MessengerInboxPart implements IQueryEnable {
 
 	public List<Object> getCheckedItems() {
 		ArrayList<Object> result = new ArrayList<Object>();
-		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked())
-				.forEach(c -> result.add(c.getData()));
+		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked()).forEach(c -> result.add(c.getData()));
 		return result;
 	}
 

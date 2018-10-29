@@ -57,6 +57,8 @@ public class AssemblyGridEditor extends ModelEditor {
 		createIntegerField(parent, "固定列数（0代表不固定）：", inputData, "gridFix", SWT.BORDER, 0, 999);
 
 		createCheckboxField(parent, "翻页加载数据：", inputData, "gridPageControl", SWT.CHECK);
+		
+		createCheckboxField(parent, "滚动加载数据：", inputData, "scrollLoadData", SWT.CHECK);
 
 		createIntegerField(parent, "每页加载多少条（0表示默认，30条）：", inputData, "gridPageCount", SWT.BORDER, 0, 500);
 		

@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +81,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	protected Integer limit;
 
 	protected Integer skip;
+
+	private int scrollSelection = 0;
 
 	protected int currentPage;
 
@@ -140,13 +143,14 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	@Init
 	protected void init() {
-		if (config.isGridPageControl()) {
+		if (config.isGridPageControl() || config.isScrollLoadData()) {
 			int _limit = config.getGridPageCount();
 			if (_limit == 0) {
 				limit = 30;
 			} else {
 				limit = _limit;
 			}
+			skip = 0;
 		} else {
 			limit = null;
 		}
@@ -273,6 +277,26 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 				});
 			});
 		}
+
+		// 处理滚动加载
+		if (config.isScrollLoadData()) {
+			viewer.getGrid().getVerticalBar().addListener(SWT.Selection, e -> {
+				ScrollBar bar = (ScrollBar) e.widget;
+				int sel = bar.getSelection();
+				if (scrollSelection == sel) {
+					return;
+				} else {
+					scrollSelection = sel;
+				}
+				int max = bar.getMaximum();
+				int thu = bar.getThumb();
+				if (max - sel - thu <= 0) {
+					currentPage++;
+					skip = (currentPage) * limit;
+					appendViewerInput();
+				}
+			});
+		}
 	}
 
 	private void addEventListener(String eventCode, Listener listener) {
@@ -391,8 +415,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		}
 
 		BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(queryConfig);
-		IBruiContext childContext = UserSession.newEditorContext().setEditable(true).setEmbeded(true).setInput(input)
-				.setParent(context).setAssembly(queryConfig).setEngine(brui);
+		IBruiContext childContext = UserSession.newEditorContext().setEditable(true).setEmbeded(true).setInput(input).setParent(context)
+				.setAssembly(queryConfig).setEngine(brui);
 		context.add(childContext);
 
 		final EditorPart editor = (EditorPart) brui.getTarget();
@@ -460,7 +484,6 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	private Control createPageControl() {
 		count = dataSetEngine.count(filter, context);
 		// 获得最佳的每页记录数
-		skip = 0;
 		page = new Pagination(toolbar, toolitems.isEmpty() ? SWT.LONG : SWT.MEDIUM).setCount(count).setLimit(limit);
 		page.addListener(SWT.Selection, e -> {
 			currentPage = e.index;
@@ -531,9 +554,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			a.setText(itemSelector.label);
 			a.setId("choice");
 			a.setStyle(itemSelector.style);
-			vcol.setLabelProvider(
-					new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }), context)
-							.setEnablement(itemSelector.enablement));
+			vcol.setLabelProvider(new GridPartActionColumnLabelProvider(config, Arrays.asList(new Action[] { a }), context)
+					.setEnablement(itemSelector.enablement));
 
 			grid.addListener(SWT.Selection, itemSelector.listener);
 		}
@@ -609,8 +631,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		viewer.setAutoPreferredHeight(config.isGridAutoHeight());
 		viewer.setUseHashlookup(false);
 
-		if (itemSelector != null || config.isGridMarkupEnabled()
-				|| (config.getRowActions() != null && !config.getRowActions().isEmpty()))
+		if (itemSelector != null || config.isGridMarkupEnabled() || (config.getRowActions() != null && !config.getRowActions().isEmpty()))
 			UserSession.bruiToolkit().enableMarkup(grid);
 
 		if (config.getGridFix() > 0)
@@ -634,8 +655,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 			BruiActionEngine.execute(action, e, context, bruiService);
 		} else {
 			// 显示菜单
-			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context)
-					.setActions(action.getChildren()).setEvent(e).open();
+			new ActionMenu(bruiService).setAssembly(config).setInput(elem).setContext(context).setActions(action.getChildren()).setEvent(e)
+					.open();
 		}
 	}
 
@@ -648,6 +669,19 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 				Layer.message(e.getMessage(), Layer.ICON_CANCEL);
 			}
 		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void appendViewerInput() {
+		if (disableDateSetEngine)
+			return;
+
+		List input = (List) viewer.getInput();
+		((List) dataSetEngine.query(skip, limit, filter, context)).forEach(item -> {
+			input.add(item);
+		});
+		renderEngine.setInput(input);
+		viewer.refresh();
 	}
 
 	public void setViewerInput(List<?> input) {
@@ -774,8 +808,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 
 	public List<Object> getCheckedItems() {
 		ArrayList<Object> result = new ArrayList<Object>();
-		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked())
-				.forEach(c -> result.add(c.getData()));
+		Arrays.asList(viewer.getGrid().getItems()).stream().filter(i -> i.getChecked()).forEach(c -> result.add(c.getData()));
 		return result;
 	}
 
@@ -829,8 +862,8 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	}
 
 	public Object getParentElement(Object element) {
-		Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element)).map(i -> i.getParentItem())
-				.map(p -> p.getData()).orElse(null);
+		Object parentData = Optional.ofNullable((GridItem) viewer.testFindItem(element)).map(i -> i.getParentItem()).map(p -> p.getData())
+				.orElse(null);
 		return parentData;
 	}
 
@@ -916,8 +949,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@Override
 	public void export() {
 		// 获取导出文件名。使用StickerTitle作为文件名。
-		String fileName = Optional.ofNullable(config).map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName())
-				.filter(Check::isAssigned).findFirst().orElse("")).orElse("");
+		String fileName = Optional.ofNullable(config)
+				.map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName()).filter(Check::isAssigned).findFirst().orElse(""))
+				.orElse("");
 
 		// 不分页时，直接导出表格数据
 		if (config == null || !config.isGridPageControl()) {
@@ -978,8 +1012,9 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 	@Override
 	public String getExportActionText() {
 		return Optional.ofNullable(exportActionText)
-				.orElse(Optional.ofNullable(config).map(c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName())
-						.filter(Check::isAssigned).findFirst().orElse("")).orElse(""));
+				.orElse(Optional.ofNullable(config).map(
+						c -> Stream.of(c.getStickerTitle(), c.getTitle(), c.getName()).filter(Check::isAssigned).findFirst().orElse(""))
+						.orElse(""));
 	}
 
 }

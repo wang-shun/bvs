@@ -12,6 +12,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -124,6 +125,13 @@ public class Controls<T extends Control> {
 	public Controls<T> layout(Layout layout) {
 		if (control instanceof Composite) {
 			((Composite) control).setLayout(layout);
+		}
+		return this;
+	}
+	
+	public Controls<T> formLayout() {
+		if (control instanceof Composite) {
+			((Composite) control).setLayout(new FormLayout());
 		}
 		return this;
 	}
