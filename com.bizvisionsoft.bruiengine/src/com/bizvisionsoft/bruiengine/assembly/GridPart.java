@@ -990,7 +990,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		try {
 			new GridPartExcelExporter().setViewer(viewer).setInput(input).setFileName(fileName).export();
 		} catch (Exception e) {
-			logger.error("导出Grid： " + fileName + " 的Excel数据时出错。" + e.getMessage());
+			logger.error("导出Grid： " + fileName + " 的Excel数据时出错。" ,e);
 			bruiService.error("错误", "导出Grid： " + fileName + " 的Excel数据时出错。");
 		}
 	}

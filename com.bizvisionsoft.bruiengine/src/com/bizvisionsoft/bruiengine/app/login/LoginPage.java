@@ -153,9 +153,8 @@ public class LoginPage {
 				.add(0, () -> Controls.text(parent, SWT.BORDER | SWT.PASSWORD).loc(SWT.LEFT | SWT.RIGHT)).get();
 
 		bRemember = Controls.button(parent).rwt(BruiToolkit.CSS_INFO).loc(SWT.LEFT | SWT.RIGHT).top(tPassword, 12)
-				.html("<div class='label_button' style='font-size:13px;'>登录</div>").select(this::login)//
+				.html("<div class='label_button' style='font-size:13px;'>登录</div>").defaultButton().select(this::login)//
 				.add(0, () -> Controls.button(parent, SWT.CHECK).loc(SWT.LEFT | SWT.RIGHT).setText("在本机记录我的登录状态")).get();
-
 	}
 
 	private void login(Event event) {

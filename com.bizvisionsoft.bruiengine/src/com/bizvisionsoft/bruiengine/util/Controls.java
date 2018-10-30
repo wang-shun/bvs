@@ -40,7 +40,7 @@ public class Controls<T extends Control> {
 	}
 
 	public static Controls<Composite> contentPanel(Composite parent) {
-		return new Controls<Composite>(Composite.class, parent, SWT.BORDER, null, null).bg(BruiColor.Grey_200);
+		return new Controls<Composite>(Composite.class, parent, SWT.NONE, null, null).bg(BruiColor.white);
 	}
 
 	public static Controls<Label> label(Composite parent) {
@@ -605,6 +605,11 @@ public class Controls<T extends Control> {
 
 	public Controls<T> set(Consumer<T> cons) {
 		cons.accept(control);
+		return this;
+	}
+
+	public Controls<T> defaultButton() {
+		Check.instanceThen(control, Button.class, c->c.getShell().setDefaultButton(c));
 		return this;
 	}
 

@@ -1092,6 +1092,19 @@ Text-Cancel-Icon {
 
 /* Tree/Grid default theme */
 
+Tree-RowOverlay.board, Grid-RowOverlay.board ,Tree-RowOverlay.board:hover, Grid-RowOverlay.board:hover,
+Tree-RowOverlay.board:selected, Grid-RowOverlay.board:selected,
+Tree-RowOverlay.board:selected:unfocused, Grid-RowOverlay.board:selected:unfocused{
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}
+
+Tree-Cell.board, Grid-Cell.board {
+  spacing: 0px;
+  padding: 0px;
+}
+
 Tree, Grid {
   font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
   background-color: #ffffff;

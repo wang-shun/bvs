@@ -42,7 +42,7 @@ public class StickerTitlebar extends Composite {
 		GridLayout layout = new GridLayout(leftAction == null ? 2 : 3, false);
 		setLayout(layout);
 		if (compact) {
-			layout.horizontalSpacing = 4;
+			layout.horizontalSpacing = 0;
 			layout.verticalSpacing = 0;
 			layout.marginWidth = 0;
 			layout.marginHeight = 0;
@@ -70,7 +70,7 @@ public class StickerTitlebar extends Composite {
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
 		RowLayout rl = new RowLayout(SWT.HORIZONTAL);
 		rl.marginHeight = compact?0:2;
-		rl.spacing = 8;
+		rl.spacing = compact?0:8;
 		rl.marginWidth = 0;
 		rl.wrap = false;
 		rl.fill = true;
