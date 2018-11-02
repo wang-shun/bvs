@@ -322,8 +322,6 @@ public class LayoutEditPane extends Composite {
 					}, //
 					"ÈÝÆ÷CSSÀàÃû£º", element, "css", SWT.READ_ONLY | SWT.BORDER);
 
-			editor.createTextField(parent, "ÈÝÆ÷RWT CSSÃû³Æ£º", element, "rwtCss", SWT.BORDER);
-
 			element.addPropertyChangeListener("name", listener);
 		}
 

@@ -407,4 +407,13 @@ public class Site extends ModelObject {
 		this.disableNotice = disableNotice;
 	}
 	
+	private String defaultPageCSS;
+	
+	public String getDefaultPageCSS() {
+		return defaultPageCSS;
+	}
+	
+	public void setDefaultPageCSS(String defaultPageCSS) {
+		this.defaultPageCSS = defaultPageCSS;
+	}
 }

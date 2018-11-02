@@ -40,7 +40,7 @@ public class Layout extends ModelObject {
 	
 	private String css;
 	
-	private String rwtCss;
+//	private String rwtCss;
 
 	private List<AssemblyLayouted> assemblys;
 
@@ -199,11 +199,11 @@ public class Layout extends ModelObject {
 		this.css = css;
 	}
 	
-	public String getRwtCss() {
-		return rwtCss;
-	}
-	
-	public void setRwtCss(String rwtCss) {
-		this.rwtCss = rwtCss;
-	}
+//	public String getRwtCss() {
+//		return rwtCss;
+//	}
+//	
+//	public void setRwtCss(String rwtCss) {
+//		this.rwtCss = rwtCss;
+//	}
 }
