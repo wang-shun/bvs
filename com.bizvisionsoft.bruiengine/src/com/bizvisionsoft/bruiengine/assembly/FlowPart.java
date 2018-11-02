@@ -112,6 +112,7 @@ public class FlowPart implements IDataSetEngineProvider{
 		} else {
 			panel = parent;
 		}
+		panel.setBackground(BruiColors.getColor(BruiColor.white));
 		panel.setLayout(new FillLayout());
 		createControl(panel);
 		setViewerInput();

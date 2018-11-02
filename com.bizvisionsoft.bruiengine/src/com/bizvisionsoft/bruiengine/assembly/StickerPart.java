@@ -92,17 +92,17 @@ public class StickerPart {
 			closeAction.setImage("/img/close.svg");
 		}
 
-
-		bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions,assembly.isCompactTitleBar())).height(assembly.isCompactTitleBar()?32:48).left().top().right().get()
-				.setText(text);
-
-		setToolbarActions();
-
 		if (assembly.isCompactTitleBar()) {
-			content = Controls.contentPanel(parent).loc().top(bar,-1).get();
-		}else {
+			bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions, true)).height(32).left(0, 8).top().right(100, -8)
+					.get().setText(text);
+			content = Controls.contentPanel(parent).loc().top(bar,8).get();
+		} else {
+			bar = Controls.handle(new StickerTitlebar(parent, closeAction, rightActions, false)).loc(SWT.LEFT | SWT.RIGHT | SWT.TOP, 48)
+					.get().setText(text);
 			content = Controls.contentPanel(parent).mLoc().mTop(bar).get();
 		}
+
+		setToolbarActions();
 
 		bar.addListener(SWT.Selection, e -> {
 			Action action = ((Action) e.data);

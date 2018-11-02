@@ -289,6 +289,7 @@ public class LayoutEditPane extends Composite {
 
 			editor.createComboField(parent, //
 					new String[] {
+							"нч",
 							"Login",//
 							"Grey Cloud",//
 							"Spiky Naga",//
@@ -305,6 +306,7 @@ public class LayoutEditPane extends Composite {
 							"Great Whale"
 					}, //
 					new Object[] {
+							"",
 							"brui_login_bg",//
 							"brui_grey_bg",//
 							"brui_bg_spiky_naga",//

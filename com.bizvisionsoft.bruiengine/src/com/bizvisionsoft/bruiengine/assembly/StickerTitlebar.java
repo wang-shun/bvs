@@ -34,13 +34,12 @@ public class StickerTitlebar extends Composite {
 	}
 
 	public StickerTitlebar(Composite parent, Action leftAction, List<Action> rightActions, boolean compact) {
-		super(parent, compact?SWT.BORDER:SWT.NONE);
+		super(parent, SWT.NONE);
 		this.compact = compact;
 		toolkit = UserSession.bruiToolkit();
-		setBackground(BruiColors.getColor(BruiColor.white));
-		setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_BAR_TITLE);
 		GridLayout layout = new GridLayout(leftAction == null ? 2 : 3, false);
 		setLayout(layout);
+		setBackground(BruiColors.getColor(BruiColor.white));
 		if (compact) {
 			layout.horizontalSpacing = 0;
 			layout.verticalSpacing = 0;
@@ -48,6 +47,7 @@ public class StickerTitlebar extends Composite {
 			layout.marginHeight = 0;
 			layout.marginLeft = 8;
 		} else {
+			setData(RWT.CUSTOM_VARIANT, BruiToolkit.CSS_BAR_TITLE);
 			layout.horizontalSpacing = 8;
 			layout.verticalSpacing = 16;
 			layout.marginWidth = 8;

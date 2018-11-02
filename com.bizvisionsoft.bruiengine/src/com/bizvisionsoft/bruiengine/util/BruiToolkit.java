@@ -78,7 +78,7 @@ public class BruiToolkit {
 
 	public static final String CSS_PANEL_CONTENT = "content";
 
-	public static final int MARGIN = 8;
+	public static final int MARGIN = 0;//8;
 
 	public Widget enableMarkup(Widget control) {
 

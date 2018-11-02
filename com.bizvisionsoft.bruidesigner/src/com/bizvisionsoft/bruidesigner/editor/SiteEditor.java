@@ -50,6 +50,7 @@ public class SiteEditor extends ModelEditor {
 		
 		createComboField(parent, //
 				new String[] {
+						"нч",
 						"Login",//
 						"Grey Cloud",//
 						"Spiky Naga",//
@@ -66,6 +67,7 @@ public class SiteEditor extends ModelEditor {
 						"Great Whale"
 				}, //
 				new Object[] {
+						"",
 						"brui_login_bg",//
 						"brui_grey_bg",//
 						"brui_bg_spiky_naga",//
