@@ -50,7 +50,7 @@ public class SVGGenerator extends HttpServlet {
 //		sb.append("<text style=\"text-anchor: middle;fill:black;font-weight:200;font-family:'Roboto',Helvetica,Arial,sans-serif;\" font-size=\"80\" x=\"315\" y=\"210\" width=\"440\" height=\"440\">%</text>");
 
 		sb.append("<text style=\"text-anchor: middle;fill:black;font-weight:200;font-family:'Roboto',Helvetica,Arial,sans-serif;\" x=\"220\" y=\"280\" width=\"440\" height=\"440\">"
-				+"<tspan font-size=\"180\">"+ (int)(100 * percent) +"</tspan><tspan font-size=\"80\">%</tspan></text>");
+				+"<tspan font-size=\"150\">"+ (int)(100 * percent) +"</tspan><tspan font-size=\"70\">%</tspan></text>");
 		
 		sb.append("<circle cx=\"220\" cy=\"220\" r=\"170\" stroke-width=\"40\" stroke=\"#" + bgColor
 				+ "\" fill=\"none\"></circle>");
