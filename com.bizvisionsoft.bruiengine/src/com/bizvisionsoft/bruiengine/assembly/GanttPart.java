@@ -43,6 +43,8 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
@@ -113,6 +115,7 @@ public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider
 		}
 
 		panel.setLayout(new FillLayout());
+		panel.setBackground(BruiColors.getColor(BruiColor.white));
 		ganttConfig = configGantt();
 		gantt = new Gantt(panel, ganttConfig).setContainer(config.getName());
 

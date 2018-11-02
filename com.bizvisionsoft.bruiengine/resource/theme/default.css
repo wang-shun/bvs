@@ -1100,6 +1100,13 @@ Tree-RowOverlay.board:selected:unfocused, Grid-RowOverlay.board:selected:unfocus
   background-image: none;
 }
 
+Tree.board, Grid.board {
+  font: 14px 'Microsoft YaHei' ,'Segoe UI', Tahoma, 'Lucida Sans Unicode', sans-serif;
+  background-color: transparent;
+  border: none;
+  color: #4a4a4a;
+}
+
 Tree-Cell.board, Grid-Cell.board {
   spacing: 0px;
   padding: 0px;

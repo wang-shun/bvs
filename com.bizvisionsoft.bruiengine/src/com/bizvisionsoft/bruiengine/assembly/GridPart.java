@@ -56,7 +56,9 @@ import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.ActionMenu;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.BruiToolkit;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
@@ -233,7 +235,7 @@ public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable,
 		} else {
 			panel = parent;
 		}
-		panel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		panel.setBackground(BruiColors.getColor(BruiColor.white));
 		panel.setLayout(new FormLayout());
 		Control queryPanel = createQueryPanel(panel);
 		Control grid = createGridControl(panel);
