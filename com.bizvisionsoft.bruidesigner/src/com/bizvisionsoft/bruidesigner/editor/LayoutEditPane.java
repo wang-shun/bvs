@@ -93,8 +93,7 @@ public class LayoutEditPane extends Composite {
 			}
 		};
 
-		addDisposeListener(
-				e -> Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener)));
+		addDisposeListener(e -> Optional.ofNullable(current).ifPresent(a -> a.removePropertyChangeListener("name", listener)));
 	}
 
 	private Composite createLeftPane() {
@@ -128,38 +127,37 @@ public class LayoutEditPane extends Composite {
 			}
 		});
 
-		
 		Button moveUp = new Button(toolbar, SWT.PUSH);
 		moveUp.setImage(Activator.getImageDescriptor("icons/up.png").createImage());
 		moveUp.addListener(SWT.Selection, e -> {
 			if (!(current instanceof AssemblyLayouted))
 				return;
-			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted)current);
+			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted) current);
 			int idx = acts.indexOf(current);
 			if (idx == 0) {
 				return;
 			}
 			acts.remove(idx);
-			acts.add(idx - 1, (AssemblyLayouted)current);
+			acts.add(idx - 1, (AssemblyLayouted) current);
 
 			viewer.refresh();
 		});
-		
+
 		Button moveDown = new Button(toolbar, SWT.PUSH);
 		moveDown.setImage(Activator.getImageDescriptor("icons/down.png").createImage());
 		moveDown.addListener(SWT.Selection, e -> {
 			if (!(current instanceof AssemblyLayouted))
 				return;
-			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted)current);
+			List<AssemblyLayouted> acts = getNeighborAssemblyLayouted((AssemblyLayouted) current);
 			int idx = acts.indexOf(current);
 			if (idx == acts.size() - 1) {
 				return;
 			}
 			acts.remove(idx);
-			acts.add(idx + 1,(AssemblyLayouted) current);
+			acts.add(idx + 1, (AssemblyLayouted) current);
 			viewer.refresh();
 		});
-		
+
 		Button remove = new Button(toolbar, SWT.PUSH);
 		remove.setImage(Activator.getImageDescriptor("icons/delete.gif").createImage());
 		remove.addListener(SWT.Selection, e -> {
@@ -173,8 +171,6 @@ public class LayoutEditPane extends Composite {
 				viewer.refresh(layout);
 			}
 		});
-		
-		
 
 		viewer = new TreeViewer(left, SWT.FULL_SELECTION | SWT.BORDER);
 		viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
@@ -196,10 +192,10 @@ public class LayoutEditPane extends Composite {
 	private List<AssemblyLayouted> getNeighborAssemblyLayouted(AssemblyLayouted al) {
 		return Optional.ofNullable(getParentLayout(al)).map(p -> p.getAssemblys()).orElse(new ArrayList<>());
 	}
-	
+
 	public Layout getParentLayout(AssemblyLayouted al) {
-		return Optional.ofNullable((TreeItem) viewer.testFindItem(al)).map(itm -> itm.getParentItem())
-				.map(pi -> (Layout) pi.getData()).orElse(null);
+		return Optional.ofNullable((TreeItem) viewer.testFindItem(al)).map(itm -> itm.getParentItem()).map(pi -> (Layout) pi.getData())
+				.orElse(null);
 	}
 
 	private void openAssemblyLayouted(AssemblyLayouted element, Composite parent) {
@@ -210,8 +206,8 @@ public class LayoutEditPane extends Composite {
 		if (element != null) {
 
 			editor.createComboField(parent, new String[] { "填充", "靠左", "居中", "靠右" },
-					new Object[] { SWT.FILL, SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "横向对齐方式:", element,
-					"horizontalAlignment", SWT.READ_ONLY | SWT.BORDER);
+					new Object[] { SWT.FILL, SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "横向对齐方式:", element, "horizontalAlignment",
+					SWT.READ_ONLY | SWT.BORDER);
 
 			editor.createComboField(parent, new String[] { "填充", "靠上", "居中", "靠下" },
 					new Object[] { SWT.FILL, SWT.LEFT, SWT.CENTER, SWT.RIGHT }, "纵向对齐方式:", element, "verticalAlignment",
@@ -291,7 +287,40 @@ public class LayoutEditPane extends Composite {
 
 			editor.createIntegerField(parent, "右边距（像素）:", element, "marginRight", SWT.BORDER, 0, 9999);
 
-			editor.createTextField(parent, "容器CSS类名：", element, "css", SWT.BORDER);
+			editor.createComboField(parent, //
+					new String[] {
+							"Login",//
+							"Grey Cloud",//
+							"Spiky Naga",//
+							"Deep Relief",//
+							"Dirty Beauty",//
+							"Saint Petersburg",//
+							"Sharpeye Eagle",//
+							"Blessing",//
+							"Plum Plate",//
+							"New York",//
+							"Fly High",//
+							"Soft Grass",//
+							"Kind Steel",//
+							"Great Whale"
+					}, //
+					new Object[] {
+							"brui_login_bg",//
+							"brui_grey_bg",//
+							"brui_bg_spiky_naga",//
+							"brui_bg_deep_relief",//
+							"brui_bg_dirty_beauty",//
+							"brui_bg_saint_petersburg",//
+							"brui_bg_sharpeye_eagle",//
+							"brui_bg_blessing",//
+							"brui_bg_plum_plate",//
+							"brui_bg_new_york",//
+							"brui_bg_fly_high",//
+							"brui_bg_soft_grass",//
+							"brui_bg_kind_steel",//
+							"brui_bg_great_whale"
+					}, //
+					"容器CSS类名：", element, "css", SWT.READ_ONLY | SWT.BORDER);
 
 			editor.createTextField(parent, "容器RWT CSS名称：", element, "rwtCss", SWT.BORDER);
 

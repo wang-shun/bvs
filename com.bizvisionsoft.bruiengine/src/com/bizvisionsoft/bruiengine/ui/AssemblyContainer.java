@@ -19,6 +19,7 @@ import com.bizvisionsoft.bruiengine.BruiAssemblyEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IServiceWithId;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.service.tools.Check;
 
 public class AssemblyContainer {
 
@@ -113,12 +114,8 @@ public class AssemblyContainer {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 设置内容区样式
-		String data = layout.getCss();
-		if (data != null && !data.isEmpty())
-			content.setHtmlAttribute("class", data);
-		data = layout.getRwtCss();
-		if (data != null && !data.isEmpty())
-			content.setData(RWT.CUSTOM_VARIANT, data);
+		Check.isAssigned(layout.getCss(), d->container.setHtmlAttribute("class", d));
+		Check.isAssigned(layout.getRwtCss(), d->container.setData(RWT.CUSTOM_VARIANT, d));
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 对内容区进行布局
