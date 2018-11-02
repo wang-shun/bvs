@@ -276,7 +276,8 @@ public class BruiAssemblyContext implements IBruiContext {
 			return Optional.ofNullable(getContent());
 		}
 
-		Optional<Object> result = null;
+		//result = null Ê±£¬result.isPresent()±¨´í
+		Optional<Object> result = Optional.ofNullable(null);
 		switch (dir) {
 		case SEARCH_UP:
 			IBruiContext parent = getParentContext();
