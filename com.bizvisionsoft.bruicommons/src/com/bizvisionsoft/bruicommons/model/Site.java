@@ -81,6 +81,20 @@ public class Site extends ModelObject {
 	public void setLoginAssembly(Assembly loginAssembly) {
 		login = Optional.ofNullable(loginAssembly).map(l -> l.getId()).orElse(null);
 	}
+	
+	private String changePSW;
+	
+	public String getChangePSW() {
+		return changePSW;
+	}
+	
+	public void setChangePSW(String changePSW) {
+		this.changePSW = changePSW;
+	}
+	
+	public Assembly getChangePSWAssembly() {
+		return Optional.ofNullable(changePSW).map(id -> getAssembly(id)).orElse(null);
+	}
 
 	@Structure("list")
 	public List<Page> getPages() {

@@ -21,6 +21,7 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.BruiService;
 import com.bizvisionsoft.bruiengine.service.PermissionUtil;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.service.tools.Check;
 
 public class View extends Part {
@@ -76,6 +77,7 @@ public class View extends Part {
 		 */
 		if (page.isForceCheckLogin()) {
 			new Popup(la, c).setFullscreen(true).setTitle("请再次验证身份").open();
+			checkPSWChangeRequest();
 			return super.open();
 		}
 
@@ -84,6 +86,7 @@ public class View extends Part {
 		 */
 		if (!page.isCheckLogin()) {
 			service.loginUser();
+			checkPSWChangeRequest();
 			return super.open();
 		}
 
@@ -92,6 +95,7 @@ public class View extends Part {
 		 */
 		if (service.getCurrentUserInfo() != null) {
 			service.loginUser();
+			checkPSWChangeRequest();
 			return super.open();
 		}
 
@@ -101,6 +105,7 @@ public class View extends Part {
 		String[] lc = service.loadClientLogin();
 		try {
 			service.checkLogin(lc[0], lc[1]);
+			checkPSWChangeRequest();
 			return super.open();
 		} catch (Exception e) {
 		}
@@ -108,6 +113,7 @@ public class View extends Part {
 		try {
 			String welcome = Check.isAssignedThen(ModelLoader.site.getWelcome(), s -> s).orElse("登录WisPlanner 5");
 			new Popup(la, c).setFullscreen(true).setTitle(welcome).open();
+			checkPSWChangeRequest();
 			return super.open();
 		} catch (Exception e) {
 			/*
@@ -115,6 +121,14 @@ public class View extends Part {
 			 */
 			Layer.error(e);
 			return 0;
+		}
+	}
+
+	private void checkPSWChangeRequest() {
+		User user = service.getCurrentUserInfo();
+		if (user.isChangePSW()) {
+			new Popup(ModelLoader.site.getChangePSWAssembly(), UserSession.newAssemblyContext()).setFullscreen(true).setTitle("请更改您的登录密码")
+					.open();
 		}
 	}
 
@@ -177,7 +191,8 @@ public class View extends Part {
 
 	}
 
-	private Composite createContentArea(Assembly assembly, Object input, String parameter, boolean closeable, Consumer<BruiAssemblyContext> callback) {
+	private Composite createContentArea(Assembly assembly, Object input, String parameter, boolean closeable,
+			Consumer<BruiAssemblyContext> callback) {
 		contentWidget = new ContentWidget(assembly, service, context);
 		contentWidget.setCloseCallback(callback);
 		Composite contentArea = contentWidget.createUI(parent, input, parameter, closeable).getControl();

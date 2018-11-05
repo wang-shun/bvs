@@ -1,7 +1,6 @@
 package com.bizvisionsoft.bruiengine.app.user;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Event;
 
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.Execute;
@@ -21,13 +20,11 @@ public class ConsignACT {
 	private IBruiService br;
 
 	@Execute
-	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
-			@MethodParam(Execute.EVENT) Event event) {
+	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(em -> {
 			User user = (User) em;
 			if (user.getConsigner() != null) {
-				if (MessageDialog.openQuestion(br.getCurrentShell(), "账户托管",
-						"账户：" + user + "已托管到" + user.getConsigner() + "，是否取消托管？")) {
+				if (MessageDialog.openQuestion(br.getCurrentShell(), "账户托管", "账户：" + user + "已托管到" + user.getConsigner() + "，是否取消托管？")) {
 					Services.get(UserService.class).disconsign(user.getUserId());
 					user.setConsigner(null);
 					GridPart gird = (GridPart) context.getContent();

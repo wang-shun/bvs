@@ -35,6 +35,8 @@ public class SiteEditor extends ModelEditor {
 				SWT.READ_ONLY | SWT.BORDER);
 
 		createAssemblyField(parent, "用户登录组件:", inputData, "login", true);
+		
+		createAssemblyField(parent, "更改用户密码组件:", inputData, "changePSW", true);
 
 		createPathField(parent, "背景页顶部Logo（宽高150x60）:", inputData, "headLogo", SWT.BORDER);
 		

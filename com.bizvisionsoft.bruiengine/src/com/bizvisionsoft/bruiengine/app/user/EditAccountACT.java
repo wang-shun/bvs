@@ -1,7 +1,5 @@
 package com.bizvisionsoft.bruiengine.app.user;
 
-import org.eclipse.swt.widgets.Event;
-
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
@@ -15,27 +13,25 @@ import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 import com.mongodb.BasicDBObject;
 
-public class EditAccountACT extends EditUserACT{
+public class EditAccountACT extends EditUserACT {
 
 	@Inject
 	private IBruiService bruiService;
 
 	@Execute
-	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context,
-			@MethodParam(Execute.EVENT) Event event) {
+	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
 		context.selected(elem -> {
 			UserService service = Services.get(UserService.class);
 			User user = service.get(((User) elem).getUserId());
 			Editor.open("ÕË»§±à¼­Æ÷", context, user, true, (r, t) -> {
-				FilterAndUpdate filterAndUpdate = new FilterAndUpdate()
-						.filter(new BasicDBObject("userId", user.getUserId())).set(r);
+				FilterAndUpdate filterAndUpdate = new FilterAndUpdate().filter(new BasicDBObject("userId", user.getUserId())).set(r);
 				if (service.update(filterAndUpdate.bson()) == 1) {
 					GridPart grid = (GridPart) context.getContent();
 					grid.replaceItem(elem, t);
 				}
 			});
 		});
-		
+
 	}
 
 }
