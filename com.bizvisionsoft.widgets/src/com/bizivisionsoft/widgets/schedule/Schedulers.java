@@ -38,7 +38,7 @@ public class Schedulers extends Composite {
 			Display.getCurrent().asyncExec(() -> {
 				if ("onClick".equals(eventCode)) {
 					select(jo);
-				}else if("onDateClick".equals(eventCode)) {
+				} else if ("onDateClick".equals(eventCode)) {
 					selectDate(jo);
 				}
 			});
@@ -148,7 +148,7 @@ public class Schedulers extends Composite {
 
 		return this;
 	}
-	
+
 	public Schedulers setSection(List<?> section) {
 		this.section = new ArrayList<Object>();
 		this.section.addAll(section);

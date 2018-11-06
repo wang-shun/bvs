@@ -127,6 +127,16 @@
 				scheduler.xy.scale_height = 32;
 			});
 
+			scheduler.attachEvent("onClick", function(id, e) {
+				var event = scheduler.getEvent(id);
+				layer.tips(event.tips,
+						$("div[event_id$='" + event.id + "'")[0], {
+							tips : [ 1, "#3595CC" ],
+							time : 3000,
+							area : "300px"
+						})
+			});
+
 			var view_name = "timeline";
 			scheduler.createTimelineView({
 				name : view_name,
@@ -252,9 +262,9 @@
 		},
 
 		layout : function() {
-//			var area = this.parent.getClientArea();
-//			this.element.style.left = area[0] + "px";
-//			this.element.style.top = area[1] + "px";
+			// var area = this.parent.getClientArea();
+			// this.element.style.left = area[0] + "px";
+			// this.element.style.top = area[1] + "px";
 		},
 
 		addListener : function(event) {
