@@ -289,6 +289,7 @@ public class LayoutEditPane extends Composite {
 
 			editor.createComboField(parent, //
 					new String[] {
+							"无",
 							"Login",//
 							"Grey Cloud",//
 							"Spiky Naga",//
@@ -305,6 +306,7 @@ public class LayoutEditPane extends Composite {
 							"Great Whale"
 					}, //
 					new Object[] {
+							"",
 							"brui_login_bg",//
 							"brui_grey_bg",//
 							"brui_bg_spiky_naga",//
@@ -321,8 +323,6 @@ public class LayoutEditPane extends Composite {
 							"brui_bg_great_whale"
 					}, //
 					"容器CSS类名：", element, "css", SWT.READ_ONLY | SWT.BORDER);
-
-			editor.createTextField(parent, "容器RWT CSS名称：", element, "rwtCss", SWT.BORDER);
 
 			element.addPropertyChangeListener("name", listener);
 		}

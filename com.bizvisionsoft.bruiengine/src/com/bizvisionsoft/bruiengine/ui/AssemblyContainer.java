@@ -2,7 +2,6 @@ package com.bizvisionsoft.bruiengine.ui;
 
 import java.util.Optional;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Rectangle;
@@ -74,8 +73,8 @@ public class AssemblyContainer {
 			BruiAssemblyEngine brui = BruiAssemblyEngine.newInstance(assembly);
 			context.setEngine(brui);
 			context.passParamters(parameter);
-			content = brui.injectModelParameters(parameter).init(newServices)
-					.createUI(container = new Composite(parent, SWT.NONE)).getContainer();
+			content = brui.injectModelParameters(parameter).init(newServices).createUI(container = new Composite(parent, SWT.NONE))
+					.getContainer();
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,8 +113,8 @@ public class AssemblyContainer {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 设置内容区样式
-		Check.isAssigned(layout.getCss(), d->container.setHtmlAttribute("class", d));
-		Check.isAssigned(layout.getRwtCss(), d->container.setData(RWT.CUSTOM_VARIANT, d));
+		String css = Check.option(layout.getCss()).orElse(ModelLoader.site.getDefaultPageCSS());
+		Check.isAssigned(css, d -> container.setHtmlAttribute("class", d));
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 对内容区进行布局

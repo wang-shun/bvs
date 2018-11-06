@@ -1614,16 +1614,16 @@ div.dhx_modal_cover {
           user-select: none;
 }
 .gantt_layout_cell_border_left {
-  border-left: 1px solid #e6e6e6;
+  border-left: none;/*1px solid #e6e6e6;*/
 }
 .gantt_layout_cell_border_right {
   border-right: 1px solid #e6e6e6;
 }
 .gantt_layout_cell_border_top {
-  border-top:1px solid #e6e6e6;
+  border-left: none;/*1px solid #e6e6e6;*/
 }
 .gantt_layout_cell_border_bottom {
-  border-bottom:1px solid #e6e6e6;
+  border-left: none;/*1px solid #e6e6e6;*/
 }
 .gantt_layout_cell_border_transparent {
   border-color: transparent;

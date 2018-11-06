@@ -35,6 +35,8 @@ public class SiteEditor extends ModelEditor {
 				SWT.READ_ONLY | SWT.BORDER);
 
 		createAssemblyField(parent, "用户登录组件:", inputData, "login", true);
+		
+		createAssemblyField(parent, "更改用户密码组件:", inputData, "changePSW", true);
 
 		createPathField(parent, "背景页顶部Logo（宽高150x60）:", inputData, "headLogo", SWT.BORDER);
 		
@@ -47,6 +49,43 @@ public class SiteEditor extends ModelEditor {
 		createPathField(parent, "背景图片:", inputData, "pageBackgroundImage", SWT.BORDER);
 		
 		createTextField(parent, "背景CSS:", inputData, "pageBackgroundImageCSS", SWT.BORDER);
+		
+		createComboField(parent, //
+				new String[] {
+						"无",
+						"Login",//
+						"Grey Cloud",//
+						"Spiky Naga",//
+						"Deep Relief",//
+						"Dirty Beauty",//
+						"Saint Petersburg",//
+						"Sharpeye Eagle",//
+						"Blessing",//
+						"Plum Plate",//
+						"New York",//
+						"Fly High",//
+						"Soft Grass",//
+						"Kind Steel",//
+						"Great Whale"
+				}, //
+				new Object[] {
+						"",
+						"brui_login_bg",//
+						"brui_grey_bg",//
+						"brui_bg_spiky_naga",//
+						"brui_bg_deep_relief",//
+						"brui_bg_dirty_beauty",//
+						"brui_bg_saint_petersburg",//
+						"brui_bg_sharpeye_eagle",//
+						"brui_bg_blessing",//
+						"brui_bg_plum_plate",//
+						"brui_bg_new_york",//
+						"brui_bg_fly_high",//
+						"brui_bg_soft_grass",//
+						"brui_bg_kind_steel",//
+						"brui_bg_great_whale"
+				}, //
+				"页面默认CSS类名：", inputData, "defaultPageCSS", SWT.READ_ONLY | SWT.BORDER);
 		
 		createTextField(parent, "登录欢迎词:", inputData, "welcome", SWT.BORDER);
 

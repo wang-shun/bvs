@@ -52,7 +52,7 @@ public class BruiService implements IBruiService {
 	public User getCurrentUserInfo() {
 		return Brui.sessionManager.getUser();
 	}
-	
+
 	public User getCurrentConsignerInfo() {
 		return Brui.sessionManager.getConsigner();
 	}
@@ -170,14 +170,16 @@ public class BruiService implements IBruiService {
 	@Override
 	public boolean switchMnt(boolean b) {
 		if (b) {
-			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护", "请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。", null,
-					d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null).setDateSetting(DateTimeSetting.dateTime().setRange(false));
+			DateTimeInputDialog dt = new DateTimeInputDialog(getCurrentShell(), "启动系统维护", "请选择启用系统维护的时间。\n该时间到达时，已登陆的用户将被强制登出，直到关闭系统维护。",
+					null, d -> (d == null || d.before(new Date())) ? "必须选择启用时间（晚于当前时间）" : null)
+							.setDateSetting(DateTimeSetting.dateTime().setRange(false));
 			if (dt.open() != DateTimeInputDialog.OK) {
 				return false;
 			}
 
 			Date date = dt.getValue();
-			if (confirm("启动系统维护", "启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
+			if (confirm("启动系统维护",
+					"启动系统维护后：<br>" + "用户将禁止登录系统。<br>" + "已登录用户，将于" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + "被强制登出。")) {
 				Brui.sessionManager.getUserSessions().forEach(u -> u.logout(date));
 				ModelLoader.site.setShutDown(date);
 				try {
@@ -250,7 +252,7 @@ public class BruiService implements IBruiService {
 			try {
 				user = Services.get(UserService.class).check(userName, password);
 			} catch (Exception e) {
-				if(e.getCause() instanceof ConnectException) {
+				if (e.getCause() instanceof ConnectException) {
 					throw new Exception("无法连接验证服务器，请稍后再试。");
 				}
 				throw e;
@@ -265,7 +267,7 @@ public class BruiService implements IBruiService {
 			loginUser(user);
 		} catch (Exception e) {
 			throw e;
-		}		
+		}
 	}
 
 	@Override
@@ -275,7 +277,7 @@ public class BruiService implements IBruiService {
 
 	@Override
 	public void cleanClientLogin() {
-		Brui.sessionManager.cleanClientLogin();		
+		Brui.sessionManager.cleanClientLogin();
 	}
 
 	@Override

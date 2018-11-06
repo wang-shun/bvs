@@ -41,7 +41,7 @@ public class Controls<T extends Control> {
 
 	public static Controls<Composite> contentPanel(Composite parent) {
 		return new Controls<Composite>(Composite.class, parent, SWT.NONE, null, null);
-//		.bg(BruiColor.white);
+		// .bg(BruiColor.white);
 	}
 
 	public static Controls<Label> label(Composite parent) {
@@ -51,7 +51,7 @@ public class Controls<T extends Control> {
 	public static Controls<Label> label(Composite parent, int style) {
 		return new Controls<Label>(Label.class, parent, style, null, null);
 	}
-	
+
 	public static Controls<Browser> iframe(Composite parent) {
 		return new Controls<Browser>(Browser.class, parent, SWT.NONE, null, null);
 	}
@@ -123,13 +123,18 @@ public class Controls<T extends Control> {
 		return this;
 	}
 
+	public Controls<T> fg(BruiColor color) {
+		control.setForeground(BruiColors.getColor(color));
+		return this;
+	}
+
 	public Controls<T> layout(Layout layout) {
 		if (control instanceof Composite) {
 			((Composite) control).setLayout(layout);
 		}
 		return this;
 	}
-	
+
 	public Controls<T> formLayout() {
 		if (control instanceof Composite) {
 			((Composite) control).setLayout(new FormLayout());
@@ -502,7 +507,12 @@ public class Controls<T extends Control> {
 			b = Check.instanceThen(control, Browser.class, t -> t.setText(text));
 		if (!b)
 			b = Check.instanceThen(control, Composite.class, t -> WidgetHandler.getHandler(t).setHtmlContent(text));
-		
+
+		return this;
+	}
+
+	public Controls<T> tooltips(String tips) {
+		control.setToolTipText(tips);
 		return this;
 	}
 
@@ -547,12 +557,12 @@ public class Controls<T extends Control> {
 			style("backgroundImage", url);
 			style("background-repeat", "no-repeat");
 			style("background-size", size);
-			style("background-position",position);
+			style("background-position", position);
 		} else if (control instanceof Composite) {
 			style("backgroundImage", url);
 			style("background-repeat", "no-repeat");
 			style("background-size", size);
-			style("background-position",position);
+			style("background-position", position);
 		}
 		return this;
 	}
@@ -610,7 +620,7 @@ public class Controls<T extends Control> {
 	}
 
 	public Controls<T> defaultButton() {
-		Check.instanceThen(control, Button.class, c->c.getShell().setDefaultButton(c));
+		Check.instanceThen(control, Button.class, c -> c.getShell().setDefaultButton(c));
 		return this;
 	}
 

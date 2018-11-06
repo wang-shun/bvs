@@ -4,33 +4,22 @@ import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.UserService;
-import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class TraceUserACT {
+public class RequestAllAccountChangePasswordACT {
 
 	@Inject
 	private IBruiService br;
 
 	@Execute
 	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
-		context.selected(em -> {
-			boolean trace = !Boolean.TRUE.equals(((User) em).getTrace());
-			Services.get(UserService.class).trace(((User) em).getUserId(), trace);
-			((User) em).setTrace(trace);
-			GridPart gird = (GridPart) context.getContent();
-			gird.update(em);
-			if (trace) {
-				Layer.message("已开始跟踪账户：" + em);
-			}else {
-				Layer.message("已停止跟踪账户：" + em);
-			}
-		});
-
+		if (br.confirm("要求所有用户更改密码", "请确认所有账户登录后需要更改密码。")) {
+			Services.get(UserService.class).requestAllChangePassword();
+			Layer.message("已设置密码更改要求");
+		}
 	}
 
 }

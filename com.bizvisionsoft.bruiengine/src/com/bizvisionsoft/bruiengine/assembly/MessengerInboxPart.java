@@ -29,7 +29,9 @@ import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
 import com.bizvisionsoft.bruiengine.util.Controls;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.tools.Formatter;
 import com.mongodb.BasicDBObject;
 
@@ -104,6 +106,7 @@ public class MessengerInboxPart implements IQueryEnable {
 	@CreateUI
 	public void createUI(Composite parent) {
 		Controls.handle(createSticker(parent)).formLayout().put(panel -> {
+			panel.setBackground(BruiColors.getColor(BruiColor.white));
 			if(config.isGridPageControl()) {
 				Controls.handle(createGridControl(panel)).loc(SWT.TOP | SWT.LEFT | SWT.RIGHT).bottom(100, -48);
 				Controls.handle(createToolbar(panel)).loc(SWT.BOTTOM | SWT.LEFT | SWT.RIGHT, 48);

@@ -23,6 +23,8 @@ import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
+import com.bizvisionsoft.bruiengine.util.BruiColors;
+import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
 
@@ -86,6 +88,8 @@ public class ChartPart implements IQueryEnable {
 			panel = parent;
 		}
 		panel.setLayout(new FillLayout());
+		panel.setBackground(BruiColors.getColor(BruiColor.white));
+
 		createControl(panel);
 		setViewerInput();
 

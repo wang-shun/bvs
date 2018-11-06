@@ -1,35 +1,37 @@
 package com.bizvisionsoft.bruiengine.app.user;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.jface.viewers.StructuredSelection;
+
 import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.ui.common.Execute;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.annotations.ui.common.MethodParam;
-import com.bizvisionsoft.bruiengine.assembly.GridPart;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.service.UserService;
 import com.bizvisionsoft.service.model.User;
 import com.bizvisionsoft.serviceconsumer.Services;
 
-public class TraceUserACT {
+public class RequestAccountChangePasswordACT {
 
 	@Inject
 	private IBruiService br;
 
 	@Execute
 	private void execute(@MethodParam(Execute.CONTEXT) IBruiContext context) {
-		context.selected(em -> {
-			boolean trace = !Boolean.TRUE.equals(((User) em).getTrace());
-			Services.get(UserService.class).trace(((User) em).getUserId(), trace);
-			((User) em).setTrace(trace);
-			GridPart gird = (GridPart) context.getContent();
-			gird.update(em);
-			if (trace) {
-				Layer.message("已开始跟踪账户：" + em);
-			}else {
-				Layer.message("已停止跟踪账户：" + em);
+		StructuredSelection selection = context.getSelection();
+		if (selection != null && !selection.isEmpty()) {
+			if (br.confirm("要求用户更改密码", "请确认选择的账户登录后需要更改密码。")) {
+				List<String> userids = selection.toList(new ArrayList<User>()).stream().map(user -> user.getUserId())
+						.collect(Collectors.toCollection(ArrayList::new));
+				Services.get(UserService.class).requestChangePassword(userids);
+				Layer.message("已设置密码更改要求");
 			}
-		});
+		}
 
 	}
 
