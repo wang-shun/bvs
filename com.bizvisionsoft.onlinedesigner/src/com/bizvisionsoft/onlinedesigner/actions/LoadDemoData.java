@@ -120,9 +120,9 @@ public class LoadDemoData {
 			projectService.startProject(Command.newInstance("开始项目", "zh", "钟华", "zh", "钟华", start, project_id));
 			logger.debug("开始项目" + project);
 
-			projectService
-					.distributeProjectPlan(Command.newInstance("下达项目计划", "zh", "钟华", "zh", "钟华", start, project_id));
-			logger.debug("下达项目计划");
+//			projectService
+//					.distributeProjectPlan(Command.newInstance("下达项目计划", "zh", "钟华", "zh", "钟华", start, project_id));
+//			logger.debug("下达项目计划");
 
 			workService.startStage(
 					Command.newInstance("启动阶段", "zh", "钟华", "zh", "钟华", stage1.getPlanStart(), stage1.get_id()));
