@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.rap.json.JsonObject;
@@ -19,6 +20,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import com.bizivisionsoft.widgets.util.WidgetToolkit;
 import com.google.gson.GsonBuilder;
@@ -55,12 +57,22 @@ public class DateTime extends Composite {
 	 * @param style
 	 */
 	public DateTime(Composite parent, DateTimeSetting setting) {
+		this(parent, setting, false);
+	}
+
+	/**
+	 * 
+	 * @param parent
+	 * @param style
+	 */
+	DateTime(Composite parent, DateTimeSetting setting, boolean selector) {
 		super(parent, SWT.NONE);
 		this.setting = setting;
 		WidgetToolkit.requireWidgetHandlerJs("datetime");
 		remoteObject = RWT.getUISession().getConnection().createRemoteObject(REMOTE_TYPE);
 		remoteObject.setHandler(operationHandler);
 		remoteObject.set("parent", getId(this));
+		remoteObject.set("selector", selector);
 		String json = new GsonBuilder().create().toJson(setting);
 		remoteObject.set("renderSetting", JsonValue.readFrom(json));
 	}
@@ -239,9 +251,13 @@ public class DateTime extends Composite {
 	}
 
 	protected void fireEvent(JsonObject parameters, int eventType) {
+
 		Optional.ofNullable(createEvent(parameters)).ifPresent(event -> {
 			Display.getCurrent().asyncExec(() -> {
-				Arrays.asList(getListeners(eventType)).forEach(l -> l.handleEvent(event));
+				if (!isDisposed()) {
+					List<Listener> lis = Arrays.asList(getListeners(eventType));
+					lis.forEach(l -> l.handleEvent(event));
+				}
 			});
 		});
 	}

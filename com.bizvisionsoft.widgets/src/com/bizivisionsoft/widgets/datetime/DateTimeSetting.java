@@ -27,6 +27,12 @@ public class DateTimeSetting {
 
 	public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
+	public static final String POSITION_STATIC = "static";
+
+	public static final String POSITION_ABSOLUTE = "abolute";
+	
+	public static final String POSITION_FIXED = "fixed";
+
 	private String type;
 
 	private Object range;
@@ -46,6 +52,8 @@ public class DateTimeSetting {
 	private Map<String, String> mark;
 
 	private Boolean calendar;
+	
+	private String position;
 
 	public String getType() {
 		return type;
@@ -143,6 +151,15 @@ public class DateTimeSetting {
 	public DateTimeSetting setCalendar(Boolean calendar) {
 		this.calendar = calendar;
 		return this;
+	}
+	
+	public DateTimeSetting setPosition(String position) {
+		this.position = position;
+		return this;
+	}
+	
+	public String getPosition() {
+		return position;
 	}
 
 	public static DateTimeSetting date() {

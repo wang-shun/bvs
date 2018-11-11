@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bizivisionsoft.widgets.util.Layer;
 import com.bizvisionsoft.annotations.AUtil;
 import com.bizvisionsoft.bruicommons.ModelLoader;
 import com.bizvisionsoft.bruicommons.model.Page;
@@ -64,6 +65,10 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		shell.setMaximized(true);
 		shell.layout();
 		shell.open();
+
+		if (logger.isDebugEnabled()) {
+			Layer.alert("已启动调试模式", "调试模式下：<br>1. 将忽略密码验证，在确保用户名正确的情况下，任何密码均可通过验证；<br>2. CTRL+ALT+D可激活页面设置功能；", 400, 400);
+		}
 
 		start();
 		if (getApplicationContext().getLifeCycleFactory().getLifeCycle() instanceof RWTLifeCycle) {

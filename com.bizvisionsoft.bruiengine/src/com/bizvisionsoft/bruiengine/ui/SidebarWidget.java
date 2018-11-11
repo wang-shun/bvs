@@ -207,6 +207,7 @@ public class SidebarWidget {
 		Composite bar = new Composite(parent, SWT.NONE);
 		bar.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		bar.setBackground(BruiColors.getColor(BruiColor.Grey_900));
+
 		// bar.setOrientation(SWT.RIGHT_TO_LEFT);
 		RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 		layout.marginTop = 0;

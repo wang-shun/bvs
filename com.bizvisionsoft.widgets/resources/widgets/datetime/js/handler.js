@@ -20,12 +20,16 @@
 	bizvision.datetime = function(properties) {
 		bindAll(this, [ "layout", "onReady", "onSend", "onRender", "destroy",
 				"change", "done" ]);
-		this.parent = rap.getObject(properties.parent);
 		this.renderSetting = rap.getObject(properties.renderSetting);
-		this.element = document.createElement("input");
-		this.element.className = "layui-input";
+		this.parent = rap.getObject(properties.parent);
+
+		if (properties.selector) {
+			this.element = document.createElement("div");
+		} else {
+			this.element = document.createElement("input");
+			this.element.className = "layui-input";
+		}
 		this.parent.append(this.element);
-		// this.parent.addListener("Resize", this.layout);
 		this.parent.addListener("Dispose", this.destroy);
 		rap.on("render", this.onRender);
 	};
@@ -44,11 +48,7 @@
 				input.change = this.change;
 				input.done = this.done;
 
-				layui.use('laydate', function() {
-					var laydate = layui.laydate;
-					laydate.render(input);
-
-				});
+				layui.laydate.render(input);
 				this.ready = true;
 			}
 		},
