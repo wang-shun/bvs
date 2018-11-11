@@ -34,7 +34,10 @@ import com.bizvisionsoft.bruicommons.model.Page;
 import com.bizvisionsoft.bruiengine.service.UserSession;
 import com.bizvisionsoft.bruiengine.ui.View;
 import com.bizvisionsoft.bruiengine.ui.setting.PageEditor;
+import com.bizvisionsoft.service.SystemService;
+import com.bizvisionsoft.service.model.ServerInfo;
 import com.bizvisionsoft.service.tools.Check;
+import com.bizvisionsoft.serviceconsumer.Services;
 
 public class BruiEntryPoint implements EntryPoint, StartupParameters {
 
@@ -66,10 +69,7 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 		shell.layout();
 		shell.open();
 
-		if (logger.isDebugEnabled()) {
-			Layer.alert("已启动调试模式", "调试模式下：<br>1. 将忽略密码验证，在确保用户名正确的情况下，任何密码均可通过验证；<br>2. CTRL+ALT+D可激活页面设置功能；", 400, 400);
-		}
-
+		noticeDebug();
 		start();
 		if (getApplicationContext().getLifeCycleFactory().getLifeCycle() instanceof RWTLifeCycle) {
 			while (!shell.isDisposed()) {
@@ -80,6 +80,19 @@ public class BruiEntryPoint implements EntryPoint, StartupParameters {
 			display.dispose();
 		}
 		return 0;
+	}
+
+	private void noticeDebug() {
+		ServerInfo info = Services.get(SystemService.class).getServerInfo("WisPlanner 5");
+		String msg = "";
+		if (logger.isDebugEnabled()) {
+			msg += "客户端调试模式：已开启<br>1. 密码验证已被忽略。用户名正确的情况下，任何密码均可通过验证；<br>2. 在线编辑已启用。快捷键CTRL+ALT+D 可激活页面设置功能；<br>";
+		}
+		if (info.isDebugEnabled()) {
+			msg += "服务端调试模式：已开启<br>1. 通知邮件将被忽略，或发送到指定的调试接收者；<br>2. 查询日志已启用；<br>3. 查询日志已启用；<br>";
+		}
+		if (!msg.isEmpty())
+			Layer.alert("已启动调试模式", msg + "<br>请在生产环境下关闭调试模式!", 400, 400);
 	}
 
 	private Display createDisplay() {
