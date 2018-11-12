@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruidesigner.editor;
+package com.bizvisionsoft.bruidesigner.editor.pane;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,6 +23,7 @@ import com.bizvisionsoft.bruicommons.model.Layout;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruidesigner.Activator;
 import com.bizvisionsoft.bruidesigner.dialog.AssemblySelectionDialog;
+import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 
 public class LayoutEditPane extends Composite {
@@ -252,6 +253,17 @@ public class LayoutEditPane extends Composite {
 		Arrays.asList(parent.getChildren()).stream().filter(c -> !c.isDisposed()).forEach(ctl -> ctl.dispose());
 
 		if (element != null) {
+			// 布局的标准属性
+			editor.createComboField(parent, //
+					new String[] { //
+							"网格（默认）"//
+							, "泳道"//
+					}, //
+					new Object[] { //
+							"grid"//
+							, "lane", //
+					}, //
+					"布局类型：", element, "layoutType", SWT.READ_ONLY | SWT.BORDER);
 
 			editor.createTextField(parent, "唯一标识符:", element, "id", SWT.READ_ONLY);
 
@@ -263,71 +275,101 @@ public class LayoutEditPane extends Composite {
 
 			editor.createIntegerField(parent, "兼容设备的最大宽度（像素）:", element, "maximalDeviceWidth", SWT.BORDER, 0, 9999);
 
-			editor.createIntegerField(parent, "列数:", element, "columnCount", SWT.BORDER, 0, 9999);
-
-			editor.createCheckboxField(parent, "横向展开", element, "extendHorizontalSpace", SWT.CHECK);
-
-			editor.createCheckboxField(parent, "纵向展开", element, "extendVerticalSpace", SWT.CHECK);
-
-			editor.createCheckboxField(parent, "各列是否等宽", element, "makeColumnsEqualWidth", SWT.CHECK);
-
-			editor.createIntegerField(parent, "横向间距（像素）:", element, "horizontalSpacing", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "纵向间距（像素）:", element, "verticalSpacing", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "上下边距（像素）:", element, "marginHeight", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "顶边距（像素）:", element, "marginTop", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "底边距（像素）:", element, "marginBottom", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "左右边距（像素）:", element, "marginWidth", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "左边距（像素）:", element, "marginLeft", SWT.BORDER, 0, 9999);
-
-			editor.createIntegerField(parent, "右边距（像素）:", element, "marginRight", SWT.BORDER, 0, 9999);
-
 			editor.createComboField(parent, //
-					new String[] {
-							"无",
-							"Login",//
-							"Grey Cloud",//
-							"Spiky Naga",//
-							"Deep Relief",//
-							"Dirty Beauty",//
-							"Saint Petersburg",//
-							"Sharpeye Eagle",//
-							"Blessing",//
-							"Plum Plate",//
-							"New York",//
-							"Fly High",//
-							"Soft Grass",//
-							"Kind Steel",//
-							"Great Whale"
-					}, //
-					new Object[] {
-							"",
-							"brui_login_bg",//
-							"brui_grey_bg",//
-							"brui_bg_spiky_naga",//
-							"brui_bg_deep_relief",//
-							"brui_bg_dirty_beauty",//
-							"brui_bg_saint_petersburg",//
-							"brui_bg_sharpeye_eagle",//
-							"brui_bg_blessing",//
-							"brui_bg_plum_plate",//
-							"brui_bg_new_york",//
-							"brui_bg_fly_high",//
-							"brui_bg_soft_grass",//
-							"brui_bg_kind_steel",//
-							"brui_bg_great_whale"
-					}, //
+					new String[] { "无", "Login", //
+							"Grey Cloud", //
+							"Spiky Naga", //
+							"Deep Relief", //
+							"Dirty Beauty", //
+							"Saint Petersburg", //
+							"Sharpeye Eagle", //
+							"Blessing", //
+							"Plum Plate", //
+							"New York", //
+							"Fly High", //
+							"Soft Grass", //
+							"Kind Steel", //
+							"Great Whale" }, //
+					new Object[] { "", "brui_login_bg", //
+							"brui_grey_bg", //
+							"brui_bg_spiky_naga", //
+							"brui_bg_deep_relief", //
+							"brui_bg_dirty_beauty", //
+							"brui_bg_saint_petersburg", //
+							"brui_bg_sharpeye_eagle", //
+							"brui_bg_blessing", //
+							"brui_bg_plum_plate", //
+							"brui_bg_new_york", //
+							"brui_bg_fly_high", //
+							"brui_bg_soft_grass", //
+							"brui_bg_kind_steel", //
+							"brui_bg_great_whale" }, //
 					"容器CSS类名：", element, "css", SWT.READ_ONLY | SWT.BORDER);
+
+			String type = element.getLayoutType();
+			if (type == null || type.trim().isEmpty() || type.equals("grid")) {
+				createGridLayout(parent, element);
+			} else if ("lane".equals(type)) {
+				createLaneLayout(parent, element);
+			}
 
 			element.addPropertyChangeListener("name", listener);
 		}
 
 		parent.layout();
+
+	}
+
+	private void createLaneLayout(Composite parent, Layout element) {
+
+		editor.createComboField(parent, //
+				new String[] { "横向", "纵向" }, //
+				new Object[] { Layout.LANE_HORIZONTAL, Layout.LANE_VERTICAL }, //
+				"方向：", element, "laneDirection", SWT.READ_ONLY | SWT.BORDER);
+
+		editor.createIntegerField(parent, "泳道宽度", element, "laneWidth", SWT.BORDER, 100, 1200);
+
+		editor.createIntegerField(parent, "横向间距（像素）:", element, "horizontalSpacing", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "纵向间距（像素）:", element, "verticalSpacing", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "上下边距（像素）:", element, "marginHeight", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "顶边距（像素）:", element, "marginTop", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "底边距（像素）:", element, "marginBottom", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "左右边距（像素）:", element, "marginWidth", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "左边距（像素）:", element, "marginLeft", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "右边距（像素）:", element, "marginRight", SWT.BORDER, 0, 9999);
+	}
+
+	private void createGridLayout(Composite parent, Layout element) {
+		editor.createIntegerField(parent, "列数:", element, "columnCount", SWT.BORDER, 0, 9999);
+
+		editor.createCheckboxField(parent, "横向展开", element, "extendHorizontalSpace", SWT.CHECK);
+
+		editor.createCheckboxField(parent, "纵向展开", element, "extendVerticalSpace", SWT.CHECK);
+
+		editor.createCheckboxField(parent, "各列是否等宽", element, "makeColumnsEqualWidth", SWT.CHECK);
+
+		editor.createIntegerField(parent, "横向间距（像素）:", element, "horizontalSpacing", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "纵向间距（像素）:", element, "verticalSpacing", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "上下边距（像素）:", element, "marginHeight", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "顶边距（像素）:", element, "marginTop", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "底边距（像素）:", element, "marginBottom", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "左右边距（像素）:", element, "marginWidth", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "左边距（像素）:", element, "marginLeft", SWT.BORDER, 0, 9999);
+
+		editor.createIntegerField(parent, "右边距（像素）:", element, "marginRight", SWT.BORDER, 0, 9999);
 
 	}
 

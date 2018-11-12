@@ -3,6 +3,8 @@ package com.bizvisionsoft.bruidesigner.editor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -43,6 +45,7 @@ import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruidesigner.Activator;
 import com.bizvisionsoft.bruidesigner.dialog.AssemblySelectionDialog;
 import com.bizvisionsoft.bruidesigner.dialog.ResourceSelectionDialog;
+import com.bizvisionsoft.bruidesigner.editor.pane.AssemblyListEditPane;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 import com.google.gson.GsonBuilder;
 
@@ -89,6 +92,10 @@ public abstract class ModelEditor extends EditorPart {
 
 		createContent();
 
+		if (enableCustomized()) {
+			createCandidates();
+		}
+
 		if (enableParameter()) {
 			createJsonParameter();
 		}
@@ -97,7 +104,22 @@ public abstract class ModelEditor extends EditorPart {
 			createJsonViewer();
 		}
 
+
 		folder.setSelection(0);
+	}
+
+	protected boolean enableCustomized() {
+		return false;
+	}
+
+	private void createCandidates() {
+		if (inputData instanceof Assembly) {
+			Composite parent = createTabItemContent("ºòÑ¡×é¼þ");
+			List<String> canidates = ((Assembly) inputData).getCandidates();
+			if (canidates == null)
+				((Assembly) inputData).setCandidates(canidates = new ArrayList<>());
+			new AssemblyListEditPane(parent, canidates);
+		}
 	}
 
 	private void createJsonParameter() {
@@ -106,8 +128,7 @@ public abstract class ModelEditor extends EditorPart {
 			parent.setLayout(new FillLayout());
 			Text text = new Text(parent, SWT.BORDER | SWT.MULTI);
 			@SuppressWarnings("unchecked")
-			IObservableValue<String> observe = BeanProperties.value(inputData.getClass(), "parameters").observe(realm,
-					inputData);
+			IObservableValue<String> observe = BeanProperties.value(inputData.getClass(), "parameters").observe(realm, inputData);
 			bindingContext.bindValue(SWTObservables.observeText(text, SWT.FocusOut), observe, null, null);
 		}
 	}
@@ -123,8 +144,7 @@ public abstract class ModelEditor extends EditorPart {
 	protected void createJsonViewer() {
 		Composite parent = createTabItemContent("JSON");
 		parent.setLayout(new FillLayout());
-		new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY)
-				.setText(new GsonBuilder().setPrettyPrinting().create().toJson(inputData));
+		new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY).setText(new GsonBuilder().setPrettyPrinting().create().toJson(inputData));
 	}
 
 	protected Composite createTabItemContent(String itemTitle) {
@@ -172,7 +192,7 @@ public abstract class ModelEditor extends EditorPart {
 
 	protected abstract void createContent();
 
-	protected Text createPathField(Composite parent, String labelText, Object bean, String property, int style) {
+	public Text createPathField(Composite parent, String labelText, Object bean, String property, int style) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		layoutLabel(label);
@@ -203,8 +223,7 @@ public abstract class ModelEditor extends EditorPart {
 		return text;
 	}
 
-	public Text createAssemblyField(Composite parent, String labelText, Object bean, String property,
-			boolean editable) {
+	public Text createAssemblyField(Composite parent, String labelText, Object bean, String property, boolean editable) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		GridData layoutData = new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 2);
@@ -304,8 +323,7 @@ public abstract class ModelEditor extends EditorPart {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Spinner createIntegerField(Composite parent, String labelText, Object bean, String property, int style,
-			int min, int max) {
+	public Spinner createIntegerField(Composite parent, String labelText, Object bean, String property, int style, int min, int max) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		layoutLabel(label);
@@ -351,8 +369,8 @@ public abstract class ModelEditor extends EditorPart {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Combo createComboField(Composite parent, String[] labels, Object[] values, String labelText, Object bean,
-			String property, int style) {
+	public Combo createComboField(Composite parent, String[] labels, Object[] values, String labelText, Object bean, String property,
+			int style) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(labelText);
 		layoutLabel(label);

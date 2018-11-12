@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.ui.setting;
+package com.bizvisionsoft.bruiengine.onlinedesigner;
 
 import java.util.Optional;
 

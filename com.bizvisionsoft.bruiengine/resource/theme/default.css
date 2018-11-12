@@ -554,6 +554,32 @@ Button[PUSH].serious:pressed {
   color: #ffffff;
 }
 
+Button[PUSH].pane,
+Button[PUSH].pane:default {
+  border: 1px solid #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+Button[PUSH].pane:disabled {
+  color: #d2d2d2;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH].pane:hover {
+  border: 1px solid #03a9f4;
+  background-color: #03a9f4;
+}
+
+Button[PUSH].pane:pressed {
+  border: 1px solid #0288d1;
+  background-color: #0288d1;
+  color: #ffffff;
+}
+
+
 Button[TOGGLE].segmentleft,
 Button[PUSH].segmentleft{
   border: none;
@@ -972,7 +998,6 @@ Shell-CloseButton,Shell-CloseButton:hover,Shell-CloseButton:inactive,Shell-Close
 
 
 Shell.menu {
-  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
   border: none;
   border-radius: 2px;
   background-color: transparent;

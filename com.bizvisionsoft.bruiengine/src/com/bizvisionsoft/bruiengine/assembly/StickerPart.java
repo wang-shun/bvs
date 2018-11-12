@@ -17,6 +17,7 @@ import com.bizvisionsoft.annotations.ui.common.GetContainer;
 import com.bizvisionsoft.annotations.ui.common.Inject;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
+import com.bizvisionsoft.bruiengine.onlinedesigner.IClientColumnCustomizable;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
 import com.bizvisionsoft.bruiengine.service.UserSession;
@@ -135,12 +136,12 @@ public class StickerPart {
 		// }
 
 		// ÉèÖÃ
-		if (part instanceof IClientCustomizable && !Boolean.TRUE.equals(assembly.isDisableCustomized())) {
+		if (part instanceof IClientColumnCustomizable && !Boolean.TRUE.equals(assembly.isDisableCustomized())) {
 			action = new Action();
 			action.setType(Action.TYPE_CUSTOMIZED);
 			action.setImage("/img/setting_w.svg");
 			action.setStyle("info");
-			addAction(action, e -> ((IClientCustomizable) part).customize());
+			addAction(action, e -> ((IClientColumnCustomizable) part).customize());
 		}
 
 		// µ¼³ö

@@ -50,6 +50,7 @@ import com.bizvisionsoft.bruiengine.BruiEventEngine;
 import com.bizvisionsoft.bruiengine.BruiGridRenderEngine;
 import com.bizvisionsoft.bruiengine.BruiQueryEngine;
 import com.bizvisionsoft.bruiengine.assembly.exporter.GridPartExcelExporter;
+import com.bizvisionsoft.bruiengine.onlinedesigner.IClientColumnCustomizable;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -62,7 +63,7 @@ import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable, IClientCustomizable {
+public class GridPart implements IStructuredDataPart, IQueryEnable, IExportable, IClientColumnCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 

@@ -40,6 +40,8 @@ public class Layout extends ModelObject {
 	
 	private String css;
 	
+	private String layoutType;
+	
 //	private String rwtCss;
 
 	private List<AssemblyLayouted> assemblys;
@@ -206,4 +208,43 @@ public class Layout extends ModelObject {
 //	public void setRwtCss(String rwtCss) {
 //		this.rwtCss = rwtCss;
 //	}
+	
+	public static final String TYPE_GRID = "grid";
+
+	public static final String TYPE_LANE = "lane";
+	
+	public String getLayoutType() {
+		return layoutType;
+	}
+	
+	public void setLayoutType(String layoutType) {
+		this.layoutType = layoutType;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//Ó¾µÀ²¼¾Ö
+	
+	public static final String LANE_HORIZONTAL = "horizontal";
+
+	public static final String LANE_VERTICAL = "vertical";
+	
+	private String laneDirection;
+	
+	public String getLaneDirection() {
+		return laneDirection;
+	}
+	
+	public void setLaneDirection(String laneDirection) {
+		this.laneDirection = laneDirection;
+	}
+	
+	private int laneWidth;
+	
+	public void setLaneWidth(int laneWidth) {
+		this.laneWidth = laneWidth;
+	}
+	
+	public int getLaneWidth() {
+		return laneWidth;
+	}
 }

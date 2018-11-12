@@ -623,5 +623,10 @@ public class Controls<T extends Control> {
 		Check.instanceThen(control, Button.class, c -> c.getShell().setDefaultButton(c));
 		return this;
 	}
+	
+	public Controls<T> setData(String key,Object value){
+		control.setData(key, value);
+		return this;
+	}
 
 }

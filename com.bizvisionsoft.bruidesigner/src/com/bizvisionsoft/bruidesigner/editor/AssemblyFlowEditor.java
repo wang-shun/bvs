@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
+import com.bizvisionsoft.bruidesigner.editor.pane.ActionsEditPane;
 
 public class AssemblyFlowEditor extends ModelEditor {
 

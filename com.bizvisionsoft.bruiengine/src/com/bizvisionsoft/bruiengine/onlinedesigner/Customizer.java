@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruiengine.assembly;
+package com.bizvisionsoft.bruiengine.onlinedesigner;
 
 import java.io.IOException;
 import java.util.ArrayList;

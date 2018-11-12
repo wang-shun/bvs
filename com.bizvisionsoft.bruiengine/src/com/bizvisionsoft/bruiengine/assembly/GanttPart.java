@@ -39,6 +39,8 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruiengine.BruiDataSetEngine;
 import com.bizvisionsoft.bruiengine.BruiEventEngine;
+import com.bizvisionsoft.bruiengine.onlinedesigner.Customizer;
+import com.bizvisionsoft.bruiengine.onlinedesigner.IClientColumnCustomizable;
 import com.bizvisionsoft.bruiengine.service.BruiAssemblyContext;
 import com.bizvisionsoft.bruiengine.service.IBruiContext;
 import com.bizvisionsoft.bruiengine.service.IBruiService;
@@ -48,7 +50,7 @@ import com.bizvisionsoft.bruiengine.util.BruiColors.BruiColor;
 import com.bizvisionsoft.service.tools.Check;
 import com.mongodb.BasicDBObject;
 
-public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IExportable, IClientCustomizable {
+public class GanttPart implements IPostSelectionProvider, IDataSetEngineProvider, IExportable, IClientColumnCustomizable {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 

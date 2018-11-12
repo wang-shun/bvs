@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruicommons.model.Sidebar;
+import com.bizvisionsoft.bruidesigner.editor.pane.ActionsEditPane;
 
 public class SidebarEditor extends ModelEditor {
 

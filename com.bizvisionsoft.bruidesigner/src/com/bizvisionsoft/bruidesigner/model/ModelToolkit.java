@@ -149,6 +149,8 @@ public class ModelToolkit {
 				return Activator.getImageDescriptor("icons/chart.png");
 			if (Assembly.TYPE_FLOW.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/flow.png");
+			if (Assembly.TYPE_BOARD.equals(((Assembly) model).getType()))
+				return Activator.getImageDescriptor("icons/panel.png");
 			if (Assembly.TYPE_TREE.equals(((Assembly) model).getType()))
 				return Activator.getImageDescriptor("icons/tree.gif");
 			if (Assembly.TYPE_ACTION_PANEL.equals(((Assembly) model).getType()))
@@ -412,6 +414,8 @@ public class ModelToolkit {
 						editorId = "bruidesigner.assemblyChartEditor";
 					} else if (Assembly.TYPE_FLOW.equals(type)) {
 						editorId = "bruidesigner.assemblyFlowEditor";
+					} else if (Assembly.TYPE_BOARD.equals(type)) {
+						editorId = "bruidesigner.assemblyBoardEditor";
 					} else {
 						editorId = "bruidesigner.assemblyEditor";
 					}

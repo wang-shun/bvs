@@ -13,6 +13,7 @@ import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruidesigner.editor.field.FormFieldsEditPane;
+import com.bizvisionsoft.bruidesigner.editor.pane.ActionsEditPane;
 
 public class AssemblyInfoPadEditor extends ModelEditor {
 

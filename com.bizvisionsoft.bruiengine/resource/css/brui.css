@@ -203,6 +203,21 @@
 	color: #4a4a4a;
 }
 
+.brui_elem_item {
+	background-color: #b0bec5;
+	color: #ffffff;
+}
+
+.brui_elem_item:hover {
+	background-color: #78909c;
+	color: #ffffff;
+}
+
+.brui_elem_item_selected{
+	background-color: #607d8b;
+	color: #ffffff;
+}
+
 .brui_text_line {
 	overflow: hidden;
 	word-break: break-word;

@@ -1,4 +1,4 @@
-package com.bizvisionsoft.bruidesigner.editor;
+package com.bizvisionsoft.bruidesigner.editor.pane;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruidesigner.Activator;
+import com.bizvisionsoft.bruidesigner.editor.ModelEditor;
 import com.bizvisionsoft.bruidesigner.model.ModelToolkit;
 
 public class ActionsEditPane extends SashForm {

@@ -14,6 +14,8 @@ import com.bizvisionsoft.bruicommons.model.Column;
 import com.bizvisionsoft.bruicommons.model.FormField;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
 import com.bizvisionsoft.bruidesigner.editor.field.FormFieldsEditPane;
+import com.bizvisionsoft.bruidesigner.editor.pane.ActionsEditPane;
+import com.bizvisionsoft.bruidesigner.editor.pane.GridColumnsEditPane;
 
 public class AssemblyGridEditor extends ModelEditor {
 

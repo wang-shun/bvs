@@ -73,11 +73,14 @@ public class BruiAssemblyEngine extends BruiEngine {
 			brui = new BruiAssemblyEngine(new ChartPart(assembly));
 		} else if (Assembly.TYPE_FLOW.equals(type)) {
 			brui = new BruiAssemblyEngine(new FlowPart(assembly));
+			// } else if (Assembly.TYPE_BOARD.equals(type)) {
+			// 暂时不支持
+			// brui = new BruiAssemblyEngine(new BoardPart(assembly));
 		} else {
 			brui = load(assembly.getBundleId(), assembly.getClassName())// load
 					.newInstance();
 		}
-		
+
 		brui.injectModelParameters(assembly.getParameters());
 		return (BruiAssemblyEngine) brui;
 	}
@@ -93,7 +96,7 @@ public class BruiAssemblyEngine extends BruiEngine {
 		try {
 			claz = bundle.loadClass(className);
 		} catch (Exception e) {
-			throw new RuntimeException("无法加载"+className);
+			throw new RuntimeException("无法加载" + className);
 		}
 		return new BruiAssemblyEngine(claz);
 	}
@@ -155,7 +158,7 @@ public class BruiAssemblyEngine extends BruiEngine {
 	public BruiAssemblyEngine init(IServiceWithId[] services) {
 		return (BruiAssemblyEngine) super.init(services);
 	}
-	
+
 	public BruiAssemblyEngine injectModelParameters(String jsonString) {
 		return (BruiAssemblyEngine) super.injectModelParameters(jsonString);
 	}

@@ -12,6 +12,8 @@ import com.bizvisionsoft.bruicommons.model.Action;
 import com.bizvisionsoft.bruicommons.model.Assembly;
 import com.bizvisionsoft.bruicommons.model.Layout;
 import com.bizvisionsoft.bruicommons.model.ModelObject;
+import com.bizvisionsoft.bruidesigner.editor.pane.ActionsEditPane;
+import com.bizvisionsoft.bruidesigner.editor.pane.LayoutEditPane;
 
 public class AssemblyEditor extends ModelEditor {
 
@@ -70,6 +72,11 @@ public class AssemblyEditor extends ModelEditor {
 	@Override
 	protected Class<? extends ModelObject> getDataType() {
 		return Assembly.class;
+	}
+	
+	@Override
+	protected boolean enableCustomized() {
+		return true;
 	}
 
 }

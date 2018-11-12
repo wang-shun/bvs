@@ -9,7 +9,7 @@ import com.bizvisionsoft.annotations.md.service.WriteValue;
 public class Assembly extends ModelObject {
 
 	@ReadValue(ReadValue.TYPE)
-	private String getTypeName() {
+	public String getTypeName() {
 		String text = "组件";
 		if (TYPE_EDITOR.equals(type)) {
 			text += " - 编辑器";
@@ -35,6 +35,8 @@ public class Assembly extends ModelObject {
 			text += " - 图表";
 		} else if (TYPE_FLOW.equals(type)) {
 			text += " - 流程图";
+		} else if (TYPE_BOARD.equals(type)) {
+			text += " - 看板";
 		}
 		return text;
 	}
@@ -68,6 +70,8 @@ public class Assembly extends ModelObject {
 	public static final String TYPE_CHART = "chart";
 
 	public static final String TYPE_FLOW = "flow";
+	
+	public static final String TYPE_BOARD = "board";
 
 	private String id;
 
@@ -842,6 +846,18 @@ public class Assembly extends ModelObject {
 	
 	public void setCompactTitleBar(boolean compactTitleBar) {
 		this.compactTitleBar = compactTitleBar;
+	}
+	
+
+	//备选清单
+	private List<String> candidates;
+	
+	public List<String> getCandidates() {
+		return candidates;
+	}
+	
+	public void setCandidates(List<String> candidates) {
+		this.candidates = candidates;
 	}
 	
 }
